@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#432f2e;--cream:#feefb8;--orange:#c4dae8;--lilac:#fffaf0;--sand:#ead9c6;--grape:#8fb3cf;--butter2:#f6d36b;--frame:14px}
+:root{--ink:#432f2e;--cream:#feefb8;--orange:#c4dae8;--lilac:#c4dae8;--sand:#ead9c6;--grape:#8fb3cf;--butter2:#f6d36b;--frame:14px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
@@ -21,6 +21,7 @@ a{color:inherit}
 /* nav */
 nav{position:sticky;top:0;z-index:20;background:var(--ink);color:#fffaf0;display:flex;align-items:center;justify-content:space-between;padding:14px calc(var(--frame) + 8px)}
 nav .logo{font-family:Syne;font-weight:800;font-size:20px;letter-spacing:.02em;text-decoration:none}
+nav .logo{display:flex;align-items:center}nav .logo img{height:20px;width:auto;display:block}
 nav .logo small{font-family:Pretendard;font-weight:500;font-size:11px;opacity:.6;margin-left:8px;letter-spacing:0}
 nav .links{display:flex;gap:26px;font-family:Syne;font-weight:700;font-size:14px}
 nav .links a{text-decoration:none;opacity:.9}
@@ -40,7 +41,7 @@ section{position:relative;overflow:hidden}
 @keyframes wipe{from{transform:scaleX(0)}to{transform:none}}
 @keyframes slide{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
 .hero-copy{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:end;max-width:1400px;margin:26px auto 0;padding:0 2%}
-.hero .tag{display:inline-block;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;margin-bottom:18px;background:#fffaf0}
+.hero .tag{display:inline-block;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;margin-bottom:18px;background:var(--orange)}
 .hero .ko{font-size:clamp(24px,3.2vw,40px);font-weight:900;line-height:1.3;letter-spacing:-.02em}
 .hero .sub{font-size:clamp(15px,1.7vw,18px);line-height:1.7;color:#5a4442}
 .cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px}
@@ -63,32 +64,32 @@ h2 .en{font-size:1em}
 .lead{font-size:clamp(16px,1.9vw,20px);line-height:1.8;margin-top:22px;max-width:760px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 .list{list-style:none;margin-top:26px;display:grid;gap:10px}
-.list li{background:rgba(255,255,255,.55);border:2px solid var(--ink);border-radius:14px;padding:14px 18px;font-weight:600;font-size:16px}
+.list li{background:var(--cream);border:2px solid var(--ink);border-radius:14px;padding:14px 18px;font-weight:600;font-size:16px}
 .big-q{font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.5;margin-top:28px}
 /* vs */
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .vs div{border:3px solid var(--ink);border-radius:20px;padding:30px}
-.vs .a{background:#fff}
+.vs .a{background:var(--orange)}
 .vs .b{background:var(--ink);color:#fffaf0}
 .vs b{display:block;font-size:14px;opacity:.6;margin-bottom:10px}
 .vs p{font-size:clamp(20px,2.6vw,30px);font-weight:900;line-height:1.35}
 /* houses = features */
 .feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
-.card{border:3px solid var(--ink);border-radius:22px;padding:26px 22px 30px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:280px}
+.card{border:3px solid var(--ink);border-radius:22px;padding:26px 22px 30px;background:var(--orange);display:flex;flex-direction:column;gap:12px;min-height:280px}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start}
 .ic{width:54px;height:54px}
 .card .no{font-family:Syne;font-weight:800;font-size:44px;line-height:1}
 .card h3{font-size:22px;font-weight:900}
 .card p{font-size:15.5px;line-height:1.7;color:#333}
-.card:nth-child(1){background:var(--lilac)}.card:nth-child(2){background:var(--sand)}.card:nth-child(3){background:#fff}.card:nth-child(4){background:var(--cream)}
+
 /* easy */
 .easy{text-align:center}
 .easy h2{font-size:clamp(34px,6.4vw,84px)}
-.easy .say{display:inline-block;margin-top:36px;background:#fff;color:var(--ink);border-radius:28px 28px 28px 6px;padding:22px 30px;font-size:clamp(20px,3vw,32px);font-weight:900;border:3px solid var(--ink)}
+.easy .say{display:inline-block;margin-top:36px;background:var(--cream);color:var(--ink);border-radius:28px 28px 28px 6px;padding:22px 30px;font-size:clamp(20px,3vw,32px);font-weight:900;border:3px solid var(--ink)}
 .easy .lead{margin:28px auto 0}
 /* day */
 .day{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
-.day div{border:3px solid var(--ink);border-radius:22px;padding:28px;background:#fff}
+.day div{border:3px solid var(--ink);border-radius:22px;padding:28px;background:var(--cream)}
 .day .after{background:var(--ink);color:#fffaf0}
 .day h4{font-family:Syne;font-weight:800;font-size:28px;margin-bottom:16px}
 .day ol{list-style:none;display:grid;gap:10px;font-size:16px;line-height:1.55}
@@ -96,16 +97,16 @@ h2 .en{font-size:1em}
 .note{font-size:14px;opacity:.7;margin-top:16px}
 /* cases */
 .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
-.case{border:3px solid var(--ink);border-radius:22px;background:#fff;padding:20px;display:flex;flex-direction:column;gap:12px}
+.case{border:3px solid var(--ink);border-radius:22px;background:var(--orange);padding:20px;display:flex;flex-direction:column;gap:12px}
 .ctag{align-self:flex-start;font-size:13px;font-weight:800;background:var(--ink);color:#fffaf0;border-radius:99px;padding:5px 12px}
 .case .me{align-self:flex-end;background:var(--ink);color:var(--cream);border-radius:18px 18px 4px 18px;padding:12px 15px;font-size:15.5px;font-weight:600;line-height:1.5;max-width:92%}
 .case .os{background:var(--cream);border:2px solid var(--ink);border-radius:18px 18px 18px 4px;padding:13px 15px;font-size:15px;line-height:1.6;max-width:96%}
 .case .os b{display:block;font-family:Syne;font-size:12px;letter-spacing:.04em;margin-bottom:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.chip{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700}
+.chip{background:var(--cream);border:2px solid var(--ink);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700}
 /* price */
 .learn{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
-.learn>div{border-radius:22px;padding:28px;border:3px solid #fff}
+.learn>div{border-radius:22px;padding:28px;border:3px solid #5a4240}
 .learn .diy{background:#5a4240}
 .learn .dfy{background:var(--cream);border-color:var(--cream);color:var(--ink)}.learn .dfy li{border-color:rgba(67,47,46,.2)}
 .learn b{font-size:20px;font-weight:900;display:block;margin-bottom:14px}
@@ -113,43 +114,52 @@ h2 .en{font-size:1em}
 .learn li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:10px;font-size:16px}
 .learn li em{font-style:normal;font-weight:800;text-align:right}
 .learn p{margin-top:14px;font-size:15px;opacity:.85}
-.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .plan{min-width:0;background:var(--cream);color:var(--ink);border-radius:22px;padding:30px;position:relative}
 .plan.alt{background:var(--lilac)}
 .badge{display:inline-block;background:var(--ink);color:#fffaf0;font-family:Syne;font-weight:800;font-size:12px;letter-spacing:.06em;padding:6px 12px;border-radius:99px}
 .plan h4{font-family:Syne;font-weight:800;font-size:30px;margin-top:16px}
 .plan h4 small{font-family:Pretendard;font-size:17px;margin-left:8px}
-.was{margin-top:16px;font-size:17px;text-decoration:line-through;opacity:.55}
+.lbl{margin-top:18px;font-size:17px;font-weight:800}.lbl em{font-style:normal;background:var(--ink);color:var(--cream);border-radius:6px;padding:2px 8px;margin-left:4px;font-size:15px}
+.calc{margin-top:10px;font-size:14.5px;font-weight:600;opacity:.8}.calc s{opacity:.55;margin:0 4px 0 2px;font-size:13px}
 .now{font-family:Syne;font-weight:800;font-size:clamp(44px,6vw,68px);line-height:1;margin-top:4px}
 .now small{font-family:Pretendard;font-size:22px;margin-left:4px}
-.inc{margin-top:14px;font-size:15px;font-weight:600}
-.extra{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-.extra div{border:2px solid rgba(255,255,255,.4);border-radius:18px;padding:22px}
-.extra b{font-size:14px;opacity:.7}
-.extra p{margin-top:8px;font-size:15.5px;line-height:1.7}
-.extra strong{font-family:Syne;font-size:24px;margin-right:6px}
-.extra small{opacity:.7}
-/* table */
-.tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff}
-.tbl th,.tbl td{padding:18px 16px;text-align:left;font-size:16px;border-bottom:2px solid var(--ink);vertical-align:top}
-.tbl tr:last-child td{border-bottom:0}
-.tbl th{background:var(--ink);color:#fffaf0;font-weight:800}
-.tbl td:last-child,.tbl th:last-child{background:var(--orange);color:var(--ink);font-weight:800}
-.tbl td:first-child{font-weight:800;white-space:nowrap}
+.inc{margin-top:16px;padding-top:14px;border-top:2px solid rgba(67,47,46,.25);font-size:15px;font-weight:700}
+.after-m{margin-top:16px;border:2px solid var(--cream);border-radius:18px;padding:18px 22px;display:flex;gap:16px;align-items:center;font-size:16px;line-height:1.6}.after-m b{flex:none;background:var(--cream);color:var(--ink);border-radius:99px;padding:6px 14px;font-size:14px}.after-m strong{font-family:Syne;font-size:20px;color:var(--cream)}
+.learn{margin-top:56px!important}
+/* compare */
+.cmp{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px;margin-top:44px;align-items:center}
+.cmp .col{border:3px solid var(--ink);border-radius:22px;padding:26px 24px;background:var(--orange);position:relative}
+.cmp h4{font-size:19px;font-weight:900;padding-bottom:14px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+.cmp dt{font-size:12.5px;font-weight:700;opacity:.6;margin-top:14px}
+.cmp dd{font-size:16px;font-weight:600;margin-top:3px;opacity:.75}
+.cmp .os{background:var(--ink);color:var(--cream);padding:40px 30px;transform:scale(1.03);box-shadow:10px 10px 0 var(--grape)}
+.cmp .os h4{font-family:Syne;font-size:30px;border-color:var(--cream)}
+.cmp .os dt{opacity:.7}
+.cmp .os dd{font-size:21px;font-weight:900;opacity:1}
+.cmp .os dd::before{content:"✓ ";color:var(--orange)}
+.pick{position:absolute;top:-16px;right:22px;background:var(--orange);color:var(--ink);border:3px solid var(--ink);border-radius:99px;font-weight:900;font-size:14px;padding:5px 14px}
 /* steps */
-.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px;counter-reset:s}
-.steps li{border:3px solid var(--ink);border-radius:20px;padding:24px;background:#fff;counter-increment:s}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);column-gap:54px;row-gap:54px;margin-top:44px;counter-reset:s}
+.steps li{border:3px solid var(--ink);border-radius:20px;padding:24px;background:var(--orange);counter-increment:s;position:relative}
+.steps li:nth-child(4),.steps li:nth-child(5){background:var(--orange)}
+.steps li:last-child{background:var(--ink);color:var(--cream)}.steps li:last-child span{color:var(--cream);opacity:.85}
+.steps li::after{content:"";position:absolute;width:30px;height:30px;background:var(--ink);clip-path:polygon(0 30%,55% 30%,55% 0,100% 50%,55% 100%,55% 70%,0 70%);right:-45px;top:50%;margin-top:-15px}
+.steps li:nth-child(3)::after{right:auto;left:50%;top:auto;bottom:-46px;margin:0 0 0 -15px;transform:rotate(90deg)}
+.steps li:nth-child(4){grid-column:3;grid-row:2}.steps li:nth-child(5){grid-column:2;grid-row:2}.steps li:nth-child(6){grid-column:1;grid-row:2}
+.steps li:nth-child(4)::after,.steps li:nth-child(5)::after{right:auto;left:-45px;transform:rotate(180deg)}
+.steps li:last-child::after{display:none}
 .steps li::before{content:"0" counter(s);font-family:Syne;font-weight:800;font-size:34px;display:block;margin-bottom:10px}
 .steps b{font-size:19px;display:block;margin-bottom:6px}
 .steps span{font-size:15px;color:#444;line-height:1.6}
 .types{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-.types div{border:3px solid var(--ink);border-radius:20px;padding:26px;background:var(--cream)}
+.types{margin-top:54px!important}.types div{border:3px solid var(--ink);border-radius:20px;padding:26px;background:var(--orange)}
 .types h4{font-family:Syne;font-weight:800;font-size:26px}
 .types h4 small{font-family:Pretendard;font-size:16px;margin-left:8px}
 .types p{margin-top:10px;font-size:15.5px;line-height:1.7}
 /* faq */
 .faq{margin-top:36px;display:grid;gap:12px}
-.faq details{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:20px 24px}
+.faq details{border:3px solid var(--ink);border-radius:18px;background:var(--cream);padding:20px 24px}
 .faq summary{font-weight:800;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
 .faq summary::after{content:"+";font-family:Syne;font-size:24px;line-height:1}
 .faq details[open] summary::after{content:"–"}
@@ -162,7 +172,7 @@ h2 .en{font-size:1em}
 footer{color:#bbb;font-size:13px;line-height:1.8;padding:40px calc(var(--frame) + 14px) 120px}
 footer b{color:#fffaf0}
 /* floating */
-.float{position:fixed;right:22px;bottom:22px;z-index:30;background:var(--ink);color:#fffaf0;text-decoration:none;font-family:Syne;font-weight:800;font-size:15px;padding:16px 20px;border-radius:12px;border:2px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.float{position:fixed;right:22px;bottom:22px;z-index:30;background:var(--ink);color:#fffaf0;text-decoration:none;font-family:Syne;font-weight:800;font-size:15px;padding:16px 20px;border-radius:12px;border:2px solid var(--cream);box-shadow:0 6px 20px rgba(0,0,0,.25)}
 .float span{font-family:Pretendard;font-weight:800}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
@@ -180,22 +190,25 @@ footer b{color:#fffaf0}
  .card-top{display:flex;justify-content:space-between;align-items:flex-start}
 .ic{width:54px;height:54px}
 .card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
- .steps{grid-template-columns:1fr;gap:10px}
+ .steps{grid-template-columns:1fr;row-gap:44px}
+ .steps li:nth-child(n){grid-column:auto;grid-row:auto}
+ .steps li::after,.steps li:nth-child(n)::after{right:auto;left:50%;top:auto;bottom:-38px;margin:0 0 0 -13px;width:26px;height:26px;transform:rotate(90deg)}
+ .steps li:last-child::after{display:none}
+ .cmp{grid-template-columns:1fr;gap:14px}.cmp .os{transform:none;margin-top:14px;box-shadow:6px 6px 0 var(--grape)}
+ .after-m{flex-direction:column;align-items:flex-start;gap:8px}
  .cases{grid-template-columns:1fr;gap:12px}
- .learn,.plans,.extra{grid-template-columns:1fr;gap:12px}
+ .learn,.plans{grid-template-columns:1fr;gap:12px}
  .plan{padding:24px;min-width:0}
  .now{font-size:34px}
  .plan h4{font-size:24px}
  .now small{font-size:18px}
  .sky{margin:48px 0 -72px}
- .tbl th,.tbl td{padding:12px 10px;font-size:13.5px}
- .tbl td:first-child{white-space:normal}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
 }
 </style>
 </head>
 <body>
-<nav><a class="logo" href="#top">brandium<small>PERSONAL OS</small></a>
+<nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
 <div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#day">DAY</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
@@ -278,34 +291,35 @@ footer b{color:#fffaf0}
  </div>
 </section>
 
-<section class="pad orange">
+<section class="pad cream">
  <div class="reveal"><span class="label">NOT A CLASS</span><h2>배우는 상품이 아닙니다.<br>맡기는 상품입니다.</h2>
- <table class="tbl"><tr><th></th><th>AI 강의·프롬프트</th><th>AI 자동화 도구</th><th>퍼스널 OS</th></tr>
- <tr><td>내가 할 일</td><td>배우고 직접 적용</td><td>설정하고 관리</td><td>말로 지시만</td></tr>
- <tr><td>범위</td><td>기능 하나</td><td>작업 하나</td><td>내 업무 전체</td></tr>
- <tr><td>내 방식</td><td>내가 알아서</td><td>정해진 틀</td><td>인터뷰로 처음부터 맞춤</td></tr>
- <tr><td>결과</td><td>지식</td><td>도구</td><td>나 대신 일하는 조직</td></tr></table></div>
+ <div class="cmp">
+  <div class="col"><h4>AI 자동화 도구</h4><dl><dt>내가 할 일</dt><dd>설정하고 관리</dd><dt>범위</dt><dd>작업 하나</dd><dt>내 방식</dt><dd>정해진 틀</dd><dt>결과</dt><dd>도구</dd></dl></div>
+  <div class="col"><h4>AI 강의·프롬프트</h4><dl><dt>내가 할 일</dt><dd>배우고 직접 적용</dd><dt>범위</dt><dd>기능 하나</dd><dt>내 방식</dt><dd>내가 알아서</dd><dt>결과</dt><dd>지식</dd></dl></div>
+  <div class="col os"><span class="pick">맡기면 끝</span><h4>퍼스널 OS</h4><dl><dt>내가 할 일</dt><dd>말로 지시만</dd><dt>범위</dt><dd>내 업무 전체</dd><dt>내 방식</dt><dd>인터뷰로 처음부터 맞춤</dd><dt>결과</dt><dd>나 대신 일하는 조직</dd></dl></div>
+ </div></div>
 </section>
 
 <section class="pad ink" id="price">
  <div class="reveal"><span class="label">PRICE</span><h2>비용도 투명하게<br>공개합니다</h2>
+<div class="plans">
+  <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4>
+   <p class="lbl">세팅비용 <em>+ Claude Max 구독료 포함</em></p><p class="now">1,350,000<small>원</small></p>
+   <p class="calc">세팅 1,200,000원 <s>2,500,000원</s> + Claude Max 첫 달 약 150,000원</p>
+   <p class="inc">방문 인터뷰 · 현장 세팅 · 사용 교육 · 90일 적응 지원</p></div>
+  <div class="plan alt"><span class="badge">LAUNCHING EVENT</span><h4>REMOTE <small>원격형</small></h4>
+   <p class="lbl">세팅비용 <em>+ Claude Max 구독료 포함</em></p><p class="now">1,030,000<small>원</small></p>
+   <p class="calc">세팅 880,000원 <s>2,200,000원</s> + Claude Max 첫 달 약 150,000원</p>
+   <p class="inc">화상 인터뷰 · 원격 세팅 · 화상 교육 · 90일 적응 지원</p></div>
+ </div>
+ <div class="after-m"><b>다음 달부터는</b><span>Claude Max 구독료 <strong>월 $100</strong>(약 15만 원)만. 대표님 명의로 결제되며 그 밖의 비용은 없습니다.</span></div>
+ <p class="note">※ 부가세 별도. 구독료 원화 금액은 환율에 따라 달라집니다. 늘 켜 둘 컴퓨터가 없으면 맥 미니(약 119만 원~, 실비)를 따로 준비합니다. 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p>
  <div class="learn">
   <div class="diy"><b>직접 배워서 한다면</b>
-   <ul><li><span>강의 수강</span><em>평균 12시간</em></li><li><span>강의료</span><em>20~30만 원</em></li><li><span>내 업무에 적용</span><em>수십 시간 + 시행착오</em></li><li><span>막히면</span><em>혼자 해결</em></li></ul>
-   <p>배운다고 내 일에 맞는 시스템이 생기지는 않습니다.</p></div>
+   <ul><li><span>강의 수강</span><em>평균 12시간</em></li><li><span>강의료</span><em>20~30만 원</em></li><li><span>내 업무에 적용</span><em>수십 시간 + 시행착오</em></li><li><span>막히면</span><em>혼자 해결</em></li></ul></div>
   <div class="dfy"><b>퍼스널 OS에 맡긴다면</b>
-   <ul><li><span>대표님 시간</span><em>인터뷰 최대 60분</em></li><li><span>세팅</span><em>대표님 업무에 맞춰 전부</em></li><li><span>사용 교육</span><em>포함</em></li><li><span>사후 관리</span><em>90일 포함</em></li></ul>
-   <p>배우는 시간 대신, 완성된 시스템을 받습니다.</p></div>
- </div>
- <div class="plans">
-  <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4><p class="was">정가 2,500,000원</p><p class="now">1,200,000<small>원</small></p><p class="inc">방문 인터뷰 · 현장 세팅 · 사용 교육 · 90일 적응 지원</p></div>
-  <div class="plan alt"><span class="badge">LAUNCHING EVENT</span><h4>REMOTE <small>원격형</small></h4><p class="was">정가 2,200,000원</p><p class="now">880,000<small>원</small></p><p class="inc">화상 인터뷰 · 원격 세팅 · 화상 교육 · 90일 적응 지원</p></div>
- </div>
- <div class="extra">
-  <div><b>월 유지비</b><p><strong>$100 / 월</strong> AI 구독료 (Claude Max 기준)<br><small>대표님 명의로 결제 · 한화 약 15~16만 원 (환율·부가세에 따라 달라집니다)</small></p></div>
-  <div><b>선택 · 전용 미니 PC</b><p><strong>약 119만 원~</strong> 맥 미니 (애플 공식몰 기준, 실비)<br><small>늘 켜 둘 컴퓨터가 없을 때만 필요합니다</small></p></div>
- </div>
- <p class="note">※ 위 금액은 초기 세팅 비용이며 부가세 별도입니다. 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p></div>
+   <ul><li><span>대표님 시간</span><em>인터뷰 최대 60분</em></li><li><span>세팅</span><em>대표님 업무에 맞춰 전부</em></li><li><span>사용 교육</span><em>포함</em></li><li><span>사후 관리</span><em>90일 포함</em></li></ul></div>
+ </div></div>
 </section>
 
 <section class="pad cream" id="how">
@@ -343,7 +357,7 @@ footer b{color:#fffaf0}
  <a class="cta" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 신청하기 →</a></div>
 </section>
 </div>
-<footer><b>brandium</b> · 퍼스널 OS<br>운영 주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525<br>인천광역시 부평구 길주로647번길 20, 801호 A35 · kedakorea@gmail.com<br>Instagram @brandium__official</footer>
+<footer><b>BRANDiUM</b> · 퍼스널 OS<br>운영 주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525<br>인천광역시 부평구 길주로647번길 20, 801호 A35 · kedakorea@gmail.com<br>Instagram @brandium__official</footer>
 <a class="float" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">APPLY <span>· 상담 신청</span></a>
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
@@ -357,8 +371,8 @@ const EM=[
  {w:['QUOTE','DONE'],roof:B2,blk:BL,draw:f=>`<path d="M24 0V-130H164L200-94V0Z" fill="${f}" ${st}/><path d="M164-130V-94H200" ${ln}/><path d="M48-104H134M48-82H170M48-60H150M48-38H110" ${ln}/><circle cx="166" cy="-34" r="24" fill="${C}"/><circle cx="166" cy="-34" r="14" fill="none" stroke="${f}" stroke-width="5"/>`},
  {w:['REPORT','DONE'],roof:DB,blk:LT,draw:f=>`<path d="M122 0V-130A98 130 0 0 1 220 0Z" fill="${f}" ${st}/>${stripes()}<path d="M10 0V-42H48V-78H86V-114H122V0Z" fill="${f}" ${st}/><path d="M48 0V-42M86 0V-78" ${ln}/><path d="M20-30h18v18H20zM58-64h18v18H58zM58-34h18v18H58zM96-100h16v26H96zM96-62h16v26H96z" ${ln} stroke-width="5"/>`},
  {w:['BRIEF','DONE'],roof:BL,blk:B2,draw:f=>`<path d="M0 0L110-146L220 0Z" fill="${f}" ${st}/><path d="M74-88h72v66H74zM74-70h72M98-70V-22M122-70V-22M74-46h72M90-98v16M130-98v16" ${ln} stroke-width="6"/><path d="M34-10H186" ${ln}/>`},
- {w:['SEAL','DONE'],roof:MC,blk:WH,draw:f=>`<path d="M92-102V-136a18 14 0 0 1 36 0V-102" fill="${f}" ${st}/><path d="M10 0A100 100 0 0 1 210 0Z" fill="${f}" ${st}/><path d="M38 0A72 72 0 0 1 182 0" ${ln}/><path d="M110-62V-12M84-38H136M88-58l10 10M132-58l-10 10" ${ln} stroke-width="6"/><path d="M40-66l-22-18M180-66l22-18" ${ln} stroke-width="6"/>`},
- {w:['TEXT','DONE'],roof:WH,blk:DB,draw:f=>`<path d="M40-132H180Q206-132 206-106V-58Q206-32 180-32H88L46 0 58-32H40Q14-32 14-58V-106Q14-132 40-132Z" fill="${f}" ${st}/><circle cx="70" cy="-82" r="11" fill="${C}"/><circle cx="110" cy="-82" r="11" fill="${C}"/><circle cx="150" cy="-82" r="11" fill="${C}"/>`},
+ {w:['SEAL','DONE'],roof:MC,blk:BL,draw:f=>`<path d="M92-102V-136a18 14 0 0 1 36 0V-102" fill="${f}" ${st}/><path d="M10 0A100 100 0 0 1 210 0Z" fill="${f}" ${st}/><path d="M38 0A72 72 0 0 1 182 0" ${ln}/><path d="M110-62V-12M84-38H136M88-58l10 10M132-58l-10 10" ${ln} stroke-width="6"/><path d="M40-66l-22-18M180-66l22-18" ${ln} stroke-width="6"/>`},
+ {w:['TEXT','DONE'],roof:B2,blk:DB,draw:f=>`<path d="M40-132H180Q206-132 206-106V-58Q206-32 180-32H88L46 0 58-32H40Q14-32 14-58V-106Q14-132 40-132Z" fill="${f}" ${st}/><circle cx="70" cy="-82" r="11" fill="${C}"/><circle cx="110" cy="-82" r="11" fill="${C}"/><circle cx="150" cy="-82" r="11" fill="${C}"/>`},
 ];
 function em(i,cls){const e=EM[i];return `<g class="${cls||''}"><g class="roof">${e.draw(e.roof)}</g><rect class="blk" x="0" y="0" width="220" height="150" fill="${e.blk}"/><g class="lab"><text x="6" y="68" font-size="74" textLength="208" lengthAdjust="spacingAndGlyphs">${e.w[0]}</text><text x="6" y="142" font-size="74" textLength="208" lengthAdjust="spacingAndGlyphs">${e.w[1]}</text><path d="M60 148H160" stroke="${C}" stroke-width="5"/></g></g>`}
 function arrow(x1,y1,x2,y2){const a=Math.atan2(y2-y1,x2-x1),h=34,s=.5;const p=(t)=>`${(x2-h*Math.cos(a+t)).toFixed(0)},${(y2-h*Math.sin(a+t)).toFixed(0)}`;return `<path d="M${x1} ${y1}L${x2} ${y2}M${p(s)} L${x2} ${y2} L${p(-s)}" fill="none" stroke="${C}" stroke-width="9"/>`}
@@ -366,7 +380,7 @@ const L={
  pc:{vb:'0 0 1400 700',title:`<text x="70" y="160" font-size="150" textLength="1260" lengthAdjust="spacingAndGlyphs">PERSONAL OS</text>`,
   pos:[[95,385,1.1],[337,435,1.1],[579,405,1.1],[821,455,1.1],[1063,415,1.1]],
   arrows:[[520,214,650,196],[915,214,1035,262],[300,596,170,618],[790,690,756,598]],
-  foot:`<text x="70" y="676" font-size="54">:Your work, Your OS.</text><text x="1330" y="676" font-size="30" text-anchor="end">Presented by <tspan font-size="44">brandium</tspan></text>`,
+  foot:`<text x="70" y="676" font-size="54">:Your work, Your OS.</text><text x="1062" y="676" font-size="30" text-anchor="end">Presented by</text><image href="logo_choco.png" x="1077" y="638" width="253" height="40"/>`,
   solo:[513,330,1.7]},
  m:{vb:'0 0 600 990',title:`<text x="36" y="124" font-size="128" textLength="528" lengthAdjust="spacingAndGlyphs">PERSONAL</text><text x="36" y="250" font-size="128">OS</text>`,
   pos:[[30,430,.8],[214,460,.8],[398,440,.8],[118,740,.8],[302,765,.8]],
