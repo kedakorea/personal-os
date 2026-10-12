@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>퍼스널 OS — 나 대신 일하는 시스템 | brandium</title>
+<meta name="description" content="배워서 하는 AI는 끝났습니다. 대표님 업무에 맞춘 부서·실장·업무 앱을 통째로 세팅해 드리는 퍼스널 OS.">
+<meta property="og:title" content="퍼스널 OS — 나 대신 일하는 시스템">
+<meta property="og:description" content="저장해 둔 프롬프트만 수백 개? 이제 배워서 하는 시대는 끝났습니다. 당신만의 퍼스널 OS를 세팅해 드립니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--cream:#f7f8dc;--orange:#ec6a2c;--lilac:#9b86e0;--sand:#d9cfb0;--frame:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+.wrap{margin:0 var(--frame);}
+.en{font-family:Syne,Pretendard,sans-serif;font-weight:800;letter-spacing:-.01em;line-height:.92;text-transform:uppercase}
+a{color:inherit}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px calc(var(--frame) + 8px)}
+nav .logo{font-family:Syne;font-weight:800;font-size:20px;letter-spacing:.02em;text-decoration:none}
+nav .logo small{font-family:Pretendard;font-weight:500;font-size:11px;opacity:.6;margin-left:8px;letter-spacing:0}
+nav .links{display:flex;gap:26px;font-family:Syne;font-weight:700;font-size:14px}
+nav .links a{text-decoration:none;opacity:.9}
+section{position:relative;overflow:hidden}
+/* hero */
+.hero{background:var(--cream);min-height:min(calc(100svh - 54px),860px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:72px 28px 120px}
+.hero .tag{display:inline-block;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;margin-bottom:26px;background:#fff}
+.hero h1{font-size:clamp(46px,7.6vw,118px);max-width:66%}
+.hero h1 span{color:var(--orange)}
+.hero .ko{font-size:clamp(20px,3.2vw,34px);font-weight:800;margin-top:22px;line-height:1.35}
+.hero .sub{font-size:clamp(15px,1.8vw,19px);margin-top:16px;line-height:1.7;max-width:640px;color:#333}
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px}
+.cta:hover{background:var(--orange)}
+.os-box{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:min(26vw,330px);aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.os-box i{border:3px solid var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:clamp(11px,1.3vw,15px);text-align:center;line-height:1.2;padding:4px}
+.os-box i:nth-child(1){background:var(--lilac)}.os-box i:nth-child(3){background:var(--orange);color:#fff}.os-box i:nth-child(5){background:var(--ink);color:#fff}.os-box i:nth-child(7){background:var(--sand)}.os-box i:nth-child(9){background:var(--lilac)}
+/* marquee */
+.ticker{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;padding:12px 0;font-family:Syne;font-weight:800;font-size:18px}
+.ticker div{display:inline-block;animation:mq 26s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* blocks */
+.pad{padding:96px 28px}
+.orange{background:var(--orange)}
+.cream{background:var(--cream)}
+.lilac{background:var(--lilac)}
+.ink{background:var(--ink);color:#fff}
+.label{font-family:Syne;font-weight:800;font-size:14px;letter-spacing:.06em;margin-bottom:18px;display:block}
+h2{font-size:clamp(30px,5.4vw,64px);font-weight:900;line-height:1.18;letter-spacing:-.02em}
+h2 .en{font-size:1em}
+.lead{font-size:clamp(16px,1.9vw,20px);line-height:1.8;margin-top:22px;max-width:760px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.list{list-style:none;margin-top:26px;display:grid;gap:10px}
+.list li{background:rgba(255,255,255,.55);border:2px solid var(--ink);border-radius:14px;padding:14px 18px;font-weight:600;font-size:16px}
+.big-q{font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.5;margin-top:28px}
+/* vs */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.vs div{border:3px solid var(--ink);border-radius:20px;padding:30px}
+.vs .a{background:#fff}
+.vs .b{background:var(--ink);color:#fff}
+.vs b{display:block;font-size:14px;opacity:.6;margin-bottom:10px}
+.vs p{font-size:clamp(20px,2.6vw,30px);font-weight:900;line-height:1.35}
+/* houses = features */
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.card{border:3px solid var(--ink);border-radius:22px;padding:26px 22px 30px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:280px}
+.card .no{font-family:Syne;font-weight:800;font-size:44px;line-height:1}
+.card h3{font-size:22px;font-weight:900}
+.card p{font-size:15.5px;line-height:1.7;color:#333}
+.card:nth-child(1){background:var(--lilac)}.card:nth-child(2){background:var(--sand)}.card:nth-child(3){background:#fff}.card:nth-child(4){background:var(--cream)}
+/* easy */
+.easy{text-align:center}
+.easy h2{font-size:clamp(34px,6.4vw,84px)}
+.easy .say{display:inline-block;margin-top:36px;background:#fff;color:var(--ink);border-radius:28px 28px 28px 6px;padding:22px 30px;font-size:clamp(20px,3vw,32px);font-weight:900;border:3px solid var(--ink)}
+.easy .lead{margin:28px auto 0}
+/* day */
+.day{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.day div{border:3px solid var(--ink);border-radius:22px;padding:28px;background:#fff}
+.day .after{background:var(--ink);color:#fff}
+.day h4{font-family:Syne;font-weight:800;font-size:28px;margin-bottom:16px}
+.day ol{list-style:none;display:grid;gap:10px;font-size:16px;line-height:1.55}
+.day ol b{display:inline-block;min-width:56px;font-family:Syne}
+.note{font-size:14px;opacity:.7;margin-top:16px}
+/* table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff}
+.tbl th,.tbl td{padding:18px 16px;text-align:left;font-size:16px;border-bottom:2px solid var(--ink);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl th{background:var(--ink);color:#fff;font-weight:800}
+.tbl td:last-child,.tbl th:last-child{background:var(--orange);color:#fff;font-weight:800}
+.tbl td:first-child{font-weight:800;white-space:nowrap}
+/* steps */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px;counter-reset:s}
+.steps li{border:3px solid var(--ink);border-radius:20px;padding:24px;background:#fff;counter-increment:s}
+.steps li::before{content:"0" counter(s);font-family:Syne;font-weight:800;font-size:34px;display:block;margin-bottom:10px}
+.steps b{font-size:19px;display:block;margin-bottom:6px}
+.steps span{font-size:15px;color:#444;line-height:1.6}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.types div{border:3px solid var(--ink);border-radius:20px;padding:26px;background:var(--cream)}
+.types h4{font-family:Syne;font-weight:800;font-size:26px}
+.types h4 small{font-family:Pretendard;font-size:16px;margin-left:8px}
+.types p{margin-top:10px;font-size:15.5px;line-height:1.7}
+/* faq */
+.faq{margin-top:36px;display:grid;gap:12px}
+.faq details{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:20px 24px}
+.faq summary{font-weight:800;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::after{content:"+";font-family:Syne;font-size:24px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin-top:12px;font-size:15.5px;line-height:1.75;color:#333}
+/* maker */
+.maker p{font-size:clamp(17px,2vw,21px);line-height:1.9;margin-top:22px;max-width:780px}
+/* final */
+.final{text-align:center;display:block;padding:120px 28px 140px}
+.final h2{font-size:clamp(36px,7vw,96px)}
+footer{color:#bbb;font-size:13px;line-height:1.8;padding:40px calc(var(--frame) + 14px) 120px}
+footer b{color:#fff}
+/* floating */
+.float{position:fixed;right:22px;bottom:22px;z-index:30;background:var(--ink);color:#fff;text-decoration:none;font-family:Syne;font-weight:800;font-size:15px;padding:16px 20px;border-radius:12px;border:2px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.float span{font-family:Pretendard;font-weight:800}
+.reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
+.reveal.on{opacity:1;transform:none}
+/* mobile */
+@media (max-width:860px){
+ :root{--frame:8px}
+ nav .links{display:none}
+ .hero{padding:56px 20px 200px;min-height:auto}
+ .hero h1{max-width:none}
+ .os-box{position:static;transform:none;width:100%;max-width:300px;margin-top:40px}
+ .pad{padding:72px 20px}
+ .grid2,.vs,.day,.types{grid-template-columns:1fr;gap:14px}
+ .grid2{gap:24px}
+ .feat{grid-template-columns:1fr 1fr;gap:10px}
+ .card{min-height:0;padding:20px 16px}
+ .card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
+ .steps{grid-template-columns:1fr;gap:10px}
+ .tbl th,.tbl td{padding:12px 10px;font-size:13.5px}
+ .tbl td:first-child{white-space:normal}
+ .float{left:12px;right:12px;bottom:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="#top">brandium<small>PERSONAL OS</small></a>
+<div class="links"><a href="#what">WHAT</a><a href="#day">DAY</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="wrap">
+
+<section class="hero" id="top">
+ <span class="tag">🗂 저장해 둔 프롬프트만 수백 개?</span>
+ <h1 class="en">Your work,<br><span>Your OS.</span></h1>
+ <p class="ko">배워서 하는 AI는 끝났습니다.<br>나 대신 일하는 시스템, 퍼스널 OS.</p>
+ <p class="sub">대표님의 업무에 맞춘 부서와 실장, 그리고 지시 한 번이면 되는 업무 앱까지. 통째로 세팅해 드립니다.</p>
+ <a class="cta" href="#apply">상담 신청하기 →</a>
+ <div class="os-box" aria-hidden="true"><i>비서실</i><i>디자인실</i><i>총무팀</i><i>일정<br>관리팀</i><i>실장</i><i>기획실</i><i>보도국</i><i>지원팀</i><i>내 업무 앱</i></div>
+</section>
+<div class="ticker"><div>PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · </div></div>
+
+<section class="pad orange">
+ <div class="grid2 reveal">
+  <div><span class="label">THE PROBLEM</span><h2>대표님의 오전은<br>'확인'으로 끝납니다</h2>
+   <p class="big-q">하나하나는 손에 익은 일.<br>문제는 그 일을 하려고 열어야 하는<br>창이 열 개가 넘는다는 것.</p></div>
+  <div><ul class="list">
+   <li>📩 메일 답장 하나 쓰려고 메일함을 열고</li>
+   <li>📄 견적서 하나 만들려고 지난 파일을 찾고</li>
+   <li>🧾 세금계산서 발행일엔 홈택스에 들어가고</li>
+   <li>🗓 일정은 캘린더, 연락은 카톡, 자료는 컴퓨터 어딘가에</li>
+   <li>😮‍💨 직원에게 또 수정 부탁하기, 눈치 보이고</li>
+   <li>🤖 AI에게 시키는 것조차 또 하나의 일</li></ul></div>
+ </div>
+</section>
+
+<section class="pad cream" id="what">
+ <div class="reveal"><span class="label">WHAT IS PERSONAL OS</span>
+ <h2>퍼스널 OS는 '도구'가 아니라<br>'조직'입니다</h2>
+ <div class="vs"><div class="a"><b>AI 비서</b><p>시키면 하나를<br>해 주는 도구</p></div><div class="b"><b>퍼스널 OS</b><p>대표님 대신 일하는<br>작은 회사</p></div></div></div>
+ <div class="feat reveal">
+  <div class="card"><span class="no">01</span><h3>맞춤 부서</h3><p>대표님이 하는 일을 부서로 나누고, 부서마다 대표님 방식대로 일하는 기준(양식·단가·말투·꼭 지킬 것)을 적어 둡니다.</p></div>
+  <div class="card"><span class="no">02</span><h3>실장 한 명</h3><p>모든 부서를 관리하는 AI 실장. 대표님은 실장에게만 말하면 됩니다. 맡을 부서를 정하고, 처리하고, 끝나면 보고합니다.</p></div>
+  <div class="card"><span class="no">03</span><h3>지시는 한 곳에서</h3><p>컴퓨터와 휴대폰에서 열리는 대표님 전용 업무 앱. 열 개의 창 대신 이 화면 하나에서 끝나고, 일이 끝나면 휴대폰으로 알려 드립니다.</p></div>
+  <div class="card"><span class="no">04</span><h3>대신 기억합니다</h3><p>업무일지, 할 일, 거래처, 자주 쓰는 문서가 한곳에 쌓입니다. "그때 그 건 어떻게 됐지?"를 다시 찾지 않아도 됩니다.</p></div>
+ </div>
+</section>
+
+<section class="pad ink easy">
+ <div class="reveal"><span class="label">TOO HARD? NO.</span>
+ <h2>어렵게 느껴지셨나요?<br>걱정 마세요.</h2>
+ <p class="lead">부서, 실장, 앱, 기록… 이 모든 건 세팅부터 운영까지 알아서 돌아갑니다.<br>대표님이 하실 일은 딱 하나.</p>
+ <div class="say">"이거 해 줘."</div>
+ <p class="lead">설정도, 공부도, 관리도 필요 없습니다.<br>직원에게 말하듯, 아니 그보다 더 편하게.</p></div>
+</section>
+
+<section class="pad lilac" id="day">
+ <div class="reveal"><span class="label">A DAY WITH OS</span><h2>이런 하루가 됩니다</h2>
+ <div class="day">
+  <div><h4>BEFORE</h4><ol><li><b>08:30</b>메일함 확인</li><li><b>09:10</b>캘린더 확인</li><li><b>09:40</b>견적서 답장 확인</li><li><b>10:20</b>세금계산서 발행</li><li><b>11:00</b>단톡방 정리</li><li><b>12:00</b>점심. 본업은 오후부터</li></ol></div>
+  <div class="after"><h4>AFTER</h4><ol><li><b>08:30</b>실장의 아침 브리핑 한 장<br>(오늘 일정 · 답할 메일 · 마감 임박)</li><li><b>08:35</b>"메일 답장 초안 써 줘"<br>"견적서 만들어 줘" — 지시 끝</li><li><b>08:40</b>본업 시작 ☕</li></ol></div>
+ </div>
+ <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.</p></div>
+</section>
+
+<section class="pad cream">
+ <div class="grid2 reveal">
+  <div><span class="label">FOR YOU</span><h2>이런 분께<br>필요합니다</h2></div>
+  <ul class="list">
+   <li>혼자 또는 소수로 회사·학원·센터를 운영하는 대표님</li>
+   <li>강의·컨설팅으로 바쁜데 서류와 연락이 끝없이 밀리는 분</li>
+   <li>AI가 좋다는 건 알지만, 배울 시간도 하나하나 적용해 볼 여유도 없는 분</li>
+   <li>직원에게 잦은 수정과 부탁을 하며 눈치 보느라 지친 분</li>
+   <li>"알아서 맡아 줄 사람 한 명만 있으면" 하고 생각해 본 적 있는 분</li></ul>
+ </div>
+</section>
+
+<section class="pad orange">
+ <div class="reveal"><span class="label">NOT A CLASS</span><h2>배우는 상품이 아닙니다.<br>맡기는 상품입니다.</h2>
+ <table class="tbl"><tr><th></th><th>AI 강의·프롬프트</th><th>AI 자동화 도구</th><th>퍼스널 OS</th></tr>
+ <tr><td>내가 할 일</td><td>배우고 직접 적용</td><td>설정하고 관리</td><td>말로 지시만</td></tr>
+ <tr><td>범위</td><td>기능 하나</td><td>작업 하나</td><td>내 업무 전체</td></tr>
+ <tr><td>내 방식</td><td>내가 알아서</td><td>정해진 틀</td><td>인터뷰로 처음부터 맞춤</td></tr>
+ <tr><td>결과</td><td>지식</td><td>도구</td><td>나 대신 일하는 조직</td></tr></table></div>
+</section>
+
+<section class="pad cream" id="how">
+ <div class="reveal"><span class="label">HOW IT WORKS</span><h2>진행 방식</h2>
+ <ol class="steps">
+  <li><b>사전 설문</b><span>15분. 하시는 일과 쓰는 채널을 알려 주세요.</span></li>
+  <li><b>업무 인터뷰</b><span>최대 60분. 대표님의 하루를 함께 따라가며 맡길 일을 정합니다.</span></li>
+  <li><b>설계서 확인</b><span>부서 구성과 실장 이름, 일하는 기준을 보여 드립니다.</span></li>
+  <li><b>세팅</b><span>컴퓨터에 퍼스널 OS를 설치하고 휴대폰 앱까지 연결합니다.</span></li>
+  <li><b>사용 교육</b><span>60분. 첫 지시 다섯 개를 함께 해 봅니다.</span></li>
+  <li><b>90일 적응 지원</b><span>석 달 동안 써 보며 불편한 점을 바로 고쳐 드립니다.</span></li></ol>
+ <div class="types"><div><h4>VISIT<small>출장형</small></h4><p>직접 찾아가 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 추천합니다.</p></div>
+ <div><h4>REMOTE<small>원격형</small></h4><p>화상 인터뷰와 원격 접속으로 세팅합니다. 거리와 상관없이 진행됩니다.</p></div></div></div>
+</section>
+
+<section class="pad lilac" id="faq">
+ <div class="reveal"><span class="label">FAQ</span><h2>미리 알아 두실 것</h2>
+ <div class="faq">
+  <details open><summary>컴퓨터가 따로 필요한가요?</summary><p>늘 켜 두는 컴퓨터 한 대가 필요합니다. 지금 쓰시는 데스크톱에 설치해 드리고, 없으시면 전용 미니 PC(맥 미니)를 함께 준비해 드릴 수 있습니다(별도 구매).</p></details>
+  <details><summary>매달 드는 비용이 있나요?</summary><p>AI 이용료(월 구독)는 대표님 명의로 가입합니다. 상담 때 정확한 금액을 안내해 드립니다.</p></details>
+  <details><summary>비밀번호나 개인정보가 걱정돼요.</summary><p>비밀번호·인증서는 받지 않습니다. 로그인은 대표님이 직접 하시고, 자료는 대표님 컴퓨터에만 둡니다.</p></details>
+  <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.</p></details>
+  <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 출장형을 고르시면 처음부터 끝까지 옆에서 세팅하고, 90일 동안 적응을 도와드립니다.</p></details>
+ </div></div>
+</section>
+
+<section class="pad cream maker">
+ <div class="reveal"><span class="label">MADE BY</span><h2>저도 바쁜 대표였습니다</h2>
+ <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p></div>
+</section>
+
+<section class="final orange" id="apply">
+ <div class="reveal"><span class="label">APPLY</span>
+ <h2>당신만의<br>퍼스널 OS를<br>세팅해 드립니다</h2>
+ <a class="cta" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 신청하기 →</a></div>
+</section>
+</div>
+<footer><b>brandium</b> · 퍼스널 OS<br>운영 주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525<br>인천광역시 부평구 길주로647번길 20, 801호 A35 · kedakorea@gmail.com<br>Instagram @brandium__official</footer>
+<a class="float" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">APPLY <span>· 상담 신청</span></a>
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
