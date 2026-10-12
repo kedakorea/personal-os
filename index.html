@@ -95,6 +95,32 @@ h2 .en{font-size:1em}
 .case .os b{display:block;font-family:Syne;font-size:12px;letter-spacing:.04em;margin-bottom:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700}
+/* price */
+.learn{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.learn>div{border-radius:22px;padding:28px;border:3px solid #fff}
+.learn .diy{background:#2a2a2a}
+.learn .dfy{background:var(--orange);border-color:var(--orange)}
+.learn b{font-size:20px;font-weight:900;display:block;margin-bottom:14px}
+.learn ul{list-style:none;display:grid;gap:10px}
+.learn li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:10px;font-size:16px}
+.learn li em{font-style:normal;font-weight:800;text-align:right}
+.learn p{margin-top:14px;font-size:15px;opacity:.85}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.plan{min-width:0;background:var(--cream);color:var(--ink);border-radius:22px;padding:30px;position:relative}
+.plan.alt{background:var(--lilac)}
+.badge{display:inline-block;background:var(--ink);color:#fff;font-family:Syne;font-weight:800;font-size:12px;letter-spacing:.06em;padding:6px 12px;border-radius:99px}
+.plan h4{font-family:Syne;font-weight:800;font-size:30px;margin-top:16px}
+.plan h4 small{font-family:Pretendard;font-size:17px;margin-left:8px}
+.was{margin-top:16px;font-size:17px;text-decoration:line-through;opacity:.55}
+.now{font-family:Syne;font-weight:800;font-size:clamp(44px,6vw,68px);line-height:1;margin-top:4px}
+.now small{font-family:Pretendard;font-size:22px;margin-left:4px}
+.inc{margin-top:14px;font-size:15px;font-weight:600}
+.extra{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.extra div{border:2px solid rgba(255,255,255,.4);border-radius:18px;padding:22px}
+.extra b{font-size:14px;opacity:.7}
+.extra p{margin-top:8px;font-size:15.5px;line-height:1.7}
+.extra strong{font-family:Syne;font-size:24px;margin-right:6px}
+.extra small{opacity:.7}
 /* table */
 .tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff}
 .tbl th,.tbl td{padding:18px 16px;text-align:left;font-size:16px;border-bottom:2px solid var(--ink);vertical-align:top}
@@ -149,6 +175,11 @@ footer b{color:#fff}
 .card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
  .steps{grid-template-columns:1fr;gap:10px}
  .cases{grid-template-columns:1fr;gap:12px}
+ .learn,.plans,.extra{grid-template-columns:1fr;gap:12px}
+ .plan{padding:24px;min-width:0}
+ .now{font-size:34px}
+ .plan h4{font-size:24px}
+ .now small{font-size:18px}
  .sky{margin:48px 0 -72px}
  .tbl th,.tbl td{padding:12px 10px;font-size:13.5px}
  .tbl td:first-child{white-space:normal}
@@ -158,7 +189,7 @@ footer b{color:#fff}
 </head>
 <body>
 <nav><a class="logo" href="#top">brandium<small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#day">DAY</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#day">DAY</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -268,6 +299,27 @@ footer b{color:#fff}
  <tr><td>결과</td><td>지식</td><td>도구</td><td>나 대신 일하는 조직</td></tr></table></div>
 </section>
 
+<section class="pad ink" id="price">
+ <div class="reveal"><span class="label">PRICE</span><h2>비용도 투명하게<br>공개합니다</h2>
+ <div class="learn">
+  <div class="diy"><b>직접 배워서 한다면</b>
+   <ul><li><span>강의 수강</span><em>평균 12시간</em></li><li><span>강의료</span><em>20~30만 원</em></li><li><span>내 업무에 적용</span><em>수십 시간 + 시행착오</em></li><li><span>막히면</span><em>혼자 해결</em></li></ul>
+   <p>배운다고 내 일에 맞는 시스템이 생기지는 않습니다.</p></div>
+  <div class="dfy"><b>퍼스널 OS에 맡긴다면</b>
+   <ul><li><span>대표님 시간</span><em>인터뷰 최대 60분</em></li><li><span>세팅</span><em>대표님 업무에 맞춰 전부</em></li><li><span>사용 교육</span><em>포함</em></li><li><span>사후 관리</span><em>90일 포함</em></li></ul>
+   <p>배우는 시간 대신, 완성된 시스템을 받습니다.</p></div>
+ </div>
+ <div class="plans">
+  <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4><p class="was">정가 2,500,000원</p><p class="now">1,200,000<small>원</small></p><p class="inc">방문 인터뷰 · 현장 세팅 · 사용 교육 · 90일 적응 지원</p></div>
+  <div class="plan alt"><span class="badge">LAUNCHING EVENT</span><h4>REMOTE <small>원격형</small></h4><p class="was">정가 2,200,000원</p><p class="now">880,000<small>원</small></p><p class="inc">화상 인터뷰 · 원격 세팅 · 화상 교육 · 90일 적응 지원</p></div>
+ </div>
+ <div class="extra">
+  <div><b>월 유지비</b><p><strong>$100 / 월</strong> AI 구독료 (Claude Max 기준)<br><small>대표님 명의로 결제 · 한화 약 15~16만 원 (환율·부가세에 따라 달라집니다)</small></p></div>
+  <div><b>선택 · 전용 미니 PC</b><p><strong>약 119만 원~</strong> 맥 미니 (애플 공식몰 기준, 실비)<br><small>늘 켜 둘 컴퓨터가 없을 때만 필요합니다</small></p></div>
+ </div>
+ <p class="note">※ 위 금액은 초기 세팅 비용이며 부가세 별도입니다. 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p></div>
+</section>
+
 <section class="pad cream" id="how">
  <div class="reveal"><span class="label">HOW IT WORKS</span><h2>진행 방식</h2>
  <ol class="steps">
@@ -284,8 +336,8 @@ footer b{color:#fff}
 <section class="pad lilac" id="faq">
  <div class="reveal"><span class="label">FAQ</span><h2>미리 알아 두실 것</h2>
  <div class="faq">
-  <details open><summary>컴퓨터가 따로 필요한가요?</summary><p>늘 켜 두는 컴퓨터 한 대가 필요합니다. 지금 쓰시는 데스크톱에 설치해 드리고, 없으시면 전용 미니 PC(맥 미니)를 함께 준비해 드릴 수 있습니다(별도 구매).</p></details>
-  <details><summary>매달 드는 비용이 있나요?</summary><p>AI 이용료(월 구독)는 대표님 명의로 가입합니다. 상담 때 정확한 금액을 안내해 드립니다.</p></details>
+  <details open><summary>컴퓨터가 따로 필요한가요?</summary><p>늘 켜 두는 컴퓨터 한 대가 필요합니다. 지금 쓰시는 데스크톱에 설치해 드리고, 없으시면 전용 미니 PC(맥 미니, 애플 공식몰 기준 약 119만 원~)를 함께 준비해 드릴 수 있습니다(실비, 별도 구매).</p></details>
+  <details><summary>매달 드는 비용이 있나요?</summary><p>AI 구독료 월 $100(Claude Max 기준, 한화 약 15~16만 원)가 대표님 명의로 결제됩니다. 90일 적응 지원이 끝난 뒤의 유지관리는 필요하실 때만 선택하시면 됩니다.</p></details>
   <details><summary>비밀번호나 개인정보가 걱정돼요.</summary><p>비밀번호·인증서는 받지 않습니다. 로그인은 대표님이 직접 하시고, 자료는 대표님 컴퓨터에만 둡니다.</p></details>
   <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.</p></details>
   <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 출장형을 고르시면 처음부터 끝까지 옆에서 세팅하고, 90일 동안 적응을 도와드립니다.</p></details>
