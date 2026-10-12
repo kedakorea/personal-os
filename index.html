@@ -34,13 +34,15 @@ section{position:relative;overflow:hidden}
 .hero .sub{font-size:clamp(15px,1.8vw,19px);margin-top:16px;line-height:1.7;max-width:640px;color:#333}
 .cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px}
 .cta:hover{background:var(--orange)}
-.os-box{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:min(26vw,330px);aspect-ratio:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.os-art{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:min(30vw,380px);height:auto}
 .os-box i{border:3px solid var(--ink);border-radius:14px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:clamp(11px,1.3vw,15px);text-align:center;line-height:1.2;padding:4px}
 .os-box i:nth-child(1){background:var(--lilac)}.os-box i:nth-child(3){background:var(--orange);color:#fff}.os-box i:nth-child(5){background:var(--ink);color:#fff}.os-box i:nth-child(7){background:var(--sand)}.os-box i:nth-child(9){background:var(--lilac)}
 /* marquee */
 .ticker{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;padding:12px 0;font-family:Syne;font-weight:800;font-size:18px}
 .ticker div{display:inline-block;animation:mq 26s linear infinite}
 @keyframes mq{to{transform:translateX(-50%)}}
+/* skyline */
+.sky{display:block;width:100%;height:auto;margin:64px 0 -96px}
 /* blocks */
 .pad{padding:96px 28px}
 .orange{background:var(--orange)}
@@ -65,6 +67,8 @@ h2 .en{font-size:1em}
 /* houses = features */
 .feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
 .card{border:3px solid var(--ink);border-radius:22px;padding:26px 22px 30px;background:#fff;display:flex;flex-direction:column;gap:12px;min-height:280px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ic{width:58px;height:58px;stroke:#111;stroke-width:3}
 .card .no{font-family:Syne;font-weight:800;font-size:44px;line-height:1}
 .card h3{font-size:22px;font-weight:900}
 .card p{font-size:15.5px;line-height:1.7;color:#333}
@@ -82,6 +86,15 @@ h2 .en{font-size:1em}
 .day ol{list-style:none;display:grid;gap:10px;font-size:16px;line-height:1.55}
 .day ol b{display:inline-block;min-width:56px;font-family:Syne}
 .note{font-size:14px;opacity:.7;margin-top:16px}
+/* cases */
+.cases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.case{border:3px solid var(--ink);border-radius:22px;background:#fff;padding:20px;display:flex;flex-direction:column;gap:12px}
+.ctag{align-self:flex-start;font-size:13px;font-weight:800;background:var(--ink);color:#fff;border-radius:99px;padding:5px 12px}
+.case .me{align-self:flex-end;background:#0a84ff;color:#fff;border-radius:18px 18px 4px 18px;padding:12px 15px;font-size:15.5px;font-weight:600;line-height:1.5;max-width:92%}
+.case .os{background:var(--cream);border:2px solid var(--ink);border-radius:18px 18px 18px 4px;padding:13px 15px;font-size:15px;line-height:1.6;max-width:96%}
+.case .os b{display:block;font-family:Syne;font-size:12px;letter-spacing:.04em;margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700}
 /* table */
 .tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff}
 .tbl th,.tbl td{padding:18px 16px;text-align:left;font-size:16px;border-bottom:2px solid var(--ink);vertical-align:top}
@@ -125,14 +138,18 @@ footer b{color:#fff}
  nav .links{display:none}
  .hero{padding:56px 20px 200px;min-height:auto}
  .hero h1{max-width:none}
- .os-box{position:static;transform:none;width:100%;max-width:300px;margin-top:40px}
+ .os-art{position:static;transform:none;width:100%;max-width:280px;margin-top:40px}
  .pad{padding:72px 20px}
  .grid2,.vs,.day,.types{grid-template-columns:1fr;gap:14px}
  .grid2{gap:24px}
  .feat{grid-template-columns:1fr 1fr;gap:10px}
  .card{min-height:0;padding:20px 16px}
- .card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
+ .card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ic{width:58px;height:58px;stroke:#111;stroke-width:3}
+.card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
  .steps{grid-template-columns:1fr;gap:10px}
+ .cases{grid-template-columns:1fr;gap:12px}
+ .sky{margin:48px 0 -72px}
  .tbl th,.tbl td{padding:12px 10px;font-size:13.5px}
  .tbl td:first-child{white-space:normal}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
@@ -141,7 +158,7 @@ footer b{color:#fff}
 </head>
 <body>
 <nav><a class="logo" href="#top">brandium<small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#day">DAY</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#day">DAY</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -150,7 +167,28 @@ footer b{color:#fff}
  <p class="ko">배워서 하는 AI는 끝났습니다.<br>나 대신 일하는 시스템, 퍼스널 OS.</p>
  <p class="sub">대표님의 업무에 맞춘 부서와 실장, 그리고 지시 한 번이면 되는 업무 앱까지. 통째로 세팅해 드립니다.</p>
  <a class="cta" href="#apply">상담 신청하기 →</a>
- <div class="os-box" aria-hidden="true"><i>비서실</i><i>디자인실</i><i>총무팀</i><i>일정<br>관리팀</i><i>실장</i><i>기획실</i><i>보도국</i><i>지원팀</i><i>내 업무 앱</i></div>
+ <svg class="os-art" viewBox="0 0 360 400" aria-hidden="true">
+ <path d="M196 20 A150 150 0 0 1 346 170 L196 170 Z" fill="#9b86e0" stroke="#111" stroke-width="6"/>
+ <g stroke="#111" stroke-width="6" fill="#f7f8dc">
+  <rect x="30" y="110" width="70" height="128"/>
+  <rect x="100" y="60" width="96" height="178"/>
+  <rect x="196" y="150" width="134" height="88"/>
+ </g>
+ <g fill="#111">
+  <rect x="46" y="130" width="14" height="18"/><rect x="70" y="130" width="14" height="18"/>
+  <rect x="46" y="164" width="14" height="18"/><rect x="70" y="164" width="14" height="18"/>
+  <rect x="46" y="198" width="14" height="18"/><rect x="70" y="198" width="14" height="18"/>
+  <rect x="116" y="80" width="18" height="22"/><rect x="162" y="80" width="18" height="22"/>
+  <rect x="116" y="120" width="18" height="22"/><rect x="162" y="160" width="18" height="22"/>
+  <rect x="116" y="160" width="18" height="22"/><rect x="116" y="200" width="18" height="22"/><rect x="162" y="200" width="18" height="22"/>
+  <rect x="214" y="168" width="96" height="8"/><rect x="214" y="186" width="96" height="8"/><rect x="214" y="204" width="70" height="8"/>
+ </g>
+ <rect x="139" y="120" width="18" height="22" fill="#ec6a2c"/><rect x="162" y="120" width="18" height="22" fill="#ec6a2c"/>
+ <rect x="30" y="238" width="300" height="140" fill="#d9cfb0" stroke="#111" stroke-width="6"/>
+ <text x="180" y="300" text-anchor="middle" font-family="Syne" font-weight="800" font-size="46" textLength="260" lengthAdjust="spacingAndGlyphs" fill="#111">PERSONAL</text>
+ <text x="180" y="360" text-anchor="middle" font-family="Syne" font-weight="800" font-size="60" fill="#111">OS</text>
+ <rect x="120" y="366" width="120" height="6" fill="#111"/>
+</svg>
 </section>
 <div class="ticker"><div>PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · </div></div>
 
@@ -166,6 +204,11 @@ footer b{color:#fff}
    <li>😮‍💨 직원에게 또 수정 부탁하기, 눈치 보이고</li>
    <li>🤖 AI에게 시키는 것조차 또 하나의 일</li></ul></div>
  </div>
+ <svg class="sky" viewBox="0 0 1200 150" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><g fill="#111">
+ <path d="M60 150V70l60-40 60 40v80z"/><rect x="200" y="20" width="70" height="130"/><rect x="290" y="80" width="110" height="70"/>
+ <path d="M420 150V90a60 60 0 0 1 120 0v60z"/><rect x="560" y="45" width="52" height="105" rx="10"/><rect x="630" y="70" width="90" height="80"/>
+ <path d="M740 150l70-110 70 110z"/><rect x="900" y="30" width="60" height="120"/><path d="M980 150V80h80l40 30v40z"/><rect x="1110" y="60" width="50" height="90"/></g>
+ <g fill="#ec6a2c"><rect x="572" y="60" width="28" height="40" rx="3"/><rect x="215" y="40" width="16" height="18"/><rect x="915" y="50" width="14" height="16"/></g></svg>
 </section>
 
 <section class="pad cream" id="what">
@@ -173,10 +216,10 @@ footer b{color:#fff}
  <h2>퍼스널 OS는 '도구'가 아니라<br>'조직'입니다</h2>
  <div class="vs"><div class="a"><b>AI 비서</b><p>시키면 하나를<br>해 주는 도구</p></div><div class="b"><b>퍼스널 OS</b><p>대표님 대신 일하는<br>작은 회사</p></div></div></div>
  <div class="feat reveal">
-  <div class="card"><span class="no">01</span><h3>맞춤 부서</h3><p>대표님이 하는 일을 부서로 나누고, 부서마다 대표님 방식대로 일하는 기준(양식·단가·말투·꼭 지킬 것)을 적어 둡니다.</p></div>
-  <div class="card"><span class="no">02</span><h3>실장 한 명</h3><p>모든 부서를 관리하는 AI 실장. 대표님은 실장에게만 말하면 됩니다. 맡을 부서를 정하고, 처리하고, 끝나면 보고합니다.</p></div>
-  <div class="card"><span class="no">03</span><h3>지시는 한 곳에서</h3><p>컴퓨터와 휴대폰에서 열리는 대표님 전용 업무 앱. 열 개의 창 대신 이 화면 하나에서 끝나고, 일이 끝나면 휴대폰으로 알려 드립니다.</p></div>
-  <div class="card"><span class="no">04</span><h3>대신 기억합니다</h3><p>업무일지, 할 일, 거래처, 자주 쓰는 문서가 한곳에 쌓입니다. "그때 그 건 어떻게 됐지?"를 다시 찾지 않아도 됩니다.</p></div>
+  <div class="card"><div class="card-top"><span class="no">01</span><svg class="ic" viewBox="0 0 64 64"><rect x="6" y="6" width="24" height="24" rx="4" fill="#fff"/><rect x="34" y="6" width="24" height="24" rx="4" fill="#111"/><rect x="6" y="34" width="24" height="24" rx="4" fill="#ec6a2c"/><rect x="34" y="34" width="24" height="24" rx="4" fill="#fff"/></svg></div><h3>맞춤 부서</h3><p>대표님이 하는 일을 부서로 나누고, 부서마다 대표님 방식대로 일하는 기준(양식·단가·말투·꼭 지킬 것)을 적어 둡니다.</p></div>
+  <div class="card"><div class="card-top"><span class="no">02</span><svg class="ic" viewBox="0 0 64 64"><circle cx="32" cy="20" r="12" fill="#111"/><path d="M10 58c0-13 10-22 22-22s22 9 22 22z" fill="#fff"/><rect x="26" y="40" width="12" height="18" fill="#ec6a2c"/></svg></div><h3>실장 한 명</h3><p>모든 부서를 관리하는 AI 실장. 대표님은 실장에게만 말하면 됩니다. 맡을 부서를 정하고, 처리하고, 끝나면 보고합니다.</p></div>
+  <div class="card"><div class="card-top"><span class="no">03</span><svg class="ic" viewBox="0 0 64 64"><rect x="16" y="4" width="32" height="56" rx="7" fill="#111"/><rect x="20" y="12" width="24" height="36" rx="2" fill="#f7f8dc"/><rect x="23" y="18" width="16" height="7" rx="3" fill="#ec6a2c"/><rect x="25" y="30" width="16" height="7" rx="3" fill="#9b86e0"/></svg></div><h3>지시는 한 곳에서</h3><p>컴퓨터와 휴대폰에서 열리는 대표님 전용 업무 앱. 열 개의 창 대신 이 화면 하나에서 끝나고, 일이 끝나면 휴대폰으로 알려 드립니다.</p></div>
+  <div class="card"><div class="card-top"><span class="no">04</span><svg class="ic" viewBox="0 0 64 64"><path d="M6 16h20l5 6h27v34H6z" fill="#ec6a2c"/><rect x="12" y="26" width="40" height="24" fill="#fff"/><rect x="18" y="32" width="28" height="4" fill="#111"/><rect x="18" y="40" width="20" height="4" fill="#111"/></svg></div><h3>대신 기억합니다</h3><p>업무일지, 할 일, 거래처, 자주 쓰는 문서가 한곳에 쌓입니다. "그때 그 건 어떻게 됐지?"를 다시 찾지 않아도 됩니다.</p></div>
  </div>
 </section>
 
@@ -197,7 +240,14 @@ footer b{color:#fff}
  <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.</p></div>
 </section>
 
-<section class="pad cream">
+<section class="pad cream" id="cases">
+ <div class="reveal"><span class="label">REAL REQUESTS</span><h2>이런 것까지<br>말 한마디면 됩니다</h2>
+ <p class="lead">실제 업무에서 매일 나오는 요청들입니다. 대표님은 한 줄만 보내고, 결과물은 파일로 받습니다.</p></div>
+ <div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
+ <p class="note">※ 실제 운영 중인 퍼스널 OS의 요청 사례를 바탕으로 재구성했습니다.</p>
+</section>
+
+<section class="pad lilac">
  <div class="grid2 reveal">
   <div><span class="label">FOR YOU</span><h2>이런 분께<br>필요합니다</h2></div>
   <ul class="list">
