@@ -33,7 +33,7 @@ nav .logo{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-
 nav .logo{display:flex;align-items:center}nav .logo img{height:20px;width:auto;display:block}
 nav .logo small{font-family:Pretendard;font-weight:500;font-size:11px;opacity:.6;margin-left:8px;letter-spacing:0}
 nav .links{display:flex;gap:22px;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
-nav .links a{text-decoration:none;opacity:.9}
+nav .links a{text-decoration:none;opacity:.75;padding-bottom:3px;border-bottom:2px solid transparent;transition:opacity .2s,border-color .2s}nav .links a.on{opacity:1;border-color:var(--cream)}
 section{position:relative;overflow:hidden}
 /* hero */
 .hero{background:var(--cream);padding:26px 28px 80px}
@@ -369,7 +369,7 @@ footer b{color:#fffaf0}
 </head>
 <body>
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#day">DAY</a><a href="#mobile">MOBILE</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#day">DAY</a><a href="#mobile">MOBILE</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -696,6 +696,11 @@ try{if(localStorage.getItem(k))return}catch(_){}
 setTimeout(()=>{e.hidden=false},2000);
 const close=()=>{e.hidden=true};e.querySelector('.evt-x').onclick=close;e.addEventListener('click',ev=>{if(ev.target===e)close()});
 e.querySelector('.evt-today').onclick=()=>{try{localStorage.setItem(k,'1')}catch(_){}close()};})();
+
+/* 메뉴 — 지금 보고 있는 칸 표시 */
+(function(){const as=[...document.querySelectorAll('nav .links a')],secs=as.map(a=>document.querySelector(a.getAttribute('href')));
+function mark(){const y=innerHeight*.35;let k=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<y)k=i});as.forEach((a,i)=>a.classList.toggle('on',i===k))}
+addEventListener('scroll',mark,{passive:true});mark();})();
 /* 화면 예시 크게 보기 */
 (function(){const lb=document.getElementById('lb'),im=lb.querySelector('img');
 document.querySelectorAll('.shot').forEach(f=>f.addEventListener('click',()=>{im.src=f.dataset.src;im.alt=f.querySelector('img').alt;lb.hidden=false}));
