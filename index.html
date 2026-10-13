@@ -16,14 +16,14 @@
 html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
 .wrap{margin:0 var(--frame);}
-.en{font-family:Fraunces,Pretendard,sans-serif;font-weight:800;letter-spacing:-.01em;line-height:.92;text-transform:uppercase}
+.en{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:800;letter-spacing:-.01em;line-height:.92;text-transform:uppercase}
 a{color:inherit}
 /* nav */
 nav{position:sticky;top:0;z-index:20;background:var(--ink);color:#fffaf0;display:flex;align-items:center;justify-content:space-between;padding:14px calc(var(--frame) + 8px)}
-nav .logo{font-family:Fraunces;font-weight:900;font-size:20px;letter-spacing:.02em;text-decoration:none}
+nav .logo{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:20px;letter-spacing:.02em;text-decoration:none}
 nav .logo{display:flex;align-items:center}nav .logo img{height:20px;width:auto;display:block}
 nav .logo small{font-family:Pretendard;font-weight:500;font-size:11px;opacity:.6;margin-left:8px;letter-spacing:0}
-nav .links{display:flex;gap:24px;font-family:Fraunces;font-weight:700;font-size:17px;text-transform:lowercase}
+nav .links{display:flex;gap:22px;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
 nav .links a{text-decoration:none;opacity:.9}
 section{position:relative;overflow:hidden}
 /* hero */
@@ -31,7 +31,7 @@ section{position:relative;overflow:hidden}
 .stage{position:relative;max-width:1400px;margin:0 auto}
 .stage svg{display:block;width:100%;height:auto}
 #art .mo,#art.m .pc{display:none}#art.m .mo{display:inline}
-#art text{font-family:'Josefin Sans',sans-serif;font-weight:700;fill:var(--ink)}
+#art text{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;fill:var(--ink)}
 #art .caret{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
 #art .em{animation:drop .55s cubic-bezier(.2,1.4,.4,1) both}
 #art .solo .roof{transform-box:fill-box;transform-origin:50% 100%;animation:grow .32s steps(4) both}
@@ -48,7 +48,7 @@ section{position:relative;overflow:hidden}
 .cta{display:inline-flex;align-items:center;gap:10px;margin-top:22px;background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;font-size:17px;padding:16px 26px;border-radius:999px}
 .cta:hover{background:#6e4f4c}
 /* marquee */
-.ticker{background:var(--ink);color:#fffaf0;overflow:hidden;white-space:nowrap;padding:12px 0;font-family:Fraunces;font-weight:900;font-size:20px}
+.ticker{background:var(--ink);color:#fffaf0;overflow:hidden;white-space:nowrap;padding:12px 0;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:20px}
 .ticker div{display:inline-block;animation:mq 26s linear infinite}
 @keyframes mq{to{transform:translateX(-50%)}}
 /* skyline */
@@ -60,7 +60,7 @@ section{position:relative;overflow:hidden}
 .light{background:#fffbea}
 .lilac{background:var(--lilac)}
 .ink{background:var(--ink);color:#fffaf0}
-.label{font-family:Fraunces;font-weight:900;font-size:22px;letter-spacing:-.01em;margin-bottom:14px;display:block;text-transform:lowercase}
+.label{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;font-size:20px;letter-spacing:.04em;margin-bottom:14px;display:block;text-transform:uppercase}
 h2{font-size:clamp(30px,5.4vw,64px);font-weight:900;line-height:1.18;letter-spacing:-.02em}
 h2 .en{font-size:1em}
 .lead{font-size:clamp(16px,1.9vw,20px);line-height:1.8;margin-top:22px;max-width:760px}
@@ -80,7 +80,7 @@ h2 .en{font-size:1em}
 .card{border:3px solid var(--ink);border-radius:22px;padding:26px 22px 30px;background:var(--orange);display:flex;flex-direction:column;gap:12px;min-height:280px}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start}
 .ic{width:54px;height:54px}
-.card .no{font-family:Fraunces;font-weight:900;font-size:44px;line-height:1}
+.card .no{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:44px;line-height:1}
 .card h3{font-size:22px;font-weight:900}
 .card p{font-size:15.5px;line-height:1.7;color:#333}
 
@@ -93,9 +93,9 @@ h2 .en{font-size:1em}
 .day{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .day div{border:3px solid var(--ink);border-radius:22px;padding:28px;background:var(--cream)}
 .day .after{background:var(--ink);color:#fffaf0}
-.day h4{font-family:Fraunces;font-weight:900;font-size:28px;margin-bottom:16px;text-transform:lowercase}
+.day h4{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:28px;margin-bottom:16px;text-transform:uppercase}
 .day ol{list-style:none;display:grid;gap:10px;font-size:16px;line-height:1.55}
-.day ol b{display:inline-block;min-width:56px;font-family:Fraunces}
+.day ol b{display:inline-block;min-width:56px;font-family:'Josefin Sans',Pretendard,sans-serif}
 .note{font-size:14px;opacity:.7;margin-top:16px}
 /* cases */
 .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
@@ -103,7 +103,7 @@ h2 .en{font-size:1em}
 .ctag{align-self:flex-start;font-size:13px;font-weight:800;background:var(--ink);color:#fffaf0;border-radius:99px;padding:5px 12px}
 .case .me{align-self:flex-end;background:var(--ink);color:var(--cream);border-radius:18px 18px 4px 18px;padding:12px 15px;font-size:15.5px;font-weight:600;line-height:1.5;max-width:92%}
 .case .os{background:var(--cream);border:2px solid var(--ink);border-radius:18px 18px 18px 4px;padding:13px 15px;font-size:15px;line-height:1.6;max-width:96%}
-.case .os b{display:block;font-family:Fraunces;font-size:12px;letter-spacing:.04em;margin-bottom:4px}
+.case .os b{display:block;font-family:'Josefin Sans',Pretendard,sans-serif;font-size:12px;letter-spacing:.04em;margin-bottom:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{background:var(--cream);border:2px solid var(--ink);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700}
 /* price */
@@ -119,15 +119,15 @@ h2 .en{font-size:1em}
 .plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .plan{min-width:0;background:var(--cream);color:var(--ink);border-radius:22px;padding:30px;position:relative}
 .plan.alt{background:var(--lilac)}
-.badge{display:inline-block;background:var(--ink);color:#fffaf0;font-family:Fraunces;font-weight:900;font-size:14px;letter-spacing:0;padding:6px 12px;border-radius:99px;text-transform:lowercase}
-.plan h4{font-family:Fraunces;font-weight:900;font-size:30px;margin-top:16px;text-transform:lowercase}
+.badge{display:inline-block;background:var(--ink);color:#fffaf0;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:14px;letter-spacing:0;padding:6px 12px;border-radius:99px;text-transform:uppercase}
+.plan h4{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:30px;margin-top:16px;text-transform:uppercase}
 .plan h4 small{font-family:Pretendard;font-size:17px;margin-left:8px}
 .lbl{margin-top:18px;font-size:17px;font-weight:800}.lbl em{font-style:normal;background:var(--ink);color:var(--cream);border-radius:6px;padding:2px 8px;margin-left:4px;font-size:15px}
 .calc{margin-top:10px;font-size:14.5px;font-weight:600;opacity:.8}.calc s{opacity:.55;margin-right:6px}
-.now{font-family:Fraunces;font-weight:900;font-size:clamp(44px,6vw,68px);line-height:1;margin-top:4px}
+.now{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:clamp(44px,6vw,68px);line-height:1;margin-top:4px}
 .now small{font-family:Pretendard;font-size:22px;margin-left:4px}
 .inc{margin-top:16px;padding-top:14px;border-top:2px solid rgba(67,47,46,.25);font-size:15px;font-weight:700}
-.after-m{margin-top:16px;border:2px solid var(--cream);border-radius:18px;padding:18px 22px;display:flex;gap:16px;align-items:center;font-size:16px;line-height:1.6}.after-m b{flex:none;background:var(--cream);color:var(--ink);border-radius:99px;padding:6px 14px;font-size:14px}.after-m strong{font-family:Fraunces;font-size:20px;color:var(--cream)}
+.after-m{margin-top:16px;border:2px solid var(--cream);border-radius:18px;padding:18px 22px;display:flex;gap:16px;align-items:center;font-size:16px;line-height:1.6}.after-m b{flex:none;background:var(--cream);color:var(--ink);border-radius:99px;padding:6px 14px;font-size:14px}.after-m strong{font-family:'Josefin Sans',Pretendard,sans-serif;font-size:20px;color:var(--cream)}
 .learn{margin-top:56px!important}
 /* compare */
 .cmp{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px;margin-top:44px;align-items:center}
@@ -136,7 +136,7 @@ h2 .en{font-size:1em}
 .cmp dt{font-size:12.5px;font-weight:700;opacity:.6;margin-top:14px}
 .cmp dd{font-size:16px;font-weight:600;margin-top:3px;opacity:.75}
 .cmp .os{background:var(--ink);color:var(--cream);padding:40px 30px;transform:scale(1.03);box-shadow:10px 10px 0 var(--grape)}
-.cmp .os h4{font-family:Fraunces;font-size:30px;border-color:var(--cream)}
+.cmp .os h4{font-family:'Josefin Sans',Pretendard,sans-serif;font-size:30px;border-color:var(--cream)}
 .cmp .os dt{opacity:.7}
 .cmp .os dd{font-size:21px;font-weight:900;opacity:1}
 .cmp .os dd::before{content:"✓ ";color:var(--orange)}
@@ -145,25 +145,25 @@ h2 .en{font-size:1em}
 .steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);column-gap:54px;row-gap:54px;margin-top:44px;counter-reset:s}
 .steps li{border:3px solid var(--ink);border-radius:20px;padding:24px;background:var(--orange);counter-increment:s;position:relative}
 .steps li:nth-child(4),.steps li:nth-child(5){background:var(--orange)}
-.steps li:last-child{background:var(--ink);color:var(--cream)}.steps li:last-child span{color:var(--cream);opacity:.85}
+.steps li{transition:background .45s,color .45s,transform .45s}.steps li.on{background:var(--ink);color:var(--cream);transform:translateY(-4px)}.steps li.on span{color:var(--cream);opacity:.85}
 .steps li::after{content:"";position:absolute;width:30px;height:30px;background:var(--ink);clip-path:polygon(0 30%,55% 30%,55% 0,100% 50%,55% 100%,55% 70%,0 70%);right:-45px;top:50%;margin-top:-15px}
 .steps li:nth-child(3)::after{right:auto;left:50%;top:auto;bottom:-46px;margin:0 0 0 -15px;transform:rotate(90deg)}
 .steps li:nth-child(4){grid-column:3;grid-row:2}.steps li:nth-child(5){grid-column:2;grid-row:2}.steps li:nth-child(6){grid-column:1;grid-row:2}
 .steps li:nth-child(4)::after,.steps li:nth-child(5)::after{right:auto;left:-45px;transform:rotate(180deg)}
 .steps li:last-child::after{display:none}
-.steps li::before{content:"0" counter(s);font-family:Fraunces;font-weight:900;font-size:34px;display:block;margin-bottom:10px}
+.steps li::before{content:"0" counter(s);font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:34px;display:block;margin-bottom:10px}
 .steps b{font-size:19px;display:block;margin-bottom:6px}
 .steps span{font-size:15px;color:#444;line-height:1.6}
 .types{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
 .types{margin-top:54px!important}.types div{border:3px solid var(--ink);border-radius:20px;padding:26px;background:var(--orange)}
-.types h4{font-family:Fraunces;font-weight:900;font-size:26px;text-transform:lowercase}
+.types h4{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:26px;text-transform:uppercase}
 .types h4 small{font-family:Pretendard;font-size:16px;margin-left:8px}
 .types p{margin-top:10px;font-size:15.5px;line-height:1.7}
 /* faq */
 .faq{margin-top:36px;display:grid;gap:12px}
 .faq details{border:3px solid var(--ink);border-radius:18px;background:var(--cream);padding:20px 24px}
 .faq summary{font-weight:800;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
-.faq summary::after{content:"+";font-family:Fraunces;font-size:24px;line-height:1}
+.faq summary::after{content:"+";font-family:'Josefin Sans',Pretendard,sans-serif;font-size:24px;line-height:1}
 .faq details[open] summary::after{content:"–"}
 .faq p{margin-top:12px;font-size:15.5px;line-height:1.75;color:#333}
 /* maker */
@@ -174,7 +174,7 @@ h2 .en{font-size:1em}
 footer{color:#bbb;font-size:13px;line-height:1.8;padding:40px calc(var(--frame) + 14px) 120px}
 footer b{color:#fffaf0}
 /* floating */
-.float{position:fixed;right:22px;bottom:22px;z-index:30;background:var(--ink);color:#fffaf0;text-decoration:none;font-family:Fraunces;font-weight:900;font-size:15px;padding:16px 20px;border-radius:12px;border:2px solid var(--cream);box-shadow:0 6px 20px rgba(0,0,0,.25);text-transform:lowercase}
+.float{position:fixed;right:22px;bottom:22px;z-index:30;background:var(--ink);color:#fffaf0;text-decoration:none;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:15px;padding:16px 20px;border-radius:12px;border:2px solid var(--cream);box-shadow:0 6px 20px rgba(0,0,0,.25);text-transform:uppercase}
 .float span{font-family:Pretendard;font-weight:800}
 /* say it */
 .say-it{background:var(--orange);padding:120px 28px;text-align:center}
@@ -194,7 +194,7 @@ footer b{color:#fffaf0}
 .lay .word{position:absolute;top:50%;left:0;white-space:nowrap;font-family:'Josefin Sans';font-weight:700;font-size:15vw;line-height:1;transform:translate(var(--x,0),-8%)}
 .lay svg{position:relative;width:min(30vw,340px);height:auto;margin-top:6vh}
 .lay svg text{font-family:'Josefin Sans';font-weight:700;fill:var(--ink)}
-.scroll-hint{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-family:Fraunces;font-weight:900;font-size:15px;z-index:3}
+.scroll-hint{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:15px;z-index:3}
 .scroll-hint i{display:block;width:20px;height:30px;border:3px solid var(--ink);border-radius:12px;margin:6px auto 0;position:relative}
 .scroll-hint i::after{content:"";position:absolute;left:50%;top:5px;width:4px;height:7px;margin-left:-2px;background:var(--ink);border-radius:2px;animation:wheel 1.4s infinite}
 @keyframes wheel{to{transform:translateY(8px);opacity:0}}
@@ -210,7 +210,7 @@ footer b{color:#fffaf0}
 .about .box p{font-size:16px;line-height:1.8;margin-top:12px}
 .lineup{list-style:none;margin-top:22px;display:grid;gap:10px}
 .lineup li{display:flex;justify-content:space-between;align-items:center;gap:12px;border:2px solid var(--cream);border-radius:14px;padding:13px 16px;font-weight:800;font-size:16px}
-.lineup li em{font-style:normal;font-family:Fraunces;font-weight:900;font-size:14px;border-radius:99px;padding:3px 11px;background:var(--cream);color:var(--ink);white-space:nowrap}
+.lineup li em{font-style:normal;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:14px;border-radius:99px;padding:3px 11px;background:var(--cream);color:var(--ink);white-space:nowrap}
 .lineup li.soon{opacity:.75;border-style:dashed}
 .lineup li.soon em{background:transparent;color:var(--cream);border:2px solid var(--cream)}
 /* screens */
@@ -219,7 +219,11 @@ footer b{color:#fffaf0}
 .shead p{font-size:clamp(16px,1.8vw,19px);font-weight:800}
 .stag{display:inline-block;background:var(--ink);color:var(--cream);border-radius:99px;padding:7px 16px;font-weight:900;font-size:15px}
 .stag.alt{background:var(--orange);color:var(--ink);border:2px solid var(--ink)}
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.shots{display:grid;grid-auto-flow:column;grid-auto-columns:min(46%,600px);gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 18px;scrollbar-width:thin}
+.shot{scroll-snap-align:start}
+.swrap{position:relative}
+.snav{position:absolute;top:calc(50% - 32px);width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);background:var(--cream);font-size:20px;font-weight:900;cursor:pointer;z-index:2;box-shadow:3px 3px 0 var(--ink)}
+.snav.l{left:-14px}.snav.r{right:-14px}
 .shot{margin:0;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#fffbea;cursor:zoom-in;transition:transform .25s,box-shadow .25s}
 .shot:hover{transform:translateY(-4px);box-shadow:8px 8px 0 var(--ink)}
 .shot .bar{display:flex;gap:6px;padding:9px 12px;border-bottom:3px solid var(--ink);background:var(--orange)}
@@ -231,6 +235,57 @@ footer b{color:#fffaf0}
 .lb[hidden]{display:none}
 .lb img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .lb button{position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;border:0;background:var(--cream);color:var(--ink);font-size:20px;font-weight:900;cursor:pointer}
+/* OS 정의 */
+.dict{margin-top:34px;border:3px solid var(--ink);border-radius:22px;background:#fffbea;padding:26px 30px;max-width:980px;box-shadow:8px 8px 0 var(--orange)}
+.dict .w{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;font-size:40px;line-height:1}
+.dict .w small{font-family:Pretendard;font-size:15px;font-weight:600;opacity:.65;margin-left:10px;letter-spacing:0}
+.dict .m{font-size:clamp(16px,1.8vw,19px);line-height:1.75;margin-top:14px}
+.dict .m2{font-size:clamp(17px,1.9vw,20px);line-height:1.7;margin-top:10px;padding-top:12px;border-top:2px dashed rgba(67,47,46,.3)}
+/* 배움 → 시스템 */
+.stair{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px;margin-top:40px;align-items:end}
+.stair div{border:3px solid #fffaf0;border-radius:22px;padding:24px}
+.stair div:nth-child(1){min-height:170px;opacity:.75}.stair div:nth-child(2){min-height:220px;opacity:.85}
+.stair div:nth-child(3){min-height:280px;background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.stair em{font-style:normal;font-family:'Josefin Sans',Pretendard,sans-serif;font-size:15px;letter-spacing:.06em;opacity:.7}
+.stair b{display:block;font-size:clamp(20px,2.3vw,26px);font-weight:900;margin:8px 0 10px}
+.stair p{font-size:15.5px;line-height:1.7}
+.stair .stop{display:inline-block;margin-top:12px;background:#b5483c;color:#fffaf0;border-radius:99px;padding:4px 12px;font-size:13px;font-weight:800}
+/* 휴대폰으로 */
+.mob{display:grid;grid-template-columns:1fr 340px;gap:56px;align-items:center}
+.phone{width:300px;justify-self:center;border:10px solid var(--ink);border-radius:46px;overflow:hidden;background:var(--ink);box-shadow:14px 14px 0 var(--orange);transform:rotate(3deg)}
+.phone img{display:block;width:100%;height:auto;border-radius:34px}
+.mlist{list-style:none;margin-top:26px;display:grid;gap:12px}
+.mlist li{border:3px solid var(--ink);border-radius:16px;background:#fffbea;padding:14px 18px;font-size:16.5px;line-height:1.55}
+.mlist li b{display:block;font-size:13px;font-family:'Josefin Sans',Pretendard,sans-serif;letter-spacing:.06em;opacity:.6;margin-bottom:2px}
+.pcnote{margin-top:22px;display:block;line-height:1.6;border:2px dashed var(--ink);border-radius:16px;padding:14px 18px;font-size:15.5px;font-weight:700}
+.pcnote a{font-weight:900}
+/* 메인 PC */
+.pcwhy{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}
+.pcwhy div{border:3px solid #fffaf0;border-radius:20px;padding:22px}
+.pcwhy b{display:block;font-size:19px;font-weight:900;margin:10px 0 8px}
+.pcwhy p{font-size:15px;line-height:1.7;opacity:.9}
+.pcwhy i{font-style:normal;font-size:30px}
+.flow{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:34px;flex-wrap:wrap}
+.flow span{border:3px solid #fffaf0;border-radius:16px;padding:14px 20px;font-weight:900;font-size:17px}
+.flow span.pc{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.flow i{font-style:normal;font-size:26px}
+.pcopt{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.pcopt div{background:#5a4240;border-radius:18px;padding:18px 22px;font-size:15.5px;line-height:1.7}
+.pcopt strong{font-size:18px;display:block;margin-bottom:4px}
+/* 가격 체감 */
+.value{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.value>div{border-radius:22px;padding:28px}
+.value .staff{border:3px dashed rgba(255,250,240,.5)}
+.value .os{background:var(--cream);color:var(--ink)}
+.value h4{font-size:18px;font-weight:900}
+.value .big{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:clamp(40px,5vw,60px);line-height:1;margin:14px 0 6px}
+.value .big small{font-family:Pretendard;font-size:18px;margin-left:4px}
+.value p{font-size:15px;line-height:1.7;opacity:.85}
+.value .tag{display:inline-block;margin-top:12px;border-radius:99px;padding:5px 12px;font-size:13px;font-weight:800;background:var(--ink);color:var(--cream)}
+.value .staff .tag{background:#5a4240}
+.perday{margin-top:16px;text-align:center;font-size:clamp(18px,2.2vw,24px);font-weight:900;line-height:1.5}
+.perday b{background:var(--cream);color:var(--ink);border-radius:10px;padding:2px 10px}
+.perday small{display:block;font-size:13px;font-weight:600;opacity:.7;margin-top:6px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
 .reveal.on{opacity:1;transform:none}
@@ -260,9 +315,13 @@ footer b{color:#fffaf0}
  .plan h4{font-size:24px}
  .now small{font-size:18px}
  .sky{margin:48px 0 -72px}
+ .snav{display:none}
  .shots{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -20px;padding:0 20px 10px}
  .shot{scroll-snap-align:center}
  .shot:hover{transform:none;box-shadow:none}
+ .stair,.pcwhy,.pcopt,.value,.mob{grid-template-columns:1fr}
+ .stair div{min-height:0!important}
+ .phone{width:250px;margin-top:10px}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
  .say-it{padding:84px 20px}
  .show{height:auto}.pin{position:static;height:auto;padding:30px 0 50px}
@@ -275,7 +334,7 @@ footer b{color:#fffaf0}
 </head>
 <body>
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#day">DAY</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#day">DAY</a><a href="#mobile">MOBILE</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -312,6 +371,9 @@ footer b{color:#fffaf0}
 <section class="pad cream" id="what">
  <div class="reveal"><span class="label">WHAT IS PERSONAL OS</span>
  <h2>퍼스널 OS는 '도구'가 아니라<br>'조직'입니다</h2>
+ <div class="dict"><p class="w">OS <small>[오에스] · Operating System · 운영체제</small></p>
+  <p class="m">컴퓨터를 켜면 <b>알아서 프로그램을 돌리고, 파일을 정리하고, 일을 순서대로 처리하는 바탕</b>. 윈도우·아이폰의 iOS가 OS입니다. 사람이 하나하나 시키지 않아도 기계가 굴러가게 해 주죠.</p>
+  <p class="m2">→ <b>퍼스널 OS</b>는 그걸 <b>대표님 회사</b>에 깐 것입니다. 대표님이 일일이 챙기지 않아도 회사 일이 알아서 굴러가게 하는 바탕.</p></div>
  <div class="vs"><div class="a"><b>AI 비서</b><p>시키면 하나를<br>해 주는 도구</p></div><div class="b"><b>퍼스널 OS</b><p>대표님 대신 일하는<br>작은 회사</p></div></div></div>
  <div class="feat reveal">
   <div class="card"><div class="card-top"><span class="no">01</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><rect x="5" y="5" width="25" height="25" fill="#c4dae8"/><rect x="34" y="5" width="25" height="25" fill="#f6d36b"/><rect x="5" y="34" width="25" height="25" fill="#fffaf0"/><rect x="34" y="34" width="25" height="25" fill="#432f2e"/><path d="M11 13h13M11 19h13M11 25h8" fill="none"/><path d="M40 27l6.5-16 6.5 16z" fill="#fffaf0"/><circle cx="17.5" cy="46.5" r="6" fill="#f6d36b"/></g><path d="M40 46.5h13M46.5 40v13" stroke="#f6d36b" stroke-width="3.5"/></svg></div><h3>맞춤 부서</h3><p>대표님이 하는 일을 부서로 나누고, 부서마다 대표님 방식대로 일하는 기준(양식·단가·말투·꼭 지킬 것)을 적어 둡니다.</p></div>
@@ -343,6 +405,35 @@ footer b{color:#fffaf0}
  <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.</p></div>
 </section>
 
+<section class="pad cream" id="mobile">
+ <div class="mob reveal">
+  <div><span class="label">ON THE GO</span><h2>노트북 없이,<br>휴대폰 하나로 일합니다</h2>
+   <p class="lead">퍼스널 OS는 휴대폰에서도 그대로 열립니다. 외출 중에도 말 한 줄이면, 회사 컴퓨터가 대신 일하고 결과를 휴대폰으로 보내 드려요.</p>
+   <ul class="mlist">
+    <li><b>MEETING</b>미팅 사이 5분 — "방금 미팅한 내용으로 견적서 만들어서 보내 줘"</li>
+    <li><b>SUBWAY</b>이동 중 지하철에서 — "내일 오는 분들께 장소 안내 문자 써 줘"</li>
+    <li><b>TRIP</b>출장지 숙소에서 — "계약서에 직인 넣어서 최종본으로 올려 줘"</li></ul>
+   <p class="pcnote">🖥️ 단, 사무실이나 집에 <b>늘 켜 두는 메인 PC 한 대</b>가 필요합니다. <a href="#mainpc">왜 필요할까요? ↓</a></p></div>
+  <div class="phone"><img src="dash/m07.jpg" alt="휴대폰에서 실장에게 지시하는 화면 예시"></div>
+ </div>
+</section>
+
+<section class="pad ink" id="mainpc">
+ <div class="reveal"><span class="label">THE MAIN PC</span><h2>휴대폰은 '리모컨',<br>메인 PC는 '직원의 책상'입니다</h2>
+ <p class="lead">직원이 일하려면 책상과 컴퓨터가 있어야 하죠. 퍼스널 OS의 실장도 같습니다. 대표님이 밖에서 휴대폰으로 말하면, 사무실 책상(메인 PC)에 앉은 실장이 파일을 열고, 문서를 만들고, 결과를 보내 드립니다.</p>
+ <div class="flow"><span>📱 대표님 휴대폰</span><i>→</i><span class="pc">🖥️ 메인 PC (실장의 책상)</span><i>→</i><span>📄 결과물이 휴대폰으로</span></div>
+ <div class="pcwhy">
+  <div><i>📂</i><b>대표님 자료가 있는 곳</b><p>지난 견적서, 양식, 직인, 거래처 목록. 일에 필요한 자료가 전부 이 컴퓨터에 있어서 실장이 바로 꺼내 씁니다.</p></div>
+  <div><i>🔒</i><b>자료가 밖으로 안 나갑니다</b><p>자료를 남의 서버에 올리지 않고 대표님 컴퓨터 안에서 처리합니다. 로그인도 대표님 컴퓨터에 한 번만.</p></div>
+  <div><i>🌙</i><b>자는 동안에도 일합니다</b><p>아침 브리핑 정리, 기록 백업, 마감 알림처럼 정해진 시간에 할 일을 대표님이 안 계셔도 해 둡니다.</p></div>
+  <div><i>⚡</i><b>켜 두는 부담은 작아요</b><p>맥 미니 기준 대기 전력은 형광등보다 작습니다. 화면은 꺼 두고 본체만 켜 두면 됩니다.</p></div>
+ </div>
+ <div class="pcopt">
+  <div><strong>지금 쓰는 컴퓨터로 OK</strong>사무실이나 집에서 늘 켜 둘 수 있는 데스크톱이 있다면 그대로 씁니다. 추가 비용 없음.</div>
+  <div><strong>없다면 작은 전용 PC 하나</strong>맥 미니(애플 공식몰 약 119만 원~, 실비). 손바닥만 해서 책상 한쪽에 두면 끝. 구매·세팅까지 도와드립니다.</div>
+ </div></div>
+</section>
+
 <section class="pad light" id="cases">
  <div class="reveal"><span class="label">REAL REQUESTS</span><h2>이런 것까지<br>말 한마디면 됩니다</h2>
  <p class="lead">실제 업무에서 매일 나오는 요청들입니다. 대표님은 한 줄만 보내고, 결과물은 파일로 받습니다.</p></div>
@@ -351,12 +442,12 @@ footer b{color:#fffaf0}
 </section>
 
 <section class="pad cream" id="screens">
- <div class="reveal"><span class="label">your screen</span><h2>이런 화면이<br>생겨요</h2>
+ <div class="reveal"><span class="label">YOUR SCREEN</span><h2>이런 화면이<br>생겨요</h2>
  <p class="lead">대표님 업종과 취향에 맞춰 업무 앱 화면도 함께 만들어 드립니다. 컴퓨터와 휴대폰에서 같은 화면으로 열려요.</p></div>
  <div class="sgroup reveal"><div class="shead"><span class="stag">심플형</span><p>매일 열어 보기 편하게, 깔끔하게</p></div>
-  <div class="shots"><figure class="shot" data-src="dash/02.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/02.jpg" alt="벤토 그리드 — 1인 디자인 스튜디오 퍼스널 OS 화면" loading="lazy"><figcaption><b>벤토 그리드</b>1인 디자인 스튜디오</figcaption></figure><figure class="shot" data-src="dash/03.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/03.jpg" alt="심플 화이트 — 교육 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>심플 화이트</b>교육 컨설팅</figcaption></figure><figure class="shot" data-src="dash/04.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/04.jpg" alt="다크 노트 — 마케팅 대행사 퍼스널 OS 화면" loading="lazy"><figcaption><b>다크 노트</b>마케팅 대행사</figcaption></figure><figure class="shot" data-src="dash/07.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/07.jpg" alt="메시지형 — 1인 인테리어 퍼스널 OS 화면" loading="lazy"><figcaption><b>메시지형</b>1인 인테리어</figcaption></figure></div></div>
+  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/02.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/02.jpg" alt="벤토 그리드 — 1인 디자인 스튜디오 퍼스널 OS 화면" loading="lazy"><figcaption><b>벤토 그리드</b>1인 디자인 스튜디오</figcaption></figure><figure class="shot" data-src="dash/03.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/03.jpg" alt="심플 화이트 — 교육 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>심플 화이트</b>교육 컨설팅</figcaption></figure><figure class="shot" data-src="dash/04.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/04.jpg" alt="다크 노트 — 마케팅 대행사 퍼스널 OS 화면" loading="lazy"><figcaption><b>다크 노트</b>마케팅 대행사</figcaption></figure><figure class="shot" data-src="dash/07.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/07.jpg" alt="메시지형 — 1인 인테리어 퍼스널 OS 화면" loading="lazy"><figcaption><b>메시지형</b>1인 인테리어</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
  <div class="sgroup reveal"><div class="shead"><span class="stag alt">테마형</span><p>이런 식으로도 가능해요 — 열 때마다 기분 좋은 화면</p></div>
-  <div class="shots"><figure class="shot" data-src="dash/01.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/01.jpg" alt="픽셀 오피스 — 동네 베이커리 퍼스널 OS 화면" loading="lazy"><figcaption><b>픽셀 오피스</b>동네 베이커리</figcaption></figure><figure class="shot" data-src="dash/06.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/06.jpg" alt="경영 게임 — 꽃집 · 플라워 클래스 퍼스널 OS 화면" loading="lazy"><figcaption><b>경영 게임</b>꽃집 · 플라워 클래스</figcaption></figure><figure class="shot" data-src="dash/05.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/05.jpg" alt="다이어리 플래너 — 퍼스널컬러 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>다이어리 플래너</b>퍼스널컬러 컨설팅</figcaption></figure><figure class="shot" data-src="dash/08.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/08.jpg" alt="레트로 윈도우 — 1인 유튜버 퍼스널 OS 화면" loading="lazy"><figcaption><b>레트로 윈도우</b>1인 유튜버</figcaption></figure></div></div>
+  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/01.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/01.jpg" alt="픽셀 오피스 — 동네 베이커리 퍼스널 OS 화면" loading="lazy"><figcaption><b>픽셀 오피스</b>동네 베이커리</figcaption></figure><figure class="shot" data-src="dash/06.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/06.jpg" alt="경영 게임 — 꽃집 · 플라워 클래스 퍼스널 OS 화면" loading="lazy"><figcaption><b>경영 게임</b>꽃집 · 플라워 클래스</figcaption></figure><figure class="shot" data-src="dash/05.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/05.jpg" alt="다이어리 플래너 — 퍼스널컬러 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>다이어리 플래너</b>퍼스널컬러 컨설팅</figcaption></figure><figure class="shot" data-src="dash/08.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/08.jpg" alt="레트로 윈도우 — 1인 유튜버 퍼스널 OS 화면" loading="lazy"><figcaption><b>레트로 윈도우</b>1인 유튜버</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
  <p class="note">※ 업종별 예시 화면입니다. 회사 이름·직원(부서) 이름·색은 대표님 것으로 바뀝니다.</p>
 </section>
 <div class="lb" id="lb" hidden><img alt=""><button aria-label="닫기">✕</button></div>
@@ -373,6 +464,16 @@ footer b{color:#fffaf0}
  </div>
 </section>
 
+<section class="pad ink" id="system">
+ <div class="reveal"><span class="label">BEYOND SKILLS</span><h2>AI는 배울 만큼 배우셨습니다.<br>이제 시스템을 만드세요.</h2>
+ <p class="lead">강의를 듣고, 프롬프트를 모으고, 새 도구를 깔아도 — 그걸 <b>내 일에 어떻게 붙일지는 늘 대표님 몫</b>으로 남습니다. 그래서 저장해 둔 프롬프트는 늘어나는데 일은 그대로죠.</p>
+ <div class="stair">
+  <div><em>STEP 1</em><b>배운다</b><p>강의·유튜브·프롬프트 모음. 기능 하나씩 익히기.</p></div>
+  <div><em>STEP 2</em><b>내 일에 적용한다</b><p>매번 열고, 붙여 넣고, 고치고, 다시 시키기. 결국 또 하나의 일.</p><span class="stop">대부분 여기서 멈춥니다</span></div>
+  <div><em>STEP 3 · PERSONAL OS</em><b>시스템이 일한다</b><p>대표님 업무 방식이 부서·기준·기록으로 정리돼 있어서, 말 한 줄이면 알아서 처리됩니다. 배운 걸 적용하는 단계까지 저희가 대신 끝내 드립니다.</p></div>
+ </div></div>
+</section>
+
 <section class="pad cream">
  <div class="reveal"><span class="label">NOT A CLASS</span><h2>배우는 상품이 아닙니다.<br>맡기는 상품입니다.</h2>
  <div class="cmp">
@@ -384,6 +485,11 @@ footer b{color:#fffaf0}
 
 <section class="pad ink" id="price">
  <div class="reveal"><span class="label">PRICE</span><h2>비용도 투명하게<br>공개합니다</h2>
+<div class="value">
+  <div class="staff"><h4>직원을 한 명 뽑는다면</h4><p class="big">2,156,880<small>원 / 매달</small></p><p>2026년 최저임금 기준 월급(주 40시간). 4대 보험·퇴직금은 별도, 그리고 <b>매달</b> 나갑니다.</p><span class="tag">1년이면 약 2,590만 원 + 보험·퇴직금</span></div>
+  <div class="os"><h4>퍼스널 OS는</h4><p class="big">한 번<small>세팅비로 끝</small></p><p>매달 드는 건 Claude Max 구독료 월 $100(약 15만 원)뿐. 휴가·퇴사·인수인계 걱정 없이 매일 출근합니다.</p><span class="tag">직원 한 달 월급보다 적게</span></div>
+ </div>
+ <p class="perday">세팅비에 1년 구독료까지 다 합쳐도 <b>하루 약 7~9천 원</b><small>원격형 990,000원 + 11개월 구독료 ≈ 하루 7,200원 · 출장형 1,490,000원 + 11개월 구독료 ≈ 하루 8,600원 (환율·부가세에 따라 달라짐)</small></p>
 <div class="plans">
   <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4>
    <p class="lbl">세팅비용 <em>+ Claude Max 구독료 포함</em></p><p class="now">1,490,000<small>원</small></p>
@@ -439,15 +545,11 @@ footer b{color:#fffaf0}
  <a class="cta" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 신청하기 →</a></div>
 </section>
 <section class="pad about" id="about">
- <div class="reveal"><span class="label">about us</span><h2>브랜디움과 캐다</h2>
+ <div class="reveal"><span class="label">ABOUT US</span><h2>브랜디움과 캐다</h2>
  <div class="two">
   <div class="box b"><img src="logo_butter.png" alt="BRANDiUM">
    <h3>혼자 일하는 대표님의 브랜드가<br>혼자서도 굴러가도록.</h3>
-   <p>브랜디움은 작은 회사와 1인 대표님을 위한 서비스 브랜드입니다. 디자인·콘텐츠 현장에서 직접 써 보고 효과를 본 방식만 골라, 대표님이 바로 쓸 수 있는 형태로 만들어 드립니다. 퍼스널 OS가 그 첫 번째입니다.</p>
-   <ul class="lineup">
-    <li>퍼스널 OS — 나 대신 일하는 AI 업무 시스템<em>now</em></li>
-    <li class="soon">브랜드 콘텐츠 세팅 — SNS·블로그 운영 틀 잡기<em>soon</em></li>
-    <li class="soon">AI 업무 클래스 — 우리 팀이 직접 쓰는 법<em>soon</em></li></ul></div>
+   <p>브랜디움은 작은 회사와 1인 대표님을 위한 서비스 브랜드입니다. 디자인·콘텐츠 현장에서 직접 써 보고 효과를 본 방식만 골라, 대표님이 바로 쓸 수 있는 형태로 만들어 드립니다. 퍼스널 OS가 그 첫 번째입니다.</p></div>
   <div class="box k"><img src="keda_choco.png" alt="keda">
    <h3>We Dig Your Brand<br>숨은 가치를 캐내는 브랜드 콘텐츠 스튜디오</h3>
    <p>캐다는 브랜드 기획부터 디자인, 콘텐츠, 행사 현장까지 한 흐름으로 만드는 브랜드 콘텐츠 스튜디오입니다. 공공기관·교육·지역 브랜드와 일하며 쌓은 방식을 브랜디움을 통해 더 많은 대표님께 전합니다.</p>
@@ -526,6 +628,14 @@ addEventListener('resize',onScroll);onScroll();
 })();
 
 
+
+/* 진행 방식 — 갈색 칸이 차례로 이동 */
+(function(){const li=[...document.querySelectorAll('.steps li')];if(!li.length)return;let k=0;li[0].classList.add('on');
+setInterval(()=>{li[k].classList.remove('on');k=(k+1)%li.length;li[k].classList.add('on')},1400);})();
+/* 화면 예시 — 좌우 넘기기 버튼 */
+document.querySelectorAll('.swrap').forEach(w=>{const r=w.querySelector('.shots');
+w.querySelector('.snav.l').onclick=()=>r.scrollBy({left:-r.clientWidth*.9,behavior:'smooth'});
+w.querySelector('.snav.r').onclick=()=>r.scrollBy({left:r.clientWidth*.9,behavior:'smooth'});});
 /* 화면 예시 크게 보기 */
 (function(){const lb=document.getElementById('lb'),im=lb.querySelector('img');
 document.querySelectorAll('.shot').forEach(f=>f.addEventListener('click',()=>{im.src=f.dataset.src;im.alt=f.querySelector('img').alt;lb.hidden=false}));
