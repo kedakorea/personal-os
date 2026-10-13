@@ -34,7 +34,7 @@ nav .logo{display:flex;align-items:center}nav .logo img{height:20px;width:auto;d
 nav .logo small{font-family:Pretendard;font-weight:500;font-size:11px;opacity:.6;margin-left:8px;letter-spacing:0}
 nav .links{display:flex;gap:22px;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
 nav .links a{text-decoration:none;opacity:.75;padding-bottom:3px;border-bottom:2px solid transparent;transition:opacity .2s,border-color .2s}nav .links a.on{opacity:1;border-color:var(--cream)}
-section{position:relative;overflow:hidden}
+section{position:relative;overflow:hidden;scroll-margin-top:54px}
 /* hero */
 .hero{background:var(--cream);padding:26px 28px 80px}
 .stage{position:relative;max-width:1400px;margin:0 auto}
@@ -319,6 +319,8 @@ footer b{color:#fffaf0}
 .story{margin-top:22px;max-width:780px;font-size:clamp(17px,2vw,21px);line-height:1.9;border-left:4px solid var(--ink);padding-left:18px}
 .have{margin-top:16px;border:2px dashed var(--cream);border-radius:16px;padding:14px 18px;font-size:15.5px;line-height:1.7}
 .can{display:block;margin-top:10px;background:var(--orange);border:2px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:14.5px;font-weight:700;color:var(--ink)}
+.swipe{display:none;margin-top:22px;font-size:13px;font-weight:800;opacity:.6;text-align:center;letter-spacing:.02em}
+.mdots{display:none;position:absolute;left:0;right:0;bottom:26px;justify-content:center;gap:8px;z-index:3}.mdots i{width:9px;height:9px;border-radius:50%;border:2px solid var(--ink);transition:background .3s}.mdots i.on{background:var(--ink)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
 .reveal.on{opacity:1;transform:none}
@@ -335,13 +337,15 @@ footer b{color:#fffaf0}
  .card-top{display:flex;justify-content:space-between;align-items:flex-start}
 .ic{width:54px;height:54px}
 .card .no{font-size:32px}.card h3{font-size:18px}.card p{font-size:14px}
- .steps{grid-template-columns:1fr;row-gap:44px}
- .steps li:nth-child(n){grid-column:auto;grid-row:auto}
- .steps li::after,.steps li:nth-child(n)::after{right:auto;left:50%;top:auto;bottom:-38px;margin:0 0 0 -13px;width:26px;height:26px;transform:rotate(90deg)}
+ .steps{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;column-gap:40px;row-gap:0;margin:30px -20px 0;padding:6px 20px 14px}
+ .steps li:nth-child(n){grid-column:auto;grid-row:auto;scroll-snap-align:center}
+ .steps li::after,.steps li:nth-child(n)::after{left:auto;right:-33px;top:50%;bottom:auto;margin:-12px 0 0;width:24px;height:24px;transform:none}
  .steps li:last-child::after{display:none}
  .cmp{grid-template-columns:1fr;gap:14px}.cmp .os{transform:none;margin-top:14px;box-shadow:6px 6px 0 var(--grape)}
  .after-m{flex-direction:column;align-items:flex-start;gap:8px}
- .cases{grid-template-columns:1fr;gap:12px}
+ .cases{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:28px -20px 0;padding:0 20px 12px;align-items:start}
+ .case{scroll-snap-align:center}
+ .swipe{display:block!important}
  .learn,.plans{grid-template-columns:1fr;gap:12px}
  .plan{padding:24px;min-width:0}
  .now{font-size:34px}
@@ -359,10 +363,17 @@ footer b{color:#fffaf0}
  .evt-box h3{font-size:26px}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
  .say-it{padding:84px 20px}
- .show{height:auto}.pin{position:static;height:auto;padding:30px 0 50px}
- .lay{position:relative;inset:auto;opacity:1;filter:none;padding:36px 20px 10px}
- .lay .cap{position:static}.lay .word,.scroll-hint{display:none}
- .lay svg{width:62%;margin-top:18px}
+ .show{height:auto}.pin{position:relative;top:auto;height:600px;overflow:hidden}
+ .pin::before{content:"";position:absolute;left:50%;top:360px;width:560px;height:560px;margin-left:-280px;border:3px dashed rgba(67,47,46,.25);border-radius:50%}
+ .lay{position:absolute;inset:0;opacity:1;filter:none;justify-content:flex-start;padding:30px 20px 0}
+ .lay .cap{position:static;opacity:0;transition:opacity .45s}
+ .lay.on .cap{opacity:1;transition-delay:.25s}
+ .lay .word,.scroll-hint{display:none}
+ .lay svg{position:absolute;left:50%;top:250px;width:230px;margin:0 0 0 -115px;transform-origin:50% 190%;transform:rotate(62deg);opacity:0;transition:transform .9s cubic-bezier(.6,.05,.25,1),opacity .6s}
+ .lay.on svg{transform:rotate(0);opacity:1}
+ .lay.out svg{transform:rotate(-62deg);opacity:0}
+ .lay.reset svg{transition:none}
+ .mdots{display:flex!important}
  .about .two{grid-template-columns:1fr}
 }
 </style>
@@ -472,7 +483,7 @@ footer b{color:#fffaf0}
 <section class="pad light" id="cases">
  <div class="reveal"><span class="label">REAL REQUESTS</span><h2>이런 것까지<br>말 한마디면 됩니다</h2>
  <p class="lead">실제 업무에서 매일 나오는 요청들입니다. 대표님은 한 줄만 보내고, 결과물은 파일로 받습니다.</p></div>
- <div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
+ <p class="swipe">← 옆으로 넘겨 보세요 →</p><div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
  <p class="note">※ 실제 운영 중인 퍼스널 OS의 요청 사례를 바탕으로 재구성했습니다.</p>
 </section>
 
@@ -547,7 +558,7 @@ footer b{color:#fffaf0}
 
 <section class="pad light" id="how">
  <div class="reveal"><span class="label">HOW IT WORKS</span><h2>진행 방식</h2>
- <ol class="steps">
+ <p class="swipe">← 옆으로 넘겨 보세요 →</p><ol class="steps">
   <li><b>사전 설문</b><span>15분. 하시는 일과 쓰는 채널을 알려 주세요.</span></li>
   <li><b>업무 인터뷰</b><span>최대 60분. 대표님의 하루를 함께 따라가며 맡길 일을 정합니다.</span></li>
   <li><b>설계서 확인</b><span>부서 구성과 실장 이름, 일하는 기준을 보여 드립니다.</span></li>
@@ -668,9 +679,15 @@ const pin=document.querySelector('.pin'),show=document.querySelector('.show');
 const lays=EM.map((e,i)=>{const d=document.createElement('div');d.className='lay';
  d.innerHTML=`<div class="cap"><b>${e.w.join(' ')}</b><p>${CAP[i][0]} · ${CAP[i][1]}</p><small>${CAP[i][2]}</small></div><div class="word">( ${e.w[0]} ${e.w[1]}</div><svg viewBox="-10 -160 240 320">${em(i)}</svg>`;pin.appendChild(d);return d});
 const sayIn=document.querySelector('.say-it');let cur=-1;
+
+/* 모바일 — 결과물 엠블럼이 반원 곡선을 따라 차례로 지나감 */
+let mTimer=null,mk=0;const dots=document.createElement('div');dots.className='mdots';dots.innerHTML=EM.map(()=>'<i></i>').join('');pin.appendChild(dots);
+function mShow(n){const prev=lays[mk];lays.forEach(l=>l.classList.remove('on'));if(prev!==lays[n]){prev.classList.add('out');setTimeout(()=>{prev.classList.add('reset');prev.classList.remove('out');requestAnimationFrame(()=>requestAnimationFrame(()=>prev.classList.remove('reset')))},950)}
+ lays[n].classList.add('on');mk=n;pin.style.background=BG[n];[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===n))}
+function mobileCycle(){if(mTimer)return;lays.forEach(l=>{l.classList.remove('on','out')});mShow(0);mTimer=setInterval(()=>mShow((mk+1)%lays.length),2600)}
 function onScroll(){const vh=innerHeight;
  const r=sayIn.getBoundingClientRect();sayIn.style.setProperty('--p',Math.max(0,Math.min(1,(vh-r.top)/(vh*.75))).toFixed(3));
- if(innerWidth<=860){lays.forEach(l=>l.classList.add('on'));return}
+ if(innerWidth<=860){mobileCycle();return}
  const s=show.getBoundingClientRect(),span=s.height-vh,pr=Math.max(0,Math.min(.999,-s.top/span))*EM.length;
  const i=Math.floor(pr),t=pr-i;
  if(i!==cur){cur=i;lays.forEach((l,k)=>l.classList.toggle('on',k===i));pin.style.background=BG[i]}
