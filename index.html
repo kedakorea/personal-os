@@ -125,7 +125,7 @@ h2 .en{font-size:1em}
 .learn li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:10px;font-size:16px}
 .learn li em{font-style:normal;font-weight:800;text-align:right}
 .learn p{margin-top:14px;font-size:15px;opacity:.85}
-.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
 .plan{min-width:0;background:var(--cream);color:var(--ink);border-radius:22px;padding:30px;position:relative}
 .plan.alt{background:var(--lilac)}
 .badge{display:inline-block;background:var(--ink);color:#fffaf0;font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:14px;letter-spacing:0;padding:6px 12px;border-radius:99px;text-transform:uppercase}
@@ -164,10 +164,12 @@ h2 .en{font-size:1em}
 .steps b{font-size:19px;display:block;margin-bottom:6px}
 .steps span{font-size:15px;color:#444;line-height:1.6}
 .types{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-.types{margin-top:54px!important}.types div{border:3px solid var(--ink);border-radius:20px;padding:26px;background:var(--orange)}
+.types{margin-top:18px!important}.types div{border:2px dashed var(--ink);border-radius:999px;padding:18px 30px 18px 76px;background:transparent;position:relative}
+.types i{position:absolute;left:24px;top:50%;transform:translateY(-50%);font-style:normal;font-size:30px}
+.tlabel{margin-top:60px;font-weight:900;font-size:18px;display:flex;align-items:center;gap:12px}.tlabel::after{content:"";flex:1;height:2px;background:rgba(67,47,46,.2)}
 .types h4{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:26px;text-transform:uppercase}
 .types h4 small{font-family:Pretendard;font-size:16px;margin-left:8px}
-.types p{margin-top:10px;font-size:15.5px;line-height:1.7}
+.types p{margin-top:4px;font-size:15px;line-height:1.6}
 /* faq */
 .faq{margin-top:36px;display:grid;gap:12px}
 .faq details{border:3px solid var(--ink);border-radius:18px;background:var(--cream);padding:20px 24px}
@@ -291,7 +293,11 @@ footer b{color:#fffaf0}
 .value{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
 .value>div{border-radius:22px;padding:28px}
 .value .staff{border:3px dashed rgba(255,250,240,.5)}
-.value .os{background:var(--cream);color:var(--ink)}
+.value .os{border:3px solid var(--cream)}
+.value .os .big{color:var(--cream)}
+.value .os .tag{background:var(--cream);color:var(--ink)}
+.plabel{display:flex;align-items:center;gap:14px;margin:56px 0 0;font-family:'Josefin Sans',Pretendard,sans-serif;font-size:15px;letter-spacing:.08em;color:var(--cream)}
+.plabel::before,.plabel::after{content:"";flex:1;height:2px;background:rgba(254,239,184,.35)}
 .value h4{font-size:18px;font-weight:900}
 .value .big{font-family:'Josefin Sans',Pretendard,sans-serif;font-weight:900;font-size:clamp(40px,5vw,60px);line-height:1;margin:14px 0 6px}
 .value .big small{font-family:Pretendard;font-size:18px;margin-left:4px}
@@ -322,11 +328,22 @@ footer b{color:#fffaf0}
 .evt-deal li::before{content:"✓ ";font-weight:900}
 .evt-go{display:block;text-align:center;margin-top:16px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:900;font-size:17px;padding:15px;border-radius:99px}
 .evt-today{display:block;margin:10px auto 0;background:none;border:0;font-size:13px;text-decoration:underline;opacity:.7;cursor:pointer}
+.story span{display:block}.story .gap{margin-top:14px}
 .story{margin-top:22px;max-width:780px;font-size:clamp(17px,2vw,21px);line-height:1.9;border-left:4px solid var(--ink);padding-left:18px}
 .have{margin-top:16px;border:2px dashed var(--cream);border-radius:16px;padding:14px 18px;font-size:15.5px;line-height:1.7}
 .can{display:block;margin-top:10px;background:var(--orange);border:2px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:14.5px;font-weight:700;color:var(--ink)}
 .swipe{display:none;margin-top:22px;font-size:13px;font-weight:800;opacity:.6;text-align:center;letter-spacing:.02em}
 .mdots{display:none;position:absolute;left:0;right:0;bottom:26px;justify-content:center;gap:8px;z-index:3}.mdots i{width:9px;height:9px;border-radius:50%;border:2px solid var(--ink);transition:background .3s}.mdots i.on{background:var(--ink)}
+/* 비교표 — 같은 항목 한 줄 */
+.cmpt{margin-top:44px;border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:#fffbea}
+.cmpt .r{display:grid;grid-template-columns:150px 1fr 1fr 1.3fr;border-top:2px solid rgba(67,47,46,.18)}
+.cmpt .r:first-child{border-top:0}
+.cmpt span{padding:20px 22px;font-size:17px;font-weight:600;display:flex;align-items:center;opacity:.8}
+.cmpt .k{font-size:14px;font-weight:800;opacity:.6;background:rgba(196,218,232,.45)}
+.cmpt .h span{font-weight:900;font-size:18px;opacity:1;padding-top:26px;padding-bottom:22px}
+.cmpt .o{background:var(--ink);color:var(--cream);font-weight:900;font-size:20px;opacity:1;position:relative}
+.cmpt .h .o{font-family:'Josefin Sans',Pretendard,sans-serif;font-size:26px}
+.cmpt .pick{position:absolute;top:8px;right:12px;font-style:normal;font-size:12px;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:99px;padding:2px 9px;font-family:Pretendard}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
 .reveal.on{opacity:1;transform:none}
@@ -347,7 +364,13 @@ footer b{color:#fffaf0}
  .steps li:nth-child(n){grid-column:auto;grid-row:auto;scroll-snap-align:center}
  .steps li::after,.steps li:nth-child(n)::after{left:auto;right:-33px;top:50%;bottom:auto;margin:-12px 0 0;width:24px;height:24px;transform:none}
  .steps li:last-child::after{display:none}
- .cmp{grid-template-columns:1fr;gap:14px}.cmp .os{transform:none;margin-top:14px;box-shadow:6px 6px 0 var(--grape)}
+ .cmpt .r{grid-template-columns:62px 1fr 1fr 1.15fr}
+ .cmpt span{padding:12px 8px;font-size:13px;line-height:1.4;word-break:keep-all}
+ .cmpt .k{font-size:11.5px}
+ .cmpt .h span{font-size:13px;padding:22px 8px 12px}
+ .cmpt .o{font-size:14px}
+ .cmpt .h .o{font-size:16px}
+ .cmpt .pick{top:4px;right:4px;font-size:10px;padding:1px 6px}
  .after-m{flex-direction:column;align-items:flex-start;gap:8px}
  .cases{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:28px -20px 0;padding:0 20px 12px;align-items:start}
  .case{scroll-snap-align:center}
@@ -363,6 +386,8 @@ footer b{color:#fffaf0}
  .shot{scroll-snap-align:center}
  .shot:hover{transform:none;box-shadow:none}
  .stair,.pcwhy,.pcopt,.value,.mob{grid-template-columns:1fr}
+ .types div{border-radius:22px;padding:16px 18px 16px 64px}
+ .types i{left:18px;font-size:26px}
  .stair div{min-height:0!important}
  .phone{width:250px;margin-top:10px}
  .evt-deal{grid-template-columns:1fr}
@@ -529,10 +554,12 @@ footer b{color:#fffaf0}
 
 <section class="pad cream">
  <div class="reveal"><span class="label">NOT A CLASS</span><h2>배우는 상품이 아닙니다.<br>맡기는 상품입니다.</h2>
- <div class="cmp">
-  <div class="col"><h4>AI 자동화 도구</h4><dl><dt>내가 할 일</dt><dd>설정하고 관리</dd><dt>범위</dt><dd>작업 하나</dd><dt>내 방식</dt><dd>정해진 틀</dd><dt>결과</dt><dd>도구</dd></dl></div>
-  <div class="col"><h4>AI 강의·프롬프트</h4><dl><dt>내가 할 일</dt><dd>배우고 직접 적용</dd><dt>범위</dt><dd>기능 하나</dd><dt>내 방식</dt><dd>내가 알아서</dd><dt>결과</dt><dd>지식</dd></dl></div>
-  <div class="col os"><span class="pick">맡기면 끝</span><h4>퍼스널 OS</h4><dl><dt>내가 할 일</dt><dd>말로 지시만</dd><dt>범위</dt><dd>내 업무 전체</dd><dt>내 방식</dt><dd>인터뷰로 처음부터 맞춤</dd><dt>결과</dt><dd>나 대신 일하는 조직</dd></dl></div>
+ <div class="cmpt" role="table">
+  <div class="r h"><span></span><span>AI 자동화 도구</span><span>AI 강의·프롬프트</span><span class="o"><i class="pick">맡기면 끝</i>퍼스널 OS</span></div>
+  <div class="r"><span class="k">내가 할 일</span><span>설정하고 관리</span><span>배우고 직접 적용</span><span class="o">✓ 말로 지시만</span></div>
+  <div class="r"><span class="k">범위</span><span>작업 하나</span><span>기능 하나</span><span class="o">✓ 내 업무 전체</span></div>
+  <div class="r"><span class="k">내 방식</span><span>정해진 틀</span><span>내가 알아서</span><span class="o">✓ 인터뷰로 처음부터 맞춤</span></div>
+  <div class="r"><span class="k">결과</span><span>도구</span><span>지식</span><span class="o">✓ 나 대신 일하는 조직</span></div>
  </div></div>
 </section>
 
@@ -542,6 +569,7 @@ footer b{color:#fffaf0}
   <div class="staff"><h4>직원을 한 명 뽑는다면</h4><p class="big">2,156,880<small>원 / 매달</small></p><p>2026년 최저임금 기준 월급(주 40시간). 4대 보험·퇴직금은 별도, 그리고 <b>매달</b> 나갑니다.</p><span class="tag">1년이면 약 2,590만 원 + 보험·퇴직금</span></div>
   <div class="os"><h4>퍼스널 OS는</h4><p class="big">한 번<small>세팅비로 끝</small></p><p>매달 드는 건 Claude Max 구독료 월 $100(약 15만 원)뿐. 휴가·퇴사·인수인계 걱정 없이 매일 출근합니다.</p><span class="tag">직원 한 달 월급보다 적게</span></div>
  </div>
+<p class="plabel">퍼스널 OS 세팅 비용</p>
 <div class="plans">
   <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4>
    <p class="lbl">세팅비용 <em>+ Claude Max 구독료 포함</em></p><p class="now">1,490,000<small>원</small></p>
@@ -572,8 +600,9 @@ footer b{color:#fffaf0}
   <li><b>세팅</b><span>컴퓨터에 퍼스널 OS를 설치하고 휴대폰 앱까지 연결합니다.</span></li>
   <li><b>사용 교육</b><span>60분. 첫 지시 다섯 개를 함께 해 봅니다.</span></li>
   <li><b>30일 적응 지원</b><span>첫 달 동안 써 보며 불편한 점을 바로 고쳐 드립니다.</span></li></ol>
- <div class="types"><div><h4>VISIT<small>출장형</small></h4><p>직접 찾아가 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 추천합니다.</p></div>
- <div><h4>REMOTE<small>원격형</small></h4><p>화상 인터뷰와 원격 접속으로 세팅합니다. 거리와 상관없이 진행됩니다.</p></div></div></div>
+ <p class="tlabel">진행 형태는 두 가지 중에 고르세요</p>
+ <div class="types"><div><i>🚗</i><h4>VISIT<small>출장형</small></h4><p>직접 찾아가 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 추천합니다.</p></div>
+ <div><i>💻</i><h4>REMOTE<small>원격형</small></h4><p>화상 인터뷰와 원격 접속으로 세팅합니다. 거리와 상관없이 진행됩니다.</p></div></div></div>
 </section>
 
 <section class="pad lilac" id="faq">
@@ -591,7 +620,7 @@ footer b{color:#fffaf0}
 <section class="pad cream maker">
  <div class="reveal"><span class="label">MADE BY</span><h2>저도 바쁜 대표였습니다</h2>
  <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p>
- <p class="story">처음엔 저도 AI를 믿지 못했습니다. 시켜 놓고도 자꾸 다시 확인하고, 결국 제 손으로 처리하고, '이건 안 되겠지, 설마 이것까지 한다고?' 싶었죠. 그 생각이 퍼스널 OS를 만나고 모두 바뀌었습니다. <b>일단, 다 해 줍니다.</b><br>우리의 시간을 빼앗던 일들은 퍼스널 OS에게 맡기고, <b>시간을 버세요.</b></p></div>
+ <p class="story"><span>솔직히, 저도 처음엔 AI를 못 믿었어요.</span><span>시켜 놓고 다시 확인하고, 결국 제 손으로 고치고.</span><span>'설마 이것까지 하겠어?' 싶던 일들이</span><span><b>지금은 말 한마디면 끝나 있습니다.</b></span><span class="gap">대표님의 하루를 갉아먹던 일은 퍼스널 OS에 맡기세요.</span><span><b>이제, 시간을 버세요.</b></span></p></div>
 </section>
 
 <section class="final orange" id="apply">
