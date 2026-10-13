@@ -213,6 +213,24 @@ footer b{color:#fffaf0}
 .lineup li em{font-style:normal;font-family:Fraunces;font-weight:900;font-size:14px;border-radius:99px;padding:3px 11px;background:var(--cream);color:var(--ink);white-space:nowrap}
 .lineup li.soon{opacity:.75;border-style:dashed}
 .lineup li.soon em{background:transparent;color:var(--cream);border:2px solid var(--cream)}
+/* screens */
+.sgroup{margin-top:46px}
+.shead{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.shead p{font-size:clamp(16px,1.8vw,19px);font-weight:800}
+.stag{display:inline-block;background:var(--ink);color:var(--cream);border-radius:99px;padding:7px 16px;font-weight:900;font-size:15px}
+.stag.alt{background:var(--orange);color:var(--ink);border:2px solid var(--ink)}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.shot{margin:0;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#fffbea;cursor:zoom-in;transition:transform .25s,box-shadow .25s}
+.shot:hover{transform:translateY(-4px);box-shadow:8px 8px 0 var(--ink)}
+.shot .bar{display:flex;gap:6px;padding:9px 12px;border-bottom:3px solid var(--ink);background:var(--orange)}
+.shot .bar i{width:10px;height:10px;border-radius:50%;border:2px solid var(--ink);background:#fffbea}
+.shot img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.shot figcaption{display:flex;gap:10px;align-items:baseline;padding:12px 16px;border-top:3px solid var(--ink);font-size:15px}
+.shot figcaption b{font-weight:900;font-size:17px}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(30,20,20,.88);display:flex;align-items:center;justify-content:center;padding:3vw;cursor:zoom-out}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lb button{position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;border:0;background:var(--cream);color:var(--ink);font-size:20px;font-weight:900;cursor:pointer}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
 .reveal.on{opacity:1;transform:none}
@@ -242,6 +260,9 @@ footer b{color:#fffaf0}
  .plan h4{font-size:24px}
  .now small{font-size:18px}
  .sky{margin:48px 0 -72px}
+ .shots{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -20px;padding:0 20px 10px}
+ .shot{scroll-snap-align:center}
+ .shot:hover{transform:none;box-shadow:none}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
  .say-it{padding:84px 20px}
  .show{height:auto}.pin{position:static;height:auto;padding:30px 0 50px}
@@ -254,7 +275,7 @@ footer b{color:#fffaf0}
 </head>
 <body>
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#day">DAY</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#day">DAY</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -328,6 +349,17 @@ footer b{color:#fffaf0}
  <div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
  <p class="note">※ 실제 운영 중인 퍼스널 OS의 요청 사례를 바탕으로 재구성했습니다.</p>
 </section>
+
+<section class="pad cream" id="screens">
+ <div class="reveal"><span class="label">your screen</span><h2>이런 화면이<br>생겨요</h2>
+ <p class="lead">대표님 업종과 취향에 맞춰 업무 앱 화면도 함께 만들어 드립니다. 컴퓨터와 휴대폰에서 같은 화면으로 열려요.</p></div>
+ <div class="sgroup reveal"><div class="shead"><span class="stag">심플형</span><p>매일 열어 보기 편하게, 깔끔하게</p></div>
+  <div class="shots"><figure class="shot" data-src="dash/02.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/02.jpg" alt="벤토 그리드 — 1인 디자인 스튜디오 퍼스널 OS 화면" loading="lazy"><figcaption><b>벤토 그리드</b>1인 디자인 스튜디오</figcaption></figure><figure class="shot" data-src="dash/03.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/03.jpg" alt="심플 화이트 — 교육 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>심플 화이트</b>교육 컨설팅</figcaption></figure><figure class="shot" data-src="dash/04.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/04.jpg" alt="다크 노트 — 마케팅 대행사 퍼스널 OS 화면" loading="lazy"><figcaption><b>다크 노트</b>마케팅 대행사</figcaption></figure><figure class="shot" data-src="dash/07.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/07.jpg" alt="메시지형 — 1인 인테리어 퍼스널 OS 화면" loading="lazy"><figcaption><b>메시지형</b>1인 인테리어</figcaption></figure></div></div>
+ <div class="sgroup reveal"><div class="shead"><span class="stag alt">테마형</span><p>이런 식으로도 가능해요 — 열 때마다 기분 좋은 화면</p></div>
+  <div class="shots"><figure class="shot" data-src="dash/01.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/01.jpg" alt="픽셀 오피스 — 동네 베이커리 퍼스널 OS 화면" loading="lazy"><figcaption><b>픽셀 오피스</b>동네 베이커리</figcaption></figure><figure class="shot" data-src="dash/06.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/06.jpg" alt="경영 게임 — 꽃집 · 플라워 클래스 퍼스널 OS 화면" loading="lazy"><figcaption><b>경영 게임</b>꽃집 · 플라워 클래스</figcaption></figure><figure class="shot" data-src="dash/05.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/05.jpg" alt="다이어리 플래너 — 퍼스널컬러 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>다이어리 플래너</b>퍼스널컬러 컨설팅</figcaption></figure><figure class="shot" data-src="dash/08.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/08.jpg" alt="레트로 윈도우 — 1인 유튜버 퍼스널 OS 화면" loading="lazy"><figcaption><b>레트로 윈도우</b>1인 유튜버</figcaption></figure></div></div>
+ <p class="note">※ 업종별 예시 화면입니다. 회사 이름·직원(부서) 이름·색은 대표님 것으로 바뀝니다.</p>
+</section>
+<div class="lb" id="lb" hidden><img alt=""><button aria-label="닫기">✕</button></div>
 
 <section class="pad lilac">
  <div class="grid2 reveal">
@@ -493,6 +525,11 @@ addEventListener('resize',onScroll);onScroll();
 
 })();
 
+
+/* 화면 예시 크게 보기 */
+(function(){const lb=document.getElementById('lb'),im=lb.querySelector('img');
+document.querySelectorAll('.shot').forEach(f=>f.addEventListener('click',()=>{im.src=f.dataset.src;im.alt=f.querySelector('img').alt;lb.hidden=false}));
+lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true});})();
 </script>
 </body>
 </html>
