@@ -286,6 +286,29 @@ footer b{color:#fffaf0}
 .perday{margin-top:16px;text-align:center;font-size:clamp(18px,2.2vw,24px);font-weight:900;line-height:1.5}
 .perday b{background:var(--cream);color:var(--ink);border-radius:10px;padding:2px 10px}
 .perday small{display:block;font-size:13px;font-weight:600;opacity:.7;margin-top:6px}
+/* 체험단 팝업 */
+.evt{position:fixed;inset:0;z-index:60;background:rgba(40,28,27,.62);display:flex;align-items:center;justify-content:center;padding:18px}
+.evt[hidden]{display:none}
+.evt-box{position:relative;width:min(520px,100%);max-height:92vh;overflow:auto;background:var(--cream);border:3px solid var(--ink);border-radius:26px;padding:30px 28px 22px;box-shadow:10px 10px 0 var(--ink);animation:evtIn .45s cubic-bezier(.2,1.3,.4,1)}
+@keyframes evtIn{from{transform:translateY(30px) scale(.96);opacity:0}}
+.evt-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:#fffbea;font-weight:900;cursor:pointer}
+.evt-tag{display:inline-block;background:var(--ink);color:var(--cream);border-radius:99px;padding:5px 12px;font-family:'Josefin Sans',Pretendard,sans-serif;font-size:13px;letter-spacing:.06em}
+.evt-box h3{font-size:30px;font-weight:900;line-height:1.25;margin-top:14px}
+.evt-price{margin-top:12px;font-size:18px;font-weight:800}
+.evt-price s{opacity:.45;margin-right:8px;font-size:16px}
+.evt-price b{font-family:'Josefin Sans',Pretendard,sans-serif;font-size:44px;line-height:1}
+.evt-price small{background:var(--orange);border:2px solid var(--ink);border-radius:99px;padding:2px 10px;font-size:13px;margin-left:6px;vertical-align:middle}
+.evt-lead{margin-top:12px;font-size:15.5px;line-height:1.7}
+.evt-deal{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.evt-deal>div{background:#fffbea;border:2px solid var(--ink);border-radius:16px;padding:12px 14px}
+.evt-deal em{font-style:normal;font-weight:900;font-size:14px}
+.evt-deal ul{list-style:none;margin-top:6px;display:grid;gap:4px;font-size:13.5px;line-height:1.5}
+.evt-deal li::before{content:"✓ ";font-weight:900}
+.evt-go{display:block;text-align:center;margin-top:16px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:900;font-size:17px;padding:15px;border-radius:99px}
+.evt-today{display:block;margin:10px auto 0;background:none;border:0;font-size:13px;text-decoration:underline;opacity:.7;cursor:pointer}
+.story{margin-top:22px;max-width:780px;font-size:clamp(17px,2vw,21px);line-height:1.9;border-left:4px solid var(--ink);padding-left:18px}
+.have{margin-top:16px;border:2px dashed var(--cream);border-radius:16px;padding:14px 18px;font-size:15.5px;line-height:1.7}
+.can{display:block;margin-top:10px;background:var(--orange);border:2px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:14.5px;font-weight:700;color:var(--ink)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .reveal{opacity:0;transform:translateY(24px);transition:.7s ease}
 .reveal.on{opacity:1;transform:none}
@@ -322,6 +345,8 @@ footer b{color:#fffaf0}
  .stair,.pcwhy,.pcopt,.value,.mob{grid-template-columns:1fr}
  .stair div{min-height:0!important}
  .phone{width:250px;margin-top:10px}
+ .evt-deal{grid-template-columns:1fr}
+ .evt-box h3{font-size:26px}
  .float{left:12px;right:12px;bottom:12px;text-align:center}
  .say-it{padding:84px 20px}
  .show{height:auto}.pin{position:static;height:auto;padding:30px 0 50px}
@@ -379,7 +404,7 @@ footer b{color:#fffaf0}
   <div class="card"><div class="card-top"><span class="no">01</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><rect x="5" y="5" width="25" height="25" fill="#c4dae8"/><rect x="34" y="5" width="25" height="25" fill="#f6d36b"/><rect x="5" y="34" width="25" height="25" fill="#fffaf0"/><rect x="34" y="34" width="25" height="25" fill="#432f2e"/><path d="M11 13h13M11 19h13M11 25h8" fill="none"/><path d="M40 27l6.5-16 6.5 16z" fill="#fffaf0"/><circle cx="17.5" cy="46.5" r="6" fill="#f6d36b"/></g><path d="M40 46.5h13M46.5 40v13" stroke="#f6d36b" stroke-width="3.5"/></svg></div><h3>맞춤 부서</h3><p>대표님이 하는 일을 부서로 나누고, 부서마다 대표님 방식대로 일하는 기준(양식·단가·말투·꼭 지킬 것)을 적어 둡니다.</p></div>
   <div class="card"><div class="card-top"><span class="no">02</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><path d="M7 60V50a25 18 0 0 1 50 0v10z" fill="#c4dae8"/><circle cx="32" cy="20" r="13" fill="#f6d36b"/><path d="M14 13a18 15 0 0 1 36 0z" fill="#432f2e"/><path d="M32 33l-5 9 5 14 5-14z" fill="#432f2e"/></g></svg></div><h3>실장 한 명</h3><p>모든 부서를 관리하는 AI 실장. 대표님은 실장에게만 말하면 됩니다. 맡을 부서를 정하고, 처리하고, 끝나면 보고합니다.</p></div>
   <div class="card"><div class="card-top"><span class="no">03</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><rect x="13" y="3" width="38" height="58" rx="7" fill="#fffaf0"/><rect x="19" y="13" width="22" height="12" rx="5" fill="#c4dae8"/><rect x="25" y="30" width="20" height="12" rx="5" fill="#f6d36b"/><path d="M27 53h10" fill="none"/></g></svg></div><h3>지시는 한 곳에서</h3><p>컴퓨터와 휴대폰에서 열리는 대표님 전용 업무 앱. 열 개의 창 대신 이 화면 하나에서 끝나고, 일이 끝나면 휴대폰으로 알려 드립니다.</p></div>
-  <div class="card"><div class="card-top"><span class="no">04</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><path d="M4 10h20l6 7h30v40H4z" fill="#c4dae8"/><rect x="12" y="4" width="40" height="30" fill="#fffaf0"/><path d="M18 12h28M18 19h20" fill="none"/><path d="M4 26h56v31H4z" fill="#f6d36b"/><path d="M14 38h36M14 47h22" fill="none"/></g></svg></div><h3>대신 기억합니다</h3><p>업무일지, 할 일, 거래처, 자주 쓰는 문서가 한곳에 쌓입니다. "그때 그 건 어떻게 됐지?"를 다시 찾지 않아도 됩니다.</p></div>
+  <div class="card"><div class="card-top"><span class="no">04</span><svg class="ic" viewBox="0 0 64 64"><g stroke="#432f2e" stroke-width="3.5" stroke-linejoin="round"><path d="M4 10h20l6 7h30v40H4z" fill="#c4dae8"/><rect x="12" y="4" width="40" height="30" fill="#fffaf0"/><path d="M18 12h28M18 19h20" fill="none"/><path d="M4 26h56v31H4z" fill="#f6d36b"/><path d="M14 38h36M14 47h22" fill="none"/></g></svg></div><h3>대신 기억합니다</h3><p>업무일지, 할 일, 거래처, 자주 쓰는 문서가 한곳에 쌓입니다. "그때 그 건 어떻게 됐지?"를 다시 찾지 않아도 되고, 새 대화를 열 때마다 처음부터 다시 설명할 필요도 없습니다.</p></div>
  </div>
 </section>
 
@@ -402,7 +427,7 @@ footer b{color:#fffaf0}
   <div><h4>BEFORE</h4><ol><li><b>08:30</b>메일함 확인</li><li><b>09:10</b>캘린더 확인</li><li><b>09:40</b>견적서 답장 확인</li><li><b>10:20</b>세금계산서 발행</li><li><b>11:00</b>단톡방 정리</li><li><b>12:00</b>점심. 본업은 오후부터</li></ol></div>
   <div class="after"><h4>AFTER</h4><ol><li><b>08:30</b>실장의 아침 브리핑 한 장<br>(오늘 일정 · 답할 메일 · 마감 임박)</li><li><b>08:35</b>"메일 답장 초안 써 줘"<br>"견적서 만들어 줘" — 지시 끝</li><li><b>08:40</b>본업 시작 ☕</li></ol></div>
  </div>
- <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.</p></div>
+ <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.<span class="can">✓ 기본 세팅이 그렇다는 것 — 원하시면 메일 전송까지 맡기는 등, 대표님 방식대로 모두 바꿀 수 있어요.</span></p></div>
 </section>
 
 <section class="pad cream" id="mobile">
@@ -445,9 +470,9 @@ footer b{color:#fffaf0}
  <div class="reveal"><span class="label">YOUR SCREEN</span><h2>이런 화면이<br>생겨요</h2>
  <p class="lead">대표님 업종과 취향에 맞춰 업무 앱 화면도 함께 만들어 드립니다. 컴퓨터와 휴대폰에서 같은 화면으로 열려요.</p></div>
  <div class="sgroup reveal"><div class="shead"><span class="stag">심플형</span><p>매일 열어 보기 편하게, 깔끔하게</p></div>
-  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/02.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/02.jpg" alt="벤토 그리드 — 1인 디자인 스튜디오 퍼스널 OS 화면" loading="lazy"><figcaption><b>벤토 그리드</b>1인 디자인 스튜디오</figcaption></figure><figure class="shot" data-src="dash/03.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/03.jpg" alt="심플 화이트 — 교육 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>심플 화이트</b>교육 컨설팅</figcaption></figure><figure class="shot" data-src="dash/04.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/04.jpg" alt="다크 노트 — 마케팅 대행사 퍼스널 OS 화면" loading="lazy"><figcaption><b>다크 노트</b>마케팅 대행사</figcaption></figure><figure class="shot" data-src="dash/07.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/07.jpg" alt="메시지형 — 1인 인테리어 퍼스널 OS 화면" loading="lazy"><figcaption><b>메시지형</b>1인 인테리어</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
+  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/07.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/07.jpg" alt="메시지형 — 1인 인테리어 퍼스널 OS 화면" loading="lazy"><figcaption><b>메시지형</b>1인 인테리어</figcaption></figure><figure class="shot" data-src="dash/04.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/04.jpg" alt="다크 노트 — 마케팅 대행사 퍼스널 OS 화면" loading="lazy"><figcaption><b>다크 노트</b>마케팅 대행사</figcaption></figure><figure class="shot" data-src="dash/02.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/02.jpg" alt="벤토 그리드 — 1인 디자인 스튜디오 퍼스널 OS 화면" loading="lazy"><figcaption><b>벤토 그리드</b>1인 디자인 스튜디오</figcaption></figure><figure class="shot" data-src="dash/03.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/03.jpg" alt="심플 화이트 — 교육 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>심플 화이트</b>교육 컨설팅</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
  <div class="sgroup reveal"><div class="shead"><span class="stag alt">테마형</span><p>이런 식으로도 가능해요 — 열 때마다 기분 좋은 화면</p></div>
-  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/01.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/01.jpg" alt="픽셀 오피스 — 동네 베이커리 퍼스널 OS 화면" loading="lazy"><figcaption><b>픽셀 오피스</b>동네 베이커리</figcaption></figure><figure class="shot" data-src="dash/06.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/06.jpg" alt="경영 게임 — 꽃집 · 플라워 클래스 퍼스널 OS 화면" loading="lazy"><figcaption><b>경영 게임</b>꽃집 · 플라워 클래스</figcaption></figure><figure class="shot" data-src="dash/05.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/05.jpg" alt="다이어리 플래너 — 퍼스널컬러 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>다이어리 플래너</b>퍼스널컬러 컨설팅</figcaption></figure><figure class="shot" data-src="dash/08.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/08.jpg" alt="레트로 윈도우 — 1인 유튜버 퍼스널 OS 화면" loading="lazy"><figcaption><b>레트로 윈도우</b>1인 유튜버</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
+  <div class="swrap"><button class="snav l" aria-label="이전">‹</button><div class="shots"><figure class="shot" data-src="dash/08.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/08.jpg" alt="레트로 윈도우 — 1인 유튜버 퍼스널 OS 화면" loading="lazy"><figcaption><b>레트로 윈도우</b>1인 유튜버</figcaption></figure><figure class="shot" data-src="dash/01.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/01.jpg" alt="픽셀 오피스 — 동네 베이커리 퍼스널 OS 화면" loading="lazy"><figcaption><b>픽셀 오피스</b>동네 베이커리</figcaption></figure><figure class="shot" data-src="dash/05.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/05.jpg" alt="다이어리 플래너 — 퍼스널컬러 컨설팅 퍼스널 OS 화면" loading="lazy"><figcaption><b>다이어리 플래너</b>퍼스널컬러 컨설팅</figcaption></figure><figure class="shot" data-src="dash/06.jpg"><div class="bar"><i></i><i></i><i></i></div><img src="dash/06.jpg" alt="경영 게임 — 꽃집 · 플라워 클래스 퍼스널 OS 화면" loading="lazy"><figcaption><b>경영 게임</b>꽃집 · 플라워 클래스</figcaption></figure></div><button class="snav r" aria-label="다음">›</button></div></div>
  <p class="note">※ 업종별 예시 화면입니다. 회사 이름·직원(부서) 이름·색은 대표님 것으로 바뀝니다.</p>
 </section>
 <div class="lb" id="lb" hidden><img alt=""><button aria-label="닫기">✕</button></div>
@@ -489,7 +514,6 @@ footer b{color:#fffaf0}
   <div class="staff"><h4>직원을 한 명 뽑는다면</h4><p class="big">2,156,880<small>원 / 매달</small></p><p>2026년 최저임금 기준 월급(주 40시간). 4대 보험·퇴직금은 별도, 그리고 <b>매달</b> 나갑니다.</p><span class="tag">1년이면 약 2,590만 원 + 보험·퇴직금</span></div>
   <div class="os"><h4>퍼스널 OS는</h4><p class="big">한 번<small>세팅비로 끝</small></p><p>매달 드는 건 Claude Max 구독료 월 $100(약 15만 원)뿐. 휴가·퇴사·인수인계 걱정 없이 매일 출근합니다.</p><span class="tag">직원 한 달 월급보다 적게</span></div>
  </div>
- <p class="perday">세팅비에 1년 구독료까지 다 합쳐도 <b>하루 약 7~9천 원</b><small>원격형 990,000원 + 11개월 구독료 ≈ 하루 7,200원 · 출장형 1,490,000원 + 11개월 구독료 ≈ 하루 8,600원 (환율·부가세에 따라 달라짐)</small></p>
 <div class="plans">
   <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4>
    <p class="lbl">세팅비용 <em>+ Claude Max 구독료 포함</em></p><p class="now">1,490,000<small>원</small></p>
@@ -501,6 +525,7 @@ footer b{color:#fffaf0}
    <p class="inc">화상 인터뷰 · 원격 세팅 · 화상 교육 · 30일 적응 지원</p></div>
  </div>
  <div class="after-m"><b>다음 달부터는</b><span>Claude Max 구독료 <strong>월 $100</strong>(약 15만 원)만. 대표님 명의로 결제되며 그 밖의 비용은 없습니다.</span></div>
+ <p class="have">💡 이미 <b>Claude Max(월 $100) 이상</b> 요금제를 쓰고 계신가요? 세팅비에 포함된 첫 달 구독료만큼 <b>15만 원 할인</b>해 드립니다. (출장형 1,340,000원 · 원격형 840,000원)</p>
  <p class="note">※ 부가세 별도. 구독료 원화 금액은 환율에 따라 달라집니다. 늘 켜 둘 컴퓨터가 없으면 맥 미니(약 119만 원~, 실비)를 따로 준비합니다. 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p>
  <div class="learn">
   <div class="diy"><b>직접 배워서 한다면</b>
@@ -528,15 +553,17 @@ footer b{color:#fffaf0}
  <div class="faq">
   <details open><summary>컴퓨터가 따로 필요한가요?</summary><p>늘 켜 두는 컴퓨터 한 대가 필요합니다. 지금 쓰시는 데스크톱에 설치해 드리고, 없으시면 전용 미니 PC(맥 미니, 애플 공식몰 기준 약 119만 원~)를 함께 준비해 드릴 수 있습니다(실비, 별도 구매).</p></details>
   <details><summary>매달 드는 비용이 있나요?</summary><p>AI 구독료 월 $100(Claude Max 기준, 한화 약 15~16만 원)가 대표님 명의로 결제됩니다. 30일 적응 지원이 끝난 뒤의 유지관리는 필요하실 때만 선택하시면 됩니다.</p></details>
+  <details><summary>정해진 방식대로만 써야 하나요?</summary><p>아니요. 처음엔 가장 안전한 기본값(확인 후 진행)으로 세팅하고, 써 보시면서 "이건 그냥 알아서 보내 줘", "이 부서는 하나 더 만들어 줘"처럼 말씀하시면 그대로 바꿉니다.<span class="can">✓ 부서 추가·이름·말투·자동으로 할 일의 범위까지 전부 대표님 마음대로</span></p></details>
   <details><summary>비밀번호나 개인정보가 걱정돼요.</summary><p>비밀번호·인증서는 받지 않습니다. 로그인은 대표님이 직접 하시고, 자료는 대표님 컴퓨터에만 둡니다.</p></details>
-  <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.</p></details>
+  <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.<span class="can">✓ 원하시면 전송까지 맡기실 수도 있어요. 기본 세팅은 안전하게, 범위는 대표님 필요에 맞게 바꿉니다.</span></p></details>
   <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 출장형을 고르시면 처음부터 끝까지 옆에서 세팅하고, 첫 30일 동안 적응을 도와드립니다.</p></details>
  </div></div>
 </section>
 
 <section class="pad cream maker">
  <div class="reveal"><span class="label">MADE BY</span><h2>저도 바쁜 대표였습니다</h2>
- <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p></div>
+ <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p>
+ <p class="story">처음엔 저도 AI를 믿지 못했습니다. 시켜 놓고도 자꾸 다시 확인하고, 결국 제 손으로 처리하고, '이건 안 되겠지, 설마 이것까지 한다고?' 싶었죠. 그 생각이 퍼스널 OS를 만나고 모두 바뀌었습니다. <b>일단, 다 해 줍니다.</b><br>우리의 시간을 빼앗던 일들은 퍼스널 OS에게 맡기고, <b>시간을 버세요.</b></p></div>
 </section>
 
 <section class="final orange" id="apply">
@@ -558,6 +585,21 @@ footer b{color:#fffaf0}
 </section>
 </div>
 <footer><b>BRANDiUM</b> · 퍼스널 OS<br>운영 주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525<br>인천광역시 부평구 길주로647번길 20, 801호 A35 · kedakorea@gmail.com<br>Instagram @brandium__official</footer>
+<div class="evt" id="evt" hidden role="dialog" aria-labelledby="evt-t">
+ <div class="evt-box">
+  <button class="evt-x" aria-label="닫기">✕</button>
+  <span class="evt-tag">OPEN EVENT · 선착순 5명</span>
+  <h3 id="evt-t">퍼스널 OS<br>체험단을 모십니다</h3>
+  <p class="evt-price"><s>1,490,000원</s><b>770,000</b>원 <small>출장형</small></p>
+  <p class="evt-lead">저희는 실제 세팅 사례가 필요하고, 대표님은 꼼꼼한 세팅이 필요하시죠. <b>서로 돕는 체험단</b>입니다.</p>
+  <div class="evt-deal">
+   <div><em>캐다가 드리는 것</em><ul><li>출장형 세팅을 체험단 가격으로</li><li>설치부터 사용까지 더 자세한 1:1 세팅</li><li>유지보수도 더 촘촘하게 봐 드려요</li></ul></div>
+   <div><em>대표님이 해 주실 것</em><ul><li>설치부터 쓰는 동안 불편했던 점 제보</li><li>"이건 이렇게 됐으면" 솔직한 의견</li><li>세팅 사례로 소개 동의(이름은 원하시는 대로)</li></ul></div>
+  </div>
+  <a class="evt-go" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">체험단 신청하기 →</a>
+  <button class="evt-today">오늘 하루 보지 않기</button>
+ </div>
+</div>
 <a class="float" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">APPLY <span>· 상담 신청</span></a>
 <script>
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
@@ -636,6 +678,13 @@ setInterval(()=>{li[k].classList.remove('on');k=(k+1)%li.length;li[k].classList.
 document.querySelectorAll('.swrap').forEach(w=>{const r=w.querySelector('.shots');
 w.querySelector('.snav.l').onclick=()=>r.scrollBy({left:-r.clientWidth*.9,behavior:'smooth'});
 w.querySelector('.snav.r').onclick=()=>r.scrollBy({left:r.clientWidth*.9,behavior:'smooth'});});
+
+/* 체험단 팝업 — 들어오고 2초 뒤, '오늘 하루 보지 않기' 기억 */
+(function(){const e=document.getElementById('evt');if(!e)return;const k='evt-hide-'+new Date().toISOString().slice(0,10);
+try{if(localStorage.getItem(k))return}catch(_){}
+setTimeout(()=>{e.hidden=false},2000);
+const close=()=>{e.hidden=true};e.querySelector('.evt-x').onclick=close;e.addEventListener('click',ev=>{if(ev.target===e)close()});
+e.querySelector('.evt-today').onclick=()=>{try{localStorage.setItem(k,'1')}catch(_){}close()};})();
 /* 화면 예시 크게 보기 */
 (function(){const lb=document.getElementById('lb'),im=lb.querySelector('img');
 document.querySelectorAll('.shot').forEach(f=>f.addEventListener('click',()=>{im.src=f.dataset.src;im.alt=f.querySelector('img').alt;lb.hidden=false}));
