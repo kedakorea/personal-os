@@ -313,7 +313,7 @@ async function renderAI() {
   } else if (v === "done") {
     const t = (c.design && c.design.설정 && c.design.설정.직함) || "매니저", have = c.assets || [];
     const KINDS = [["로고", "🏷", "회사 로고", "견적서·제안서·카드뉴스에 들어가요"], ["직인", "🔴", "직인·서명 이미지", "견적서·계약서 날인 (배경은 저희가 지워 드려요)"], ["사업자등록증", "📄", "사업자등록증", "상호·주소·번호를 정확히 쓰게요"], ["명함", "📇", "명함 사진", "연락처·직함·메일 서명"], ["양식", "🗂", "자주 쓰는 양식", "견적서·계약서·안내문 등 — 같은 모양으로 만들게요"], ["기타", "📎", "그 밖의 자료", "소개서, 강의 자료, 입금 안내 문구 등"]];
-    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br><b>${osEsc(c.chief || "")} ${osEsc(t)}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다.</div>
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다.<br>담당: <b>${osEsc(c.chief || "")} ${osEsc(t)}</b></div>
       <div class="lab" style="margin-top:30px">STEP 4 · 자료</div><h1 style="font-size:26px">${osEsc(c.chief || "")} ${osEsc(t)}에게 넘겨줄 자료</h1>
       <p class="sub">올려 주시면 설치 첫날부터 바로 씁니다. 없는 건 건너뛰셔도 되고, 이 주소로 언제든 다시 올릴 수 있어요. 자료는 브랜디움 담당자만 볼 수 있습니다.</p>
       <div id="as">${KINDS.map(([k, ic, nm, why]) => { const mine = have.filter((a) => a.kind === k); return `<div class="aslot"><div><b>${ic} ${nm}</b><small>${why}</small>${mine.map((a) => `<span class="af">✓ ${osEsc(a.name.replace(k + "_", ""))} <a href="#" data-rm="${osEsc(a.name)}">✕</a></span>`).join("")}</div><label class="sendb asb">${mine.length ? "더 올리기" : "올리기"}<input type="file" data-kind="${k}" hidden multiple accept="image/*,application/pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx"></label></div>`; }).join("")}</div>

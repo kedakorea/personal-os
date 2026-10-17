@@ -12,6 +12,9 @@ async function osCall(body, jwt) {
 const osEsc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function osProposal(d, chief, opt) {
   if (!d) return "";
+  // 설계 안의 {{호칭}}·{{실장}} 같은 빈칸은 화면에서 실제 말로 보여 준다
+  const st = d.설정 || {}, fillT = (v) => typeof v === "string" ? v.split("{{호칭}}").join(st.호칭 || "대표님").split("{{실장}}").join(chief || st.실장 || "매니저").split("{{직함}}").join(st.직함 || "매니저") : Array.isArray(v) ? v.map(fillT) : (v && typeof v === "object") ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === "지침" ? x : fillT(x)])) : v;
+  d = fillT(d);
   const ed = opt && opt.edit, ce = ed ? ' contenteditable="true" spellcheck="false"' : "";
   const title = (d.설정 && d.설정.직함) || "매니저";
   const dep = (d.부서 || []).map((x, i) => {
