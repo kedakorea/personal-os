@@ -31,6 +31,7 @@ input:focus,textarea:focus{outline:3px solid var(--butter)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .cards button{font:600 16px/1.4 Pretendard;text-align:left;padding:14px 14px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;min-height:58px}
 .cards button em{display:block;font-style:normal;font-size:22px;margin-bottom:4px}
+.cards.mini{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.cards.mini button{min-height:44px;font-size:15px;padding:10px 12px}.cards.mini button em{display:inline;font-size:16px;margin:0 4px 0 0}
 .cards button.on{background:var(--ink);color:var(--cream)}
 .cards.one button.on{background:var(--butter);color:var(--ink)}
 .memo{margin-top:28px;border-top:2px dashed var(--sand);padding-top:18px;display:none}
@@ -93,13 +94,15 @@ const STEPS = [
   { lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
     { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
     { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
-  { lab: "03 · 지금 하는 일", h: "요즘 하시는 일을 모두 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
+  { lab: "03 · 맡길 일", h: "평소에 하시는 일이나, 앞으로 AI 실장에게 시키고 싶은 일을 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
     { k: "work", type: "cards", opts: WORK },
-    { k: "work_etc", t: "그 밖에 하는 일", type: "text" } ] },
-  { lab: "04 · 맡기고 싶은 일", h: "그중 실장에게 맡기고 싶은 일은?", sub: "고르신 일 가운데 '누가 대신 해 줬으면' 하는 것만 골라 주세요.", qs: [
-    { k: "delegate", type: "cards", from: "work" },
-    { k: "top", t: "시간을 가장 많이 잡아먹는 일 세 가지", type: "area", hint: "예) 강의 끝나고 수강생 질문 답장 · 매달 정산 · 행사 공지 만들기" },
-    { k: "chore", t: "귀찮지만 꼭 해야 하는 일", type: "text" } ] },
+    { k: "work_etc", t: "그 밖의 일", type: "text", hint: "여러 개면 쉼표(,)로 나눠 적어 주세요" } ] },
+  { lab: "04 · 일 나누기", h: "고르신 일을 나눠 볼게요", sub: "해당하는 일을 눌러 주세요. 한 가지 일이 여러 칸에 들어가도 괜찮습니다.", qs: [
+    { k: "hard", t: "😵 가장 처리하기 어려운 일", type: "cards", from: "work", mini: true },
+    { k: "long", t: "⏳ 제일 시간이 많이 걸리는 일", type: "cards", from: "work", mini: true },
+    { k: "easylong", t: "🔁 쉽지만 시간이 오래 걸리는 일", type: "cards", from: "work", mini: true },
+    { k: "onlyme", t: "🙋 나밖에 처리하지 못하는 일", type: "cards", from: "work", mini: true },
+    { k: "split_more", t: "덧붙이고 싶은 말", type: "text", hint: "예) 정산은 쉬운데 매달 반나절이 걸려요" } ] },
   { lab: "05 · 하루", h: "어제 하루를 아침부터 들려주세요", sub: "몇 시에 무엇을 했는지, 어떤 프로그램·앱을 열었는지. 대충이어도 괜찮습니다.", qs: [
     { k: "day", type: "area", big: true },
     { k: "missed", t: "최근에 놓치거나 실수한 일이 있다면", type: "text", hint: "이게 실장의 '주의할 점'이 됩니다" } ] },
@@ -117,7 +120,8 @@ const STEPS = [
     { k: "ask", type: "multi", opts: ["메일·카톡·문자 보내기", "결제·송금", "블로그·인스타 올리기", "파일 지우기", "고객·수강생 개인정보", "일정 확정"] },
     { k: "never", t: "절대 맡기기 싫은 일 (직접 하실 일)", type: "text" } ] },
   { lab: "09 · 컴퓨터", h: "어떤 기기를 쓰세요?", sub: "퍼스널 OS는 컴퓨터가 켜져 있는 동안 일합니다.", qs: [
-    { k: "pc", t: "주로 쓰는 컴퓨터", type: "one", opts: ["맥북", "맥 데스크톱(아이맥·맥미니)", "윈도우 노트북", "윈도우 데스크톱"] },
+    { k: "pctype", t: "어떤 컴퓨터를 쓰세요?", type: "one", opts: ["노트북", "데스크톱", "둘 다 써요"], rerender: true },
+    { k: "pc", t: "어떤 제품인가요?", type: "one", optsBy: "pctype" },
     { k: "on", t: "그 컴퓨터를 켜 둘 수 있나요?", type: "one", opts: ["하루 종일 켜 둘 수 있어요", "일하는 시간에만", "잘 모르겠어요"] },
     { k: "phone", t: "휴대폰", type: "one", opts: ["아이폰", "갤럭시"] } ] },
   { lab: "10 · 실장", h: "나의 실장은 이렇게", qs: [
@@ -136,7 +140,15 @@ function save() { S.t = new Date().toISOString(); localStorage.setItem(KEY, JSON
 if (new URLSearchParams(location.search).get("mode") === "interview" && !S.mode) S.mode = "interview";
 document.body.classList.toggle("iv", S.mode === "interview");
 
-function opts(q) { if (q.from) return (S.a[q.from] || []).map((x) => WORK.find((w) => w[1] === x) || ["•", x]); return q.opts; }
+const PCS = { "노트북": ["맥북 (애플 노트북)", "윈도우 노트북 (삼성·LG 등)"], "데스크톱": ["아이맥·맥 미니 (애플 데스크톱)", "윈도우 데스크톱"] };
+function opts(q) {
+  if (q.from) {
+    const etc = (S.a[q.from + "_etc"] || "").split(/[,，·\/]/).map((x) => x.trim()).filter(Boolean);
+    return (S.a[q.from] || []).concat(etc).map((x) => WORK.find((w) => w[1] === x) || ["•", x]);
+  }
+  if (q.optsBy) { const t = S.a[q.optsBy]; if (!t) return []; return t === "둘 다 써요" ? PCS["노트북"].concat(PCS["데스크톱"]).map((x) => "주로 " + x) : PCS[t]; }
+  return q.opts;
+}
 function field(q) {
   const v = S.a[q.k];
   const head = q.t ? `<span class="t">${esc(q.t)}</span>${q.hint ? `<small>${esc(q.hint)}</small>` : ""}` : (q.hint ? `<small>${esc(q.hint)}</small>` : "");
@@ -147,11 +159,12 @@ function field(q) {
     return `<div class="q">${head}<div class="cards one" data-multi="0">${btns}</div><input type="text" data-k="${q.k}" data-plus="1" placeholder="${esc(q.ph || "직접 적기")}" value="${esc(q.opts.includes(v) ? "" : (v || ""))}" style="margin-top:10px"></div>`;
   }
   const list = opts(q) || [];
-  if (q.from && !list.length) return `<div class="q"><small>앞에서 고른 일이 없어요. 아래에 적어 주세요.</small></div>`;
+  if (q.from && !list.length) return `<div class="q">${head}<small>앞에서 고른 일이 없어요. 이전으로 가서 골라 주세요.</small></div>`;
+  if (q.optsBy && !list.length) return `<div class="q">${head}<small>위에서 먼저 골라 주세요.</small></div>`;
   const multi = q.type !== "one";
   const sel = multi ? (v || []) : [v];
   const btns = list.map((o) => { const [ic, lb] = Array.isArray(o) ? o : ["", o]; return `<button type="button" data-k="${q.k}" data-v="${esc(lb)}" class="${sel.includes(lb) ? "on" : ""}">${ic ? `<em>${ic}</em>` : ""}${esc(lb)}</button>`; }).join("");
-  return `<div class="q">${head}<div class="cards ${multi ? "" : "one"}" data-multi="${multi ? 1 : 0}">${btns}</div></div>`;
+  return `<div class="q">${head}<div class="cards ${multi ? "" : "one"} ${q.mini ? "mini" : ""}" data-multi="${multi ? 1 : 0}" ${q.rerender ? 'data-re="1"' : ""}>${btns}</div></div>`;
 }
 function render() {
   if (S.token) return renderAI();
@@ -199,13 +212,12 @@ function summary() {
   const j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
   L.push(`${a.name || ""} · ${a.co || ""} · ${a.role || ""} · ${a.tel || ""} · 호칭: ${a.call || ""}`);
   L.push(`[소개] ${a.intro || ""}`, `[함께 일하는 사람] ${a.people || ""}`);
-  L.push(`[하는 일] ${j(a.work)}${a.work_etc ? " / " + a.work_etc : ""}`, `[맡기고 싶은 일] ${j(a.delegate)}`);
-  L.push(`[시간 먹는 일] ${a.top || ""}`, `[귀찮지만 해야 하는 일] ${a.chore || ""}`);
-  L.push(`[어제 하루] ${a.day || ""}`, `[놓친 일] ${a.missed || ""}`);
+  L.push(`[맡길 일] ${j(a.work)}${a.work_etc ? " / " + a.work_etc : ""}`, `[어려운 일] ${j(a.hard)}`, `[오래 걸리는 일] ${j(a.long)}`, `[쉽지만 오래 걸리는 일] ${j(a.easylong)}`, `[나만 할 수 있는 일] ${j(a.onlyme)}`, `[덧붙임] ${a.split_more || ""}`);
+    L.push(`[어제 하루] ${a.day || ""}`, `[놓친 일] ${a.missed || ""}`);
   L.push(`[해 보고 싶은 일] ${a.want || ""}`, `[해야 할 일] ${a.must || ""}`);
   L.push(`[도구] 메일 ${j(a.mail)} / 일정 ${j(a.cal)} / 연락 ${j(a.chat)} / 문서 ${j(a.doc)} / 채널 ${j(a.ch)} / AI ${j(a.ai)}`);
   L.push(`[확인받을 일] ${j(a.ask)}`, `[직접 할 일] ${a.never || ""}`);
-  L.push(`[기기] ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[실장] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
+  L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[실장] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
   const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => `  (${STEPS[k] && STEPS[k].lab}) ${v}`);
   if (m.length) L.push("[인터뷰 메모]", ...m);
   if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
@@ -225,7 +237,7 @@ document.addEventListener("click", async (e) => {
   if (b) {
     const k = b.dataset.k, v = b.dataset.v, multi = b.parentElement.dataset.multi === "1";
     if (multi) { const arr = S.a[k] || []; S.a[k] = arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v); b.classList.toggle("on"); }
-    else { S.a[k] = v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); const pl = b.closest(".q").querySelector("[data-plus]"); if (pl) pl.value = ""; }
+    else { S.a[k] = v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); const pl = b.closest(".q").querySelector("[data-plus]"); if (pl) pl.value = ""; if (b.parentElement.dataset.re) { save(); render(); return; } }
     save();
   }
 });
