@@ -70,6 +70,7 @@ html,body{overflow-x:hidden}
 .chips{display:flex;gap:6px;flex-wrap:wrap;max-width:720px;margin:0 auto 6px}.chips span{font-size:13px;background:#fff;border:1px solid var(--sand);border-radius:99px;padding:4px 10px}
 .busy{padding:50px 0;text-align:center;font-size:18px;line-height:1.8}.busy .dot{font-size:46px;display:block;animation:bb 1.2s infinite}@keyframes bb{50%{transform:translateY(-8px)}}
 .names{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.names button{font:700 18px Pretendard;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}.names button.on{background:var(--ink);color:var(--cream)}
+.aslot{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin-top:10px}.aslot b{font-size:17px}.aslot small{display:block;font-size:13px;opacity:.65;margin-top:2px}.af{display:inline-block;font-size:13px;background:var(--cream);border-radius:99px;padding:3px 10px;margin:6px 6px 0 0}.af a{color:inherit;text-decoration:none;margin-left:4px}.asb{display:inline-flex;align-items:center;background:var(--butter)!important;color:var(--ink)!important;height:44px!important;font-size:15px!important;cursor:pointer}
 .okbox{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:22px;margin-top:18px;font-size:17px;line-height:1.8}
 </style></head><body>
 <header><a class="logo" href="../" title="퍼스널 OS 사이트로"><img src="../logo_choco.png" alt="BRANDiUM"></a><span id="saved" class="saved"></span><a class="home" href="../">← 퍼스널 OS 사이트</a></header>
@@ -127,6 +128,7 @@ const STEPS = [
   { lab: "10 · 매니저", h: "나의 매니저는 이렇게", qs: [
     { k: "tone", t: "말투", type: "one", opts: ["짧게, 핵심만", "친절하고 자세히"] },
     { k: "brief", t: "아침 브리핑에서 듣고 싶은 것", type: "multi", opts: ["오늘 일정", "오늘 할 일", "다가오는 마감", "온 연락 요약", "어제 한 일"] },
+    { k: "chief_title", t: "매니저를 어떤 호칭으로 부르고 싶으세요?", type: "oneplus", opts: ["매니저", "비서실장", "실장", "비서"], hint: "예) 미카사 매니저, 엘빈 비서실장", ph: "직접 적기 (예: 팀장)" },
     { k: "chief", t: "매니저 이름 아이디어가 있나요?", type: "text", hint: "없으면 비워 두세요 — 저희가 후보를 제안합니다" } ] },
   { id: "review" },
   { id: "done" },
@@ -217,7 +219,7 @@ function summary() {
   L.push(`[해 보고 싶은 일] ${a.want || ""}`, `[해야 할 일] ${a.must || ""}`);
   L.push(`[도구] 메일 ${j(a.mail)} / 일정 ${j(a.cal)} / 연락 ${j(a.chat)} / 문서 ${j(a.doc)} / 채널 ${j(a.ch)} / AI ${j(a.ai)}`);
   L.push(`[확인받을 일] ${j(a.ask)}`, `[직접 할 일] ${a.never || ""}`);
-  L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[매니저] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
+  L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[매니저] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 호칭 ${a.chief_title || ""} · 이름 ${a.chief || ""}`);
   const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => `  (${STEPS[k] && STEPS[k].lab}) ${v}`);
   if (m.length) L.push("[인터뷰 메모]", ...m);
   if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
@@ -257,7 +259,7 @@ $("next").onclick = async () => {
   S.step = Math.min(STEPS.length - 1, S.step + 1); save(); render();
 };
 /* ── AI 인터뷰 · 제안서 · 컨펌 (2026-10-17) ── */
-let AI = null, FILES = [], CHIEF = "", MORE = false;
+let AI = null, FILES = [], CHIEF = "", TITLE = "", MORE = false;
 function stageView() { const c = AI && AI.customer; if (!c) return "load"; if (c.stage === "컨펌" || c.stage === "설치" || c.stage === "완료") return "done"; if (c.design_state === "running") return "busy"; if (c.design && !MORE) return "prop"; return "chat"; }
 async function renderAI() {
   $("nav").style.display = "none";
@@ -277,19 +279,58 @@ async function renderAI() {
     setTimeout(async () => { AI = await osCall({ action: "get", token: S.token }); renderAI(); }, 5000);
   } else if (v === "prop") {
     const d = c.design, cands = (d.실장후보 || []).filter((x) => x.이름);
-    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="lab">STEP 3 · 제안</div><h1 style="font-size:26px">제안서가 나왔어요</h1>${osProposal(d)}
-      <h3 style="margin-top:26px">고칠 곳이 있으면 적어 주세요</h3><textarea id="req" placeholder="예) 연구실은 빼 주세요 / 홍보실 이름을 '알림실'로" style="min-height:90px"></textarea>
-      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><button class="sendb" style="background:#fff;color:var(--ink)" id="redo">고쳐서 다시 만들기</button><button class="sendb" style="background:#fff;color:var(--ink)" id="more">인터뷰 더 하기</button></div>
-      <h3 style="margin-top:26px">매니저 이름을 골라 주세요</h3><div class="names">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>
+    if (!TITLE) TITLE = (d.설정 && d.설정.직함) || (c.intake && c.intake.a && c.intake.a.chief_title) || "매니저";
+    const titles = ["매니저", "비서실장", "실장", "비서"];
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="lab">STEP 3 · 제안</div><h1 style="font-size:26px">제안서가 나왔어요</h1>
+      <p class="sub" style="margin-bottom:14px">✏️ 점선 글자를 눌러 바로 고칠 수 있어요. 부서는 ✕로 빼고 ＋로 더하세요. 고친 내용은 저절로 저장됩니다. <span id="esv" class="note"></span></p>
+      <div id="pv">${osProposal(d, null, { edit: true })}</div>
+      <details style="margin-top:18px"><summary style="cursor:pointer;font-weight:800">통째로 다시 짜고 싶으면 (AI에게 부탁)</summary><textarea id="req" placeholder="예) 연구실은 빼고 홍보실을 둘로 나눠 주세요" style="min-height:80px;margin-top:8px"></textarea>
+      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><button class="sendb" style="background:#fff;color:var(--ink)" id="redo">AI로 다시 만들기</button><button class="sendb" style="background:#fff;color:var(--ink)" id="more">인터뷰 더 하기</button></div></details>
+      <h3 style="margin-top:28px">매니저 이름을 골라 주세요</h3><div class="names" id="nm">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>
       <input type="text" id="own" placeholder="직접 짓기 (예: 하나)" style="margin-top:6px">
-      <button class="bigb" id="ok" type="button" style="margin-top:18px;background:var(--ink);color:var(--cream)">✅ 이대로 만들어 주세요</button><div style="height:60px"></div>`;
-    document.querySelectorAll(".names button").forEach((b) => b.onclick = () => { CHIEF = b.dataset.n; $("own").value = ""; document.querySelectorAll(".names button").forEach((x) => x.classList.toggle("on", x === b)); });
+      <h3 style="margin-top:22px">매니저를 어떤 호칭으로 부를까요?</h3><div class="names" id="tt">${titles.map((x) => `<button type="button" data-t="${x}" class="${TITLE === x ? "on" : ""}">${x}</button>`).join("")}</div>
+      <input type="text" id="owt" placeholder="직접 적기 (예: 팀장, 집사)" value="${titles.includes(TITLE) ? "" : osEsc(TITLE)}" style="margin-top:6px">
+      <p class="note" id="prev" style="font-size:16px;margin-top:14px"></p>
+      <button class="bigb" id="ok" type="button" style="margin-top:14px;background:var(--ink);color:var(--cream)">✅ 이대로 만들어 주세요</button><div style="height:60px"></div>`;
+    const pv = $("pv"), saveEdit = async () => { const nd = osCollect(pv, AI.customer.design); $("esv").textContent = "저장 중…"; const r = await osCall({ action: "edit", token: S.token, design: nd }); if (r.ok) { AI.customer.design = nd; $("esv").textContent = "저장됨 ✓"; } else $("esv").textContent = "저장 못 함 — " + (r.error || ""); };
+    osEditBind(pv, saveEdit);
+    const preview = () => { const nm = $("own").value.trim() || CHIEF, tt = $("owt").value.trim() || TITLE; $("prev").innerHTML = nm ? `앞으로 이렇게 부르시면 됩니다: <b>“${osEsc(nm)} ${osEsc(tt)}, 오늘 할 일 알려 줘”</b>` : ""; };
+    document.querySelectorAll("#nm button").forEach((b) => b.onclick = () => { CHIEF = b.dataset.n; $("own").value = ""; document.querySelectorAll("#nm button").forEach((x) => x.classList.toggle("on", x === b)); preview(); });
+    document.querySelectorAll("#tt button").forEach((b) => b.onclick = () => { TITLE = b.dataset.t; $("owt").value = ""; document.querySelectorAll("#tt button").forEach((x) => x.classList.toggle("on", x === b)); preview(); });
+    $("own").oninput = () => { document.querySelectorAll("#nm button").forEach((x) => x.classList.remove("on")); preview(); };
+    $("owt").oninput = () => { document.querySelectorAll("#tt button").forEach((x) => x.classList.remove("on")); preview(); };
+    preview();
     $("redo").onclick = () => { const q = $("req").value.trim(); if (!q) { $("req").focus(); return; } makeProp(q); };
     $("more").onclick = () => { MORE = true; renderAI(); };
-    $("ok").onclick = async () => { const own = $("own").value.trim(); const name = own || CHIEF; if (!name) { alert("매니저 이름을 골라 주세요"); return; } if (!confirm(`매니저 이름 '${name}'(으)로 확정할까요?`)) return; $("ok").disabled = true; AI = await osCall({ action: "confirm", token: S.token, chief: name }); renderAI(); };
+    $("ok").onclick = async () => {
+      const name = $("own").value.trim() || CHIEF, title = $("owt").value.trim() || TITLE;
+      if (!name) { alert("매니저 이름을 골라 주세요"); return; }
+      if (!confirm(`'${name} ${title}'(으)로 확정할까요?`)) return;
+      $("ok").disabled = true; await saveEdit();
+      AI = await osCall({ action: "confirm", token: S.token, chief: name, title }); renderAI();
+    };
     window.scrollTo(0, 0);
   } else if (v === "done") {
-    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>매니저 <b>${osEsc(c.chief || "")}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다. 설치는 담당자가 안내해 드립니다.</div><div style="margin-top:18px">${osProposal(c.design, c.chief)}</div>`;
+    const t = (c.design && c.design.설정 && c.design.설정.직함) || "매니저", have = c.assets || [];
+    const KINDS = [["로고", "🏷", "회사 로고", "견적서·제안서·카드뉴스에 들어가요"], ["직인", "🔴", "직인·서명 이미지", "견적서·계약서 날인 (배경은 저희가 지워 드려요)"], ["사업자등록증", "📄", "사업자등록증", "상호·주소·번호를 정확히 쓰게요"], ["명함", "📇", "명함 사진", "연락처·직함·메일 서명"], ["양식", "🗂", "자주 쓰는 양식", "견적서·계약서·안내문 등 — 같은 모양으로 만들게요"], ["기타", "📎", "그 밖의 자료", "소개서, 강의 자료, 입금 안내 문구 등"]];
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br><b>${osEsc(c.chief || "")} ${osEsc(t)}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다.</div>
+      <div class="lab" style="margin-top:30px">STEP 4 · 자료</div><h1 style="font-size:26px">${osEsc(c.chief || "")} ${osEsc(t)}에게 넘겨줄 자료</h1>
+      <p class="sub">올려 주시면 설치 첫날부터 바로 씁니다. 없는 건 건너뛰셔도 되고, 이 주소로 언제든 다시 올릴 수 있어요. 자료는 브랜디움 담당자만 볼 수 있습니다.</p>
+      <div id="as">${KINDS.map(([k, ic, nm, why]) => { const mine = have.filter((a) => a.kind === k); return `<div class="aslot"><div><b>${ic} ${nm}</b><small>${why}</small>${mine.map((a) => `<span class="af">✓ ${osEsc(a.name.replace(k + "_", ""))} <a href="#" data-rm="${osEsc(a.name)}">✕</a></span>`).join("")}</div><label class="sendb asb">${mine.length ? "더 올리기" : "올리기"}<input type="file" data-kind="${k}" hidden multiple accept="image/*,application/pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx"></label></div>`; }).join("")}</div>
+      <p class="note" id="asm"></p>
+      <h3 style="margin-top:30px">확정한 제안서</h3><div style="margin-top:10px">${osProposal(c.design, c.chief)}</div>`;
+    document.querySelectorAll("[data-kind]").forEach((inp) => inp.onchange = async (e) => {
+      for (const f of e.target.files) {
+        if (f.size > 15e6) { alert(f.name + " — 15MB 이하만 올릴 수 있어요"); continue; }
+        $("asm").textContent = f.name + " 올리는 중…";
+        const data = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(f); });
+        const r = await osCall({ action: "asset", token: S.token, kind: inp.dataset.kind, name: f.name, type: f.type, data });
+        if (!r.ok) { alert("올리지 못했어요: " + (r.error || "")); continue; }
+        AI.customer = r.customer;
+      }
+      $("asm").textContent = ""; renderAI();
+    });
+    document.querySelectorAll("[data-rm]").forEach((a) => a.onclick = async (e) => { e.preventDefault(); if (!confirm("이 파일을 뺄까요?")) return; const r = await osCall({ action: "asset", token: S.token, remove: a.dataset.rm }); if (r.ok) { AI.customer = r.customer; renderAI(); } });
   }
 }
 function msgHtml(m) { return `<div class="m ${m.role === "ai" ? "ai" : "me"}">${osEsc(m.text)}${m.files && m.files.length ? `<span class="f">📎 ${osEsc(m.files.map((f) => f.name).join(", "))}</span>` : ""}</div>`; }
