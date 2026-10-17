@@ -145,7 +145,8 @@ async function buildKit(c) {
     const zip = await JSZip.loadAsync(await (await fetch(k.url)).arrayBuffer());
     const top = Object.keys(zip.files)[0].split("/")[0] + "/";
     const set = Object.assign({ 직함: "매니저" }, d.설정 || {}); set.실장 = (c.chief || "").trim() || set.직함;   // 이름이 없으면 호칭이 곧 이름 set.회사 = set.회사 || c.company || "";
-    const fill = (t) => String(t || "").split("{{실장}} {{직함}}").join(set.실장 === set.직함 ? set.직함 : set.실장 + " " + set.직함).split("{{직함}}").join(set.직함 || "매니저").split("{{실장}}").join(set.실장 || "매니저").split("{{호칭}}").join(set.호칭 || "대표님").split("{{회사}}").join(set.회사 || "");
+    const full = set.실장 === set.직함 ? set.직함 : set.실장 + " " + set.직함;
+    const fill = (t) => String(t || "").split("{{매니저}}").join(full).split(set.직함 + " {{실장}}").join(full).split("{{실장}} {{직함}}").join(set.실장 === set.직함 ? set.직함 : set.실장 + " " + set.직함).split("{{직함}}").join(set.직함 || "매니저").split("{{실장}}").join(set.실장 || "매니저").split("{{호칭}}").join(set.호칭 || "대표님").split("{{회사}}").join(set.회사 || "").split(set.직함 + " " + set.직함).join(set.직함);
     zip.file(top + "설계/설정.json", JSON.stringify(set, null, 1));
     zip.file(top + "설계/부서/부서표.json", JSON.stringify({ 부서: (d.부서 || []).map(({ 지침, ...x }) => x) }, null, 1));
     for (const dep of d.부서 || []) if (dep.폴더 && dep.폴더 !== "00_비서실" && dep.지침) zip.file(top + `설계/부서/${dep.폴더}/CLAUDE.md`, `# ${dep.이름} 지침\n\n` + fill(dep.지침) + "\n");
