@@ -179,8 +179,8 @@ function render() {
   if (!S.keyOk) {
     $("nav").style.display = "none"; $("bar").style.width = "0%";
     h = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>고객 키를<br>넣어 주세요</h1>
-      <p class="sub">퍼스널 OS 업무 파악은 상담을 마친 고객님만 들어오실 수 있습니다. 담당자에게 받으신 고객 키(예: OS-AB12-CD34)를 넣어 주세요.</p>
-      <div class="q"><input type="text" id="keyin" class="keyin" placeholder="OS-____-____" value="${esc(new URLSearchParams(location.search).get("k") || "")}" autocomplete="off"></div>
+      <p class="sub">퍼스널 OS 업무 파악은 상담을 마친 고객님만 들어오실 수 있습니다. 담당자에게 받으신 고객 키(예: KEY-OS-AB12-CD34)를 넣어 주세요.</p>
+      <div class="q"><input type="text" id="keyin" class="keyin" placeholder="KEY-OS-____-____" value="${esc(new URLSearchParams(location.search).get("k") || "")}" autocomplete="off"></div>
       <div class="mode"><button type="button" id="keygo"><b>🔑 들어가기</b>키가 맞으면 바로 시작합니다. 전에 하시던 분은 이어서 합니다.</button></div>
       <p class="note" id="keyerr"></p><p class="note">키가 없으신가요? <a href="../#apply">상담 신청하기</a></p>`;
     $("main").innerHTML = h; window.scrollTo(0, 0);
