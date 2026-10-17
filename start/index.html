@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>퍼스널 OS 업무 파악 | BRANDiUM</title>
+<link rel="icon" type="image/png" href="../favicon.png?v=2"><link rel="apple-touch-icon" href="../apple-touch-icon.png?v=2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--paper:#fff8e6;--sand:#ead9c6;--blue:#c4dae8;--butter:#ffd84d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 22px;position:sticky;top:0;background:var(--paper);z-index:5}
+header b{font:700 17px 'Josefin Sans',Pretendard;letter-spacing:.04em}
+header span{font-size:13px;opacity:.6}
+.bar{height:6px;background:var(--sand);margin:0 22px;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);width:0;transition:width .35s}
+main{max-width:720px;margin:0 auto;padding:34px 22px 150px}
+.lab{font:700 13px 'Josefin Sans',Pretendard;letter-spacing:.16em;opacity:.55}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.3;margin:10px 0 12px;font-weight:900}
+.sub{font-size:17px;line-height:1.7;opacity:.8}
+.q{margin-top:30px}
+.q>label,.q>.t{display:block;font-size:19px;font-weight:800;margin-bottom:10px}
+.q small{display:block;font-size:14px;opacity:.6;margin:-4px 0 10px;font-weight:500}
+input[type=text],input[type=tel],textarea{width:100%;font:17px/1.6 Pretendard;padding:14px 16px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink)}
+textarea{min-height:130px;resize:vertical}
+input:focus,textarea:focus{outline:3px solid var(--butter)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cards button{font:600 16px/1.4 Pretendard;text-align:left;padding:14px 14px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;min-height:58px}
+.cards button em{display:block;font-style:normal;font-size:22px;margin-bottom:4px}
+.cards button.on{background:var(--ink);color:var(--cream)}
+.cards.one button.on{background:var(--butter);color:var(--ink)}
+.memo{margin-top:28px;border-top:2px dashed var(--sand);padding-top:18px;display:none}
+body.iv .memo{display:block}
+.memo label{font-size:15px;font-weight:800;opacity:.75}
+.memo textarea{min-height:80px;background:#fffdf3;border-style:dashed}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:2px solid var(--sand);padding:14px 22px calc(14px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center}
+nav button{font:800 17px Pretendard;padding:15px 26px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+nav button.go{background:var(--ink);color:var(--cream);flex:1;max-width:420px}
+nav button:disabled{opacity:.35}
+.mode{display:grid;gap:14px;margin-top:28px}
+.mode button{text-align:left;font:17px/1.6 Pretendard;padding:22px 22px;border:3px solid var(--ink);border-radius:20px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:5px 5px 0 var(--ink)}
+.mode button b{display:block;font-size:22px;margin-bottom:4px}
+.sum{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px 22px;margin-top:24px;font-size:15.5px;line-height:1.75;white-space:pre-wrap}
+.note{font-size:14px;opacity:.65;margin-top:14px;line-height:1.6}
+.saved{font-size:12px;opacity:.55;flex:1;text-align:right}
+html,body{overflow-x:hidden}
+.cards button{min-width:0;overflow-wrap:anywhere}
+@media(max-width:480px){header .who{display:none}.cards{grid-template-columns:1fr 1fr}nav button{padding:14px 18px}}
+.done{text-align:center;padding-top:60px}
+.done .big{font-size:64px}
+</style></head><body>
+<header><b>BRAND!UM</b><span id="saved" class="saved"></span><span class="who">퍼스널 OS · 업무 파악</span></header>
+<div class="bar"><i id="bar"></i></div>
+<main id="main"></main>
+<nav id="nav"><button id="back" type="button">이전</button><button id="next" class="go" type="button">다음</button></nav>
+<script>
+const FORM = {
+  action: "https://docs.google.com/forms/d/e/1FAIpQLSfYyPULyBfaK9y4mHZEePGINoe9uZO3Ap0m-G_Bnf0LRL5qJA/formResponse",
+  e: { mode: "entry.75201893", name: "entry.751488257", co: "entry.209930788", tel: "entry.1308190180", sum: "entry.1118271048", json: "entry.1959129824" }
+};
+const WORK = [["🧾","견적서·계약서"],["💰","세금계산서·정산·입금 확인"],["📊","제안서·기획서·보고서"],["🎓","강의·교육 자료"],["✍️","글쓰기·칼럼·원고"],["📚","연구·논문·자료 정리"],["📣","블로그·인스타·홍보 글"],["🎨","홍보물·카드뉴스 디자인"],["📅","일정 관리·약속 잡기"],["💬","메일·카톡 답장"],["👥","고객·수강생·회원 관리"],["🎪","행사·모임 준비"],["🔎","검색·자료 찾기"],["🗂","서류 발급·제출·행정"],["🧮","엑셀·명단·숫자 정리"],["📝","회의록·메모 정리"]];
+const STEPS = [
+  { id: "start" },
+  { lab: "01 · 기본", h: "먼저, 어떤 분이신지 알려 주세요", qs: [
+    { k: "name", t: "성함", type: "text" },
+    { k: "co", t: "회사·브랜드 이름", type: "text", hint: "여러 개면 모두 적어 주세요" },
+    { k: "role", t: "직함·하시는 일 한 줄", type: "text", hint: "예) ○○학원 원장, 1인 컨설팅 대표, 대학 겸임교수" },
+    { k: "tel", t: "연락처", type: "tel" },
+    { k: "call", t: "실장이 나를 뭐라고 부르면 좋을까요?", type: "one", opts: ["대표님", "원장님", "교수님", "선생님", "이름으로"] } ] },
+  { lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
+    { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
+    { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
+  { lab: "03 · 지금 하는 일", h: "요즘 하시는 일을 모두 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
+    { k: "work", type: "cards", opts: WORK },
+    { k: "work_etc", t: "그 밖에 하는 일", type: "text" } ] },
+  { lab: "04 · 맡기고 싶은 일", h: "그중 실장에게 맡기고 싶은 일은?", sub: "고르신 일 가운데 '누가 대신 해 줬으면' 하는 것만 골라 주세요.", qs: [
+    { k: "delegate", type: "cards", from: "work" },
+    { k: "top", t: "시간을 가장 많이 잡아먹는 일 세 가지", type: "area", hint: "예) 강의 끝나고 수강생 질문 답장 · 매달 정산 · 행사 공지 만들기" },
+    { k: "chore", t: "귀찮지만 꼭 해야 하는 일", type: "text" } ] },
+  { lab: "05 · 하루", h: "어제 하루를 아침부터 들려주세요", sub: "몇 시에 무엇을 했는지, 어떤 프로그램·앱을 열었는지. 대충이어도 괜찮습니다.", qs: [
+    { k: "day", type: "area", big: true },
+    { k: "missed", t: "최근에 놓치거나 실수한 일이 있다면", type: "text", hint: "이게 실장의 '주의할 점'이 됩니다" } ] },
+  { lab: "06 · 앞으로", h: "앞으로 해 보고 싶은 일, 해야 할 일", qs: [
+    { k: "want", t: "앞으로 해 보고 싶은 일", type: "area", hint: "예) 책 쓰기, 유튜브 시작, 새 강의 만들기" },
+    { k: "must", t: "앞으로 꼭 해야 할 일 (마감이 있는 일)", type: "area", hint: "예) 11월 학회 발표, 연말 정산, 다음 달 행사" } ] },
+  { lab: "07 · 쓰는 도구", h: "평소 쓰는 것을 골라 주세요", qs: [
+    { k: "mail", t: "메일", type: "multi", opts: ["지메일", "네이버 메일", "회사 메일", "메일은 잘 안 봐요"] },
+    { k: "cal", t: "일정", type: "multi", opts: ["구글 캘린더", "네이버 캘린더", "휴대폰 기본 달력", "종이 다이어리"] },
+    { k: "chat", t: "연락", type: "multi", opts: ["카카오톡", "문자", "전화", "밴드·단톡방"] },
+    { k: "doc", t: "문서", type: "multi", opts: ["한글", "워드", "엑셀", "PPT·키노트", "구글 문서", "캔바"] },
+    { k: "ch", t: "채널", type: "multi", opts: ["블로그", "인스타그램", "유튜브", "홈페이지", "스마트스토어", "없음"] },
+    { k: "ai", t: "써 본 AI", type: "multi", opts: ["챗GPT", "클로드", "제미나이", "뤼튼", "안 써 봤어요"] } ] },
+  { lab: "08 · 지킬 선", h: "실장이 꼭 확인받고 해야 할 일은?", sub: "고른 일은 실장이 준비만 해 두고, 마지막 버튼은 직접 누르시게 세팅합니다.", qs: [
+    { k: "ask", type: "multi", opts: ["메일·카톡·문자 보내기", "결제·송금", "블로그·인스타 올리기", "파일 지우기", "고객·수강생 개인정보", "일정 확정"] },
+    { k: "never", t: "절대 맡기기 싫은 일 (직접 하실 일)", type: "text" } ] },
+  { lab: "09 · 컴퓨터", h: "어떤 기기를 쓰세요?", sub: "퍼스널 OS는 컴퓨터가 켜져 있는 동안 일합니다.", qs: [
+    { k: "pc", t: "주로 쓰는 컴퓨터", type: "one", opts: ["맥북", "맥 데스크톱(아이맥·맥미니)", "윈도우 노트북", "윈도우 데스크톱"] },
+    { k: "on", t: "그 컴퓨터를 켜 둘 수 있나요?", type: "one", opts: ["하루 종일 켜 둘 수 있어요", "일하는 시간에만", "잘 모르겠어요"] },
+    { k: "phone", t: "휴대폰", type: "one", opts: ["아이폰", "갤럭시"] } ] },
+  { lab: "10 · 실장", h: "나의 실장은 이렇게", qs: [
+    { k: "tone", t: "말투", type: "one", opts: ["짧게, 핵심만", "친절하고 자세히"] },
+    { k: "brief", t: "아침 브리핑에서 듣고 싶은 것", type: "multi", opts: ["오늘 일정", "오늘 할 일", "다가오는 마감", "온 연락 요약", "어제 한 일"] },
+    { k: "chief", t: "실장 이름 아이디어가 있나요?", type: "text", hint: "없으면 비워 두세요 — 저희가 후보를 제안합니다" } ] },
+  { id: "review" },
+  { id: "done" },
+];
+const KEY = "pos_intake_v1";
+let S = JSON.parse(localStorage.getItem(KEY) || "{}");
+S.a = S.a || {}; S.memo = S.memo || {}; S.step = S.step || 0;
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function save() { S.t = new Date().toISOString(); localStorage.setItem(KEY, JSON.stringify(S)); $("saved").textContent = "자동 저장됨"; }
+if (new URLSearchParams(location.search).get("mode") === "interview" && !S.mode) S.mode = "interview";
+document.body.classList.toggle("iv", S.mode === "interview");
+
+function opts(q) { if (q.from) return (S.a[q.from] || []).map((x) => WORK.find((w) => w[1] === x) || ["•", x]); return q.opts; }
+function field(q) {
+  const v = S.a[q.k];
+  const head = q.t ? `<span class="t">${esc(q.t)}</span>${q.hint ? `<small>${esc(q.hint)}</small>` : ""}` : (q.hint ? `<small>${esc(q.hint)}</small>` : "");
+  if (q.type === "text" || q.type === "tel") return `<div class="q">${head}<input type="${q.type}" data-k="${q.k}" value="${esc(v || "")}"></div>`;
+  if (q.type === "area") return `<div class="q">${head}<textarea data-k="${q.k}" style="${q.big ? "min-height:260px" : ""}">${esc(v || "")}</textarea></div>`;
+  const list = opts(q) || [];
+  if (q.from && !list.length) return `<div class="q"><small>앞에서 고른 일이 없어요. 아래에 적어 주세요.</small></div>`;
+  const multi = q.type !== "one";
+  const sel = multi ? (v || []) : [v];
+  const btns = list.map((o) => { const [ic, lb] = Array.isArray(o) ? o : ["", o]; return `<button type="button" data-k="${q.k}" data-v="${esc(lb)}" class="${sel.includes(lb) ? "on" : ""}">${ic ? `<em>${ic}</em>` : ""}${esc(lb)}</button>`; }).join("");
+  return `<div class="q">${head}<div class="cards ${multi ? "" : "one"}" data-multi="${multi ? 1 : 0}">${btns}</div></div>`;
+}
+function render() {
+  const st = STEPS[S.step];
+  $("bar").style.width = Math.round((S.step / (STEPS.length - 2)) * 100) + "%";
+  $("nav").style.display = (st.id === "start" || st.id === "done") ? "none" : "flex";
+  $("back").disabled = S.step <= 1;
+  $("next").textContent = st.id === "review" ? "보내기" : "다음";
+  let h = "";
+  if (st.id === "start") {
+    h = `<div class="lab">PERSONAL OS · STEP 1</div><h1>대표님의 일을<br>먼저 알려 주세요</h1>
+      <p class="sub">퍼스널 OS의 첫 단계는 <b>업무 파악</b>입니다. 들려주신 내용으로 대표님 대신 일할 실장과 부서를 설계해 제안서로 보여 드립니다. 10~15분이면 충분하고, 중간에 닫아도 이 기기에 저장됩니다.</p>
+      <div class="mode"><button type="button" data-mode="self"><b>✍️ 직접 작성할게요</b>질문을 하나씩 읽고 편하게 답해 주세요.</button>
+      <button type="button" data-mode="interview"><b>🎙 담당자와 인터뷰</b>브랜디움 담당자가 묻고 대신 적습니다. 질문마다 인터뷰 메모 칸이 나옵니다.</button></div>
+      ${S.a.name ? `<p class="note">작성 중인 답(${esc(S.a.name)})이 있습니다. 위에서 방식을 고르면 이어서 합니다. <a href="#" id="reset">처음부터 새로</a></p>` : ""}`;
+  } else if (st.id === "review") {
+    h = `<div class="lab">확인</div><h1>이대로 보낼까요?</h1><p class="sub">보내 주시면 브랜디움이 이 내용으로 제안서를 만들어 연락드립니다.</p><div class="sum">${esc(summary())}</div>
+      <div class="q"><span class="t">더 하고 싶은 말</span><textarea data-k="more">${esc(S.a.more || "")}</textarea></div>`;
+  } else if (st.id === "done") {
+    h = `<div class="done"><div class="big">📮</div><h1>잘 받았습니다</h1><p class="sub">들려주신 일로 퍼스널 OS 제안서를 만들어 연락드리겠습니다.<br>— BRAND!UM 퍼스널 OS</p>
+      <p class="note"><a href="../">퍼스널 OS 소개 보기</a> · <a href="#" id="again">새로 작성하기</a></p></div>`;
+  } else {
+    h = `<div class="lab">${st.lab}</div><h1>${st.h}</h1>${st.sub ? `<p class="sub">${st.sub}</p>` : ""}${st.qs.map(field).join("")}
+      <div class="memo"><label>🎙 인터뷰 메모 (담당자만)</label><textarea data-memo="${S.step}">${esc(S.memo[S.step] || "")}</textarea></div>`;
+  }
+  $("main").innerHTML = h;
+  window.scrollTo(0, 0);
+}
+function summary() {
+  const a = S.a, L = [];
+  const j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
+  L.push(`${a.name || ""} · ${a.co || ""} · ${a.role || ""} · ${a.tel || ""} · 호칭: ${a.call || ""}`);
+  L.push(`[소개] ${a.intro || ""}`, `[함께 일하는 사람] ${a.people || ""}`);
+  L.push(`[하는 일] ${j(a.work)}${a.work_etc ? " / " + a.work_etc : ""}`, `[맡기고 싶은 일] ${j(a.delegate)}`);
+  L.push(`[시간 먹는 일] ${a.top || ""}`, `[귀찮지만 해야 하는 일] ${a.chore || ""}`);
+  L.push(`[어제 하루] ${a.day || ""}`, `[놓친 일] ${a.missed || ""}`);
+  L.push(`[해 보고 싶은 일] ${a.want || ""}`, `[해야 할 일] ${a.must || ""}`);
+  L.push(`[도구] 메일 ${j(a.mail)} / 일정 ${j(a.cal)} / 연락 ${j(a.chat)} / 문서 ${j(a.doc)} / 채널 ${j(a.ch)} / AI ${j(a.ai)}`);
+  L.push(`[확인받을 일] ${j(a.ask)}`, `[직접 할 일] ${a.never || ""}`);
+  L.push(`[기기] ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[실장] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
+  const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => `  (${STEPS[k] && STEPS[k].lab}) ${v}`);
+  if (m.length) L.push("[인터뷰 메모]", ...m);
+  if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
+  return L.join("\n");
+}
+document.addEventListener("input", (e) => {
+  const k = e.target.dataset.k, m = e.target.dataset.memo;
+  if (k) S.a[k] = e.target.value; else if (m !== undefined) S.memo[m] = e.target.value; else return;
+  save();
+});
+document.addEventListener("click", async (e) => {
+  const md = e.target.closest("[data-mode]");
+  if (md) { S.mode = md.dataset.mode; document.body.classList.toggle("iv", S.mode === "interview"); S.step = Math.max(1, S.step === 0 ? 1 : S.step); save(); render(); return; }
+  if (e.target.id === "reset" || e.target.id === "again") { e.preventDefault(); if (confirm("작성한 내용을 지우고 처음부터 할까요?")) { S = { a: {}, memo: {}, step: 0 }; save(); render(); } return; }
+  const b = e.target.closest(".cards button");
+  if (b) {
+    const k = b.dataset.k, v = b.dataset.v, multi = b.parentElement.dataset.multi === "1";
+    if (multi) { const arr = S.a[k] || []; S.a[k] = arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v); b.classList.toggle("on"); }
+    else { S.a[k] = v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); }
+    save();
+  }
+});
+$("back").onclick = () => { if (S.step > 1) { S.step--; save(); render(); } };
+$("next").onclick = async () => {
+  const st = STEPS[S.step];
+  if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
+  if (st.id === "review") {
+    $("next").disabled = true; $("next").textContent = "보내는 중…";
+    const p = new URLSearchParams();
+    p.append(FORM.e.mode, S.mode === "interview" ? "인터뷰" : "직접 작성");
+    p.append(FORM.e.name, S.a.name || ""); p.append(FORM.e.co, S.a.co || ""); p.append(FORM.e.tel, S.a.tel || "");
+    p.append(FORM.e.sum, summary()); p.append(FORM.e.json, JSON.stringify({ v: 1, mode: S.mode, a: S.a, memo: S.memo, t: S.t }));
+    try { await fetch(FORM.action, { method: "POST", mode: "no-cors", body: p }); S.sent = new Date().toISOString(); }
+    catch (err) { alert("인터넷 연결을 확인하고 다시 눌러 주세요. 작성한 내용은 저장돼 있습니다."); $("next").disabled = false; render(); return; }
+    $("next").disabled = false;
+  }
+  S.step = Math.min(STEPS.length - 1, S.step + 1); save(); render();
+};
+render();
+</script>
+</body></html>
