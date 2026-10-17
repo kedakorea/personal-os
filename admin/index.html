@@ -15,6 +15,9 @@
 body{background:#f6efe2;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all}
 header{display:flex;align-items:center;gap:14px;padding:14px 22px;background:var(--ink);color:var(--cream)}
 header b{font:700 18px 'Josefin Sans',Pretendard}header span{opacity:.7;font-size:14px;flex:1}
+header .hb{color:var(--cream);font-size:13px;text-decoration:none;border:1px solid var(--cream);border-radius:99px;padding:6px 14px}
+.tabs{display:flex;gap:6px;margin-bottom:16px}.tabs button{font:800 15px Pretendard;padding:10px 18px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}.tabs button.on{background:var(--ink);color:var(--cream)}
+code{font:700 15px Menlo,monospace;letter-spacing:.04em}
 header button{background:none;border:1px solid var(--cream);color:var(--cream);border-radius:99px;padding:6px 14px;font:600 13px Pretendard;cursor:pointer}
 main{max-width:1180px;margin:0 auto;padding:24px 20px 80px}
 .login{max-width:380px;margin:80px auto;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:30px}
@@ -42,7 +45,7 @@ tr.row{cursor:pointer}tr.row:hover{background:#fffaf0}
 .note{font-size:13px;opacity:.65;margin-top:6px}
 .err{color:#b3261e;margin-top:10px;font-size:14px}
 </style></head><body>
-<header><b>BRAND!UM</b><span>퍼스널 OS 관리자</span><button id="out" hidden>로그아웃</button></header>
+<header><a href="../" title="퍼스널 OS 사이트로"><img src="../logo_butter.png" alt="BRANDiUM" style="height:20px;display:block"></a><span>퍼스널 OS 관리자</span><a class="hb" href="../">← 퍼스널 OS 사이트</a><button id="out" hidden>로그아웃</button></header>
 <main id="main"></main>
 <script>
 const sb = supabase.createClient(OS_URL, OS_ANON);
@@ -54,19 +57,43 @@ async function A(body) { const r = await osCall(body, JWT); if (r.error && /관�
 
 function loginView() {
   $("out").hidden = true;
-  $("main").innerHTML = `<div class="login"><h1>관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="비밀번호"><button class="btn" id="go" style="width:100%;margin-top:14px">들어가기</button><p class="err" id="er"></p></div>`;
+  $("main").innerHTML = `<div class="login"><h1>관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="관리자 비밀번호"><button class="btn" id="go" style="width:100%;margin-top:14px">들어가기</button><p class="err" id="er"></p></div>`;
   const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; list(); };
   $("go").onclick = go; $("pw").onkeydown = (e) => { if (e.key === "Enter") go(); };
 }
 async function list() {
   $("out").hidden = false; history.replaceState(null, "", location.pathname);
-  $("main").innerHTML = `<div class="top"><h1>고객</h1><a class="btn y" href="../start/?mode=interview&new=1" target="_blank">🎙 새 고객 인터뷰 시작</a><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  $("main").innerHTML = `${tabs("c")}<div class="top"><h1>고객</h1><button class="btn y" id="newiv">🎙 새 고객 인터뷰 시작</button><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  $("newiv").onclick = async () => { const nm = prompt("고객 이름(메모용)을 적어 주세요", ""); if (nm === null) return; const k = await A({ action: "a_key_new", memo: nm, n: 1 }); if (!k.ok) { alert(k.error); return; } window.open(`../start/?mode=interview&new=1&k=${k.codes[0]}`, "_blank"); };
   const r = await A({ action: "a_list" }); if (!r.ok) { $("tb").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
   const n = (s) => r.items.filter((x) => x.stage === s).length;
   $("tb").innerHTML = `<div class="stats">${STAGES.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}</div>
-   <table><tr><th>고객</th><th>회사</th><th>단계</th><th>인터뷰</th><th>실장</th><th>방식</th><th>최근</th></tr>
-   ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="7">아직 고객이 없습니다</td></tr>`}</table>`;
+   <table><tr><th>고객</th><th>회사</th><th>키</th><th>단계</th><th>인터뷰</th><th>실장</th><th>방식</th><th>최근</th></tr>
+   ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><code style="font-size:12px">${E(x.key_code || "")}</code></td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="8">아직 고객이 없습니다</td></tr>`}</table>`;
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
+}
+function tabs(on) { return `<div class="tabs"><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
+async function keys() {
+  history.replaceState(null, "", "?tab=keys");
+  $("main").innerHTML = `${tabs("k")}<div class="top"><h1>고객 키</h1></div>
+   <div class="box"><h3>새 키 만들기</h3><p class="note" style="margin-top:0">키를 받은 고객만 업무 파악·AI 인터뷰 화면에 들어갈 수 있습니다. 한 키 = 고객 한 명. 같은 키로 다시 들어오면 하던 곳부터 이어집니다.</p>
+   <div class="row2"><input id="km" placeholder="메모 (예: 조연심 대표님 · 10/18 출장)" style="flex:1;margin:0;min-width:220px"><input id="kn" type="number" value="1" min="1" max="20" style="width:80px;margin:0"><button class="btn" id="kmk">키 만들기</button></div><div id="kout"></div></div>
+   <div id="kl">불러오는 중…</div>`;
+  $("kmk").onclick = async () => { const r = await A({ action: "a_key_new", memo: $("km").value.trim(), n: +$("kn").value || 1 }); if (!r.ok) { alert(r.error); return; }
+    $("kout").innerHTML = `<p class="note">만든 키 — 고객에게 보낼 문구를 복사하세요</p>` + r.codes.map((c) => `<div class="row2"><code>${c}</code><button class="btn g" data-cp="${c}">안내문 복사</button></div>`).join("");
+    bindCopy(); loadKeys(); };
+  loadKeys();
+}
+function keyMsg(c) { return `[브랜디움 퍼스널 OS] 업무 파악 안내\n아래 주소에서 고객 키를 넣고 시작해 주세요 (10~20분).\n${SITE}start/?k=${c}\n고객 키: ${c}`; }
+function bindCopy() { document.querySelectorAll("[data-cp]").forEach((b) => b.onclick = async () => { await navigator.clipboard.writeText(keyMsg(b.dataset.cp)); b.textContent = "복사됨 ✓"; }); }
+async function loadKeys() {
+  const r = await A({ action: "a_keys" }); if (!r.ok) { $("kl").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
+  $("kl").innerHTML = `<table><tr><th>키</th><th>메모</th><th>상태</th><th>고객</th><th>만든 날</th><th></th></tr>${r.items.map((k) => `<tr><td><code>${E(k.code)}</code></td><td>${E(k.memo || "")}</td><td><span class="st">${E(k.status)}</span></td><td>${k.customers ? `<a href="#" data-cid="${k.customer_id}">${E(k.customers.name || "")}</a> <small>${E(k.customers.stage || "")}</small>` : ""}</td><td>${new Date(k.created_at).toLocaleDateString("ko-KR")}</td>
+    <td style="white-space:nowrap"><button class="btn g" data-cp="${E(k.code)}">안내문 복사</button> <button class="btn g" data-st="${E(k.code)}" data-s="${k.status === "중지" ? (k.customer_id ? "사용 중" : "대기") : "중지"}">${k.status === "중지" ? "다시 열기" : "멈추기"}</button> ${k.customer_id ? "" : `<button class="btn r" data-del="${E(k.code)}">삭제</button>`}</td></tr>`).join("") || `<tr><td colspan="6">아직 만든 키가 없습니다</td></tr>`}</table>`;
+  bindCopy();
+  document.querySelectorAll("[data-st]").forEach((b) => b.onclick = async () => { await A({ action: "a_key_update", code: b.dataset.st, status: b.dataset.s }); loadKeys(); });
+  document.querySelectorAll("[data-del]").forEach((b) => b.onclick = async () => { if (confirm(b.dataset.del + " 키를 지울까요?")) { await A({ action: "a_key_delete", code: b.dataset.del }); loadKeys(); } });
+  document.querySelectorAll("[data-cid]").forEach((a) => a.onclick = (e) => { e.preventDefault(); detail(a.dataset.cid); });
 }
 function intakeText(c) {
   const a = (c.intake && c.intake.a) || {}, j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
@@ -79,7 +106,7 @@ async function detail(id) {
   $("main").innerHTML = "불러오는 중…";
   const r = await A({ action: "a_get", id }); if (!r.ok) { $("main").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
   const c = r.customer; CUR = r;
-  const link = SITE + "start/?t=" + c.token;
+  const link = SITE + "start/?t=" + c.token; // 키 없이 바로 이어지는 고객 전용 주소
   $("main").innerHTML = `<style>${OS_PROP_CSS}</style>
    <div class="top"><button class="btn g" onclick="list()">← 목록</button><h1>${E(c.name)} <small style="font-size:16px;opacity:.6">${E(c.company || "")} · ${E(c.phone || "")}</small></h1></div>
    <div class="box"><div class="row2" style="margin-top:0">
@@ -133,8 +160,8 @@ async function boot() {
   const { data } = await sb.auth.getSession();
   if (!data.session) return loginView();
   JWT = data.session.access_token;
-  const id = new URLSearchParams(location.search).get("id");
-  id ? detail(id) : list();
+  const q = new URLSearchParams(location.search), id = q.get("id");
+  id ? detail(id) : (q.get("tab") === "keys" ? keys() : list());
 }
 sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
 $("out").onclick = async () => { await sb.auth.signOut(); loginView(); };

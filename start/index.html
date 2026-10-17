@@ -11,6 +11,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased;min-height:100vh}
 header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 22px;position:sticky;top:0;background:var(--paper);z-index:5}
+header .logo img{height:22px;display:block}
+header .home{font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:99px;padding:6px 12px;white-space:nowrap}
+.keyin{font:800 22px/1.4 "Josefin Sans",Pretendard!important;letter-spacing:.12em;text-transform:uppercase;text-align:center}
 header b{font:700 17px 'Josefin Sans',Pretendard;letter-spacing:.04em}
 header span{font-size:13px;opacity:.6}
 .bar{height:6px;background:var(--sand);margin:0 22px;border-radius:9px;overflow:hidden}
@@ -68,7 +71,7 @@ html,body{overflow-x:hidden}
 .names{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.names button{font:700 18px Pretendard;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}.names button.on{background:var(--ink);color:var(--cream)}
 .okbox{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:22px;margin-top:18px;font-size:17px;line-height:1.8}
 </style></head><body>
-<header><b>BRAND!UM</b><span id="saved" class="saved"></span><span class="who">퍼스널 OS · 업무 파악</span></header>
+<header><a class="logo" href="../" title="퍼스널 OS 사이트로"><img src="../logo_choco.png" alt="BRANDiUM"></a><span id="saved" class="saved"></span><a class="home" href="../">← 퍼스널 OS 사이트</a></header>
 <div class="bar"><i id="bar"></i></div>
 <main id="main"></main>
 <nav id="nav"><button id="back" type="button">이전</button><button id="next" class="go" type="button">다음</button></nav>
@@ -86,7 +89,7 @@ const STEPS = [
     { k: "co", t: "회사·브랜드 이름", type: "text", hint: "여러 개면 모두 적어 주세요" },
     { k: "role", t: "직함·하시는 일 한 줄", type: "text", hint: "예) ○○학원 원장, 1인 컨설팅 대표, 대학 겸임교수" },
     { k: "tel", t: "연락처", type: "tel" },
-    { k: "call", t: "실장이 나를 뭐라고 부르면 좋을까요?", type: "one", opts: ["대표님", "원장님", "교수님", "선생님", "이름으로"] } ] },
+    { k: "call", t: "실장이 나를 뭐라고 부르면 좋을까요?", type: "oneplus", opts: ["대표님", "원장님", "교수님"], hint: "고르거나, 아래 칸에 직접 적어 주세요", ph: "직접 적기 (예: 선생님, 연심님)" } ] },
   { lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
     { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
     { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
@@ -139,6 +142,10 @@ function field(q) {
   const head = q.t ? `<span class="t">${esc(q.t)}</span>${q.hint ? `<small>${esc(q.hint)}</small>` : ""}` : (q.hint ? `<small>${esc(q.hint)}</small>` : "");
   if (q.type === "text" || q.type === "tel") return `<div class="q">${head}<input type="${q.type}" data-k="${q.k}" value="${esc(v || "")}"></div>`;
   if (q.type === "area") return `<div class="q">${head}<textarea data-k="${q.k}" style="${q.big ? "min-height:260px" : ""}">${esc(v || "")}</textarea></div>`;
+  if (q.type === "oneplus") {
+    const btns = q.opts.map((o) => `<button type="button" data-k="${q.k}" data-v="${esc(o)}" class="${v === o ? "on" : ""}">${esc(o)}</button>`).join("");
+    return `<div class="q">${head}<div class="cards one" data-multi="0">${btns}</div><input type="text" data-k="${q.k}" data-plus="1" placeholder="${esc(q.ph || "직접 적기")}" value="${esc(q.opts.includes(v) ? "" : (v || ""))}" style="margin-top:10px"></div>`;
+  }
   const list = opts(q) || [];
   if (q.from && !list.length) return `<div class="q"><small>앞에서 고른 일이 없어요. 아래에 적어 주세요.</small></div>`;
   const multi = q.type !== "one";
@@ -151,9 +158,23 @@ function render() {
   const st = STEPS[S.step];
   $("bar").style.width = Math.round((S.step / (STEPS.length - 2)) * 100) + "%";
   $("nav").style.display = (st.id === "start" || st.id === "done") ? "none" : "flex";
-  $("back").disabled = S.step <= 1;
+  $("back").disabled = S.step < 1;
   $("next").textContent = st.id === "review" ? "🎙 AI 인터뷰 시작" : "다음";
   let h = "";
+  if (st.id === "start" && !S.keyOk) {
+    h = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>고객 키를<br>넣어 주세요</h1>
+      <p class="sub">퍼스널 OS 업무 파악은 상담을 마친 고객님만 들어오실 수 있습니다. 담당자에게 받으신 고객 키(예: OS-AB12-CD34)를 넣어 주세요.</p>
+      <div class="q"><input type="text" id="keyin" class="keyin" placeholder="OS-____-____" value="${esc(S.key || "")}" autocomplete="off"></div>
+      <div class="mode"><button type="button" id="keygo"><b>🔑 들어가기</b>키가 맞으면 바로 시작합니다. 전에 하시던 분은 이어서 합니다.</button></div>
+      <p class="note" id="keyerr"></p><p class="note">키가 없으신가요? <a href="../#apply">상담 신청하기</a></p>`;
+    $("main").innerHTML = h; window.scrollTo(0, 0);
+    const go = async () => { const k = $("keyin").value.trim(); if (!k) return; $("keygo").disabled = true; $("keyerr").textContent = "확인하는 중…";
+      const r = await osCall({ action: "check_key", key: k }); $("keygo").disabled = false;
+      if (!r.ok) { $("keyerr").textContent = r.error || "키를 확인하지 못했어요"; return; }
+      S.key = k.toUpperCase(); S.keyOk = true; if (r.token) { S.token = r.token; } save(); render(); };
+    $("keygo").onclick = go; $("keyin").onkeydown = (e) => { if (e.key === "Enter") go(); };
+    return;
+  }
   if (st.id === "start") {
     h = `<div class="lab">PERSONAL OS · STEP 1</div><h1>대표님의 일을<br>먼저 알려 주세요</h1>
       <p class="sub">퍼스널 OS의 첫 단계는 <b>업무 파악</b>입니다. 들려주신 내용으로 대표님 대신 일할 실장과 부서를 설계해 제안서로 보여 드립니다. 10~15분이면 충분하고, 중간에 닫아도 이 기기에 저장됩니다.</p>
@@ -192,28 +213,29 @@ function summary() {
 }
 document.addEventListener("input", (e) => {
   const k = e.target.dataset.k, m = e.target.dataset.memo;
+  if (k && e.target.dataset.plus) { e.target.closest(".q").querySelectorAll(".cards button").forEach((x) => x.classList.remove("on")); }
   if (k) S.a[k] = e.target.value; else if (m !== undefined) S.memo[m] = e.target.value; else return;
   save();
 });
 document.addEventListener("click", async (e) => {
   const md = e.target.closest("[data-mode]");
   if (md) { S.mode = md.dataset.mode; document.body.classList.toggle("iv", S.mode === "interview"); S.step = Math.max(1, S.step === 0 ? 1 : S.step); save(); render(); return; }
-  if (e.target.id === "reset" || e.target.id === "again") { e.preventDefault(); if (confirm("작성한 내용을 지우고 처음부터 할까요?")) { S = { a: {}, memo: {}, step: 0 }; save(); render(); } return; }
+  if (e.target.id === "reset" || e.target.id === "again") { e.preventDefault(); if (confirm("작성한 내용을 지우고 처음부터 할까요?")) { S = { a: {}, memo: {}, step: 0, key: S.key, keyOk: S.keyOk }; save(); render(); } return; }
   const b = e.target.closest(".cards button");
   if (b) {
     const k = b.dataset.k, v = b.dataset.v, multi = b.parentElement.dataset.multi === "1";
     if (multi) { const arr = S.a[k] || []; S.a[k] = arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v); b.classList.toggle("on"); }
-    else { S.a[k] = v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); }
+    else { S.a[k] = v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); const pl = b.closest(".q").querySelector("[data-plus]"); if (pl) pl.value = ""; }
     save();
   }
 });
-$("back").onclick = () => { if (S.step > 1) { S.step--; save(); render(); } };
+$("back").onclick = () => { if (S.step > 0) { S.step--; save(); render(); } };
 $("next").onclick = async () => {
   const st = STEPS[S.step];
   if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
   if (st.id === "review") {
     $("next").disabled = true; $("next").textContent = "인터뷰어를 부르는 중…";
-    const r = await osCall({ action: "start", name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo } });
+    const r = await osCall({ action: "start", key: S.key, name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo } });
     $("next").disabled = false;
     if (!r.ok) { alert("연결이 잠깐 안 됐어요. 다시 눌러 주세요. 작성한 내용은 저장돼 있습니다.\n(" + (r.error || "") + ")"); render(); return; }
     // 예비 보관 — 구글폼에도 한 부 (실패해도 무시)
@@ -283,7 +305,7 @@ async function makeProp(req) {
   if (!r.ok) { alert("제안서를 만들지 못했어요. 다시 눌러 주세요.\n(" + (r.error || "") + ")"); }
   AI = await osCall({ action: "get", token: S.token }); renderAI();
 }
-(() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + (S.mode ? "?mode=interview" : "")); } })();
+(() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, key: q.get("k") || undefined, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + (S.mode ? "?mode=interview" : "")); } else if (q.get("k") && !S.token) { S.key = q.get("k"); save(); } })();
 (() => { const t = new URLSearchParams(location.search).get("t"); if (t && t !== S.token) { S = { a: {}, memo: {}, step: 0, token: t }; save(); } })();
 
 render();
