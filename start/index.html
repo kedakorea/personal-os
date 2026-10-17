@@ -49,11 +49,30 @@ html,body{overflow-x:hidden}
 @media(max-width:480px){header .who{display:none}.cards{grid-template-columns:1fr 1fr}nav button{padding:14px 18px}}
 .done{text-align:center;padding-top:60px}
 .done .big{font-size:64px}
+
+/* AI 인터뷰 · 제안서 */
+#chat{display:flex;flex-direction:column;gap:12px}
+.m{max-width:88%;padding:14px 18px;border-radius:20px;font-size:17px;line-height:1.7;white-space:pre-wrap}
+.m.ai{align-self:flex-start;background:#fff;border:2px solid var(--ink);border-radius:20px 20px 20px 6px}
+.m.me{align-self:flex-end;background:var(--ink);color:var(--cream);border-radius:20px 20px 6px 20px}
+.m .f{display:block;font-size:13px;opacity:.7;margin-top:6px}.m.wait{opacity:.6;font-style:italic}
+.dock{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:2px solid var(--sand);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.dock .hint{font-size:13px;opacity:.6;margin:0 4px 6px;max-width:720px;margin-inline:auto}
+.dock .in{display:flex;gap:8px;align-items:flex-end;max-width:720px;margin:0 auto}
+.dock textarea{min-height:54px;max-height:160px;resize:none}
+.clip{font-size:22px;background:#fff;border:2px solid var(--ink);border-radius:14px;width:50px;height:54px;cursor:pointer;flex:none}
+.sendb,.bigb{font:800 17px Pretendard;padding:0 20px;height:54px;border-radius:99px;border:2px solid var(--ink);background:var(--ink);color:var(--cream);cursor:pointer;flex:none}
+.bigb{display:block;width:100%;max-width:720px;margin:10px auto 0;background:var(--butter);color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;max-width:720px;margin:0 auto 6px}.chips span{font-size:13px;background:#fff;border:1px solid var(--sand);border-radius:99px;padding:4px 10px}
+.busy{padding:50px 0;text-align:center;font-size:18px;line-height:1.8}.busy .dot{font-size:46px;display:block;animation:bb 1.2s infinite}@keyframes bb{50%{transform:translateY(-8px)}}
+.names{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.names button{font:700 18px Pretendard;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}.names button.on{background:var(--ink);color:var(--cream)}
+.okbox{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:22px;margin-top:18px;font-size:17px;line-height:1.8}
 </style></head><body>
 <header><b>BRAND!UM</b><span id="saved" class="saved"></span><span class="who">퍼스널 OS · 업무 파악</span></header>
 <div class="bar"><i id="bar"></i></div>
 <main id="main"></main>
 <nav id="nav"><button id="back" type="button">이전</button><button id="next" class="go" type="button">다음</button></nav>
+<script src="../os.js"></script>
 <script>
 const FORM = {
   action: "https://docs.google.com/forms/d/e/1FAIpQLSfYyPULyBfaK9y4mHZEePGINoe9uZO3Ap0m-G_Bnf0LRL5qJA/formResponse",
@@ -128,11 +147,12 @@ function field(q) {
   return `<div class="q">${head}<div class="cards ${multi ? "" : "one"}" data-multi="${multi ? 1 : 0}">${btns}</div></div>`;
 }
 function render() {
+  if (S.token) return renderAI();
   const st = STEPS[S.step];
   $("bar").style.width = Math.round((S.step / (STEPS.length - 2)) * 100) + "%";
   $("nav").style.display = (st.id === "start" || st.id === "done") ? "none" : "flex";
   $("back").disabled = S.step <= 1;
-  $("next").textContent = st.id === "review" ? "보내기" : "다음";
+  $("next").textContent = st.id === "review" ? "🎙 AI 인터뷰 시작" : "다음";
   let h = "";
   if (st.id === "start") {
     h = `<div class="lab">PERSONAL OS · STEP 1</div><h1>대표님의 일을<br>먼저 알려 주세요</h1>
@@ -141,7 +161,7 @@ function render() {
       <button type="button" data-mode="interview"><b>🎙 담당자와 인터뷰</b>브랜디움 담당자가 묻고 대신 적습니다. 질문마다 인터뷰 메모 칸이 나옵니다.</button></div>
       ${S.a.name ? `<p class="note">작성 중인 답(${esc(S.a.name)})이 있습니다. 위에서 방식을 고르면 이어서 합니다. <a href="#" id="reset">처음부터 새로</a></p>` : ""}`;
   } else if (st.id === "review") {
-    h = `<div class="lab">확인</div><h1>이대로 보낼까요?</h1><p class="sub">보내 주시면 브랜디움이 이 내용으로 제안서를 만들어 연락드립니다.</p><div class="sum">${esc(summary())}</div>
+    h = `<div class="lab">확인</div><h1>좋습니다! 이제 인터뷰어와<br>조금만 더 이야기해요</h1><p class="sub">적어 주신 내용을 읽은 브랜디움 인터뷰어가 꼭 필요한 것만 몇 가지 더 여쭤봅니다. 끝나면 바로 제안서가 나옵니다.</p><div class="sum">${esc(summary())}</div>
       <div class="q"><span class="t">더 하고 싶은 말</span><textarea data-k="more">${esc(S.a.more || "")}</textarea></div>`;
   } else if (st.id === "done") {
     h = `<div class="done"><div class="big">📮</div><h1>잘 받았습니다</h1><p class="sub">들려주신 일로 퍼스널 OS 제안서를 만들어 연락드리겠습니다.<br>— BRAND!UM 퍼스널 OS</p>
@@ -192,17 +212,80 @@ $("next").onclick = async () => {
   const st = STEPS[S.step];
   if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
   if (st.id === "review") {
-    $("next").disabled = true; $("next").textContent = "보내는 중…";
-    const p = new URLSearchParams();
-    p.append(FORM.e.mode, S.mode === "interview" ? "인터뷰" : "직접 작성");
-    p.append(FORM.e.name, S.a.name || ""); p.append(FORM.e.co, S.a.co || ""); p.append(FORM.e.tel, S.a.tel || "");
-    p.append(FORM.e.sum, summary()); p.append(FORM.e.json, JSON.stringify({ v: 1, mode: S.mode, a: S.a, memo: S.memo, t: S.t }));
-    try { await fetch(FORM.action, { method: "POST", mode: "no-cors", body: p }); S.sent = new Date().toISOString(); }
-    catch (err) { alert("인터넷 연결을 확인하고 다시 눌러 주세요. 작성한 내용은 저장돼 있습니다."); $("next").disabled = false; render(); return; }
+    $("next").disabled = true; $("next").textContent = "인터뷰어를 부르는 중…";
+    const r = await osCall({ action: "start", name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo } });
     $("next").disabled = false;
+    if (!r.ok) { alert("연결이 잠깐 안 됐어요. 다시 눌러 주세요. 작성한 내용은 저장돼 있습니다.\n(" + (r.error || "") + ")"); render(); return; }
+    // 예비 보관 — 구글폼에도 한 부 (실패해도 무시)
+    try { const p = new URLSearchParams(); p.append(FORM.e.mode, S.mode === "interview" ? "인터뷰" : "직접 작성"); p.append(FORM.e.name, S.a.name || ""); p.append(FORM.e.co, S.a.co || ""); p.append(FORM.e.tel, S.a.tel || ""); p.append(FORM.e.sum, summary()); p.append(FORM.e.json, JSON.stringify({ v: 1, token: r.customer.token, a: S.a, memo: S.memo })); fetch(FORM.action, { method: "POST", mode: "no-cors", body: p }); } catch (e) {}
+    S.token = r.customer.token; AI = r; save(); history.replaceState(null, "", "?t=" + S.token); render(); return;
   }
   S.step = Math.min(STEPS.length - 1, S.step + 1); save(); render();
 };
+/* ── AI 인터뷰 · 제안서 · 컨펌 (2026-10-17) ── */
+let AI = null, FILES = [], CHIEF = "", MORE = false;
+function stageView() { const c = AI && AI.customer; if (!c) return "load"; if (c.stage === "컨펌" || c.stage === "설치" || c.stage === "완료") return "done"; if (c.design_state === "running") return "busy"; if (c.design && !MORE) return "prop"; return "chat"; }
+async function renderAI() {
+  $("nav").style.display = "none";
+  if (!AI) { $("main").innerHTML = `<div class="busy"><span class="dot">⏳</span>불러오는 중…</div>`; AI = await osCall({ action: "get", token: S.token }); if (!AI.ok) { $("main").innerHTML = `<p class="sub">기록을 찾지 못했어요. <a href="#" onclick="S={a:{},memo:{},step:0};save();location.href='./';return false">처음부터 하기</a></p>`; return; } }
+  const c = AI.customer, v = stageView();
+  $("bar").style.width = (v === "chat" ? Math.max(5, c.progress || 0) : 100) + "%";
+  document.querySelector(".dock") && document.querySelector(".dock").remove();
+  if (v === "chat") {
+    $("main").innerHTML = `<div class="lab">STEP 2 · AI 인터뷰</div><h1 style="font-size:26px">${osEsc(c.name)} 님, 조금만 더 여쭤볼게요</h1><p class="sub" style="margin-bottom:20px">편하게 말하듯 답해 주세요. 휴대폰이면 키보드의 🎤로 말해도 됩니다. 예전에 만든 파일·사진은 📎로 올려 주세요.</p><div id="chat">${AI.messages.map(msgHtml).join("")}</div><div style="height:${(c.progress||0)>=60?190:140}px"></div>`;
+    document.body.insertAdjacentHTML("beforeend", `<div class="dock"><div class="chips" id="chips"></div><div class="in"><button class="clip" id="clip" type="button">📎</button><input type="file" id="file" multiple hidden accept="image/*,application/pdf"><textarea id="tx" placeholder="여기에 답해 주세요"></textarea><button class="sendb" id="send" type="button">보내기</button></div>${(c.progress || 0) >= 60 || AI.messages.length > 14 || MORE ? `<button class="bigb" id="mk" type="button">✨ 제안서 만들기</button>` : ""}</div>`);
+    $("send").onclick = sendAI; $("clip").onclick = () => $("file").click(); $("file").onchange = pickFiles;
+    $("tx").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing && innerWidth > 800) { e.preventDefault(); sendAI(); } });
+    if ($("mk")) $("mk").onclick = () => { if (confirm("지금까지 이야기로 제안서를 만들까요?")) makeProp(""); };
+    window.scrollTo(0, document.body.scrollHeight);
+  } else if (v === "busy") {
+    $("main").innerHTML = `<div class="busy"><span class="dot">✏️</span>들려주신 이야기로 실장과 부서를 설계하고 있어요.<br>30초~1분쯤 걸립니다.</div>`;
+    setTimeout(async () => { AI = await osCall({ action: "get", token: S.token }); renderAI(); }, 5000);
+  } else if (v === "prop") {
+    const d = c.design, cands = (d.실장후보 || []).filter((x) => x.이름);
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="lab">STEP 3 · 제안</div><h1 style="font-size:26px">제안서가 나왔어요</h1>${osProposal(d)}
+      <h3 style="margin-top:26px">고칠 곳이 있으면 적어 주세요</h3><textarea id="req" placeholder="예) 연구실은 빼 주세요 / 홍보실 이름을 '알림실'로" style="min-height:90px"></textarea>
+      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><button class="sendb" style="background:#fff;color:var(--ink)" id="redo">고쳐서 다시 만들기</button><button class="sendb" style="background:#fff;color:var(--ink)" id="more">인터뷰 더 하기</button></div>
+      <h3 style="margin-top:26px">실장 이름을 골라 주세요</h3><div class="names">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>
+      <input type="text" id="own" placeholder="직접 짓기 (예: 하나)" style="margin-top:6px">
+      <button class="bigb" id="ok" type="button" style="margin-top:18px;background:var(--ink);color:var(--cream)">✅ 이대로 만들어 주세요</button><div style="height:60px"></div>`;
+    document.querySelectorAll(".names button").forEach((b) => b.onclick = () => { CHIEF = b.dataset.n; $("own").value = ""; document.querySelectorAll(".names button").forEach((x) => x.classList.toggle("on", x === b)); });
+    $("redo").onclick = () => { const q = $("req").value.trim(); if (!q) { $("req").focus(); return; } makeProp(q); };
+    $("more").onclick = () => { MORE = true; renderAI(); };
+    $("ok").onclick = async () => { const own = $("own").value.trim(); const name = own || CHIEF; if (!name) { alert("실장 이름을 골라 주세요"); return; } if (!confirm(`실장 이름 '${name}'(으)로 확정할까요?`)) return; $("ok").disabled = true; AI = await osCall({ action: "confirm", token: S.token, chief: name }); renderAI(); };
+    window.scrollTo(0, 0);
+  } else if (v === "done") {
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>실장 <b>${osEsc(c.chief || "")}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다. 설치는 담당자가 안내해 드립니다.</div><div style="margin-top:18px">${osProposal(c.design, c.chief)}</div>`;
+  }
+}
+function msgHtml(m) { return `<div class="m ${m.role === "ai" ? "ai" : "me"}">${osEsc(m.text)}${m.files && m.files.length ? `<span class="f">📎 ${osEsc(m.files.map((f) => f.name).join(", "))}</span>` : ""}</div>`; }
+async function pickFiles(e) {
+  for (const f of e.target.files) {
+    if (f.size > 8e6) { alert(f.name + " — 8MB가 넘는 파일은 올릴 수 없어요"); continue; }
+    const data = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(f); });
+    FILES.push({ name: f.name, type: f.type, data });
+  }
+  $("chips").innerHTML = FILES.map((f) => `<span>📎 ${osEsc(f.name)}</span>`).join(""); e.target.value = "";
+}
+async function sendAI() {
+  const text = $("tx").value.trim(); if (!text && !FILES.length) return;
+  $("send").disabled = true; $("tx").value = "";
+  $("chat").insertAdjacentHTML("beforeend", msgHtml({ role: "user", text: text || "(파일)" }) + `<div class="m ai wait">인터뷰어가 읽고 있어요…</div>`); window.scrollTo(0, document.body.scrollHeight);
+  const fs = FILES; FILES = [];
+  const r = await osCall({ action: "chat", token: S.token, text, files: fs });
+  if (!r.ok) { alert("답을 받지 못했어요. 다시 보내 주세요.\n(" + (r.error || "") + ")"); $("tx").value = text; FILES = fs; AI = await osCall({ action: "get", token: S.token }); return renderAI(); }
+  AI = r; renderAI(); $("tx") && $("tx").focus();
+}
+async function makeProp(req) {
+  MORE = false;
+  AI.customer.design_state = "running"; renderAI();
+  const r = await osCall({ action: "design", token: S.token, request: req });
+  if (!r.ok) { alert("제안서를 만들지 못했어요. 다시 눌러 주세요.\n(" + (r.error || "") + ")"); }
+  AI = await osCall({ action: "get", token: S.token }); renderAI();
+}
+(() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + (S.mode ? "?mode=interview" : "")); } })();
+(() => { const t = new URLSearchParams(location.search).get("t"); if (t && t !== S.token) { S = { a: {}, memo: {}, step: 0, token: t }; save(); } })();
+
 render();
 </script>
 </body></html>

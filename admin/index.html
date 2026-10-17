@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>관리자 | 퍼스널 OS</title>
+<link rel="icon" type="image/png" href="../favicon.png?v=2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="../os.js"></script>
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--paper:#fff8e6;--sand:#ead9c6;--butter:#ffd84d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f6efe2;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all}
+header{display:flex;align-items:center;gap:14px;padding:14px 22px;background:var(--ink);color:var(--cream)}
+header b{font:700 18px 'Josefin Sans',Pretendard}header span{opacity:.7;font-size:14px;flex:1}
+header button{background:none;border:1px solid var(--cream);color:var(--cream);border-radius:99px;padding:6px 14px;font:600 13px Pretendard;cursor:pointer}
+main{max-width:1180px;margin:0 auto;padding:24px 20px 80px}
+.login{max-width:380px;margin:80px auto;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:30px}
+.login h1{font-size:24px;margin-bottom:16px}
+input,textarea,select{width:100%;font:16px/1.5 Pretendard;padding:11px 13px;border:2px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);margin-top:8px}
+.btn{font:800 15px Pretendard;padding:11px 18px;border-radius:99px;border:2px solid var(--ink);background:var(--ink);color:var(--cream);cursor:pointer;white-space:nowrap}
+.btn.g{background:#fff;color:var(--ink)}.btn.y{background:var(--butter);color:var(--ink)}.btn.r{background:#fff;color:#b3261e;border-color:#b3261e}
+.btn:disabled{opacity:.4}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.top h1{font-size:26px;flex:1}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.stats div{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 16px;font-size:14px}.stats b{font-size:22px;display:block}
+table{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--sand);font-size:15px}th{background:var(--cream);font-size:13px}
+tr.row{cursor:pointer}tr.row:hover{background:#fffaf0}
+.st{display:inline-block;border-radius:99px;padding:3px 10px;font-size:12.5px;font-weight:800;background:var(--sand)}
+.st.인터뷰{background:#c4dae8}.st.제안{background:var(--butter)}.st.컨펌{background:#b9e3b2}.st.설치{background:#9fd39a}.st.완료{background:var(--ink);color:var(--cream)}
+.bar{width:80px;height:6px;background:var(--sand);border-radius:9px;overflow:hidden;display:inline-block;vertical-align:middle}.bar i{display:block;height:100%;background:var(--ink)}
+.grid{display:grid;grid-template-columns:1.05fr 1fr;gap:18px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.box{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:18px;margin-bottom:16px}
+.box h3{font-size:16px;margin-bottom:10px}
+.kv{font-size:14.5px;line-height:1.8;white-space:pre-wrap}
+.chat{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.m{max-width:90%;padding:10px 13px;border-radius:14px;font-size:14.5px;line-height:1.6;white-space:pre-wrap}.m.ai{background:#f6efe2;align-self:flex-start}.m.me{background:var(--ink);color:var(--cream);align-self:flex-end}
+.m a{color:inherit}
+.row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.note{font-size:13px;opacity:.65;margin-top:6px}
+.err{color:#b3261e;margin-top:10px;font-size:14px}
+</style></head><body>
+<header><b>BRAND!UM</b><span>퍼스널 OS 관리자</span><button id="out" hidden>로그아웃</button></header>
+<main id="main"></main>
+<script>
+const sb = supabase.createClient(OS_URL, OS_ANON);
+const $ = (id) => document.getElementById(id), E = osEsc;
+const STAGES = ["파악", "인터뷰", "제안", "컨펌", "설치", "완료"];
+let JWT = null, CUR = null;
+const SITE = location.origin + location.pathname.replace(/admin\/?.*$/, "");
+async function A(body) { const r = await osCall(body, JWT); if (r.error && /관리자 로그인/.test(r.error)) { await sb.auth.signOut(); return boot(); } return r; }
+
+function loginView() {
+  $("out").hidden = true;
+  $("main").innerHTML = `<div class="login"><h1>관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="비밀번호"><button class="btn" id="go" style="width:100%;margin-top:14px">들어가기</button><p class="err" id="er"></p></div>`;
+  const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; list(); };
+  $("go").onclick = go; $("pw").onkeydown = (e) => { if (e.key === "Enter") go(); };
+}
+async function list() {
+  $("out").hidden = false; history.replaceState(null, "", location.pathname);
+  $("main").innerHTML = `<div class="top"><h1>고객</h1><a class="btn y" href="../start/?mode=interview&new=1" target="_blank">🎙 새 고객 인터뷰 시작</a><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  const r = await A({ action: "a_list" }); if (!r.ok) { $("tb").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
+  const n = (s) => r.items.filter((x) => x.stage === s).length;
+  $("tb").innerHTML = `<div class="stats">${STAGES.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}</div>
+   <table><tr><th>고객</th><th>회사</th><th>단계</th><th>인터뷰</th><th>실장</th><th>방식</th><th>최근</th></tr>
+   ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="7">아직 고객이 없습니다</td></tr>`}</table>`;
+  document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
+}
+function intakeText(c) {
+  const a = (c.intake && c.intake.a) || {}, j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
+  const L = [["직함", a.role], ["호칭", a.call], ["소개", a.intro], ["함께 일하는 사람", a.people], ["하는 일", j(a.work) + (a.work_etc ? " / " + a.work_etc : "")], ["맡기고 싶은 일", j(a.delegate)], ["시간 먹는 일", a.top], ["귀찮지만 해야 하는 일", a.chore], ["어제 하루", a.day], ["놓친 일", a.missed], ["해 보고 싶은 일", a.want], ["해야 할 일", a.must], ["메일", j(a.mail)], ["일정", j(a.cal)], ["연락", j(a.chat)], ["문서", j(a.doc)], ["채널", j(a.ch)], ["AI", j(a.ai)], ["확인받을 일", j(a.ask)], ["직접 할 일", a.never], ["컴퓨터", a.pc], ["켜 두기", a.on], ["휴대폰", a.phone], ["말투", a.tone], ["브리핑", j(a.brief)], ["실장 이름 아이디어", a.chief]];
+  const memo = Object.values((c.intake && c.intake.memo) || {}).filter(Boolean);
+  return L.filter(([, v]) => v).map(([k, v]) => `<b>${k}</b> ${E(v)}`).join("\n") + (memo.length ? `\n<b>인터뷰 메모</b> ${E(memo.join(" / "))}` : "");
+}
+async function detail(id) {
+  history.replaceState(null, "", "?id=" + id);
+  $("main").innerHTML = "불러오는 중…";
+  const r = await A({ action: "a_get", id }); if (!r.ok) { $("main").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
+  const c = r.customer; CUR = r;
+  const link = SITE + "start/?t=" + c.token;
+  $("main").innerHTML = `<style>${OS_PROP_CSS}</style>
+   <div class="top"><button class="btn g" onclick="list()">← 목록</button><h1>${E(c.name)} <small style="font-size:16px;opacity:.6">${E(c.company || "")} · ${E(c.phone || "")}</small></h1></div>
+   <div class="box"><div class="row2" style="margin-top:0">
+     <select id="stg" style="width:auto;margin:0">${STAGES.map((s) => `<option ${s === c.stage ? "selected" : ""}>${s}</option>`).join("")}</select>
+     <button class="btn g" id="svs">단계 저장</button>
+     <button class="btn g" id="cp">고객 링크 복사</button>
+     <button class="btn y" id="kit" ${c.design ? "" : "disabled"}>📦 설치 키트 내려받기</button>
+     <button class="btn r" id="del" style="margin-left:auto">삭제</button></div>
+     <p class="note">고객 링크: <a href="${E(link)}" target="_blank">${E(link)}</a> — 고객이 이 주소로 들어가면 이어서 인터뷰·제안서·컨펌을 할 수 있습니다.</p>
+     <textarea id="memo" placeholder="관리자 메모 (고객에게는 안 보임)" style="min-height:70px">${E(c.notes || "")}</textarea><div class="row2"><button class="btn g" id="svm">메모 저장</button><span id="msg" class="note"></span></div></div>
+   <div class="grid"><div>
+     <div class="box"><h3>📝 카드·질문 답</h3><div class="kv">${intakeText(c) || "(없음)"}</div></div>
+     <div class="box"><h3>🎙 AI 인터뷰 (${r.messages.length})</h3><div class="chat">${r.messages.map((m) => `<div class="m ${m.role === "ai" ? "ai" : "me"}">${E(m.text)}${(m.files || []).map((f) => `<br>📎 <a href="${E(f.url || "#")}" target="_blank">${E(f.name)}</a>`).join("")}</div>`).join("") || "(아직 없음)"}</div></div>
+   </div><div>
+     <div class="box"><h3>📄 제안서 ${c.design_state === "running" ? "✏️ 만드는 중…" : ""}</h3>${c.design ? osProposal(c.design, c.chief) : "<p class='note'>아직 없습니다</p>"}
+       <textarea id="rq" placeholder="AI에게 설계 수정 요청 (예: 연구실 빼고 홍보실을 둘로)" style="min-height:60px"></textarea>
+       <div class="row2"><button class="btn g" id="redo">🤖 AI로 ${c.design ? "다시" : ""} 만들기</button><span id="dmsg" class="note"></span></div>
+       <details style="margin-top:12px"><summary style="cursor:pointer;font-size:14px">설계 원본(JSON) 직접 고치기</summary><textarea id="dj" style="min-height:260px;font:12.5px/1.5 Menlo,monospace">${E(JSON.stringify(c.design || {}, null, 1))}</textarea><button class="btn g" id="svd" style="margin-top:8px">설계 저장</button></details>
+     </div>
+   </div></div>`;
+  const say = (t) => { $("msg").textContent = t; setTimeout(() => $("msg").textContent = "", 3000); };
+  $("svs").onclick = async () => { await A({ action: "a_update", id, fields: { stage: $("stg").value } }); say("저장했습니다"); };
+  $("svm").onclick = async () => { await A({ action: "a_update", id, fields: { notes: $("memo").value } }); say("저장했습니다"); };
+  $("cp").onclick = async () => { await navigator.clipboard.writeText(link); say("복사했습니다"); };
+  $("del").onclick = async () => { if (confirm(c.name + " 기록을 모두 지울까요? 되돌릴 수 없습니다.")) { await A({ action: "a_delete", id }); list(); } };
+  $("redo").onclick = async () => { $("redo").disabled = true; $("dmsg").textContent = "만드는 중… (30초~1분)"; const x = await A({ action: "a_design", id, request: $("rq").value.trim() }); if (!x.ok) alert(x.error); detail(id); };
+  $("svd").onclick = async () => { let d; try { d = JSON.parse($("dj").value); } catch (e) { alert("JSON 형식이 틀렸습니다: " + e.message); return; } await A({ action: "a_update", id, fields: { design: d } }); detail(id); };
+  $("kit").onclick = () => buildKit(c);
+}
+async function buildKit(c) {
+  const d = c.design; if (!d) return;
+  $("kit").disabled = true; $("kit").textContent = "📦 포장하는 중…";
+  try {
+    const k = await A({ action: "a_kit" });
+    const zip = await JSZip.loadAsync(await (await fetch(k.url)).arrayBuffer());
+    const top = Object.keys(zip.files)[0].split("/")[0] + "/";
+    const set = Object.assign({}, d.설정 || {}); if (c.chief) set.실장 = c.chief; set.회사 = set.회사 || c.company || "";
+    const fill = (t) => String(t || "").split("{{실장}}").join(set.실장 || "실장").split("{{호칭}}").join(set.호칭 || "대표님").split("{{회사}}").join(set.회사 || "");
+    zip.file(top + "설계/설정.json", JSON.stringify(set, null, 1));
+    zip.file(top + "설계/부서/부서표.json", JSON.stringify({ 부서: (d.부서 || []).map(({ 지침, ...x }) => x) }, null, 1));
+    for (const dep of d.부서 || []) if (dep.폴더 && dep.폴더 !== "00_비서실" && dep.지침) zip.file(top + `설계/부서/${dep.폴더}/CLAUDE.md`, `# ${dep.이름} 지침\n\n` + fill(dep.지침) + "\n");
+    if (d.첫인사) zip.file(top + "설계/첫인사.md", fill(d.첫인사));
+    const blob = await zip.generateAsync({ type: "blob", platform: "UNIX", compression: "DEFLATE" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = `퍼스널OS_설치키트_${c.name}_${new Date().toISOString().slice(2, 10).replace(/-/g, "")}.zip`; a.click();
+    if (c.stage === "컨펌" || c.stage === "제안") await A({ action: "a_update", id: c.id, fields: { stage: "설치" } });
+    $("kit").textContent = "✅ 내려받았습니다";
+  } catch (e) { alert("키트를 만들지 못했습니다: " + e.message); $("kit").disabled = false; $("kit").textContent = "📦 설치 키트 내려받기"; }
+}
+async function boot() {
+  const { data } = await sb.auth.getSession();
+  if (!data.session) return loginView();
+  JWT = data.session.access_token;
+  const id = new URLSearchParams(location.search).get("id");
+  id ? detail(id) : list();
+}
+sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
+$("out").onclick = async () => { await sb.auth.signOut(); loginView(); };
+boot();
+</script>
+</body></html>
