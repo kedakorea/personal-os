@@ -13,7 +13,7 @@ const osEsc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", 
 function osProposal(d, chief, opt) {
   if (!d) return "";
   // 설계 안의 {{호칭}}·{{실장}} 같은 빈칸은 화면에서 실제 말로 보여 준다
-  const st = d.설정 || {}, fillT = (v) => typeof v === "string" ? v.split("{{호칭}}").join(st.호칭 || "대표님").split("{{실장}}").join(chief || st.실장 || "매니저").split("{{직함}}").join(st.직함 || "매니저") : Array.isArray(v) ? v.map(fillT) : (v && typeof v === "object") ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === "지침" ? x : fillT(x)])) : v;
+  const st = d.설정 || {}, fillT = (v) => typeof v === "string" ? v.split("{{호칭}}").join(st.호칭 || "대표님").split("{{실장}} {{직함}}").join(chief ? chief + " " + (st.직함 || "매니저") : (st.직함 || "매니저")).split("{{실장}}").join(chief || "OO").split("{{직함}}").join(st.직함 || "매니저") : Array.isArray(v) ? v.map(fillT) : (v && typeof v === "object") ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === "지침" ? x : fillT(x)])) : v;
   d = fillT(d);
   const ed = opt && opt.edit, ce = ed ? ' contenteditable="true" spellcheck="false"' : "";
   const title = (d.설정 && d.설정.직함) || "매니저";
@@ -24,7 +24,7 @@ function osProposal(d, chief, opt) {
   const li = (a, key) => (a || []).map((x) => `<li${ce}>${osEsc(x)}</li>`).join("") + (ed ? `</ul><button class="padd sm" type="button" data-add="${key}">＋ 항목 추가</button><ul style="display:none">` : "");
   return `<div class="prop${ed ? " edit" : ""}"><div class="plab">PERSONAL OS · PROPOSAL</div>
     <h2><em>${osEsc(d.고객 || "")}</em>의 퍼스널 OS를 이렇게 세팅합니다</h2><p class="plead" data-e="한줄"${ce}>${osEsc(d.한줄 || "")}</p>
-    <h3>① ${osEsc(title)}</h3><div class="pchief">${chief ? `<b>${osEsc(chief)} ${osEsc(title)}</b>` : (d.실장후보 || []).map((c) => `<span><b>${osEsc(c.이름)}</b> · ${osEsc(c.뜻 || "")}</span>`).join("")}</div>
+    <h3>① ${osEsc(title)}</h3><div class="pchief">${opt && opt.done ? `<b>${osEsc(chief ? chief + " " + title : title)}</b>` : `<span><b>OO ${osEsc(title)}</b> · 이름은 아래에서 정합니다</span>`}</div>
     <h3>② 부서 — 일을 나눠 맡습니다</h3><div class="pboss">${osEsc(d.고객 || "")}<small>지시는 ${osEsc(title)}에게 한마디로</small></div><div class="pgrid">${dep}</div>
     <div class="ptwo"><div><h3>③ 알아서 하는 일</h3><ul data-l="자동업무">${li(d.자동업무, "자동업무")}</ul></div><div><h3>④ 꼭 확인받고 하는 일</h3><ul data-l="승인선목록">${li(d.승인선목록, "승인선목록")}</ul></div></div>
     <div class="pfoot">BRANDiUM · 주식회사 캐다 · 퍼스널 OS</div></div>`;
