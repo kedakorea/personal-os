@@ -365,7 +365,7 @@ async function makeProp(req) {
   AI = await osCall({ action: "get", token: S.token }); renderAI();
 }
 (() => { const q = new URLSearchParams(location.search); if (!q.get("t")) { S.keyOk = false; save(); } })();
-(() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, key: q.get("k") || undefined, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + (S.mode ? "?mode=interview" : "")); } else if (q.get("k") && !S.token) { S.key = q.get("k"); save(); } })();
+(() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, key: q.get("k") || undefined, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + "?" + [S.mode ? "mode=interview" : "", q.get("k") ? "k=" + encodeURIComponent(q.get("k")) : ""].filter(Boolean).join("&")); } else if (q.get("k") && !S.token) { S.key = q.get("k"); save(); } })();
 (() => { const t = new URLSearchParams(location.search).get("t"); if (t && t !== S.token) { S = { a: {}, memo: {}, step: 0, token: t }; save(); } })();
 
 render();
