@@ -128,8 +128,8 @@ const STEPS = [
   { lab: "10 · 매니저", h: "나의 매니저는 이렇게", qs: [
     { k: "tone", t: "말투", type: "one", opts: ["짧게, 핵심만", "친절하고 자세히"] },
     { k: "brief", t: "아침 브리핑에서 듣고 싶은 것", type: "multi", opts: ["오늘 일정", "오늘 할 일", "다가오는 마감", "온 연락 요약", "어제 한 일"] },
-    { k: "chief_title", t: "매니저를 어떤 호칭으로 부르고 싶으세요?", type: "oneplus", opts: ["매니저", "비서실장", "실장", "비서"], hint: "예) OO 매니저, OO 비서실장", ph: "직접 적기 (예: 팀장)" },
-    { k: "chief", t: "매니저에게 붙이고 싶은 이름이 있나요? (선택)", type: "text", hint: "비워 두면 이름 없이 호칭(예: 비서실장)으로만 부릅니다" } ] },
+    { k: "chief_title", t: "매니저를 어떤 호칭으로 부르고 싶으세요?", type: "oneplus", opts: ["매니저", "비서실장", "실장", "비서"], hint: "기본은 매니저예요. 예) OO 매니저", ph: "직접 적기 (예: 팀장)" },
+    { k: "chief", t: "매니저에게 붙이고 싶은 이름이 있나요? (선택)", type: "text", hint: "비워 두면 이름 없이 호칭(예: 매니저)으로만 부릅니다" } ] },
   { id: "review" },
   { id: "done" },
 ];
@@ -169,14 +169,15 @@ function field(q) {
   return `<div class="q">${head}<div class="cards ${multi ? "" : "one"} ${q.mini ? "mini" : ""}" data-multi="${multi ? 1 : 0}" ${q.rerender ? 'data-re="1"' : ""}>${btns}</div></div>`;
 }
 function render() {
-  if (S.token) return renderAI();
+  if (S.token && (S.keyOk || new URLSearchParams(location.search).get("t"))) return renderAI();
   const st = STEPS[S.step];
   $("bar").style.width = Math.round((S.step / (STEPS.length - 2)) * 100) + "%";
   $("nav").style.display = (st.id === "start" || st.id === "done") ? "none" : "flex";
   $("back").disabled = S.step < 1;
   $("next").textContent = st.id === "review" ? "🎙 AI 인터뷰 시작" : "다음";
   let h = "";
-  if (st.id === "start" && !S.keyOk) {
+  if (!S.keyOk) {
+    $("nav").style.display = "none"; $("bar").style.width = "0%";
     h = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>고객 키를<br>넣어 주세요</h1>
       <p class="sub">퍼스널 OS 업무 파악은 상담을 마친 고객님만 들어오실 수 있습니다. 담당자에게 받으신 고객 키(예: OS-AB12-CD34)를 넣어 주세요.</p>
       <div class="q"><input type="text" id="keyin" class="keyin" placeholder="OS-____-____" value="${esc(S.key || "")}" autocomplete="off"></div>
@@ -186,7 +187,11 @@ function render() {
     const go = async () => { const k = $("keyin").value.trim(); if (!k) return; $("keygo").disabled = true; $("keyerr").textContent = "확인하는 중…";
       const r = await osCall({ action: "check_key", key: k }); $("keygo").disabled = false;
       if (!r.ok) { $("keyerr").textContent = r.error || "키를 확인하지 못했어요"; return; }
-      S.key = k.toUpperCase(); S.keyOk = true; if (r.token) { S.token = r.token; } save(); render(); };
+      const K = k.toUpperCase().replace(/[^A-Z0-9]/g, ""), same = (S.key || "").toUpperCase().replace(/[^A-Z0-9]/g, "") === K;
+      if (!same) { S = { a: {}, memo: {}, step: 0, mode: S.mode }; AI = null; }   // 다른 키 — 새 고객으로 처음부터
+      S.key = k.toUpperCase(); S.keyOk = true;
+      if (r.token) { S.token = r.token; AI = null; } else { delete S.token; if (S.step < 1) S.step = 0; }   // 서버에 기록이 있으면 그 단계로, 없으면 하던 질문 칸으로
+      save(); if (S.token) history.replaceState(null, "", "?t=" + S.token); render(); };
     $("keygo").onclick = go; $("keyin").onkeydown = (e) => { if (e.key === "Enter") go(); };
     return;
   }
@@ -289,7 +294,7 @@ async function renderAI() {
       <h3 style="margin-top:28px">매니저를 어떤 호칭으로 부를까요?</h3><div class="names" id="tt">${titles.map((x) => `<button type="button" data-t="${x}" class="${TITLE === x ? "on" : ""}">${x}</button>`).join("")}</div>
       <input type="text" id="owt" placeholder="직접 적기 (예: 팀장, 집사)" value="${titles.includes(TITLE) ? "" : osEsc(TITLE)}" style="margin-top:6px">
       <h3 style="margin-top:22px">이름도 붙여 줄까요? <small style="font-weight:500;opacity:.6">(선택)</small></h3>
-      <p class="note" style="margin-top:0">사람 이름처럼 부르면 더 정이 가요. <b>정하지 않으면 이름 없이 호칭으로만</b> 부르시면 됩니다 — 예) "OO 비서실장" 대신 그냥 "비서실장". 나중에 언제든 붙일 수 있어요.</p>
+      <p class="note" style="margin-top:0">사람 이름처럼 부르면 더 정이 가요. <b>정하지 않으면 이름 없이 호칭으로만</b> 부르시면 됩니다 — 예) "OO 매니저" 대신 그냥 "매니저". 나중에 언제든 붙일 수 있어요.</p>
       ${cands.length ? `<div class="names" id="nm">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>` : `<div id="nm"></div>`}
       <input type="text" id="own" placeholder="이름 적기 (비워 두면 호칭만)" style="margin-top:6px">
       <p class="note" id="prev" style="font-size:16px;margin-top:14px"></p>
@@ -359,6 +364,7 @@ async function makeProp(req) {
   if (!r.ok) { alert("제안서를 만들지 못했어요. 다시 눌러 주세요.\n(" + (r.error || "") + ")"); }
   AI = await osCall({ action: "get", token: S.token }); renderAI();
 }
+(() => { const q = new URLSearchParams(location.search); if (!q.get("t")) { S.keyOk = false; save(); } })();
 (() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, key: q.get("k") || undefined, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + (S.mode ? "?mode=interview" : "")); } else if (q.get("k") && !S.token) { S.key = q.get("k"); save(); } })();
 (() => { const t = new URLSearchParams(location.search).get("t"); if (t && t !== S.token) { S = { a: {}, memo: {}, step: 0, token: t }; save(); } })();
 
