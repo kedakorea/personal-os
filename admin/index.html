@@ -68,7 +68,7 @@ async function list() {
   const r = await A({ action: "a_list" }); if (!r.ok) { $("tb").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
   const n = (s) => r.items.filter((x) => x.stage === s).length;
   $("tb").innerHTML = `<div class="stats">${STAGES.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}</div>
-   <table><tr><th>고객</th><th>회사</th><th>키</th><th>단계</th><th>인터뷰</th><th>실장</th><th>방식</th><th>최근</th></tr>
+   <table><tr><th>고객</th><th>회사</th><th>키</th><th>단계</th><th>인터뷰</th><th>매니저</th><th>방식</th><th>최근</th></tr>
    ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><code style="font-size:12px">${E(x.key_code || "")}</code></td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="8">아직 고객이 없습니다</td></tr>`}</table>`;
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
@@ -97,7 +97,7 @@ async function loadKeys() {
 }
 function intakeText(c) {
   const a = (c.intake && c.intake.a) || {}, j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
-  const L = [["직함", a.role], ["호칭", a.call], ["소개", a.intro], ["함께 일하는 사람", a.people], ["맡길 일", j(a.work) + (a.work_etc ? " / " + a.work_etc : "")], ["어려운 일", j(a.hard)], ["오래 걸리는 일", j(a.long)], ["쉽지만 오래 걸리는 일", j(a.easylong)], ["나만 할 수 있는 일", j(a.onlyme)], ["덧붙임", a.split_more], ["맡기고 싶은 일", j(a.delegate)], ["어제 하루", a.day], ["놓친 일", a.missed], ["해 보고 싶은 일", a.want], ["해야 할 일", a.must], ["메일", j(a.mail)], ["일정", j(a.cal)], ["연락", j(a.chat)], ["문서", j(a.doc)], ["채널", j(a.ch)], ["AI", j(a.ai)], ["확인받을 일", j(a.ask)], ["직접 할 일", a.never], ["컴퓨터", [a.pctype, a.pc].filter(Boolean).join(" · ")], ["켜 두기", a.on], ["휴대폰", a.phone], ["말투", a.tone], ["브리핑", j(a.brief)], ["실장 이름 아이디어", a.chief]];
+  const L = [["직함", a.role], ["호칭", a.call], ["소개", a.intro], ["함께 일하는 사람", a.people], ["맡길 일", j(a.work) + (a.work_etc ? " / " + a.work_etc : "")], ["어려운 일", j(a.hard)], ["오래 걸리는 일", j(a.long)], ["쉽지만 오래 걸리는 일", j(a.easylong)], ["나만 할 수 있는 일", j(a.onlyme)], ["덧붙임", a.split_more], ["맡기고 싶은 일", j(a.delegate)], ["어제 하루", a.day], ["놓친 일", a.missed], ["해 보고 싶은 일", a.want], ["해야 할 일", a.must], ["메일", j(a.mail)], ["일정", j(a.cal)], ["연락", j(a.chat)], ["문서", j(a.doc)], ["채널", j(a.ch)], ["AI", j(a.ai)], ["확인받을 일", j(a.ask)], ["직접 할 일", a.never], ["컴퓨터", [a.pctype, a.pc].filter(Boolean).join(" · ")], ["켜 두기", a.on], ["휴대폰", a.phone], ["말투", a.tone], ["브리핑", j(a.brief)], ["매니저 이름 아이디어", a.chief]];
   const memo = Object.values((c.intake && c.intake.memo) || {}).filter(Boolean);
   return L.filter(([, v]) => v).map(([k, v]) => `<b>${k}</b> ${E(v)}`).join("\n") + (memo.length ? `\n<b>인터뷰 메모</b> ${E(memo.join(" / "))}` : "");
 }

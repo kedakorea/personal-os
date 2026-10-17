@@ -90,11 +90,11 @@ const STEPS = [
     { k: "co", t: "회사·브랜드 이름", type: "text", hint: "여러 개면 모두 적어 주세요" },
     { k: "role", t: "직함·하시는 일 한 줄", type: "text", hint: "예) ○○학원 원장, 1인 컨설팅 대표, 대학 겸임교수" },
     { k: "tel", t: "연락처", type: "tel" },
-    { k: "call", t: "실장이 나를 뭐라고 부르면 좋을까요?", type: "oneplus", opts: ["대표님", "원장님", "교수님"], hint: "고르거나, 아래 칸에 직접 적어 주세요", ph: "직접 적기 (예: 선생님, 연심님)" } ] },
+    { k: "call", t: "매니저가 나를 뭐라고 부르면 좋을까요?", type: "oneplus", opts: ["대표님", "원장님", "교수님"], hint: "고르거나, 아래 칸에 직접 적어 주세요", ph: "직접 적기 (예: 선생님, 연심님)" } ] },
   { lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
     { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
     { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
-  { lab: "03 · 맡길 일", h: "평소에 하시는 일이나, 앞으로 AI 실장에게 시키고 싶은 일을 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
+  { lab: "03 · 맡길 일", h: "평소에 하시는 일이나, 앞으로 AI 매니저에게 시키고 싶은 일을 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
     { k: "work", type: "cards", opts: WORK },
     { k: "work_etc", t: "그 밖의 일", type: "text", hint: "여러 개면 쉼표(,)로 나눠 적어 주세요" } ] },
   { lab: "04 · 일 나누기", h: "고르신 일을 나눠 볼게요", sub: "해당하는 일을 눌러 주세요. 한 가지 일이 여러 칸에 들어가도 괜찮습니다.", qs: [
@@ -105,7 +105,7 @@ const STEPS = [
     { k: "split_more", t: "덧붙이고 싶은 말", type: "text", hint: "예) 정산은 쉬운데 매달 반나절이 걸려요" } ] },
   { lab: "05 · 하루", h: "어제 하루를 아침부터 들려주세요", sub: "몇 시에 무엇을 했는지, 어떤 프로그램·앱을 열었는지. 대충이어도 괜찮습니다.", qs: [
     { k: "day", type: "area", big: true },
-    { k: "missed", t: "최근에 놓치거나 실수한 일이 있다면", type: "text", hint: "이게 실장의 '주의할 점'이 됩니다" } ] },
+    { k: "missed", t: "최근에 놓치거나 실수한 일이 있다면", type: "text", hint: "이게 매니저의 '주의할 점'이 됩니다" } ] },
   { lab: "06 · 앞으로", h: "앞으로 해 보고 싶은 일, 해야 할 일", qs: [
     { k: "want", t: "앞으로 해 보고 싶은 일", type: "area", hint: "예) 책 쓰기, 유튜브 시작, 새 강의 만들기" },
     { k: "must", t: "앞으로 꼭 해야 할 일 (마감이 있는 일)", type: "area", hint: "예) 11월 학회 발표, 연말 정산, 다음 달 행사" } ] },
@@ -116,7 +116,7 @@ const STEPS = [
     { k: "doc", t: "문서", type: "multi", opts: ["한글", "워드", "엑셀", "PPT·키노트", "구글 문서", "캔바"] },
     { k: "ch", t: "채널", type: "multi", opts: ["블로그", "인스타그램", "유튜브", "홈페이지", "스마트스토어", "없음"] },
     { k: "ai", t: "써 본 AI", type: "multi", opts: ["챗GPT", "클로드", "제미나이", "뤼튼", "안 써 봤어요"] } ] },
-  { lab: "08 · 지킬 선", h: "실장이 꼭 확인받고 해야 할 일은?", sub: "고른 일은 실장이 준비만 해 두고, 마지막 버튼은 직접 누르시게 세팅합니다.", qs: [
+  { lab: "08 · 지킬 선", h: "매니저가 꼭 확인받고 해야 할 일은?", sub: "고른 일은 매니저가 준비만 해 두고, 마지막 버튼은 직접 누르시게 세팅합니다.", qs: [
     { k: "ask", type: "multi", opts: ["메일·카톡·문자 보내기", "결제·송금", "블로그·인스타 올리기", "파일 지우기", "고객·수강생 개인정보", "일정 확정"] },
     { k: "never", t: "절대 맡기기 싫은 일 (직접 하실 일)", type: "text" } ] },
   { lab: "09 · 컴퓨터", h: "어떤 기기를 쓰세요?", sub: "퍼스널 OS는 컴퓨터가 켜져 있는 동안 일합니다.", qs: [
@@ -124,10 +124,10 @@ const STEPS = [
     { k: "pc", t: "어떤 제품인가요?", type: "one", optsBy: "pctype" },
     { k: "on", t: "그 컴퓨터를 켜 둘 수 있나요?", type: "one", opts: ["하루 종일 켜 둘 수 있어요", "일하는 시간에만", "잘 모르겠어요"] },
     { k: "phone", t: "휴대폰", type: "one", opts: ["아이폰", "갤럭시"] } ] },
-  { lab: "10 · 실장", h: "나의 실장은 이렇게", qs: [
+  { lab: "10 · 매니저", h: "나의 매니저는 이렇게", qs: [
     { k: "tone", t: "말투", type: "one", opts: ["짧게, 핵심만", "친절하고 자세히"] },
     { k: "brief", t: "아침 브리핑에서 듣고 싶은 것", type: "multi", opts: ["오늘 일정", "오늘 할 일", "다가오는 마감", "온 연락 요약", "어제 한 일"] },
-    { k: "chief", t: "실장 이름 아이디어가 있나요?", type: "text", hint: "없으면 비워 두세요 — 저희가 후보를 제안합니다" } ] },
+    { k: "chief", t: "매니저 이름 아이디어가 있나요?", type: "text", hint: "없으면 비워 두세요 — 저희가 후보를 제안합니다" } ] },
   { id: "review" },
   { id: "done" },
 ];
@@ -190,7 +190,7 @@ function render() {
   }
   if (st.id === "start") {
     h = `<div class="lab">PERSONAL OS · STEP 1</div><h1>대표님의 일을<br>먼저 알려 주세요</h1>
-      <p class="sub">퍼스널 OS의 첫 단계는 <b>업무 파악</b>입니다. 들려주신 내용으로 대표님 대신 일할 실장과 부서를 설계해 제안서로 보여 드립니다. 10~15분이면 충분하고, 중간에 닫아도 이 기기에 저장됩니다.</p>
+      <p class="sub">퍼스널 OS의 첫 단계는 <b>업무 파악</b>입니다. 들려주신 내용으로 대표님 대신 일할 매니저와 부서를 설계해 제안서로 보여 드립니다. 10~15분이면 충분하고, 중간에 닫아도 이 기기에 저장됩니다.</p>
       <div class="mode"><button type="button" data-mode="self"><b>✍️ 직접 작성할게요</b>질문을 하나씩 읽고 편하게 답해 주세요.</button>
       <button type="button" data-mode="interview"><b>🎙 담당자와 인터뷰</b>브랜디움 담당자가 묻고 대신 적습니다. 질문마다 인터뷰 메모 칸이 나옵니다.</button></div>
       ${S.a.name ? `<p class="note">작성 중인 답(${esc(S.a.name)})이 있습니다. 위에서 방식을 고르면 이어서 합니다. <a href="#" id="reset">처음부터 새로</a></p>` : ""}`;
@@ -217,7 +217,7 @@ function summary() {
   L.push(`[해 보고 싶은 일] ${a.want || ""}`, `[해야 할 일] ${a.must || ""}`);
   L.push(`[도구] 메일 ${j(a.mail)} / 일정 ${j(a.cal)} / 연락 ${j(a.chat)} / 문서 ${j(a.doc)} / 채널 ${j(a.ch)} / AI ${j(a.ai)}`);
   L.push(`[확인받을 일] ${j(a.ask)}`, `[직접 할 일] ${a.never || ""}`);
-  L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[실장] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
+  L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[매니저] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 이름 ${a.chief || ""}`);
   const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => `  (${STEPS[k] && STEPS[k].lab}) ${v}`);
   if (m.length) L.push("[인터뷰 메모]", ...m);
   if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
@@ -273,23 +273,23 @@ async function renderAI() {
     if ($("mk")) $("mk").onclick = () => { if (confirm("지금까지 이야기로 제안서를 만들까요?")) makeProp(""); };
     window.scrollTo(0, document.body.scrollHeight);
   } else if (v === "busy") {
-    $("main").innerHTML = `<div class="busy"><span class="dot">✏️</span>들려주신 이야기로 실장과 부서를 설계하고 있어요.<br>30초~1분쯤 걸립니다.</div>`;
+    $("main").innerHTML = `<div class="busy"><span class="dot">✏️</span>들려주신 이야기로 매니저와 부서를 설계하고 있어요.<br>30초~1분쯤 걸립니다.</div>`;
     setTimeout(async () => { AI = await osCall({ action: "get", token: S.token }); renderAI(); }, 5000);
   } else if (v === "prop") {
     const d = c.design, cands = (d.실장후보 || []).filter((x) => x.이름);
     $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="lab">STEP 3 · 제안</div><h1 style="font-size:26px">제안서가 나왔어요</h1>${osProposal(d)}
       <h3 style="margin-top:26px">고칠 곳이 있으면 적어 주세요</h3><textarea id="req" placeholder="예) 연구실은 빼 주세요 / 홍보실 이름을 '알림실'로" style="min-height:90px"></textarea>
       <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap"><button class="sendb" style="background:#fff;color:var(--ink)" id="redo">고쳐서 다시 만들기</button><button class="sendb" style="background:#fff;color:var(--ink)" id="more">인터뷰 더 하기</button></div>
-      <h3 style="margin-top:26px">실장 이름을 골라 주세요</h3><div class="names">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>
+      <h3 style="margin-top:26px">매니저 이름을 골라 주세요</h3><div class="names">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>
       <input type="text" id="own" placeholder="직접 짓기 (예: 하나)" style="margin-top:6px">
       <button class="bigb" id="ok" type="button" style="margin-top:18px;background:var(--ink);color:var(--cream)">✅ 이대로 만들어 주세요</button><div style="height:60px"></div>`;
     document.querySelectorAll(".names button").forEach((b) => b.onclick = () => { CHIEF = b.dataset.n; $("own").value = ""; document.querySelectorAll(".names button").forEach((x) => x.classList.toggle("on", x === b)); });
     $("redo").onclick = () => { const q = $("req").value.trim(); if (!q) { $("req").focus(); return; } makeProp(q); };
     $("more").onclick = () => { MORE = true; renderAI(); };
-    $("ok").onclick = async () => { const own = $("own").value.trim(); const name = own || CHIEF; if (!name) { alert("실장 이름을 골라 주세요"); return; } if (!confirm(`실장 이름 '${name}'(으)로 확정할까요?`)) return; $("ok").disabled = true; AI = await osCall({ action: "confirm", token: S.token, chief: name }); renderAI(); };
+    $("ok").onclick = async () => { const own = $("own").value.trim(); const name = own || CHIEF; if (!name) { alert("매니저 이름을 골라 주세요"); return; } if (!confirm(`매니저 이름 '${name}'(으)로 확정할까요?`)) return; $("ok").disabled = true; AI = await osCall({ action: "confirm", token: S.token, chief: name }); renderAI(); };
     window.scrollTo(0, 0);
   } else if (v === "done") {
-    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>실장 <b>${osEsc(c.chief || "")}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다. 설치는 담당자가 안내해 드립니다.</div><div style="margin-top:18px">${osProposal(c.design, c.chief)}</div>`;
+    $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>매니저 <b>${osEsc(c.chief || "")}</b>와(과) 부서들로 ${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다. 설치는 담당자가 안내해 드립니다.</div><div style="margin-top:18px">${osProposal(c.design, c.chief)}</div>`;
   }
 }
 function msgHtml(m) { return `<div class="m ${m.role === "ai" ? "ai" : "me"}">${osEsc(m.text)}${m.files && m.files.length ? `<span class="f">📎 ${osEsc(m.files.map((f) => f.name).join(", "))}</span>` : ""}</div>`; }

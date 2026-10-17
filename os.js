@@ -16,8 +16,8 @@ function osProposal(d, chief) {
   const li = (a) => (a || []).map((x) => `<li>${osEsc(x)}</li>`).join("");
   return `<div class="prop"><div class="plab">PERSONAL OS · PROPOSAL</div>
     <h2><em>${osEsc(d.고객 || "")}</em>의 퍼스널 OS를 이렇게 세팅합니다</h2><p class="plead">${osEsc(d.한줄 || "")}</p>
-    <h3>① 총괄 실장</h3><div class="pchief">${chief ? `<b>${osEsc(chief)}</b>` : (d.실장후보 || []).map((c) => `<span><b>${osEsc(c.이름)}</b> · ${osEsc(c.뜻 || "")}</span>`).join("")}</div>
-    <h3>② 부서 — 실장이 일을 나눠 맡깁니다</h3><div class="pboss">${osEsc(d.고객 || "")}<small>지시는 실장에게 한마디로</small></div><div class="pgrid">${dep}</div>
+    <h3>① 매니저</h3><div class="pchief">${chief ? `<b>${osEsc(chief)}</b>` : (d.실장후보 || []).map((c) => `<span><b>${osEsc(c.이름)}</b> · ${osEsc(c.뜻 || "")}</span>`).join("")}</div>
+    <h3>② 부서 — 매니저가 일을 나눠 맡깁니다</h3><div class="pboss">${osEsc(d.고객 || "")}<small>지시는 매니저에게 한마디로</small></div><div class="pgrid">${dep}</div>
     <div class="ptwo"><div><h3>③ 알아서 하는 일</h3><ul>${li(d.자동업무)}</ul></div><div><h3>④ 꼭 확인받고 하는 일</h3><ul>${li(d.승인선목록)}</ul></div></div>
     <div class="pfoot">BRANDiUM · 주식회사 캐다 · 퍼스널 OS</div></div>`;
 }
