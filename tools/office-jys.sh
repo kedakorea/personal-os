@@ -9,6 +9,12 @@ import sys, re
 f, o = sys.argv[1], sys.argv[2]
 s = open(f, encoding="utf-8").read(); add = open(o, encoding="utf-8").read()
 s = re.sub(r"<!--OFFICE-START.*?<!--OFFICE-END-->\n?", "", s, flags=re.S)
+# 레트로 화면(조사병단 본부·창 모드) 코드 통째로 삭제
+ra = s.find("<!-- ═══ 레트로 데스크톱 화면")
+if ra >= 0:
+    rb = s.find("<script>\n(function () {", ra); re_ = s.find("\n})();\n</script>", rb)
+    if rb >= 0 and re_ >= 0:
+        s = s[:ra] + s[re_ + len("\n})();\n</script>"):]
 i = s.rfind("</body>"); s = s[:i] + add + s[i:]
 open(f, "w", encoding="utf-8").write(s)
 P
