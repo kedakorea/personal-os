@@ -370,4 +370,37 @@ async function makeProp(req) {
 
 render();
 </script>
+<!-- 🎤 받아쓰기 (2026-10-18) — 마지막으로 누른 입력칸에 PC 마이크로 들은 말을 이어 적는다 -->
+<style>
+#mic{position:fixed;right:18px;bottom:200px;z-index:60;border:3px solid var(--ink);background:#fff;color:var(--ink);border-radius:99px;padding:12px 18px;font:800 16px Pretendard;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+#mic.on{background:#ff5a5f;color:#fff;animation:micp 1.2s infinite}
+@keyframes micp{50%{box-shadow:4px 4px 0 var(--ink),0 0 0 10px rgba(255,90,95,.25)}}
+#micnow{position:fixed;right:18px;bottom:256px;z-index:60;max-width:360px;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:8px 12px;font:14px/1.5 Pretendard;display:none}
+.micT{outline:3px solid #ff5a5f!important}
+</style>
+<div id="micnow"></div><button id="mic" type="button" title="누른 칸에 말이 글자로 들어갑니다">🎤 받아쓰기</button>
+<script>
+(function(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition, btn = document.getElementById("mic"), now = document.getElementById("micnow");
+  if (!SR) { btn.onclick = () => alert("이 브라우저는 받아쓰기를 지원하지 않아요. 크롬으로 열어 주세요."); return; }
+  let target = null, rec = null, on = false;
+  document.addEventListener("focusin", (e) => { const t = e.target; if (t.matches("textarea, input[type=text]") && t.id !== "keyin") { if (target) target.classList.remove("micT"); target = t; if (on) t.classList.add("micT"); } });
+  function put(txt) {
+    if (!target || !document.body.contains(target)) { target = document.querySelector("textarea[data-memo]") || document.getElementById("tx") || document.querySelector("textarea"); }
+    if (!target) return;
+    const v = target.value; target.value = v + (v && !/\s$/.test(v) ? " " : "") + txt.trim();
+    target.dispatchEvent(new Event("input", { bubbles: true })); target.dispatchEvent(new Event("change", { bubbles: true }));
+    target.scrollTop = target.scrollHeight;
+  }
+  function start() {
+    rec = new SR(); rec.lang = "ko-KR"; rec.continuous = true; rec.interimResults = true;
+    rec.onresult = (e) => { let interim = ""; for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) put(r[0].transcript); else interim += r[0].transcript; } now.style.display = interim ? "block" : "none"; now.textContent = "🎧 " + interim; };
+    rec.onerror = (e) => { if (e.error === "not-allowed") { alert("마이크 사용을 허용해 주세요 (주소창 왼쪽 🔒 → 마이크 허용)"); stop(); } };
+    rec.onend = () => { if (on) { try { rec.start(); } catch (x) {} } };   // 말이 끊겨도 계속 듣기
+    rec.start();
+  }
+  function stop() { on = false; btn.classList.remove("on"); btn.textContent = "🎤 받아쓰기"; now.style.display = "none"; if (target) target.classList.remove("micT"); try { rec && rec.stop(); } catch (x) {} }
+  btn.onclick = () => { if (on) return stop(); on = true; btn.classList.add("on"); btn.textContent = "⏹ 받아쓰는 중 · 멈추기"; if (target) target.classList.add("micT"); start(); };
+})();
+</script>
 </body></html>
