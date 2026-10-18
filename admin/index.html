@@ -64,7 +64,7 @@ function loginView() {
 async function list() {
   $("out").hidden = false; history.replaceState(null, "", location.pathname);
   $("main").innerHTML = `${tabs("c")}<div class="top"><h1>고객</h1><button class="btn y" id="newiv">🎙 새 고객 인터뷰 시작</button><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
-  $("newiv").onclick = async () => { const nm = prompt("고객 이름을 적어 주세요 (메모: 날짜-이름-방식)", ""); if (!nm) return; const way = prompt("방식 (출장 / 원격 / 셀프 / 특강)", "출장") || "출장"; const k = await A({ action: "a_key_new", memo: `${yymmdd()}-${nm.trim()}-${way.trim()}`, n: 1 }); if (!k.ok) { alert(k.error); return; } window.open(`../start/?mode=interview&new=1&k=${k.codes[0]}`, "_blank"); };
+  $("newiv").onclick = async () => { const nm = prompt("고객 이름을 적어 주세요 (메모: 날짜-이름-방식)", ""); if (!nm) return; const way = prompt("방식 (방문 / 원격 / 셀프 / 특강)", "방문") || "방문"; const k = await A({ action: "a_key_new", memo: `${yymmdd()}-${nm.trim()}-${way.trim()}`, n: 1 }); if (!k.ok) { alert(k.error); return; } window.open(`../start/?mode=interview&new=1&k=${k.codes[0]}`, "_blank"); };
   const r = await A({ action: "a_list" }); if (!r.ok) { $("tb").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
   const n = (s) => r.items.filter((x) => x.stage === s).length;
   $("tb").innerHTML = `<div class="stats">${STAGES.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}</div>
@@ -78,7 +78,7 @@ async function keys() {
   history.replaceState(null, "", "?tab=keys");
   $("main").innerHTML = `${tabs("k")}<div class="top"><h1>고객 키</h1></div>
    <div class="box"><h3>새 키 만들기</h3><p class="note" style="margin-top:0">키를 받은 고객만 업무 파악·AI 인터뷰 화면에 들어갈 수 있습니다. 한 키 = 고객 한 명. 같은 키로 다시 들어오면 하던 곳부터 이어집니다.</p>
-   <div class="row2"><input id="kd" value="${yymmdd()}" style="width:100px;margin:0" title="날짜 YYMMDD"><input id="kname" placeholder="고객 이름 (예: 조연심)" style="flex:1;margin:0;min-width:160px"><select id="kway" style="width:auto;margin:0">${["출장", "원격", "셀프", "특강", "기타"].map((x) => `<option>${x}</option>`).join("")}</select><input id="kn" type="number" value="1" min="1" max="20" style="width:70px;margin:0" title="개수"><button class="btn" id="kmk">키 만들기</button></div>
+   <div class="row2"><input id="kd" value="${yymmdd()}" style="width:100px;margin:0" title="날짜 YYMMDD"><input id="kname" placeholder="고객 이름 (예: 조연심)" style="flex:1;margin:0;min-width:160px"><select id="kway" style="width:auto;margin:0">${["방문", "원격", "셀프", "특강", "출장", "기타"].map((x) => `<option>${x}</option>`).join("")}</select><input id="kn" type="number" value="1" min="1" max="20" style="width:70px;margin:0" title="개수"><button class="btn" id="kmk">키 만들기</button></div>
    <p class="note">메모는 <b id="kprev"></b> 로 저장됩니다 (날짜-이름-방식)</p>
    <div id="kl">불러오는 중…</div>`;
   const memo = () => [$("kd").value.trim(), $("kname").value.trim(), $("kway").value].filter(Boolean).join("-");

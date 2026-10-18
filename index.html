@@ -318,6 +318,7 @@ footer b{color:#fffaf0}
 /* 체험단 팝업 */
 .evt{position:fixed;inset:0;z-index:60;background:rgba(40,28,27,.62);display:flex;align-items:center;justify-content:center;padding:18px}
 .evt[hidden]{display:none}
+section[hidden]{display:none!important}
 .evt-box{position:relative;width:min(520px,100%);max-height:92vh;overflow:auto;background:var(--cream);border:3px solid var(--ink);border-radius:26px;padding:30px 28px 22px;box-shadow:10px 10px 0 var(--ink);animation:evtIn .45s cubic-bezier(.2,1.3,.4,1)}
 @keyframes evtIn{from{transform:translateY(30px) scale(.96);opacity:0}}
 .evt-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:#fffbea;font-weight:900;cursor:pointer}
@@ -465,7 +466,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
 </head>
 <body>
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#day">DAY</a><a href="#mobile">MOBILE</a><a href="#cases">CASES</a><a href="#screens">SCREENS</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.github.io/keda/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
+<div class="links"><a href="#what">WHAT</a><a href="#mobile">MOBILE</a><a href="#screens">SCREENS</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.github.io/keda/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
 <div class="wrap">
 
 <section class="hero" id="top">
@@ -574,7 +575,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
  <p class="lead">설정도, 공부도, 관리도 필요 없습니다.<br>직원에게 말하듯, 아니 그보다 더 편하게.</p></div>
 </section>
 
-<section class="pad lilac" id="day">
+<section class="pad lilac" id="day" hidden>
  <div class="reveal"><span class="label">A DAY WITH OS</span><h2>이런 하루가 됩니다</h2>
  <div class="day">
   <div><h4>BEFORE</h4><ol><li><b>08:30</b>메일함 확인</li><li><b>09:10</b>캘린더 확인</li><li><b>09:40</b>견적서 답장 확인</li><li><b>10:20</b>세금계산서 발행</li><li><b>11:00</b>단톡방 정리</li><li><b>12:00</b>점심. 본업은 오후부터</li></ol></div>
@@ -613,7 +614,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
  </div></div>
 </section>
 
-<section class="pad light" id="cases">
+<section class="pad light" id="cases" hidden>
  <div class="reveal"><span class="label">REAL REQUESTS</span><h2>이런 것까지<br>말 한마디면 됩니다</h2>
  <p class="lead">실제 업무에서 매일 나오는 요청들입니다. 대표님은 한 줄만 보내고, 결과물은 파일로 받습니다.</p></div>
  <p class="swipe">← 옆으로 넘겨 보세요 →</p><div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
@@ -662,10 +663,10 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
  </div>
 <p class="plabel">퍼스널 OS 세팅 비용</p>
 <div class="plans">
-  <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>출장형</small></h4>
-   <p class="lbl">세팅비용 <em>한 번만</em></p><p class="now">1,320,000<small>원</small></p>
+  <div class="plan"><span class="badge">LAUNCHING EVENT</span><h4>VISIT <small>방문형</small></h4>
+   <p class="lbl">세팅비용 <em>한 번만</em></p><p class="now">990,000<small>원</small></p>
    <p class="calc"><s>정가 2,500,000원</s> 런칭 이벤트가 · Claude 구독료는 별도</p>
-   <p class="inc">Claude Max 결제·연결 · 방문 인터뷰 · 현장 세팅 · 사용 교육 · 30일 적응 지원</p></div>
+   <p class="inc">노트북 들고 브랜디움 라운지로 · Claude Max 결제·연결 · 대면 인터뷰 · 그 자리 세팅 · 사용 교육 · 30일 적응 지원</p></div>
   <div class="plan alt"><span class="badge">LAUNCHING EVENT</span><h4>REMOTE <small>원격형</small></h4>
    <p class="lbl">세팅비용 <em>한 번만</em></p><p class="now">880,000<small>원</small></p>
    <p class="calc"><s>정가 2,200,000원</s> 런칭 이벤트가 · Claude 구독료는 별도</p>
@@ -691,7 +692,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
   <li><b>사용 교육</b><span>60분. 첫 지시 다섯 개를 함께 해 봅니다.</span></li>
   <li><b>30일 적응 지원</b><span>첫 달 동안 써 보며 불편한 점을 바로 고쳐 드립니다.</span></li></ol>
  <p class="tlabel">진행 형태는 두 가지 중에 고르세요</p>
- <div class="types"><div><i>🚗</i><h4>VISIT<small>출장형</small></h4><p>직접 찾아가 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 추천합니다.</p></div>
+ <div class="types"><div><i>☕</i><h4>VISIT<small>방문형</small></h4><p>노트북을 들고 <b>브랜디움 라운지</b>에 오시면, 테이블에 마주 앉아 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 추천합니다.</p></div>
  <div><i>💻</i><h4>REMOTE<small>원격형</small></h4><p>화상 인터뷰와 원격 접속으로 세팅합니다. 거리와 상관없이 진행됩니다.</p></div></div></div>
 </section>
 
@@ -704,7 +705,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
   <details><summary>진짜 운영체제인가요? 윈도우나 맥이 바뀌나요?</summary><p>아니요. 컴퓨터의 운영체제(윈도우·맥)는 그대로입니다. 퍼스널 OS의 'OS'는 <b>내 일이 굴러가게 하는 기본 체계</b>라는 뜻이에요. 운영체제가 앱들을 관리하듯, 매니저가 일을 받아 맞는 부서에 나눠 주고, 기억하고, 정해진 시간에 알아서 챙깁니다. 그 체계를 대표님 컴퓨터 위에 세워 드리는 서비스입니다.</p></details>
   <details><summary>비밀번호나 개인정보가 걱정돼요.</summary><p>비밀번호·인증서는 받지 않습니다. 로그인은 대표님이 직접 하시고, 자료는 대표님 컴퓨터에만 둡니다.</p></details>
   <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.<span class="can">✓ 원하시면 전송까지 맡기실 수도 있어요. 기본 세팅은 안전하게, 범위는 대표님 필요에 맞게 바꿉니다.</span></p></details>
-  <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 출장형을 고르시면 처음부터 끝까지 옆에서 세팅하고, 첫 30일 동안 적응을 도와드립니다.</p></details>
+  <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 방문형을 고르시면 브랜디움 라운지에서 처음부터 끝까지 옆에서 세팅하고, 첫 30일 동안 적응을 도와드립니다.</p></details>
  </div></div>
 </section>
 
@@ -757,11 +758,11 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
   <button class="evt-x" aria-label="닫기">✕</button>
   <span class="evt-tag">OPEN EVENT · 선착순 5명</span>
   <h3 id="evt-t">퍼스널 OS<br>체험단을 모십니다</h3>
-  <p class="evt-price"><s>1,320,000원</s><b>550,000</b>원 <small>출장형</small></p>
-  <p class="evt-sub">출장형 세팅비 · Claude 구독료(월 $100)는 대표님 명의로 별도 결제</p>
+  <p class="evt-price"><s>990,000원</s><b>550,000</b>원 <small>방문형</small></p>
+  <p class="evt-sub">방문형 세팅비(노트북 들고 브랜디움 라운지로) · Claude 구독료(월 $100)는 대표님 명의로 별도 결제</p>
   <p class="evt-lead">저희는 실제 세팅 사례가 필요하고, 대표님은 꼼꼼한 세팅이 필요하시죠. <b>서로 돕는 체험단</b>입니다.</p>
   <div class="evt-deal">
-   <div><em>캐다가 드리는 것</em><ul><li>출장형 세팅을 체험단 가격으로</li><li>설치부터 사용까지 더 자세한 1:1 세팅</li><li>유지보수도 더 촘촘하게 봐 드려요</li></ul></div>
+   <div><em>캐다가 드리는 것</em><ul><li>방문형 세팅을 체험단 가격으로</li><li>설치부터 사용까지 더 자세한 1:1 세팅</li><li>유지보수도 더 촘촘하게 봐 드려요</li></ul></div>
    <div><em>대표님이 해 주실 것</em><ul><li>설치부터 쓰는 동안 불편했던 점 제보</li><li>"이건 이렇게 됐으면" 솔직한 의견</li><li>세팅 사례로 소개 동의(이름은 원하시는 대로)</li></ul></div>
   </div>
   <a class="evt-go" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">체험단 신청하기 →</a>
