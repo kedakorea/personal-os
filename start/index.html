@@ -68,6 +68,7 @@ html,body{overflow-x:hidden}
 .sendb,.bigb{font:800 17px Pretendard;padding:0 20px;height:54px;border-radius:99px;border:2px solid var(--ink);background:var(--ink);color:var(--cream);cursor:pointer;flex:none}
 .bigb{display:block;width:100%;max-width:720px;margin:10px auto 0;background:var(--butter);color:var(--ink)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;max-width:720px;margin:0 auto 6px}.chips span{font-size:13px;background:#fff;border:1px solid var(--sand);border-radius:99px;padding:4px 10px}
+.ntc{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:18px 22px 18px 40px;margin:18px 0 14px;max-height:52vh;overflow:auto}.ntc li{font-size:15.5px;line-height:1.7;margin:6px 0}.ntc b{font-weight:800}.ntck{display:flex;gap:10px;align-items:center;font-size:17px;font-weight:800;margin:6px 0 14px;cursor:pointer}.ntck input{width:22px;height:22px;accent-color:var(--ink)}#ntgo:disabled{opacity:.4;cursor:not-allowed}
 .busy{padding:50px 0;text-align:center;font-size:18px;line-height:1.8}.busy .dot{font-size:46px;display:block;animation:bb 1.2s infinite}@keyframes bb{50%{transform:translateY(-8px)}}
 .names{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.names button{font:700 18px Pretendard;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}.names button.on{background:var(--ink);color:var(--cream)}
 .aslot{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin-top:10px}.aslot b{font-size:17px}.aslot small{display:block;font-size:13px;opacity:.65;margin-top:2px}.af{display:inline-block;font-size:13px;background:var(--cream);border-radius:99px;padding:3px 10px;margin:6px 6px 0 0}.af a{color:inherit;text-decoration:none;margin-left:4px}.asb{display:inline-flex;align-items:center;background:var(--butter)!important;color:var(--ink)!important;height:44px!important;font-size:15px!important;cursor:pointer}
@@ -180,6 +181,20 @@ function render() {
   $("back").disabled = S.step < 1;
   $("next").textContent = st.id === "review" ? "🎙 AI 인터뷰 시작" : "다음";
   let h = "";
+  if (!S.keyOk && !S.noticeOk) {                       // 시작 전 이용 안내 (2026-10-18 대표님 지시) — 사이트 맨 아래 안내를 그대로 가져와 읽고 넘어간다
+    $("nav").style.display = "none"; $("bar").style.width = "0%";
+    $("main").innerHTML = `<div class="lab">PERSONAL OS · 시작하기 전에</div><h1>시작하기 전에<br>꼭 읽어 주세요</h1>
+      <p class="sub">퍼스널 OS가 무엇이고, 무엇이 아닌지 먼저 안내드립니다. 1분이면 읽으실 수 있어요.</p>
+      <div class="ntc" id="ntc"><p class="note">안내를 불러오는 중…</p></div>
+      <label class="ntck"><input type="checkbox" id="ntok"> 위 안내를 모두 읽고 이해했습니다</label>
+      <div class="mode"><button type="button" id="ntgo" disabled><b>다음 →</b>고객 키를 넣고 업무 파악을 시작합니다.</button></div>`;
+    window.scrollTo(0, 0);
+    fetch("../").then((r) => r.text()).then((t) => { const d = new DOMParser().parseFromString(t, "text/html").querySelector("section.fine ol"); if (d) $("ntc").innerHTML = "<ol>" + d.innerHTML + "</ol>"; else throw 0; })
+      .catch(() => { $("ntc").innerHTML = `<p class="note"><a href="../#apply" target="_blank">퍼스널 OS 사이트 맨 아래 '이용 안내'</a>를 읽어 주세요.</p>`; });
+    $("ntok").onchange = () => { $("ntgo").disabled = !$("ntok").checked; };
+    $("ntgo").onclick = () => { S.noticeOk = true; S.noticeAt = new Date().toISOString(); save(); render(); };
+    return;
+  }
   if (!S.keyOk) {
     $("nav").style.display = "none"; $("bar").style.width = "0%";
     h = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>고객 키를<br>넣어 주세요</h1>
@@ -258,7 +273,7 @@ $("next").onclick = async () => {
   if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
   if (st.id === "review") {
     $("next").disabled = true; $("next").textContent = "인터뷰어를 부르는 중…";
-    const r = await osCall({ action: "start", key: S.key, name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo } });
+    const r = await osCall({ action: "start", key: S.key, name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo, notice: S.noticeAt || "" } });
     $("next").disabled = false;
     if (!r.ok) { alert("연결이 잠깐 안 됐어요. 다시 눌러 주세요. 작성한 내용은 저장돼 있습니다.\n(" + (r.error || "") + ")"); render(); return; }
     // 예비 보관 — 구글폼에도 한 부 (실패해도 무시)
