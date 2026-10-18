@@ -21,4 +21,17 @@ i = s.rfind("</body>"); s = s[:i] + add + s[i:]
 open(f, "w", encoding="utf-8").write(s)
 P
 done
+# 매니저 이름을 '찰스 핸디'로 (비어 있을 때만) → 원본 틀로 다시 깔기(사무실 화면 포함)
+python3 - "$OS/설정.json" <<'P'
+import sys, json
+p = sys.argv[1]
+try:
+    c = json.load(open(p, encoding="utf-8"))
+except Exception:
+    sys.exit(0)
+if not (c.get("실장") or "").strip() or c.get("실장") == c.get("직함"):
+    c["실장"] = "찰스 핸디"; c.setdefault("직함", "실장")
+    json.dump(c, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+P
+[ -f "$OS/.os_키트/적용.py" ] && python3 "$OS/.os_키트/적용.py" >/dev/null 2>&1
 echo "✓ 사무실 화면을 넣었습니다 (원본 틀까지 — 설정을 다시 적용해도 유지). 앱 창에서 새로고침(⌘R) 하세요."
