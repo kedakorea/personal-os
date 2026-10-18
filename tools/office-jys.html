@@ -2,6 +2,7 @@
 <style>
 #jooffice{background:#feefb8;overflow:auto;font-family:Pretendard,-apple-system,sans-serif;color:#432f2e;display:none;min-width:0;min-height:0}
 body.locked #jooffice,body.locked #jobtn{display:none!important}
+.rt-toggle,.m-aot-on{display:none!important}   /* 레트로·진격 테마(대표님 전용) 버튼 숨김 */
 .jo-wrap{padding:18px 18px 40px}
 .jo-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .jo-top h1{font-size:24px;font-weight:900;margin:0}.jo-top p{margin:4px 0 0;opacity:.7;font-size:14px}
@@ -53,6 +54,7 @@ body.locked #jooffice,body.locked #jobtn{display:none!important}
 <script>
 (function(){
   const of = document.getElementById("jooffice"), B = document.body, inp = () => document.getElementById("input");
+  if (localStorage.getItem("retro") === "1" || B.classList.contains("retro")) { localStorage.setItem("retro", "0"); localStorage.removeItem("rtTheme"); location.reload(); return; }   // 조사병단 본부(레트로) 화면이 켜져 있었으면 끄고 다시 연다
   B.classList.add("jox");
   const main = document.querySelector("main"); if (main) main.parentNode.insertBefore(of, main);   // 가운데 칸 자리로
   const open = () => { of.classList.add("show"); };
