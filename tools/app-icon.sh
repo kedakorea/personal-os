@@ -5,7 +5,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cat > "$APP/Contents/MacOS/run" <<'R'
 #!/bin/bash
 URL=http://127.0.0.1:8765
-if [ -d "/Applications/Google Chrome.app" ]; then open -na "Google Chrome" --args --app="$URL" --start-maximized; else open "$URL"; fi
+if [ -d "/Applications/Google Chrome.app" ]; then open -na "Google Chrome" --args --app="$URL" --window-size=1440,900; else open "$URL"; fi
 R
 chmod +x "$APP/Contents/MacOS/run"
 cat > "$APP/Contents/Info.plist" <<'P'
