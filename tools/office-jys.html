@@ -28,16 +28,17 @@ body.locked #jooffice,body.locked #jobtn{display:none!important}
 .jo-tip{text-align:center;margin-top:12px;font-size:13px;opacity:.7}
 #jobtn{position:fixed;right:14px;bottom:96px;z-index:8000;border:3px solid #432f2e;background:#f6d36b;color:#432f2e;border-radius:99px;padding:9px 15px;font:800 14px Pretendard,sans-serif;cursor:pointer;box-shadow:3px 3px 0 #432f2e}
 /* 컴퓨터 (넓은 화면): 3단 — 왼쪽 위 자료실·바로가기·달력, 왼쪽 아래 할일 / 가운데 사무실 / 오른쪽 채팅 */
-@media (min-width:1101px){
-  body.jox:not(.locked) aside{position:fixed!important;left:0;top:0;width:300px!important;max-width:none!important;height:54vh;transform:none!important;display:flex!important;overflow-y:auto;border-right:1px solid var(--line);border-bottom:2px solid var(--line);box-shadow:none!important;z-index:20}
-  body.jox:not(.locked) .todo{position:fixed!important;left:0;top:54vh;width:300px;height:46vh;display:flex!important;z-index:20}
-  body.jox:not(.locked) #jooffice{display:block;position:fixed;left:300px;right:440px;top:0;bottom:0;z-index:10}
-  body.jox:not(.locked) main{position:fixed!important;right:0;top:0;width:440px;height:100dvh;border-left:3px solid #432f2e;z-index:20;display:flex;flex-direction:column}
+@media (min-width:861px){
+  body.jox{--jl:clamp(240px,20vw,300px);--jr:clamp(360px,30vw,460px)}
+  body.jox:not(.locked) aside{position:fixed!important;left:0;top:0;width:var(--jl)!important;max-width:none!important;height:54vh;transform:none!important;display:flex!important;overflow-y:auto;border-right:1px solid var(--line);border-bottom:2px solid var(--line);box-shadow:none!important;z-index:20}
+  body.jox:not(.locked) .todo{position:fixed!important;left:0;top:54vh;width:var(--jl);height:46vh;display:flex!important;z-index:20}
+  body.jox:not(.locked) #jooffice{display:block;position:fixed;left:var(--jl);right:var(--jr);top:0;bottom:0;z-index:10}
+  body.jox:not(.locked) main{position:fixed!important;right:0;top:0;width:var(--jr);height:100dvh;border-left:3px solid #432f2e;z-index:20;display:flex;flex-direction:column}
   body.jox .todo-fold,body.jox .todo-unfold,body.jox .jo-go,body.jox #jobtn,body.jox .drawer-close{display:none!important}
   body.jox .threads{display:none}
 }
 /* 휴대폰·좁은 화면: 사무실을 첫 화면으로 크게, 버튼으로 채팅과 오감 */
-@media (max-width:1100px){
+@media (max-width:860px){
   #jooffice.show{display:block;position:fixed;inset:0;z-index:9000}
   .jo-grid{grid-template-columns:repeat(2,1fr)}.jo-room img{width:78px}.jo-boss img{width:100px}
 }
@@ -72,7 +73,7 @@ body.locked #jooffice,body.locked #jobtn{display:none!important}
   };
   [tag, what].forEach((el) => el && new MutationObserver(mark).observe(el, { childList: true, characterData: true, subtree: true }));
   mark();
-  if (innerWidth <= 1100) {
+  if (innerWidth <= 860) {
     if (!B.classList.contains("locked")) open();
     else new MutationObserver((m, ob) => { if (!B.classList.contains("locked")) { ob.disconnect(); open(); } }).observe(B, { attributes: true, attributeFilter: ["class"] });
   }
