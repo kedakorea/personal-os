@@ -428,6 +428,39 @@ footer b{color:#fffaf0}
  .about .two{grid-template-columns:1fr}
 }
 nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:var(--cream);color:var(--ink)!important}
+
+/* ── 아직도 이렇게? · 5% vs 95% · 교육이 아닙니다 (2026-10-18, 소개서에서 옮김) ── */
+.chat2{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;align-items:center;margin-top:38px}
+.cw{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);overflow:hidden}
+.cw .bar{background:var(--ink);color:#fffaf0;font-size:13px;padding:10px 14px;display:flex;gap:6px;align-items:center}
+.cw .bar i{width:10px;height:10px;border-radius:50%;background:#e9785f;display:inline-block}.cw .bar i+i{background:#f6d36b}.cw .bar i+i+i{background:#8fd18f;margin-right:8px}
+.cw .in{padding:18px;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.55}
+.cw .me{align-self:flex-end;background:var(--ink);color:#fffaf0;border-radius:16px 16px 4px 16px;padding:9px 14px;max-width:80%}
+.cw .ai{align-self:flex-start;background:#f3ece3;border-radius:16px 16px 16px 4px;padding:9px 14px;max-width:85%}
+.cw .ai small{display:block;opacity:.55;font-size:12px;margin-top:4px}
+.cw .sigh{align-self:flex-end;font-size:14px;opacity:.65}
+.hand h3{font-size:22px;margin-bottom:14px}
+.hand ol{list-style:none;counter-reset:h;display:flex;flex-direction:column;gap:10px}
+.hand li{counter-increment:h;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:12px 16px 12px 52px;position:relative;font-size:16px;font-weight:600}
+.hand li::before{content:counter(h);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fffaf0;font:700 14px/28px 'Josefin Sans';text-align:center}
+.hand li.last{background:var(--butter2)}
+.truth{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.pct{font:900 clamp(110px,16vw,220px)/1 'Josefin Sans',Pretendard;color:var(--butter2)}
+.pctbar{height:18px;border:2px solid #fffaf0;border-radius:99px;overflow:hidden;margin-top:14px;background:repeating-linear-gradient(45deg,#5a4240 0 8px,#432f2e 8px 16px)}
+.pctbar i{display:block;width:5%;height:100%;background:var(--butter2)}
+.pctlab{display:flex;justify-content:space-between;font-size:13px;opacity:.75;margin-top:6px}
+.vs95{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0 8px;margin-top:40px}
+.vs95 th{font-size:15px;text-align:left;padding:0 16px 4px;opacity:.75}
+.vs95 td{padding:14px 16px;font-size:16px;line-height:1.5;vertical-align:top}
+.vs95 td:first-child{background:#5a4240;border-radius:14px 0 0 14px;opacity:.85}
+.vs95 td:last-child{background:#fffaf0;color:var(--ink);border-radius:0 14px 14px 0;font-weight:700}
+.need{margin-top:34px;font-size:clamp(20px,2.6vw,30px);font-weight:900;line-height:1.5}
+.need mark{background:var(--butter2);color:var(--ink);padding:0 6px}
+.notedu{text-align:center;max-width:860px;margin:0 auto}
+.notedu .lab2{font:700 15px 'Josefin Sans';letter-spacing:.16em;opacity:.6}
+.notedu h2 em{font-style:normal;background:var(--butter2);padding:0 8px}
+.notedu .lead{margin:22px auto 0}
+@media(max-width:860px){.chat2,.truth{grid-template-columns:1fr}.vs95 td{font-size:14.5px;padding:11px 12px;word-break:keep-all}.vs95 th{font-size:13px;padding:0 12px 4px;word-break:keep-all}}
 </style>
 </head>
 <body>
@@ -465,6 +498,42 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
  <path d="M420 150V90a60 60 0 0 1 120 0v60z"/><rect x="560" y="45" width="52" height="105" rx="10"/><rect x="630" y="70" width="90" height="80"/>
  <path d="M740 150l70-110 70 110z"/><rect x="900" y="30" width="60" height="120"/><path d="M980 150V80h80l40 30v40z"/><rect x="1110" y="60" width="50" height="90"/></g>
  <g fill="#8fb3cf"><rect x="572" y="60" width="28" height="40" rx="3"/><rect x="215" y="40" width="16" height="18"/><rect x="915" y="50" width="14" height="16"/></g></svg>
+</section>
+
+<section class="pad light" id="chat">
+ <div class="reveal"><span class="label">HOW DO YOU USE AI?</span><h2>아직도 AI,<br>이렇게 쓰고 계세요?</h2></div>
+ <div class="chat2 reveal">
+  <div class="cw"><div class="bar"><i></i><i></i><i></i>ChatGPT · Gemini · … 채팅창</div><div class="in">
+   <div class="me">견적서 양식 좀 만들어 줘</div>
+   <div class="ai">네! 아래와 같이 견적서 양식을 만들어 보았습니다.<small>| 항목 | 내용 | 단가 | 수량 | 금액 | …</small></div>
+   <div class="me">아니 우리 회사 단가는 그게 아니고…</div>
+   <div class="ai">죄송합니다! 회사의 단가를 알려 주시면 반영해 드릴게요.</div>
+   <div class="sigh">(지난번에도 말했는데…) 😮‍💨</div></div></div>
+  <div class="hand"><h3>그다음은 결국 내 손으로</h3><ol>
+   <li>답을 복사해서 엑셀에 붙여 넣고</li><li>칸 맞추고, 글꼴 고치고, 로고 넣고</li><li>PDF로 저장해서, 메일 열어 첨부하고</li><li class="last">내일 또 새 채팅창에서 처음부터 설명</li></ol></div>
+ </div>
+</section>
+
+<section class="pad ink" id="truth">
+ <div class="truth reveal">
+  <div><span class="label">THE TRUTH</span><h2 style="word-break:keep-all">채팅창에 묻고,<br>답을 받아 내가<br>옮겨 쓰고 있다면</h2>
+   <p class="need">AI를 <mark>겨우 5%</mark>만 쓰고 있는 셈입니다.</p>
+   <p class="lead">AI는 이미 파일을 만들고, 기억하고, 먼저 챙기고, 내 컴퓨터에서 직접 일할 수 있습니다. 우리가 그 자리를 마련해 주지 않았을 뿐이죠.</p></div>
+  <div><div class="pct">5%</div><div class="pctbar"><i></i></div><div class="pctlab"><span>채팅창 AI</span><span>아직 안 쓰고 있는 95%</span></div></div>
+ </div>
+ <div class="reveal"><table class="vs95"><tr><th>지금의 5% — 채팅창</th><th>나머지 95% — 퍼스널 OS</th></tr>
+  <tr><td>새 창을 열면 처음부터 다시 설명</td><td>내 회사·단가·말투·거래처를 기억</td></tr>
+  <tr><td>글자로 답 → 내가 복사해 옮김</td><td>견적서·포스터·보고서를 파일로 완성</td></tr>
+  <tr><td>내 양식·파일을 모름</td><td>내 컴퓨터의 양식·직인·자료를 바로 꺼내 씀</td></tr>
+  <tr><td>내가 물어봐야만 대답</td><td>아침 브리핑·마감 알림을 먼저 보냄</td></tr>
+  <tr><td>질문 하나, 답 하나</td><td>부서별로 내 업무 전체를 맡음</td></tr></table>
+ <p class="need">그 95%를 쓰려면, AI에게 <mark>일할 자리(운영체제)</mark>를 만들어 줘야 합니다.</p></div>
+</section>
+
+<section class="pad cream" id="notedu">
+ <div class="notedu reveal"><span class="lab2">FIRST, ONE THING</span>
+  <h2 style="margin-top:14px">교육이 아닙니다.<br><em>나만의 운영체제</em>를 만드는 일입니다.</h2>
+  <p class="lead">프롬프트를 외우는 게 아니라, 내 일하는 방식이 컴퓨터 안에 '회사'로 자리 잡습니다. 한 번 만들어 두면 매일 그 위에서 일합니다.</p></div>
 </section>
 
 <section class="pad cream" id="what">
@@ -635,6 +704,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
   <details><summary>비밀번호나 개인정보가 걱정돼요.</summary><p>비밀번호·인증서는 받지 않습니다. 로그인은 대표님이 직접 하시고, 자료는 대표님 컴퓨터에만 둡니다.</p></details>
   <details><summary>AI가 마음대로 메일을 보내거나 결제하면 어떡하죠?</summary><p>메일 발송·결제처럼 중요한 일은 언제나 대표님 확인 후에 진행되도록 세팅합니다. 메일은 임시보관함까지만 써 둡니다.<span class="can">✓ 원하시면 전송까지 맡기실 수도 있어요. 기본 세팅은 안전하게, 범위는 대표님 필요에 맞게 바꿉니다.</span></p></details>
   <details><summary>컴퓨터를 잘 못 다뤄도 괜찮을까요?</summary><p>괜찮습니다. 대표님은 말로 지시만 하시면 됩니다. 출장형을 고르시면 처음부터 끝까지 옆에서 세팅하고, 첫 30일 동안 적응을 도와드립니다.</p></details>
+  <details><summary>정해진 방식대로만 써야 하나요?</summary><p>아니요. 처음엔 가장 안전한 기본값으로 세팅하고, "이 부서 하나 더 만들어 줘"처럼 말씀하시면 그대로 바꿉니다. 부서·이름·말투·자동으로 할 범위까지 전부 대표님 마음대로.</p></details>
  </div></div>
 </section>
 
