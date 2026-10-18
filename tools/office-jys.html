@@ -1,56 +1,85 @@
 <!--OFFICE-START 조연심 사무실 v4 2026-10-18 — 신문 머리기사(돌아가는 기사) + 사무실 전경 5×2 + 바로가기 기사 / 왼쪽 달력·큰 할일 / 오른쪽 넓은 채팅-->
 <style>
-#jooffice{background:#f7f1e3;font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;color:#2b211f;display:none;min-width:0;min-height:0;overflow:hidden}
+#jooffice{background:#fcfcfc;font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;color:#141414;display:none;min-width:0;min-height:0;overflow:hidden}
 #jooffice *{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
 body.locked #jooffice,body.locked #jobtn{display:none!important}
 .rt-toggle,.m-aot-on,#nbell,#pushbtn{display:none!important}
+/* ── 앱 전체를 신문 톤으로 (채팅 칸만 순백, 나머지는 흰색+회색 1%) ── */
+body.jox{color-scheme:light;--bg:#fcfcfc;--side:#fcfcfc;--side-hover:#f1f1ef;--side-on:#ebebe8;--panel:#ffffff;--bar:rgba(255,255,255,.96);--line:#d6d6d3;--ink:#141414;--muted:#6b6b6b;--me-1:#141414;--me-2:#141414;--me-ink:#ffffff;--them:#ffffff;--them-ink:#141414;--field:#ffffff;--accent:#b0392f;--accent-soft:#f6e9e7;--lime:#2f8a4a;--lime-soft:#eef5ee;background:#fcfcfc;font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
+body.jox *{font-family:inherit}
+body.jox aside,body.jox .todo{background:#fcfcfc!important;border-color:#141414!important}
+body.jox .sb h4{font-size:12px!important;font-weight:900!important;letter-spacing:.14em;color:#141414!important;text-transform:uppercase;border-top:3px double #141414;padding-top:6px;margin-top:10px}
+body.jox .sb h4::after{content:"";display:block;border-bottom:1px solid #141414;margin-top:5px}
+body.jox .todo-head{border-bottom:3px double #141414;margin:0 12px;padding-left:0!important;padding-right:0!important}
+body.jox .todo-head b{font-weight:900;letter-spacing:-.01em}
+body.jox .todo-head b::after{content:" · TO DO LIST";font-size:11px;letter-spacing:.14em;color:#b0392f;font-weight:800}
+body.jox .todo-add{border-radius:0!important;border:1px solid #141414!important;background:#fff!important;box-shadow:none!important}
+body.jox .todo-add button[type=submit]{border-radius:0!important;background:#141414!important;color:#fff!important}
+body.jox .ti{border-radius:0!important;background:#fff!important;border:0!important;border-bottom:1px solid #d6d6d3!important}
+body.jox .tsec h5{font-weight:900;letter-spacing:.1em;color:#141414;border-bottom:1px solid #141414;padding-bottom:3px}
+body.jox .mc{border:1px solid #141414;border-radius:0!important;background:#fff}
+body.jox .mc .g .on,body.jox .mc .today{background:#141414!important;color:#fff!important;border-radius:0!important}
+body.jox main{background:#ffffff!important}
+body.jox .topbar{background:#ffffff!important;border-bottom:3px double #141414!important;backdrop-filter:none}
+body.jox .topbar .what{font-weight:800;color:#141414}
+body.jox .topbar .tag{border-radius:0!important;border:1px solid #141414!important;background:#fff!important;color:#141414!important;font-weight:800}
+body.jox .bubble{border-radius:2px!important;box-shadow:none}
+body.jox .them .bubble{background:#fff!important;border:0;border-left:3px solid #141414;padding-left:14px;font-size:15px;line-height:1.7}
+body.jox .me .bubble{background:#141414!important;color:#fff!important}
+body.jox .composer-wrap{border-top:1px solid #141414;background:#fff}
+body.jox .field{border-radius:0!important;border:1.5px solid #141414!important;background:#fff!important;box-shadow:none!important}
+body.jox .go{border-radius:0!important;background:#141414!important;color:#fff!important;font-weight:800}
+body.jox .go:disabled{background:#c9c9c6!important}
+body.jox .icobtn{border-radius:0!important}
+body.jox .hint{display:none}
+body.jox .lock{background:#fcfcfc}
 .jo-wrap{height:100%;display:flex;flex-direction:column;padding:12px 18px;box-sizing:border-box;gap:8px}
-.jo-mast{text-align:center;border-bottom:4px double #2b211f;padding-bottom:5px}
+.jo-mast{text-align:center;border-bottom:4px double #141414;padding-bottom:5px}
 .jo-mast .t{font-weight:900;font-size:clamp(24px,3.2vh,36px);line-height:1;letter-spacing:-.01em}
-.jo-mast .d{display:flex;justify-content:space-between;font-size:12px;border-top:1px solid #2b211f;margin-top:6px;padding-top:4px;opacity:.8}
-.jo-head{display:flex;gap:14px;align-items:center;padding:2px 4px 6px;border-bottom:1px solid #2b211f}
+.jo-mast .d{display:flex;justify-content:space-between;font-size:12px;border-top:1px solid #141414;margin-top:6px;padding-top:4px;opacity:.8}
+.jo-head{display:flex;gap:14px;align-items:center;padding:2px 4px 6px;border-bottom:1px solid #141414}
 .jo-head img{height:clamp(96px,14vh,160px);image-rendering:pixelated;flex:none}
 .jo-head .k{font-size:12px;font-weight:800;letter-spacing:.1em;color:#b0392f}
 .jo-head h2{margin:2px 0 4px;font-weight:900;font-size:clamp(19px,2.4vh,27px);line-height:1.3;transition:opacity .4s}
 .jo-head p{margin:0;font-size:13px;opacity:.75}
-.jo-floor{flex:none;border:3px solid #2b211f;border-radius:14px;display:grid;grid-template-columns:repeat(5,1fr);row-gap:2px;column-gap:6px;padding:8px 8px 6px;background:repeating-linear-gradient(90deg,#d8c3a0 0 2px,#e7d6b6 2px 46px)}
+.jo-floor{flex:none;border:2px solid #141414;border-radius:0;display:grid;grid-template-columns:repeat(5,1fr);row-gap:2px;column-gap:6px;padding:8px 8px 6px;background:repeating-linear-gradient(90deg,#e6e6e3 0 1px,#f6f6f4 1px 46px)}
 .jo-desk{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px;min-width:0;animation:join .4s both;animation-delay:calc(var(--i)*.08s + .1s)}
 .jo-desk img{height:clamp(64px,12vh,124px);image-rendering:pixelated}
-.jo-plate{max-width:100%;background:#fff;border:2px solid #2b211f;border-radius:6px;padding:0 8px;white-space:nowrap;font-size:clamp(11px,.95vw,14px);line-height:1.6}
+.jo-plate{max-width:100%;background:#fff;border:1.5px solid #141414;border-radius:0;padding:0 8px;white-space:nowrap;font-size:clamp(11px,.95vw,14px);line-height:1.6}
 .jo-dp{font-size:11px;opacity:.7;white-space:nowrap;line-height:1.3}
 .jo-plate b{font-weight:900}.jo-plate i{font-style:normal;opacity:.65;font-size:.9em}
 .jo-desk em{font-style:normal;font-size:11px;font-weight:800;color:#2f8a4a;white-space:nowrap}
-.jo-bub{display:none;position:absolute;top:-6px;left:50%;transform:translate(-50%,-100%);z-index:3;background:#fff;border:2px solid #b0392f;border-radius:10px;padding:3px 9px;font-size:12px;font-weight:800;color:#b0392f;white-space:nowrap;box-shadow:2px 2px 0 #2b211f}
+.jo-bub{display:none;position:absolute;top:-6px;left:50%;transform:translate(-50%,-100%);z-index:3;background:#fff;border:2px solid #b0392f;border-radius:10px;padding:3px 9px;font-size:12px;font-weight:800;color:#b0392f;white-space:nowrap;box-shadow:2px 2px 0 #141414}
 .jo-desk.busy .jo-bub{display:block}
 .jo-desk.busy .jo-plate{border-color:#b0392f;background:#fff1ef}.jo-desk.busy em{color:#b0392f}.jo-desk.busy img{animation:jotype .35s steps(2) infinite}
 @keyframes jotype{50%{transform:translateY(-3px)}}
 @keyframes join{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.jo-links{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:0;border-top:3px solid #2b211f;padding-top:6px}
+.jo-links{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:0;border-top:3px solid #141414;padding-top:6px}
 .jo-links .h{grid-column:1/-1;font-size:12px;font-weight:800;letter-spacing:.1em;color:#b0392f;margin-bottom:4px}
-.jo-link{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 14px;color:inherit;text-decoration:none;border-left:1px solid #2b211f;min-width:0}
+.jo-link{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 14px;color:inherit;text-decoration:none;border-left:1px solid #141414;min-width:0}
 .jo-link:first-of-type{border-left:0}
-.jo-link:hover{background:#fff}
+.jo-link:hover{background:#f1f1ef}
 .jo-link .ic{font-size:26px}.jo-link b{font-size:clamp(13px,1.05vw,18px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .jo-link small{font-size:12px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.jo-link i{font-style:normal;font-size:12px;font-weight:800;color:#b0392f;margin-top:6px}
-#jobtn{position:fixed;right:14px;bottom:96px;z-index:8000;border:2px solid #2b211f;background:#f6d36b;color:#2b211f;border-radius:99px;padding:9px 15px;font:800 14px Pretendard,sans-serif;cursor:pointer}
-.jo-go{margin-top:6px;border:2px solid #2b211f;background:#2b211f;color:#f7f1e3;border-radius:99px;padding:6px 14px;font-weight:800;font-size:13px;cursor:pointer}
+#jobtn{position:fixed;right:14px;bottom:96px;z-index:8000;border:2px solid #141414;background:#f6d36b;color:#141414;border-radius:99px;padding:9px 15px;font:800 14px Pretendard,sans-serif;cursor:pointer}
+.jo-go{margin-top:6px;border:2px solid #141414;background:#141414;color:#f7f1e3;border-radius:99px;padding:6px 14px;font-weight:800;font-size:13px;cursor:pointer}
 @media (min-width:861px){
   body.jox{--jl:clamp(260px,22vw,340px);--jr:clamp(440px,38vw,640px)}
   body.jox:not(.locked) aside{position:fixed!important;left:0;top:0;width:var(--jl)!important;max-width:none!important;height:40vh;transform:none!important;display:flex!important;overflow-y:auto;border-right:1px solid var(--line);border-bottom:2px solid var(--line);box-shadow:none!important;z-index:20}
   body.jox:not(.locked) .todo{position:fixed!important;left:0;top:40vh;width:var(--jl);height:60vh;display:flex!important;z-index:20}
   body.jox:not(.locked) #jooffice{display:block;position:fixed;left:var(--jl);right:var(--jr);top:0;bottom:0;z-index:10}
-  body.jox:not(.locked) main{position:fixed!important;right:0;top:0;width:var(--jr);height:100dvh;border-left:3px solid #2b211f;z-index:20;display:flex;flex-direction:column}
+  body.jox:not(.locked) main{position:fixed!important;right:0;top:0;width:var(--jr);height:100dvh;border-left:3px solid #141414;z-index:20;display:flex;flex-direction:column}
   body.jox .todo-fold,body.jox .todo-unfold,body.jox .jo-go,body.jox #jobtn,body.jox .drawer-close,body.jox .threads,body.jox #new,body.jox .brand{display:none!important}
   body.jox aside .sb:has(#memoList),body.jox aside .sb:has(#quick){display:none!important}
   body.jox .todo-head b{font-size:20px}
   body.jox .ti{padding:10px 10px;margin-bottom:6px;border:1px solid var(--line);align-items:center}
-  body.jox .ti .ck{flex:0 0 24px;width:24px;height:24px;border-radius:6px;border:2px solid #2b211f;margin-top:0;font-size:15px;line-height:20px}
+  body.jox .ti .ck{flex:0 0 24px;width:24px;height:24px;border-radius:6px;border:2px solid #141414;margin-top:0;font-size:15px;line-height:20px}
   body.jox .ti.done .ck{background:#2f8a4a;border-color:#2f8a4a}
   body.jox .ti .tx{font-size:16px}
 }
 @media (max-width:860px){
   #jooffice.show{display:block;position:fixed;inset:0;z-index:9000;overflow:auto}
-  .jo-floor{grid-template-columns:repeat(3,1fr)}.jo-links{grid-template-columns:repeat(2,1fr)}.jo-link{border-left:0;border-top:1px solid #2b211f}
+  .jo-floor{grid-template-columns:repeat(3,1fr)}.jo-links{grid-template-columns:repeat(2,1fr)}.jo-link{border-left:0;border-top:1px solid #141414}
   .jo-wrap{height:auto}
 }
 </style>
