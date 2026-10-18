@@ -294,7 +294,7 @@ footer b{color:#fffaf0}
 .flow span{border:3px solid #fffaf0;border-radius:16px;padding:14px 20px;font-weight:900;font-size:17px}
 .flow span.pc{background:var(--cream);color:var(--ink);border-color:var(--cream)}
 .flow i{font-style:normal;font-size:26px}
-.pcopt{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.pcopt{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px}
 .pcopt div{background:#5a4240;border-radius:18px;padding:18px 22px;font-size:15.5px;line-height:1.7}
 .pcopt strong{font-size:18px;display:block;margin-bottom:4px}
 /* 가격 체감 */
@@ -522,7 +522,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
     <li><b>MEETING</b>미팅 사이 5분 — "방금 미팅한 내용으로 견적서 만들어서 보내 줘"</li>
     <li><b>SUBWAY</b>이동 중 지하철에서 — "내일 오는 분들께 장소 안내 문자 써 줘"</li>
     <li><b>TRIP</b>출장지 숙소에서 — "계약서에 직인 넣어서 최종본으로 올려 줘"</li></ul>
-   <p class="pcnote">🖥️ 단, 사무실이나 집에 <b>늘 켜 두는 메인 PC 한 대</b>가 필요합니다. <a href="#mainpc">왜 필요할까요? ↓</a></p></div>
+   <p class="pcnote">🖥️ 퍼스널 OS는 설치된 <b>PC가 켜져 있을 때 출근해서 일합니다.</b> 늘 켜 두는 데스크톱이 가장 좋고, 노트북에도 설치할 수 있어요. <a href="#mainpc">왜 PC가 필요할까요? ↓</a></p></div>
   <div class="phone"><img src="dash/m07.jpg" alt="휴대폰에서 매니저에게 지시하는 화면 예시"></div>
  </div>
 </section>
@@ -534,12 +534,13 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
  <div class="pcwhy">
   <div><i>📂</i><b>대표님 자료가 있는 곳</b><p>지난 견적서, 양식, 직인, 거래처 목록. 일에 필요한 자료가 전부 이 컴퓨터에 있어서 매니저가 바로 꺼내 씁니다.</p></div>
   <div><i>🔒</i><b>자료가 밖으로 안 나갑니다</b><p>자료를 남의 서버에 올리지 않고 대표님 컴퓨터 안에서 처리합니다. 로그인도 대표님 컴퓨터에 한 번만.</p></div>
-  <div><i>🌙</i><b>자는 동안에도 일합니다</b><p>아침 브리핑 정리, 기록 백업, 마감 알림처럼 정해진 시간에 할 일을 대표님이 안 계셔도 해 둡니다.</p></div>
+  <div><i>🌙</i><b>대표님이 안 계셔도 일합니다</b><p>PC가 켜져 있는 동안이라면 아침 브리핑 정리, 기록 백업, 마감 알림처럼 정해진 시간에 할 일을 알아서 해 둡니다.</p></div>
   <div><i>⚡</i><b>켜 두는 부담은 작아요</b><p>맥 미니 기준 대기 전력은 형광등보다 작습니다. 화면은 꺼 두고 본체만 켜 두면 됩니다.</p></div>
  </div>
  <div class="pcopt">
-  <div><strong>지금 쓰는 컴퓨터로 OK</strong>사무실이나 집에서 늘 켜 둘 수 있는 데스크톱이 있다면 그대로 씁니다. 추가 비용 없음.</div>
-  <div><strong>없다면 작은 전용 PC 하나</strong>맥 미니(애플 공식몰 약 119만 원~, 실비). 손바닥만 해서 책상 한쪽에 두면 끝. 구매·세팅까지 도와드립니다.</div>
+  <div><strong>🖥️ 늘 켜 두는 데스크톱 — 가장 좋아요</strong>사무실이나 집에서 늘 켜 둘 수 있는 데스크톱이 있다면 그대로 씁니다. 매니저와 직원들이 24시간 출근해 있어요. 추가 비용 없음.</div>
+  <div><strong>💻 노트북도 OK — 출근할 때 켜 주세요</strong>노트북을 켜는 순간이 매니저와 직원들이 출근하는 순간입니다. 끄거나 덮으면 퇴근해서 일을 멈춰요.</div>
+  <div><strong>📦 없다면 작은 전용 PC 하나</strong>맥 미니(애플 공식몰 약 119만 원~, 실비). 손바닥만 해서 책상 한쪽에 두면 끝. 구매·세팅까지 도와드립니다.</div>
  </div></div>
 </section>
 
@@ -602,7 +603,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}nav .ks{background:
    <p class="inc">Claude Max 결제·연결 · 화상 인터뷰 · 원격 세팅 · 화상 교육 · 30일 적응 지원</p></div>
  </div>
  <div class="after-m"><b>매달 드는 비용</b><span>Claude Max 구독료 <strong>월 $100</strong>(약 15만 원). 휴대폰 요금처럼 대표님 카드로 Claude에 직접 내는 구독료이며, 세팅 비용과는 별개입니다. 결제·연결은 세팅 때 함께 해 드립니다.</span></div>
- <p class="note">※ 부가세 별도. 구독료 원화 금액은 환율에 따라 달라집니다. 늘 켜 둘 컴퓨터가 없으면 맥 미니(약 119만 원~, 실비)를 따로 준비합니다. 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p>
+ <p class="note">※ 부가세 별도. 구독료 원화 금액은 환율에 따라 달라집니다. 늘 켜 두는 데스크톱이 가장 좋고 노트북도 됩니다. 전용 PC가 필요하면 맥 미니(약 119만 원~, 실비). 런칭 이벤트 가격은 사전 공지 후 종료될 수 있습니다.</p>
  <div class="learn">
   <div class="diy"><b>직접 배워서 한다면</b>
    <ul><li><span>강의 수강</span><em>평균 12시간</em></li><li><span>강의료</span><em>20~30만 원</em></li><li><span>내 업무에 적용</span><em>수십 시간 + 시행착오</em></li><li><span>막히면</span><em>혼자 해결</em></li></ul></div>
