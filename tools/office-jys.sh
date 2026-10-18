@@ -21,6 +21,8 @@ i = s.rfind("</body>"); s = s[:i] + add + s[i:]
 open(f, "w", encoding="utf-8").write(s)
 P
 done
+# 새 판 적용.py 는 부서/00_비서실/화면추가.html 을 알아서 다시 붙인다 — 같이 넣어 둔다
+mkdir -p "$OS/부서/00_비서실" && cp /tmp/office-jys.html "$OS/부서/00_비서실/화면추가.html"
 # 매니저 이름을 '찰스 핸디'로 (비어 있을 때만) → 원본 틀로 다시 깔기(사무실 화면 포함)
 python3 - "$OS/설정.json" <<'P'
 import sys, json

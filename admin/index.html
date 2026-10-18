@@ -120,6 +120,7 @@ async function detail(id) {
      <button class="btn y" id="kit" ${c.design ? "" : "disabled"}>📦 설치 키트 내려받기</button>
      <button class="btn r" id="del" style="margin-left:auto">삭제</button></div>
      <p class="note">고객 링크: <a href="${E(link)}" target="_blank">${E(link)}</a> — 고객이 이 주소로 들어가면 이어서 인터뷰·제안서·컨펌을 할 수 있습니다.</p>
+     <p class="note">🖥 <b>설치 시작</b> — 고객 PC의 <b>다운로드 폴더</b>에 키트를 받은 뒤, 터미널에 아래 한 줄을 붙여넣기 (설치.command 더블클릭 대신 · '열지 않음' 경고 없음)<br><code id="instcmd" style="user-select:all;background:#fff;border:1px solid #ccc;padding:4px 8px;display:inline-block;margin-top:4px">curl -fsSL https://kedakorea.github.io/personal-os/tools/install.sh | bash</code> <button class="btn g" type="button" onclick="navigator.clipboard.writeText(document.getElementById('instcmd').textContent);this.textContent='복사됨'">복사</button></p>
      <textarea id="memo" placeholder="관리자 메모 (고객에게는 안 보임)" style="min-height:70px">${E(c.notes || "")}</textarea><div class="row2"><button class="btn g" id="svm">메모 저장</button><span id="msg" class="note"></span></div></div>
    <div class="grid"><div>
      <div class="box"><h3>📁 넘겨받은 자료 (${(c.assets || []).length})</h3>${(c.assets || []).map((a) => `<div>📎 <b>${E(a.kind)}</b> · <a href="${E(a.url || "#")}" target="_blank">${E(a.name.replace(a.kind + "_", ""))}</a></div>`).join("") || "<p class='note'>아직 없습니다 — 고객이 확정 뒤 '넘겨줄 자료' 화면에서 올립니다</p>"}</div>
