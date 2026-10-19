@@ -69,7 +69,7 @@ async function list() {
   const n = (s) => r.items.filter((x) => x.stage === s).length;
   $("tb").innerHTML = `<div class="stats">${STAGES.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}</div>
    <table><tr><th>고객</th><th>회사</th><th>키</th><th>단계</th><th>인터뷰</th><th>매니저</th><th>방식</th><th>최근</th></tr>
-   ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><code style="font-size:12px">${E(x.key_code || "")}</code></td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="8">아직 고객이 없습니다</td></tr>`}</table>`;
+   ${r.items.map((x) => `<tr class="row" data-id="${x.id}"><td><b>${E(x.name)}</b><br><small>${E(x.phone || "")}</small></td><td>${E(x.company || "")}</td><td><code style="font-size:12px">${E(x.key_code || "")}</code></td><td><span class="st ${E(x.stage)}">${E(x.stage)}</span>${x.design_state === "running" ? " ✏️" : ""}${x.stage === "컨펌" ? ' <b style="color:#c0392b;font-size:12px">승인 대기</b>' : ""}</td><td><span class="bar"><i style="width:${x.progress || 0}%"></i></span> ${x.progress || 0}%</td><td>${E(x.chief || "")}</td><td>${E(x.mode || "")}</td><td>${new Date(x.updated_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>`).join("") || `<tr><td colspan="8">아직 고객이 없습니다</td></tr>`}</table>`;
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
@@ -117,8 +117,10 @@ async function detail(id) {
      <select id="stg" style="width:auto;margin:0">${STAGES.map((s) => `<option ${s === c.stage ? "selected" : ""}>${s}</option>`).join("")}</select>
      <button class="btn g" id="svs">단계 저장</button>
      <button class="btn g" id="cp">고객 링크 복사</button>
-     <button class="btn y" id="kit" ${c.design ? "" : "disabled"}>📦 설치 키트 내려받기</button>
+     <button class="btn y" id="pub" ${c.design ? "" : "disabled"}>${(c.intake || {}).kit ? "🔄 키트 다시 올리기" : "✅ 승인 · 고객 페이지에 키트 올리기"}</button>
+     <button class="btn g" id="kit" ${c.design ? "" : "disabled"}>📦 내 컴퓨터로 받기</button>
      <button class="btn r" id="del" style="margin-left:auto">삭제</button></div>
+     <p class="note" id="pubst">${(c.intake || {}).kit ? `✅ 승인됨 — ${E(new Date(c.intake.kit.at).toLocaleString("ko-KR"))} 고객 페이지에 키트를 올렸습니다 (${E(c.intake.kit.name)}, ${Math.round((c.intake.kit.size || 0) / 1024)}KB) · <a href="#" id="unpub">승인 취소</a>` : (["컨펌", "설치"].includes(c.stage) ? "⏳ 고객이 확정했습니다 — <b>승인</b>을 누르면 고객 전용 페이지에서 각자 설치 키트를 받습니다" : "")}</p>
      <p class="note">고객 링크: <a href="${E(link)}" target="_blank">${E(link)}</a> — 고객이 이 주소로 들어가면 이어서 인터뷰·제안서·컨펌을 할 수 있습니다.</p>
      <p class="note">🖥 <b>설치 시작</b> — 고객 PC의 <b>다운로드 폴더</b>에 키트를 받은 뒤, 터미널에 아래 한 줄을 붙여넣기 (설치.command 더블클릭 대신 · '열지 않음' 경고 없음)<br><code id="instcmd" style="user-select:all;background:#fff;border:1px solid #ccc;padding:4px 8px;display:inline-block;margin-top:4px">curl -fsSL https://kedakorea.github.io/personal-os/tools/install.sh | bash</code> <button class="btn g" type="button" onclick="navigator.clipboard.writeText(document.getElementById('instcmd').textContent);this.textContent='복사됨'">복사</button></p>
      <textarea id="memo" placeholder="관리자 메모 (고객에게는 안 보임)" style="min-height:70px">${E(c.notes || "")}</textarea><div class="row2"><button class="btn g" id="svm">메모 저장</button><span id="msg" class="note"></span></div></div>
@@ -141,10 +143,14 @@ async function detail(id) {
   $("redo").onclick = async () => { $("redo").disabled = true; $("dmsg").textContent = "만드는 중… (30초~1분)"; const x = await A({ action: "a_design", id, request: $("rq").value.trim() }); if (!x.ok) alert(x.error); detail(id); };
   $("svd").onclick = async () => { let d; try { d = JSON.parse($("dj").value); } catch (e) { alert("JSON 형식이 틀렸습니다: " + e.message); return; } await A({ action: "a_update", id, fields: { design: d } }); detail(id); };
   $("kit").onclick = () => buildKit(c);
+  $("pub").onclick = () => buildKit(c, true);
+  if ($("unpub")) $("unpub").onclick = async (e) => { e.preventDefault(); if (!confirm("고객 페이지에서 설치 키트를 내릴까요?")) return; await A({ action: "a_kit_revoke", id }); detail(id); };
 }
-async function buildKit(c) {
+async function buildKit(c, publish) {
   const d = c.design; if (!d) return;
-  $("kit").disabled = true; $("kit").textContent = "📦 포장하는 중…";
+  const btn = $(publish ? "pub" : "kit"), label = btn.textContent;
+  if (publish && !confirm(c.name + " 님 설치 키트를 승인해 고객 페이지에 올릴까요?\n(고객이 올린 회사 자료까지 함께 들어갑니다)")) return;
+  btn.disabled = true; btn.textContent = "📦 포장하는 중…";
   try {
     const k = await A({ action: "a_kit" });
     const zip = await JSZip.loadAsync(await (await fetch(k.url)).arrayBuffer());
@@ -159,11 +165,19 @@ async function buildKit(c) {
     // 고객이 올린 회사 자료 (로고·직인·사업자등록증 등)
     for (const a of (CUR.customer.assets || [])) { if (!a.url) continue; try { const blob = await (await fetch(a.url)).blob(); zip.file(top + "설계/회사자료/" + a.name, blob); } catch (e) {} }
     const blob = await zip.generateAsync({ type: "blob", platform: "UNIX", compression: "DEFLATE" });
+    const fname = `퍼스널OS_설치키트_${c.name}_${new Date().toISOString().slice(2, 10).replace(/-/g, "")}.zip`;
+    if (publish) {
+      btn.textContent = "⬆️ 고객 페이지에 올리는 중…";
+      const b64 = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(blob); });
+      const x = await A({ action: "a_kit_publish", id: c.id, zip: b64, name: fname });
+      if (!x.ok) throw new Error(x.error || "올리지 못했습니다");
+      return detail(c.id);
+    }
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-    a.download = `퍼스널OS_설치키트_${c.name}_${new Date().toISOString().slice(2, 10).replace(/-/g, "")}.zip`; a.click();
+    a.download = fname; a.click();
     if (c.stage === "컨펌" || c.stage === "제안") await A({ action: "a_update", id: c.id, fields: { stage: "설치" } });
-    $("kit").textContent = "✅ 내려받았습니다";
-  } catch (e) { alert("키트를 만들지 못했습니다: " + e.message); $("kit").disabled = false; $("kit").textContent = "📦 설치 키트 내려받기"; }
+    btn.textContent = "✅ 내려받았습니다";
+  } catch (e) { alert("키트를 만들지 못했습니다: " + e.message); btn.disabled = false; btn.textContent = label; }
 }
 async function boot() {
   const { data } = await sb.auth.getSession();

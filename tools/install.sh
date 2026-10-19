@@ -28,7 +28,7 @@ Q
 fi
 K=$(ls -dt "$D"/퍼스널OS_설치키트*/ 2>/dev/null | head -1)
 if [ -z "$K" ]; then
-  Z=$(ls -t "$D"/퍼스널OS_설치키트*.zip 2>/dev/null | head -1)
+  Z=$(ls -t "$D"/퍼스널OS_설치키트*.zip "$D"/PersonalOS_Kit*.zip 2>/dev/null | head -1)   # 고객 페이지에서 받은 키트는 PersonalOS_Kit_날짜.zip (2026-10-19)
   [ -n "$Z" ] || { echo "다운로드 폴더에서 '퍼스널OS_설치키트' 를 못 찾았어요. 받은 키트를 다운로드 폴더에 두고 다시 실행해 주세요."; exit 1; }
   echo "압축 푸는 중…"; ditto -x -k "$Z" "$D" || { echo "압축을 풀지 못했어요"; exit 1; }
   K=$(ls -dt "$D"/퍼스널OS_설치키트*/ 2>/dev/null | head -1)
