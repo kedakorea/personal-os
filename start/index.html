@@ -73,6 +73,12 @@ html,body{overflow-x:hidden}
 .names{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.names button{font:700 18px Pretendard;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);cursor:pointer}.names button.on{background:var(--ink);color:var(--cream)}
 .aslot{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin-top:10px}.aslot b{font-size:17px}.aslot small{display:block;font-size:13px;opacity:.65;margin-top:2px}.af{display:inline-block;font-size:13px;background:var(--cream);border-radius:99px;padding:3px 10px;margin:6px 6px 0 0}.af a{color:inherit;text-decoration:none;margin-left:4px}.asb{display:inline-flex;align-items:center;background:var(--butter)!important;color:var(--ink)!important;height:44px!important;font-size:15px!important;cursor:pointer}
 .okbox{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:22px;margin-top:18px;font-size:17px;line-height:1.8}
+.scg{margin:14px 0 8px;font-size:15px}.scg small{opacity:.6;font-weight:500;margin-left:4px}
+.scr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:640px){.scr{grid-template-columns:1fr 1fr}}
+.scb{position:relative;display:block;text-align:left;padding:0;border:2px solid #e4d9c4;border-radius:14px;background:#fff;overflow:hidden;cursor:pointer;font:inherit;color:inherit}
+.scb img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-bottom:1px solid #eee}.scb span{display:block;padding:8px 10px 10px}.scb span b{display:block;font-size:14px}.scb span small{font-size:11.5px;opacity:.65;line-height:1.35;display:block;margin-top:2px}
+.scb.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}.scb.on span b::before{content:"✓ ";color:#1e8e3e}
+.scb .zoom{position:absolute;right:6px;top:6px;font-size:11px;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:99px;text-decoration:none}
 </style></head><body>
 <header><a class="logo" href="../" title="퍼스널 OS 사이트로"><img src="../logo_choco.png" alt="BRANDiUM"></a><span id="saved" class="saved"></span><a class="home" href="../">← 퍼스널 OS 사이트</a></header>
 <div class="bar"><i id="bar"></i></div>
@@ -284,6 +290,11 @@ $("next").onclick = async () => {
 };
 /* ── AI 인터뷰 · 제안서 · 컨펌 (2026-10-17) ── */
 let AI = null, FILES = [], CHIEF = "", TITLE = "", MORE = false;
+let SCREEN = "";
+/* 첫 화면 템플릿 (화면템플릿/ 시안 2026-10-19) — 고른 값은 design.설정.화면 → 설치 때 그 화면으로 */
+const OS_SCREENS = [
+  ["캐릭터형", "부서 직원 캐릭터가 나와요", [["hq", "본사형", "도트 사무실에 부서 직원들이 일해요"], ["village", "동물의숲형", "마을에 부서별 집, 동물 직원"], ["cyworld", "싸이월드형", "미니홈피 · 미니룸 · 방명록"]]],
+  ["심플형", "사무실 없이 깔끔하게", [["minimal", "미니멀형", "대화창 크게, 할 일만 옆에"], ["diary", "다이어리형", "플래너 · 메모 · 손글씨 달력"], ["magazine", "매거진형", "오늘의 헤드라인 · 부서별 기사"]]]];
 function stageView() { const c = AI && AI.customer; if (!c) return "load"; if (c.stage === "컨펌" || c.stage === "설치" || c.stage === "완료") return "done"; if (c.design_state === "running") return "busy"; if (c.design && !MORE) return "prop"; return "chat"; }
 async function renderAI() {
   $("nav").style.display = "none";
@@ -316,6 +327,7 @@ async function renderAI() {
     const d = c.design, cands = (d.실장후보 || []).filter((x) => x.이름);
     if (!TITLE) TITLE = (d.설정 && d.설정.직함) || (c.intake && c.intake.a && c.intake.a.chief_title) || "매니저";
     const titles = ["매니저", "비서실장", "실장", "비서"];
+    d.설정 = d.설정 || {}; if (!SCREEN) SCREEN = d.설정.화면 || "hq";
     $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="lab">STEP 3 · 제안</div><h1 style="font-size:26px">제안서가 나왔어요</h1>
       <p class="sub" style="margin-bottom:14px">✏️ 점선 글자를 눌러 바로 고칠 수 있어요. 부서는 ✕로 빼고 ＋로 더하세요. 고친 내용은 저절로 저장됩니다. <span id="esv" class="note"></span></p>
       <div id="pv">${osProposal(d, null, { edit: true })}</div>
@@ -328,6 +340,8 @@ async function renderAI() {
       ${cands.length ? `<div class="names" id="nm">${cands.map((x) => `<button type="button" data-n="${osEsc(x.이름)}" class="${CHIEF === x.이름 ? "on" : ""}">${osEsc(x.이름)}</button>`).join("")}</div>` : `<div id="nm"></div>`}
       <input type="text" id="own" placeholder="이름 적기 (비워 두면 호칭만)" style="margin-top:6px">
       <p class="note" id="prev" style="font-size:16px;margin-top:14px"></p>
+      <h3 style="margin-top:30px">우리 사무실은 어떤 모습일까요?</h3><p class="note" style="margin-top:0">퍼스널 OS 앱을 열면 처음 보이는 화면이에요. 마음에 드는 걸 하나 고르세요. <b>설치 뒤에도 매니저에게 "화면 바꿔 줘"라고 하면 언제든 바꿀 수 있어요.</b></p>
+      ${OS_SCREENS.map(([grp, sub, list]) => `<div class="scg"><b>${grp}</b> <small>${sub}</small></div><div class="scr">${list.map(([k, nm, ds]) => `<button type="button" class="scb${SCREEN === k ? " on" : ""}" data-sc="${k}"><img src="screens/${k}.jpg" alt="${nm}" loading="lazy"><span><b>${nm}</b><small>${ds}</small></span><a href="screens/${k}.jpg" target="_blank" class="zoom">크게 보기</a></button>`).join("")}</div>`).join("")}
       <button class="bigb" id="ok" type="button" style="margin-top:14px;background:var(--ink);color:var(--cream)">✅ 이대로 만들어 주세요</button><div style="height:60px"></div>`;
     const pv = $("pv"), saveEdit = async () => { const nd = osCollect(pv, AI.customer.design); $("esv").textContent = "저장 중…"; const r = await osCall({ action: "edit", token: S.token, design: nd }); if (r.ok) { AI.customer.design = nd; $("esv").textContent = "저장됨 ✓"; } else $("esv").textContent = "저장 못 함 — " + (r.error || ""); };
     osEditBind(pv, saveEdit);
@@ -336,6 +350,8 @@ async function renderAI() {
     document.querySelectorAll("#tt button").forEach((b) => b.onclick = () => { TITLE = b.dataset.t; $("owt").value = ""; document.querySelectorAll("#tt button").forEach((x) => x.classList.toggle("on", x === b)); preview(); });
     $("own").oninput = () => { document.querySelectorAll("#nm button").forEach((x) => x.classList.remove("on")); preview(); };
     $("owt").oninput = () => { document.querySelectorAll("#tt button").forEach((x) => x.classList.remove("on")); preview(); };
+    document.querySelectorAll(".scb").forEach((b) => b.onclick = (e) => { if (e.target.closest(".zoom")) return; SCREEN = b.dataset.sc; document.querySelectorAll(".scb").forEach((x) => x.classList.toggle("on", x === b)); AI.customer.design.설정 = AI.customer.design.설정 || {}; AI.customer.design.설정.화면 = SCREEN; saveEdit(); });
+    AI.customer.design.설정 = AI.customer.design.설정 || {}; if (!AI.customer.design.설정.화면) AI.customer.design.설정.화면 = SCREEN;
     preview();
     $("redo").onclick = () => { const q = $("req").value.trim(); if (!q) { $("req").focus(); return; } makeProp(q); };
     $("more").onclick = () => { MORE = true; renderAI(); };
