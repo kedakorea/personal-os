@@ -1,6 +1,6 @@
 #!/bin/bash
 # 퍼스널 OS 설치 시작 — 다운로드 폴더의 설치 키트를 찾아 '열지 않음' 경고 없이 바로 실행 (2026-10-18)
-#   curl -fsSL https://kedakorea.github.io/personal-os/tools/install.sh | bash
+#   curl -fsSL https://mybrandium.com/tools/install.sh | bash
 D="$HOME/Downloads"
 # 이사(2026-10-19) — 옛 컴퓨터에서 만든 '퍼스널OS_이사짐_날짜.zip' 이 있으면 그대로 풀어 이어서 설치한다
 M=$(ls -t "$D"/퍼스널OS_이사짐_*.zip "$HOME/Desktop"/퍼스널OS_이사짐_*.zip 2>/dev/null | head -1)

@@ -377,7 +377,7 @@ async function renderAI() {
         <button class="bigb" id="kitdl" type="button" style="background:var(--ink);color:var(--cream);margin-top:12px">⬇️ 설치 키트 받기</button>
         <ol class="kitsteps"><li>버튼을 눌러 받은 파일을 <b>다운로드 폴더</b>에 그대로 둡니다 (열지 않아도 돼요)</li>
         <li>⌘ + 스페이스 → <b>터미널</b> 입력 → 엔터</li>
-        <li>아래 한 줄을 붙여 넣고 엔터 <button type="button" class="cpy" id="kitcp">복사</button><code>curl -fsSL https://kedakorea.github.io/personal-os/tools/install.sh | bash</code></li>
+        <li>아래 한 줄을 붙여 넣고 엔터 <button type="button" class="cpy" id="kitcp">복사</button><code>curl -fsSL https://mybrandium.com/tools/install.sh | bash</code></li>
         <li>안내대로 — 컴퓨터 비밀번호 → Claude 로그인 → 자동 설치. 끝나면 바탕화면에 <b>퍼스널 OS</b> 앱이 생겨요</li></ol></div>`
       : `<div class="kitbox wait"><b>⏳ 담당자 승인을 기다리고 있어요</b><br>승인되면 <b>이 페이지에 설치 키트 받기 버튼</b>이 나타나요. (자동으로 확인 중) 그동안 아래 자료를 올려 두시면 키트에 함께 들어갑니다.</div>`}
       <div class="lab" style="margin-top:30px">STEP 4 · 자료</div><h1 style="font-size:26px">${c.chief ? osEsc(c.chief) + " " : ""}${osEsc(t)}에게 넘겨줄 자료</h1>
@@ -399,7 +399,7 @@ async function renderAI() {
     });
     document.querySelectorAll("[data-rm]").forEach((a) => a.onclick = async (e) => { e.preventDefault(); if (!confirm("이 파일을 뺄까요?")) return; const r = await osCall({ action: "asset", token: S.token, remove: a.dataset.rm }); if (r.ok) { AI.customer = r.customer; renderAI(); } });
     if ($("kitdl")) $("kitdl").onclick = async () => { const b = $("kitdl"); b.disabled = true; b.textContent = "준비 중…"; const r = await osCall({ action: "kit", token: S.token }); b.disabled = false; b.textContent = "⬇️ 설치 키트 받기"; if (!r.ok) { alert(r.error || "받지 못했어요. 다시 눌러 주세요."); return; } location.href = r.url; };
-    if ($("kitcp")) $("kitcp").onclick = async () => { await navigator.clipboard.writeText("curl -fsSL https://kedakorea.github.io/personal-os/tools/install.sh | bash"); $("kitcp").textContent = "복사됨 ✓"; };
+    if ($("kitcp")) $("kitcp").onclick = async () => { await navigator.clipboard.writeText("curl -fsSL https://mybrandium.com/tools/install.sh | bash"); $("kitcp").textContent = "복사됨 ✓"; };
     clearInterval(window.__kitPoll);
     if (!(c.intake || {}).kit) window.__kitPoll = setInterval(async () => { const r = await osCall({ action: "get", token: S.token }); if (r.ok && r.customer && (r.customer.intake || {}).kit) { clearInterval(window.__kitPoll); AI = r; renderAI(); } }, 30000);
   }

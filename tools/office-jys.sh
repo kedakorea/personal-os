@@ -3,7 +3,7 @@
 # 지금 앱 파일과 '원본 틀' 둘 다 고친다 → 설정을 다시 적용(적용.py)해도 사무실 화면이 사라지지 않는다
 OS="$HOME/퍼스널OS"
 [ -f "$OS/elvin_web.html" ] || { echo "퍼스널 OS 앱 파일을 못 찾았어요 ($OS/elvin_web.html)"; exit 1; }
-curl -fsSL "https://kedakorea.github.io/personal-os/tools/office-jys.html?$(date +%s)" -o /tmp/office-jys.html || { echo "내려받기 실패 — 인터넷 연결을 확인해 주세요"; exit 1; }
+curl -fsSL "https://mybrandium.com/tools/office-jys.html?$(date +%s)" -o /tmp/office-jys.html || { echo "내려받기 실패 — 인터넷 연결을 확인해 주세요"; exit 1; }
 for F in "$OS/elvin_web.html" "$OS/.os_키트/_원본/elvin_web.html"; do
   [ -f "$F" ] || continue
   [ -f "$F.사무실전_백업" ] || cp "$F" "$F.사무실전_백업"
