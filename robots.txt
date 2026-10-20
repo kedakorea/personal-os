@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /_
+Disallow: /admin/
+Disallow: /start/
+Disallow: /tools/
+
+Sitemap: https://mybrandium.com/sitemap.xml
