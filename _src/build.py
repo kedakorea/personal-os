@@ -20,7 +20,7 @@ PAGES = {
     "os": ("os/", "퍼스널 OS란? — 브랜디움 BRAND!UM", ("WHAT IS PERSONAL OS", "퍼스널 OS는<br>이렇게 일합니다", "도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 휴대폰 한 대로 움직입니다.")),
     "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "상담부터 세팅, 30일 적응 지원까지. 미리 알아 두실 것도 모았습니다.")),
     "shop": ("shop/", "세팅 상품 — 퍼스널 OS 방문형·원격형 | 브랜디움 BRAND!UM", ("SHOP", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
-    "chips": ("chips/", "칩 상점 — 내 OS에 업무를 하나씩 더하기 | 브랜디움 BRAND!UM", ("CHIP SHOP", "칩<br>상점", "칩 3개 1,000원부터. 업무 지시서·템플릿·자동 업무를 받아 채팅창에 붙여넣으면 바로 설치돼요.")),
+    "chips": ("chips/", "OS 확장 상점 — 세팅 후에도 내 OS에 기능 더하기 | 브랜디움 BRAND!UM", ("OS PLUS STORE", "OS 확장<br>상점", "퍼스널 OS를 세팅받은 뒤에도, 필요한 기능을 하나씩 골라 내 OS에 더하는 곳입니다. 앱스토어처럼 고르고, 붙여넣으면 매니저가 설치해요.")),
 }
 
 CSS = """
@@ -93,6 +93,10 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .sv .tx{padding:20px 22px 22px}.sv em{font-style:normal;font-size:12.5px;font-weight:800;opacity:.6}.sv b{display:block;font-size:22px;margin:4px 0 8px}.sv p{font-size:14.5px;opacity:.75;line-height:1.7}
 .sv .pr{margin-top:14px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.sv .pr s{opacity:.45;font-size:14px}.sv .pr strong{font-size:26px}.sv .pr small{font-size:12px;opacity:.55}
 .sv .go{display:block;margin-top:14px;text-align:center;background:var(--ink);color:#fffaf0;font-weight:800;padding:13px;border-radius:14px}
+.xsamp{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}@media(max-width:760px){.xsamp{grid-template-columns:1fr}}
+.xsamp div{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:18px}.xsamp i{font-style:normal;font-size:30px}.xsamp b{display:block;margin:6px 0 4px;font-size:16.5px}.xsamp span{font-size:13.5px;opacity:.72}
+.howx{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0 8px;counter-reset:hx}@media(max-width:760px){.howx{grid-template-columns:1fr}}
+.howx div{background:var(--cream);border-radius:18px;padding:18px 20px;counter-increment:hx}.howx div:before{content:counter(hx);display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fffaf0;font-weight:800;align-items:center;justify-content:center;margin-bottom:8px}.howx b{display:block;font-size:16.5px;margin-bottom:4px}.howx span{font-size:14px;opacity:.75}
 .teaser-chip{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:2px solid var(--ink);border-radius:24px;padding:26px 28px;margin-top:26px}
 .teaser-chip b{font-size:22px}.teaser-chip p{opacity:.75;margin-top:6px}
 .teaser-chip a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px}
@@ -104,14 +108,20 @@ MORE = """<section class="pad light" data-pg="home" id="more">
   <a href="os/"><i>🧠</i><b>퍼스널 OS란?</b><span>부서·매니저·업무 앱, 휴대폰으로 일하는 법, 실제 화면</span></a>
   <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>설문 → 인터뷰 → 세팅 → 교육 → 30일 지원, 자주 묻는 질문</span></a>
   <a href="shop/"><i>🛍️</i><b>세팅 상품</b><span>방문형·원격형 상세보기와 일정 예약</span></a>
-  <a href="chips/"><i>🪙</i><b>칩 상점</b><span>칩으로 하나씩 더하는 업무·디자인 상품</span></a>
+  <a href="chips/"><i>🧩</i><b>OS 확장 상점</b><span>세팅 후에도 기능을 하나씩 더하는 곳</span></a>
  </div></div>
 </section>
 """
 
 TEASER = """<section class="pad cream" data-pg="home" id="chipteaser">
- <div class="reveal"><span class="label">CHIP SHOP</span><h2>작게 더하고 싶을 땐,<br>칩 3개 1,000원부터</h2>
- <div class="teaser-chip"><div><b>🪙 칩 상점</b><p>회의록 정리 규칙, 견적서 양식, 카드뉴스 템플릿처럼 필요한 업무를 하나씩 내 OS에 더하세요. 칩 1개부터 받을 수 있어요.</p></div><a href="chips/">칩 상점 보기 →</a></div></div>
+ <div class="reveal"><span class="label">OS PLUS STORE</span><h2>세팅이 끝이 아닙니다.<br>내 OS는 계속 자라요</h2>
+ <p class="chips-why">필요한 일이 생기면 <b>OS 확장 상점</b>에서 기능을 골라 더하세요. 받으면 나오는 설치 문구를 내 OS 채팅창에 붙여넣기만 하면, 매니저가 알아서 설치합니다.</p>
+ <div class="xsamp">
+  <div><i>📄</i><b>견적서 양식 세팅</b><span>"OO에 견적 보내 줘" 한마디에 우리 양식 견적서</span></div>
+  <div><i>🧑‍🤝‍🧑</i><b>얼굴 그대로 인물사진 합성</b><span>배경만 바꾸고 얼굴은 원본 그대로</span></div>
+  <div><i>🎤</i><b>행사 운영 문서 세트</b><span>체크리스트·배치도·큐시트·대본을 한 번에</span></div>
+ </div>
+ <div class="teaser-chip"><div><b>🧩 지금 30가지 기능이 준비돼 있어요</b><p>업무 규칙 · 디자인 · 사진·영상 · 행사 운영 · 자동 업무. 계속 늘어납니다.</p></div><a href="chips/">OS 확장 상점 보기 →</a></div></div>
 </section>
 """
 
@@ -122,22 +132,22 @@ SVC = """<section class="pad light" data-pg="shop" id="svc">
   <a class="sv" href="product/?p=remote"><div class="im" style="background-image:url(img/thumb_remote.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>💻 REMOTE · 원격형</em><b>퍼스널 OS 원격형 세팅</b><p>화상 인터뷰와 원격 접속으로 전국 어디서나. 늘 켜 두는 데스크톱에 세팅하면 가장 좋아요.</p><div class="pr"><s>2,200,000원</s><strong>880,000원</strong><small>VAT 포함</small></div><span class="go">자세히 보고 예약하기 →</span></div></a>
  </div>
  <p class="chiprule">두 상품 모두 사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 사용 교육 · 30일 적응 지원 포함 · Claude 구독료(월 $100)는 별도</p>
- <div class="teaser-chip" style="margin-top:30px"><div><b>🪙 이미 세팅을 받으셨나요?</b><p>칩 상점에서 회의록 규칙·견적서 양식·카드뉴스 템플릿 같은 업무를 하나씩 더할 수 있어요.</p></div><a href="chips/">칩 상점 가기 →</a></div>
+ <div class="teaser-chip" style="margin-top:30px"><div><b>🧩 이미 세팅을 받으셨나요?</b><p>OS 확장 상점에서 견적서 양식·인물사진 합성·행사 문서 세트 같은 기능을 하나씩 더할 수 있어요.</p></div><a href="chips/">OS 확장 상점 가기 →</a></div>
  </div>
 </section>
 """
 
 SHOP = """<section class="pad light" data-pg="chips" id="chips">
  <div class="reveal">
- <p class="chips-why" style="margin-top:0">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받으면 바로 <b>설치 문구</b>가 나와요. 내 퍼스널 OS 채팅창에 붙여넣기만 하면 매니저가 알아서 설치합니다. 기다릴 필요 없어요.</p>
- <div class="wallet" id="wallet"><span>🪙 내 칩</span><span id="wbal"><a href="account/">로그인하면 보여요</a></span></div>
- <div class="packs">
-  <div class="pack"><div class="n">1<small>칩</small></div><div class="w">400원</div><div class="per">낱개</div><a href="order/?p=chip1">충전하기</a></div>
-  <div class="pack best"><span class="rib">가장 많이 사요</span><div class="n">3<small>칩</small></div><div class="w">1,000원</div><div class="per">칩당 333원</div><a href="order/?p=chip3">충전하기</a></div>
-  <div class="pack"><div class="n">10<small>칩</small></div><div class="w">3,000원</div><div class="per">칩당 300원</div><a href="order/?p=chip10">충전하기</a></div>
-  <div class="pack"><span class="rib">+보너스 3칩</span><div class="n">33<small>칩</small></div><div class="w">8,000원</div><div class="per">칩당 242원</div><a href="order/?p=chip30">충전하기</a></div>
+ <span class="label">HOW IT WORKS</span><h2 style="margin-bottom:6px">이 상점에서 하는 일</h2>
+ <p class="chips-why" style="margin-top:6px">퍼스널 OS는 처음 세팅할 때 대표님 업무에 맞춰 만들어져요. 쓰다 보면 "이것도 맡기고 싶다"는 일이 생기죠. 그때 여기서 <b>기능을 하나씩 골라 내 OS에 더합니다.</b> 휴대폰에 앱을 하나 까는 것과 비슷해요.</p>
+ <div class="howx">
+  <div><b>기능 고르기</b><span>업무 규칙·디자인·사진·영상·행사·자동 업무 중 필요한 것을 골라 설명을 확인해요.</span></div>
+  <div><b>받기</b><span>상점 전용 포인트 '칩'으로 받아요. 칩이 모자라면 그 자리에서 충전하면 돼요.</span></div>
+  <div><b>붙여넣으면 설치 끝</b><span>받으면 설치 문구가 나와요. 내 OS 채팅창에 붙여넣으면 매니저가 알아서 설치하고 "✅ 설치 완료"로 알려 줘요.</span></div>
  </div>
- <p class="chiprule" style="margin-top:6px">VAT 포함 · 칩은 퍼스널 OS 세팅을 받으신 분(또는 받으실 분)의 OS에 설치되는 상품용입니다.</p>
+ <p class="chiprule" style="margin-top:4px">퍼스널 OS 세팅을 받으신 분이 쓰는 곳이에요 · 칩은 3개 1,000원부터(VAT 포함), 필요할 때 마이페이지나 받기 화면에서 충전 · <a href="refund/">환불 규정</a></p>
+ <div class="wallet" id="wallet"><span>🪙 내 칩</span><span id="wbal"><a href="account/">로그인하면 보여요</a></span></div>
  <div class="ftabs" id="ftabs"></div>
  <div class="grid" id="items"><p style="padding:18px 0;opacity:.6">상품을 불러오는 중…</p></div>
  <p class="chiprule">· 칩은 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다. 일부를 쓴 뒤에는 쓴 칩을 1개 400원으로 계산해 뺀 나머지를 돌려드려요. 보너스 칩은 환불되지 않습니다.<br>· 칩으로 받은 상품은 받는 즉시 내 OS에 설치되는 디지털 상품이라 취소·환불되지 않습니다. 설명대로 작동하지 않으면 칩으로 돌려드립니다.<br>· 유효기간: 충전한 칩 5년 · 보너스 칩 1년. 자세한 내용은 <a href="refund/">환불 규정</a>을 확인해 주세요.</p>
@@ -148,7 +158,7 @@ SHOP = """<section class="pad light" data-pg="chips" id="chips">
 SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="os.js"></script>
 <div class="pm" id="pm" hidden><div class="box"><div class="th" id="pmth"></div><div class="in" id="pmin"></div></div></div>
 <script>
-/* 칩 상점 — 쇼핑몰형 (2026-10-23) */
+/* OS 확장 상점 — 쇼핑몰형 (2026-10-23, 이름 바꿈 10-24) */
 (async function(){
  const sb = supabase.createClient(OS_URL, OS_ANON), box = document.getElementById("items"), E = osEsc, pm = document.getElementById("pm");
  const [{ data: it }, { data: ss }] = await Promise.all([sb.from("shop_items").select("*").order("sort"), sb.auth.getSession()]);
@@ -159,7 +169,7 @@ SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><
   if (!u) return;
   const [{ data: b }, { data: l }] = await Promise.all([sb.rpc("chip_balance"), sb.from("chip_ledger").select("item_key,status").not("item_key", "is", null)]);
   bal = b || 0; mine = new Set((l || []).filter((x) => x.status !== "취소").map((x) => x.item_key));
-  document.getElementById("wbal").innerHTML = `<b>${bal}</b> 칩 · <a href="account/">내역 보기</a>`;
+  document.getElementById("wbal").innerHTML = `<b>${bal}</b> 칩 · <a href="order/?p=chip3">충전</a> · <a href="account/">내역</a>`;
  }
  const own = (x) => mine.has(x.key) && x.tier !== "서비스";
  const btn = (x) => !x.active ? ["출시 예정", true] : own(x) ? ["설치 문구 보기", false] : [x.chips ? "받기" : "무료로 받기", false];
@@ -235,7 +245,7 @@ def build(pg):
     t = t.replace("<head>", '<head>\n<base href="/">', 1)
     t = re.sub(r"<body([^>]*)>", lambda m: '<body%s data-pg="%s">' % (m.group(1), pg), t, 1)
     on = lambda p: ' class="on"' if p == pg else ""
-    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SHOP</a><a href="chips/"%s>CHIPS</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
+    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SETUP</a><a href="chips/"%s>STORE</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
            % (on("os"), on("how"), on("shop"), on("chips")))
     t = t.replace(NAV_OLD, nav, 1)
     # 메인 섹션 링크(#what 등)가 다른 페이지로 옮겨간 것 바로잡기
@@ -258,7 +268,7 @@ def build(pg):
                   "const as=[...document.querySelectorAll('nav .links a')].filter(a=>a.getAttribute('href').startsWith('#')),secs=as.map(a=>document.querySelector(a.getAttribute('href')));")
     # <base href="/"> 때문에 #칸 링크가 메인으로 가지 않게: 이 페이지에 그 칸이 보이면 그 자리로 스크롤
     t = t.replace("</body>", """<script>document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const el=document.querySelector(a.getAttribute('href'));if(el&&el.offsetParent!==null){e.preventDefault();el.scrollIntoView({behavior:'smooth'});history.replaceState(null,'',location.pathname+a.getAttribute('href'))}});</script>\n</body>""")
-    if pg == "shop":   # 예전 주소(shop/#chips, shop/?item=) → 칩 상점
+    if pg == "shop":   # 예전 주소(shop/#chips, shop/?item=) → OS 확장 상점
         t = t.replace("<head>", "<head>\n<script>if(location.hash=='#chips'||/[?&]item=/.test(location.search))location.replace('/chips/'+location.search)</script>", 1)
     if pg == "chips":
         t = t.replace("</body>", SHOPJS + "</body>")
