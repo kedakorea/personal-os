@@ -50,7 +50,7 @@ const IC = {
 };
 function loginView(msg) {
   M.innerHTML = `<p class="en">SIGN IN</p><h1>브랜디움 시작하기</h1>
-  <p class="sub">쓰시던 계정으로 3초 만에 가입·로그인됩니다.</p>
+  <p class="sub">${/\/start\//.test(sessionStorage.getItem("after_login") || "") ? "고객 전용 페이지는 로그인 뒤 들어가실 수 있습니다. 쓰시던 계정으로 3초면 됩니다." : "쓰시던 계정으로 3초 만에 가입·로그인됩니다."}</p>
   <button class="btn kakao" data-p="kakao">${IC.kakao}카카오로 시작하기</button>
   <button class="btn naver" data-p="naver">${IC.naver}네이버로 시작하기</button>
   <button class="btn google" data-p="google">${IC.google}Google로 시작하기</button>

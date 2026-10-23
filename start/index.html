@@ -88,6 +88,7 @@ html,body{overflow-x:hidden}
 <div class="bar"><i id="bar"></i></div>
 <main id="main"></main>
 <nav id="nav"><button id="back" type="button">이전</button><button id="next" class="go" type="button">다음</button></nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../os.js"></script>
 <script>
 const FORM = {
@@ -433,7 +434,22 @@ async function makeProp(req) {
 (() => { const q = new URLSearchParams(location.search); if (q.get("new")) { S = { a: {}, memo: {}, step: 0, key: q.get("k") || undefined, mode: q.get("mode") === "interview" ? "interview" : undefined }; save(); history.replaceState(null, "", location.pathname + "?" + [S.mode ? "mode=interview" : "", q.get("k") ? "k=" + encodeURIComponent(q.get("k")) : ""].filter(Boolean).join("&")); } else if (q.get("k") && !S.token) { S.key = q.get("k"); save(); } })();
 (() => { const t = new URLSearchParams(location.search).get("t"); if (t && t !== S.token) { S = { a: {}, memo: {}, step: 0, token: t }; save(); } })();
 
-render();
+// 고객 전용 페이지는 브랜디움 회원 로그인부터 (2026-10-23 대표님 지시) — 로그인·가입 마무리 뒤 이 주소(키 포함)로 돌아온다
+(async () => {
+  const sb = supabase.createClient(OS_URL, OS_ANON);
+  $("nav").style.display = "none";
+  $("main").innerHTML = '<p class="sub">확인하는 중…</p>';
+  const { data } = await sb.auth.getSession();
+  const u = data.session && data.session.user;
+  const { data: m } = u ? await sb.from("members").select("agree_terms_at").eq("id", u.id).maybeSingle() : { data: null };
+  if (m && m.agree_terms_at) return render();
+  sessionStorage.setItem("after_login", location.href);
+  $("bar").style.width = "0%";
+  $("main").innerHTML = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>먼저 로그인해<br>주세요</h1>
+    <p class="sub">고객 전용 페이지는 브랜디움 회원만 들어오실 수 있습니다. 카카오·네이버·구글 계정으로 3초면 로그인됩니다. 처음이시면 이름·연락처만 적으면 가입이 끝납니다.</p>
+    <div class="mode"><button type="button" id="lgo"><b>🔐 로그인하고 들어가기</b>로그인이 끝나면 이 페이지로 바로 돌아옵니다.</button></div>`;
+  $("lgo").onclick = () => { location.href = "../account/"; };
+})();
 </script>
 <!-- 🎤 칸마다 받아쓰기 (2026-10-18 보완) — 버튼 누른 칸에 PC 마이크 음성을 이어 적는다. 받아쓰는 중에도 앞부분을 바로 고칠 수 있다 -->
 <style>
