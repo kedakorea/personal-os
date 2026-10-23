@@ -1,0 +1,206 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>퍼스널 OS 세팅 — 브랜디움 BRAND!UM</title>
+<meta name="description" content="대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형·원격형, 일정 골라 바로 예약.">
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../os.js"></script>
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8;--butter:#f6d36b;--bg:#fffaf0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;padding-bottom:84px}
+a{color:inherit}
+nav{position:sticky;top:0;z-index:30;background:var(--ink);color:#fffaf0;padding:13px 22px;display:flex;justify-content:space-between;align-items:center}
+nav img{height:21px;display:block}nav .r{display:flex;gap:16px;font-size:13.5px}nav .r a{text-decoration:none;opacity:.8}
+.w{max-width:1040px;margin:0 auto;padding:0 22px}
+.en{font-family:'Josefin Sans',Pretendard;font-weight:700;letter-spacing:.08em;font-size:13px}
+/* 위 */
+.top{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;padding:34px 0 10px;align-items:start}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:18px}}
+.gal{border:2px solid var(--ink);border-radius:22px;overflow:hidden;background:#fff}
+.gal .main{aspect-ratio:16/10;background:#eee center/cover no-repeat}
+.gal .thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.gal .thumbs img{width:76px;height:50px;object-fit:cover;border-radius:8px;border:2px solid transparent;cursor:pointer;flex:none}
+.gal .thumbs img.on{border-color:var(--ink)}
+.info .bdg{display:inline-block;background:var(--ink);color:#fffaf0;font-size:12px;font-weight:800;padding:4px 11px;border-radius:99px}
+.info h1{font-size:clamp(26px,4vw,36px);line-height:1.25;margin:12px 0 8px;letter-spacing:-.02em}
+.info .one{opacity:.75;font-size:15.5px}
+.tabs2{display:flex;gap:8px;margin:18px 0}
+.tabs2 a{flex:1;text-align:center;text-decoration:none;font-weight:800;padding:11px;border-radius:14px;border:2px solid var(--ink);background:#fff}
+.tabs2 a.on{background:var(--ink);color:#fffaf0}
+.price{border-top:2px solid var(--ink);border-bottom:1px solid var(--sand);padding:16px 0;margin:6px 0 14px}
+.price s{opacity:.45;font-size:15px}.price .off{color:#e8573f;font-weight:900;font-size:22px;margin-right:8px}
+.price b{font-family:'Josefin Sans',Pretendard;font-size:38px;letter-spacing:-.01em}.price small{font-size:14px;opacity:.6;margin-left:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14.5px}
+.facts dt{opacity:.55;font-weight:700}
+.cta{display:block;width:100%;text-align:center;text-decoration:none;font:800 17px Pretendard;padding:16px;border-radius:16px;background:var(--ink);color:#fffaf0;border:0;cursor:pointer;margin-top:18px}
+.cta.ghost{background:#fff;color:var(--ink);border:2px solid var(--ink);margin-top:10px;font-size:15px;padding:13px}
+.note{font-size:12.5px;opacity:.6;margin-top:10px;line-height:1.7}
+/* 본문 */
+.sec{padding:54px 0 10px}
+.sec h2{font-size:clamp(24px,3.4vw,32px);line-height:1.3;margin:8px 0 18px;letter-spacing:-.02em}
+.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:860px){.inc{grid-template-columns:1fr 1fr}}
+.inc div{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:18px}
+.inc i{font-style:normal;font-size:28px}.inc b{display:block;margin:8px 0 4px;font-size:16px}.inc span{font-size:13.5px;opacity:.72}
+.flow{list-style:none;counter-reset:f;border-left:3px solid var(--ink);margin-left:12px}
+.flow li{counter-increment:f;position:relative;padding:0 0 22px 28px}
+.flow li:before{content:counter(f);position:absolute;left:-17px;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fffaf0;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.flow li.day:before{background:#e8573f;content:"★"}
+.flow b{font-size:16px}.flow em{font-style:normal;font-size:12px;font-weight:800;background:var(--cream);border-radius:99px;padding:2px 9px;margin-left:6px}
+.flow p{font-size:14px;opacity:.75}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.box{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px}
+.box h3{font-size:17px;margin-bottom:8px}.box ul{padding-left:18px;font-size:14.5px;line-height:1.9}
+.cost{background:var(--cream);border-radius:18px;padding:20px 22px;font-size:15px;line-height:1.8}
+details{border-bottom:1px solid var(--sand);padding:14px 2px}summary{font-weight:800;cursor:pointer;font-size:15.5px}details p{font-size:14.5px;opacity:.8;margin-top:8px}
+/* 예약 */
+#book{scroll-margin-top:70px}
+.bk{background:#fff;border:2px solid var(--ink);border-radius:24px;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:860px){.bk{grid-template-columns:1fr}}
+.cal .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal .hd b{font-size:18px}.cal .hd button{border:2px solid var(--ink);background:#fff;border-radius:10px;width:36px;height:34px;font-size:16px;cursor:pointer}
+.cal .hd button:disabled{opacity:.25;cursor:default}
+.cal .g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .g .dw{font-size:12px;opacity:.55;font-weight:700;padding:4px 0}
+.cal .g button{aspect-ratio:1/1;border:0;border-radius:12px;background:transparent;font:700 15px Pretendard;color:var(--ink);cursor:pointer}
+.cal .g button.ok{background:var(--cream)}.cal .g button.ok:hover{background:var(--butter)}
+.cal .g button.sel{background:var(--ink);color:#fffaf0}
+.cal .g button:disabled{opacity:.25;cursor:default;background:transparent}
+.times h4{font-size:15px;margin-bottom:10px}
+.times .t{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.times .t button{border:2px solid var(--ink);background:#fff;border-radius:14px;padding:14px 8px;font:800 16px Pretendard;color:var(--ink);cursor:pointer}
+.times .t button small{display:block;font-size:12px;font-weight:600;opacity:.6;margin-top:2px}
+.times .t button.sel{background:var(--ink);color:#fffaf0}.times .t button:disabled{opacity:.3;text-decoration:line-through;cursor:default}
+.pick{margin-top:16px;background:var(--cream);border-radius:14px;padding:14px 16px;font-size:15px}
+.pick b{font-size:17px}
+.legend{font-size:12.5px;opacity:.65;margin-top:10px}
+/* 아래 고정 */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fffaf0;border-top:2px solid var(--ink);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar .p{font-size:13px;opacity:.7}.bar .p b{display:block;font-size:20px;opacity:1;font-family:'Josefin Sans',Pretendard;color:var(--ink)}
+.bar a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px;white-space:nowrap}
+footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:26px 22px;margin-top:60px}footer a{color:#ddd}
+</style></head><body>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><div class="r"><a href="../shop/">상점</a><a href="../how/#faq">FAQ</a><a href="../account/">마이페이지</a></div></nav>
+<main class="w" id="m"></main>
+<div class="bar"><div class="p" id="barp"></div><a href="#book" id="bara">일정 고르고 구매하기</a></div>
+<footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호 · 010-8225-6242<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
+<script>
+const $ = (s) => document.querySelector(s), E = osEsc, won = (n) => n.toLocaleString("ko-KR") + "원";
+const PR = {
+  visit: { name: "퍼스널 OS 방문형 세팅", tag: "VISIT · 방문형", price: 990000, list: 2500000, place: "브랜디움 라운지 (경기 부천 · 7호선 신중동역 도보 10분)",
+    one: "노트북을 들고 오시면, 마주 앉아 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 가장 편한 방법이에요.",
+    bring: ["늘 쓰시는 노트북(맥·윈도우) + 충전기", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)", "자주 쓰는 양식·자료가 있으면 USB나 메일로"] },
+  remote: { name: "퍼스널 OS 원격형 세팅", tag: "REMOTE · 원격형", price: 880000, list: 2200000, place: "화상 회의 + 원격 접속 (전국 어디서나)",
+    one: "화상으로 인터뷰하고, 원격 접속으로 대표님 컴퓨터에 직접 세팅합니다. 거리와 상관없이 같은 품질로 진행돼요.",
+    bring: ["세팅할 컴퓨터(늘 켜 두는 데스크톱 추천, 노트북도 가능)", "화상 회의가 되는 환경(카메라·마이크)", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)"] }
+};
+const qs = new URLSearchParams(location.search), K = PR[qs.get("p")] ? qs.get("p") : "visit", P = PR[K];
+const SHOTS = ["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`);
+document.title = P.name + " — 브랜디움 BRAND!UM";
+$("#barp").innerHTML = `${E(P.tag)}<b>${won(P.price)}</b>`;
+$("#m").innerHTML = `
+<section class="top">
+ <div class="gal"><div class="main" id="gm" style="background-image:url(${SHOTS[0]})"></div><div class="thumbs">${SHOTS.map((s, i) => `<img src="${s}" class="${i ? "" : "on"}" alt="퍼스널 OS 화면 예시 ${i + 1}">`).join("")}</div></div>
+ <div class="info">
+  <span class="bdg">LAUNCHING EVENT</span>
+  <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
+  <div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>
+  <div class="price"><s>정가 ${won(P.list)}</s><br><span class="off">${Math.round((1 - P.price / P.list) * 100)}%</span><b>${P.price.toLocaleString("ko-KR")}</b><small>원 · VAT 포함 · 한 번만</small></div>
+  <dl class="facts"><dt>세팅 당일</dt><dd>약 3~4시간 (인터뷰 → 세팅 → 사용 교육)</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 교육 · <b>30일 적응 지원</b></dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
+  <a class="cta" href="#book">📅 세팅 날짜 고르기</a>
+  <a class="cta ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 먼저 카톡으로 물어보기</a>
+  <p class="note">업무 인터뷰 전이면 언제든 전액 환불 · <a href="../refund/">환불 규정</a></p>
+ </div>
+</section>
+
+<section class="sec"><span class="en">WHAT YOU GET</span><h2>세팅이 끝나면, 이런 게 생깁니다</h2>
+ <div class="inc">
+  <div><i>🧑‍💼</i><b>나만의 매니저</b><span>이름·말투까지 정한 AI 비서실장. 말로 지시하면 부서에 나눠 처리해요.</span></div>
+  <div><i>🗂️</i><b>내 업무에 맞춘 부서</b><span>인터뷰로 정한 부서와 일하는 기준(지침)이 통째로 들어가요.</span></div>
+  <div><i>🖥️</i><b>사무실 화면</b><span>할 일·일정·결과물이 한눈에 보이는 대시보드. 6가지 디자인 중 선택.</span></div>
+  <div><i>📱</i><b>휴대폰 앱 연결</b><span>밖에서도 휴대폰으로 지시하고, 끝나면 알림을 받아요.</span></div>
+  <div><i>⚙️</i><b>자동 업무</b><span>아침 브리핑처럼 매일 할 일을 알아서 돌려요.</span></div>
+  <div><i>🛟</i><b>30일 적응 지원</b><span>첫 달 동안 써 보며 불편한 점을 바로 고쳐 드려요.</span></div>
+ </div>
+</section>
+
+<section class="sec"><span class="en">HOW IT WORKS</span><h2>예약부터 30일 지원까지</h2>
+ <ol class="flow">
+  <li><b>일정 고르고 구매</b><em>지금</em><p>아래 달력에서 세팅 날짜와 시간을 고르고 주문하세요. 입금이 확인되면 예약이 확정됩니다.</p></li>
+  <li><b>사전 설문</b><em>15분</em><p>확정 문자와 함께 고객 전용 페이지 주소를 보내 드려요. 하시는 일과 쓰는 채널을 미리 적어 주세요.</p></li>
+  <li class="day"><b>세팅 당일 — 업무 인터뷰</b><em>최대 60분</em><p>대표님의 하루를 함께 따라가며 맡길 일을 정합니다.</p></li>
+  <li class="day"><b>세팅 당일 — 설계서 확인 · 설치</b><em>1~2시간</em><p>부서 구성과 매니저 이름을 확인하고, 컴퓨터와 휴대폰에 바로 설치합니다.</p></li>
+  <li class="day"><b>세팅 당일 — 사용 교육</b><em>60분</em><p>첫 지시 다섯 개를 함께 해 봅니다.</p></li>
+  <li><b>30일 적응 지원</b><em>한 달</em><p>쓰다가 막히면 카톡으로. 바로 고쳐 드립니다.</p></li>
+ </ol>
+</section>
+
+<section class="sec"><span class="en">BEFORE YOU BOOK</span><h2>이런 분께 맞고, 이걸 챙겨 오세요</h2>
+ <div class="two">
+  <div class="box"><h3>이런 분께 추천해요</h3><ul><li>혼자 또는 소수로 회사·학원·센터를 운영하는 대표님</li><li>서류·연락·일정이 끝없이 밀리는 분</li><li>AI가 좋은 건 알지만 배울 시간이 없는 분</li></ul></div>
+  <div class="box"><h3>${K === "visit" ? "가져오실 것" : "준비해 주실 것"}</h3><ul>${P.bring.map((b) => `<li>${E(b)}</li>`).join("")}</ul></div>
+ </div>
+ <div class="cost" style="margin-top:14px"><b>비용은 이게 전부예요</b><br>세팅비 <b>${won(P.price)}</b>(한 번만, VAT 포함) + Claude 구독료 <b>월 $100</b>(약 15만 원, 고객님 카드로 Claude에 직접 결제 · 결제·연결은 세팅 때 함께 해 드려요).</div>
+</section>
+
+<section class="sec" id="book"><span class="en">BOOKING</span><h2>세팅 날짜를 골라 주세요</h2>
+ <div class="bk">
+  <div class="cal"><div class="hd"><button id="pv" aria-label="이전 달">‹</button><b id="mt"></b><button id="nx" aria-label="다음 달">›</button></div><div class="g" id="cg"></div>
+   <p class="legend">노란 날짜를 고를 수 있어요 · 평일만 · 오늘부터 5일 뒤~두 달 안(입금·사전 설문 시간)</p></div>
+  <div class="times"><h4 id="th">날짜를 먼저 골라 주세요</h4><div class="t" id="tt"></div>
+   <div class="pick" id="pk" hidden></div>
+   <button class="cta" id="go" disabled>날짜·시간을 고르면 구매할 수 있어요</button>
+   <p class="note">· 한 시간대에 한 팀만 받습니다. 입금이 확인되면 예약이 확정돼요(주문 후 3일 안 입금).<br>· 일정 변경은 2일 전까지 한 번 무료 · 원하시는 시간이 없으면 <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카톡으로 문의</a>해 주세요.</p>
+  </div>
+ </div>
+</section>
+
+<section class="sec"><span class="en">FAQ</span><h2>자주 묻는 질문</h2>
+ <details><summary>컴퓨터를 잘 몰라도 되나요?</summary><p>네. 설치·연결은 저희가 다 하고, 대표님은 인터뷰에 답하고 첫 지시를 해 보시면 됩니다. 컴퓨터가 낯서시면 방문형을 추천해요.</p></details>
+ <details><summary>맥이 아니라 윈도우도 되나요?</summary><p>됩니다. 늘 켜 두는 데스크톱이면 가장 좋고, 노트북도 됩니다. 전용 PC가 필요하면 맥 미니(약 119만 원~, 실비)로 준비해 드려요.</p></details>
+ <details><summary>Claude 구독료는 꼭 내야 하나요?</summary><p>네. 퍼스널 OS는 Claude(Anthropic의 AI)로 움직입니다. 월 $100 구독을 고객님 명의로 결제하시고, 세팅비와는 별개입니다.</p></details>
+ <details><summary>환불은 어떻게 되나요?</summary><p>업무 인터뷰 전이면 전액, 인터뷰 후 세팅 전 70%, 세팅 시작 후 교육 전 30%입니다. <a href="../refund/">환불 규정 전체 보기</a></p></details>
+</section>`;
+/* 갤러리 */
+(function(){ const m = document.getElementById("gm"); document.querySelectorAll(".thumbs img").forEach((im) => im.onclick = () => { m.style.backgroundImage = `url(${im.src})`; document.querySelectorAll(".thumbs img").forEach((x) => x.classList.toggle("on", x === im)); }); })();
+/* 예약 달력 — 평일 10:00·15:00, 오늘+3일 ~ 60일 */
+(async function(){
+ const sb = supabase.createClient(OS_URL, OS_ANON);
+ const { data } = await sb.rpc("taken_slots");
+ const taken = new Set((data && data.taken || []).map((t) => new Date(t).getTime())), blocked = new Set(data && data.blocked || []);
+ const TIMES = [["10:00", "오전", "10시 ~ 14시경"], ["15:00", "오후", "15시 ~ 19시경"]];
+ const kst = (d, hm) => new Date(`${d}T${hm}:00+09:00`);
+ const ymd = (dt) => { const k = new Date(dt.getTime() + 9 * 3600e3); return k.toISOString().slice(0, 10); };
+ const today = ymd(new Date()), addD = (s, n) => { const d = new Date(s + "T00:00:00+09:00"); d.setDate(d.getDate() + n); return ymd(d); };
+ const from = addD(today, 5), to = addD(today, 60);
+ const dayOk = (s) => { const dw = new Date(s + "T12:00:00+09:00").getUTCDay(); return s >= from && s <= to && dw >= 1 && dw <= 5 && !blocked.has(s) && TIMES.some(([hm]) => !taken.has(kst(s, hm).getTime())); };
+ let cur = from.slice(0, 7), selD = null, selT = null;
+ function draw() {
+  const [y, m] = cur.split("-").map(Number), first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay(), days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  document.getElementById("mt").textContent = `${y}년 ${m}월`;
+  document.getElementById("pv").disabled = cur <= from.slice(0, 7); document.getElementById("nx").disabled = cur >= to.slice(0, 7);
+  let h = "일월화수목금토".split("").map((d) => `<div class="dw">${d}</div>`).join("") + "<div></div>".repeat(first);
+  for (let d = 1; d <= days; d++) { const s = `${cur}-${String(d).padStart(2, "0")}`, ok = dayOk(s); h += `<button data-d="${s}" class="${ok ? "ok" : ""} ${s === selD ? "sel" : ""}" ${ok ? "" : "disabled"}>${d}</button>`; }
+  document.getElementById("cg").innerHTML = h;
+  document.querySelectorAll("#cg button[data-d]").forEach((b) => b.onclick = () => { selD = b.dataset.d; selT = null; draw(); times(); });
+ }
+ function times() {
+  const dw = "일월화수목금토"[new Date(selD + "T12:00:00+09:00").getUTCDay()];
+  document.getElementById("th").textContent = `${+selD.slice(5, 7)}월 ${+selD.slice(8)}일 (${dw}) — 시간을 골라 주세요`;
+  document.getElementById("tt").innerHTML = TIMES.map(([hm, a, r]) => { const full = taken.has(kst(selD, hm).getTime()); return `<button data-t="${hm}" class="${hm === selT ? "sel" : ""}" ${full ? "disabled" : ""}>${a} ${hm}<small>${full ? "예약 마감" : r}</small></button>`; }).join("");
+  document.querySelectorAll("#tt button").forEach((b) => b.onclick = () => { selT = b.dataset.t; times(); });
+  const pk = document.getElementById("pk"), go = document.getElementById("go");
+  if (selT) {
+   pk.hidden = false; pk.innerHTML = `선택한 일정<br><b>${+selD.slice(5, 7)}월 ${+selD.slice(8)}일 (${dw}) ${selT}</b> · ${E(P.tag)}`;
+   go.disabled = false; go.textContent = `이 일정으로 구매하기 · ${won(P.price)}`;
+  } else { pk.hidden = true; go.disabled = true; go.textContent = "시간을 고르면 구매할 수 있어요"; }
+ }
+ document.getElementById("pv").onclick = () => { const [y, m] = cur.split("-").map(Number); cur = m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`; draw(); };
+ document.getElementById("nx").onclick = () => { const [y, m] = cur.split("-").map(Number); cur = m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, "0")}`; draw(); };
+ document.getElementById("go").onclick = () => { location.href = `../order/?p=${K}&slot=${encodeURIComponent(kst(selD, selT).toISOString())}`; };
+ draw();
+})();
+</script>
+</body></html>

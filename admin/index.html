@@ -86,10 +86,10 @@ async function orders() {
   const n = (s) => data.filter((x) => x.status === s).length;
   const sum = data.filter((x) => x.status !== "취소" && x.status !== "입금대기").reduce((a, x) => a + x.price, 0);
   $("tb").innerHTML = `<div class="stats">${OST.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}<div><b>${sum.toLocaleString("ko-KR")}</b>입금 확인 합계(원)</div></div>
-   ${data.length ? `<table><tr><th>주문</th><th>상품</th><th>금액</th><th>주문자</th><th>입금자</th><th>증빙</th><th>희망 일정 · 요청</th><th>상태</th></tr>
+   ${data.length ? `<table><tr><th>주문</th><th>상품</th><th>금액</th><th>주문자</th><th>입금자</th><th>증빙</th><th>세팅 일정 · 요청</th><th>상태</th></tr>
    ${data.map((o) => `<tr><td><b>${E(o.order_no)}</b><br><small>${dt(o.created_at)}</small></td><td>${E(o.product)}</td><td>${o.price.toLocaleString("ko-KR")}</td>
     <td><b>${E(o.name || "")}</b><br><small>${E(o.phone || "")}<br>${E(o.email || "")}</small></td><td>${E(o.depositor || "")}</td>
-    <td><small>${E(o.receipt_type || "—")}<br>${E(o.receipt_no || "")}</small></td><td><small>${E(o.want_dates || "")}<br>${E(o.memo || "")}</small></td>
+    <td><small>${E(o.receipt_type || "—")}<br>${E(o.receipt_no || "")}</small></td><td><small>${o.slot_at ? "<b>📅 " + new Date(o.slot_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }) + "</b><br>" : ""}${E(o.want_dates || "")}<br>${E(o.memo || "")}</small></td>
     <td><select data-id="${o.id}" class="ost">${OST.map((s) => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>`).join("")}</table>` : `<p class="note">아직 주문이 없습니다.</p>`}`;
   const { data: cl } = await sb.from("chip_ledger").select("*").not("item_key", "is", null).order("id", { ascending: false }).limit(100);
   const nm = {}; (await sb.from("members").select("id,name,phone")).data?.forEach((m) => nm[m.id] = m);

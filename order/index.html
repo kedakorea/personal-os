@@ -76,15 +76,19 @@ function needLogin() {
 function form(u, m) {
   const pick = new URLSearchParams(location.search).get("p") || "remote";
   const CH = pick.startsWith("chip"), PL = P.filter((p) => !!p.chip === CH);
-  M.innerHTML = `<p class="en">ORDER</p><h1>${CH ? "칩 충전하기" : "퍼스널 OS 구매하기"}</h1><p class="sub">${CH ? "충전할 묶음을 고르고 주문하시면, 입금이 확인되는 대로 칩이 들어옵니다." : "세팅 방식을 고르고 주문하시면, 입금 확인 뒤 담당자가 일정을 잡아 드립니다."}</p>
+  const SL = new URLSearchParams(location.search).get("slot"), SLD = SL ? new Date(SL) : null;
+  if (!CH && (!SLD || isNaN(SLD))) { location.replace(`../product/?p=${pick === "remote" ? "remote" : "visit"}#book`); return; }
+  const slotTxt = SLD ? SLD.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
+  M.innerHTML = `<p class="en">ORDER</p><h1>${CH ? "칩 충전하기" : "주문서"}</h1><p class="sub">${CH ? "충전할 묶음을 고르고 주문하시면, 입금이 확인되는 대로 칩이 들어옵니다." : "고르신 일정으로 주문서를 확인해 주세요. 입금이 확인되면 예약이 확정되고, 사전 설문 안내를 보내 드립니다."}</p>
   <h3>상품 선택</h3>
-  ${PL.map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
+  ${PL.filter((p) => CH || p.k === pick).map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
   <p class="small">${CH ? "부가세 포함 · 충전한 칩 5년·보너스 칩 1년 유효 · 7일 안 미사용 시 전액 환불" : "부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제"}</p>
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
   <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
   <label class="f">이메일 (진행 안내용)</label><input type="text" id="em" value="${osEsc(m.email || "")}" placeholder="name@example.com">
-  <div ${CH ? "hidden" : ""}><label class="f">희망 일정 (선택)</label><input type="text" id="wd" placeholder="예: 11월 둘째 주 평일 오후">
+  ${CH ? "" : `<h3>세팅 일정</h3><div class="pay">📅 <b>${slotTxt}</b> · 약 3~4시간 <a href="../product/?p=${pick}#book" style="float:right;font-size:13px">바꾸기</a></div>`}
+  <div ${CH ? "hidden" : ""}><input type="hidden" id="wd" value="">
   <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea></div>
   <h3>결제 방법</h3>
   <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 3일 안에 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
@@ -98,6 +102,7 @@ function form(u, m) {
   const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").textContent = won(P.find((p) => p.k === k).price); };
   M.querySelectorAll(".prod").forEach((l) => l.onclick = () => sel(l.dataset.k));
   sel(PL.some((p) => p.k === pick) ? pick : PL[0].k);
+  if (!CH) M.querySelector(".prod").insertAdjacentHTML("afterend", `<p class="small" style="margin:-4px 0 6px"><a href="../product/?p=${pick === "visit" ? "remote" : "visit"}">${pick === "visit" ? "원격형" : "방문형"}으로 바꾸기 →</a></p>`);
   $("#rt").onchange = (e) => $("#rn").style.display = e.target.value ? "block" : "none";
   $("#go").onclick = async () => {
     const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
@@ -109,15 +114,15 @@ function form(u, m) {
     if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
     $("#go").disabled = true;
     const { data, error } = await sb.from("orders").insert({ member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: v("mo") || null, agree_at: new Date().toISOString() }).select().single();
+      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: v("mo") || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
-    if (error) return err("주문을 저장하지 못했습니다: " + error.message);
+    if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : "주문을 저장하지 못했습니다: " + error.message);
     done(data);
   };
 }
 function done(o) {
   window.scrollTo(0, 0);
-  M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}</p>
+  M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}${o.slot_at ? `<br>📅 세팅 일정 <b>${new Date(o.slot_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" })}</b> (입금 확인 후 확정)` : ""}</p>
   <div class="bank">입금하실 금액 <b>${won(o.price)}</b> <small>(VAT 포함)</small><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
   <p class="small">· 주문일로부터 3일 안에 입금해 주세요. 기한이 지나면 주문이 자동 취소될 수 있습니다.<br>${/^칩/.test(o.product) ? "· 입금이 확인되면 칩이 바로 들어옵니다. 상점에서 원하는 상품을 받으세요.<br>· 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)." : "· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 업무 인터뷰 전에는 언제든 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)."}<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
   <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
