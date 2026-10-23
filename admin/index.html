@@ -58,7 +58,7 @@ async function A(body) { const r = await osCall(body, JWT); if (r.error && /관�
 function loginView() {
   $("out").hidden = true;
   $("main").innerHTML = `<div class="login"><h1>관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="관리자 비밀번호"><button class="btn" id="go" style="width:100%;margin-top:14px">들어가기</button><p class="err" id="er"></p></div>`;
-  const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; list(); };
+  const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; members(); };
   $("go").onclick = go; $("pw").onkeydown = (e) => { if (e.key === "Enter") go(); };
 }
 async function list() {
@@ -73,7 +73,7 @@ async function list() {
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
-function tabs(on) { return `<div class="tabs"><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button></div>`; }
+function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
 // 사이트 회원·주문 (2026-10-23) — 관리자 로그인 세션으로 바로 읽는다(RLS: kedakorea@gmail.com)
 const OST = ["입금대기", "입금확인", "일정확정", "세팅완료", "취소"];
 const PV = { kakao: "카카오", google: "구글", naver: "네이버", email: "이메일" };
@@ -217,7 +217,7 @@ async function boot() {
   if (!data.session) return loginView();
   JWT = data.session.access_token;
   const q = new URLSearchParams(location.search), id = q.get("id");
-  id ? detail(id) : (q.get("tab") === "keys" ? keys() : list());
+  id ? detail(id) : ({ keys: keys, clients: list, orders: orders }[q.get("tab")] || members)();
 }
 sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
 $("out").onclick = async () => { await sb.auth.signOut(); loginView(); };
