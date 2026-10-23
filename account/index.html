@@ -15,7 +15,7 @@ main{flex:1;width:100%;max-width:440px;margin:0 auto;padding:48px 22px 60px}
 .en{font-size:12px;letter-spacing:.14em;font-weight:700;opacity:.55}
 h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:15px;margin-bottom:28px}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:14px;font:700 16px Pretendard;border:0;cursor:pointer;margin-bottom:12px;text-decoration:none}
-.kakao{background:#FEE500;color:#191600} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
+.kakao{background:#FEE500;color:#191600} .naver{background:#03C75A;color:#fff} .naver svg{width:16px;height:16px} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
 .dark{background:var(--ink);color:#fffaf0} .ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
 .btn svg{width:20px;height:20px}
 .note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
@@ -42,18 +42,26 @@ footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:2
 const sb = supabase.createClient(OS_URL, OS_ANON);
 const $ = (s) => document.querySelector(s), M = $("#m");
 const BACK = location.origin + location.pathname;
+const NAVER_ID = "zhv0lZSXEn0yTIXIOU6k";
 const IC = {
   kakao: '<svg viewBox="0 0 24 24"><path fill="#191600" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>',
+  naver: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M15.6 12.8 8.1 2H2v20h6.4V11.2L15.9 22H22V2h-6.4z"/></svg>',
   google: '<svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>'
 };
 function loginView(msg) {
   M.innerHTML = `<p class="en">SIGN IN</p><h1>브랜디움 시작하기</h1>
   <p class="sub">쓰시던 계정으로 3초 만에 가입·로그인됩니다.</p>
   <button class="btn kakao" data-p="kakao">${IC.kakao}카카오로 시작하기</button>
+  <button class="btn naver" data-p="naver">${IC.naver}네이버로 시작하기</button>
   <button class="btn google" data-p="google">${IC.google}Google로 시작하기</button>
   <p class="err">${msg || ""}</p>
   <p class="note">처음이시면 로그인 뒤 이름·연락처만 적으면 가입이 끝납니다.<br>가입하면 <a href="../terms/">이용약관</a>과 <a href="../privacy/">개인정보처리방침</a>을 확인하게 됩니다.</p>`;
   M.querySelectorAll("[data-p]").forEach((b) => b.onclick = async () => {
+    if (b.dataset.p === "naver") {
+      const st = crypto.randomUUID(); sessionStorage.setItem("nv_state", st);
+      location.href = "https://nid.naver.com/oauth2.0/authorize?" + new URLSearchParams({ response_type: "code", client_id: NAVER_ID, redirect_uri: BACK, state: st });
+      return;
+    }
     const opt = { redirectTo: BACK };
     const { error } = await sb.auth.signInWithOAuth({ provider: b.dataset.p, options: opt });
     if (error) $(".err").textContent = "로그인을 시작하지 못했습니다: " + error.message;
@@ -63,7 +71,7 @@ function joinView(u) {
   const md = u.user_metadata || {};
   M.innerHTML = `<p class="en">WELCOME</p><h1>가입 마무리</h1><p class="sub">진행 안내를 드릴 연락처만 알려 주세요.</p>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(md.full_name || md.name || md.nickname || "")}" placeholder="홍길동">
-  <label class="f">휴대폰 번호</label><input type="tel" id="ph" placeholder="010-0000-0000" inputmode="tel">
+  <label class="f">휴대폰 번호</label><input type="tel" id="ph" placeholder="010-0000-0000" inputmode="tel" value="${osEsc(md.phone || "")}">
   <div class="agree">
    <label class="all"><input type="checkbox" id="all">모두 동의합니다</label>
    <label><input type="checkbox" class="ck rq">[필수] 이용약관 동의<a href="../terms/" target="_blank">보기</a></label>
@@ -83,14 +91,14 @@ function joinView(u) {
     if (!/^01\d{8,9}$/.test(phone)) return $(".err").textContent = "휴대폰 번호를 확인해 주세요.";
     if (!M.querySelectorAll(".rq:checked").length || M.querySelectorAll(".rq:not(:checked)").length) return $(".err").textContent = "필수 항목에 동의해 주세요.";
     const ph = phone.replace(/^(\d{3})(\d{3,4})(\d{4})$/, "$1-$2-$3");
-    const { error } = await sb.from("members").upsert({ id: u.id, name, phone: ph, email: u.email || md.email || null,
+    const { error } = await sb.from("members").upsert({ id: u.id, name, phone: ph, email: md.contact_email || (/@naver\.mybrandium\.com$/.test(u.email || "") ? null : u.email) || md.email || null,
       provider: (u.app_metadata || {}).provider, agree_terms_at: new Date().toISOString(), agree_marketing: $("#mk").checked });
     if (error) return $(".err").textContent = "저장하지 못했습니다: " + error.message;
     boot();
   };
 }
 function myView(u, m) {
-  const pv = { kakao: "카카오", google: "Google" }[m.provider] || m.provider || "";
+  const pv = { kakao: "카카오", google: "Google", naver: "네이버" }[m.provider] || m.provider || "";
   M.innerHTML = `<p class="en">MY PAGE</p><h1>${osEsc(m.name)}님, 반갑습니다</h1><p class="sub">브랜디움 회원으로 가입되어 있습니다.</p>
   <div class="card"><h2>내 정보</h2>
    <div class="row"><span>이름</span><b>${osEsc(m.name)}</b></div>
@@ -109,7 +117,21 @@ function myView(u, m) {
     await sb.auth.signOut(); loginView("탈퇴가 끝났습니다. 그동안 고마웠습니다.");
   };
 }
+async function naverBack(q) {
+  history.replaceState(null, "", location.pathname);
+  if (q.get("state") !== sessionStorage.getItem("nv_state")) return loginView("네이버 로그인 확인값이 맞지 않습니다. 다시 눌러 주세요.");
+  sessionStorage.removeItem("nv_state");
+  M.innerHTML = '<p class="sub">네이버로 로그인하는 중…</p>';
+  const r = await fetch(OS_URL + "/functions/v1/naver", { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON },
+    body: JSON.stringify({ code: q.get("code"), state: q.get("state") }) }).then((x) => x.json()).catch(() => ({ ok: false, error: "연결 실패" }));
+  if (!r.ok) return loginView("네이버 로그인에 실패했습니다. " + (r.error || ""));
+  const { error } = await sb.auth.verifyOtp({ token_hash: r.token_hash, type: "magiclink" });
+  if (error) return loginView("로그인을 마치지 못했습니다: " + error.message);
+  boot();
+}
 async function boot() {
+  const s0 = new URLSearchParams(location.search);
+  if (s0.get("code") && s0.get("state") && sessionStorage.getItem("nv_state")) return naverBack(s0);
   const q = new URLSearchParams(location.hash.slice(1) || location.search);
   const oerr = q.get("error_description");
   const { data } = await sb.auth.getSession();
