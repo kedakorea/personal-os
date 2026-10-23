@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
+<base href="/">
 <meta charset="utf-8">
 <link rel="icon" type="image/png" href="favicon.png?v=3"><link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -463,18 +464,56 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 .notedu h2 em{font-style:normal;background:var(--butter2);padding:0 8px}
 .notedu .lead{margin:22px auto 0}
 @media(max-width:860px){.chat2,.truth{grid-template-columns:1fr}.vs95 td{font-size:14.5px;padding:11px 12px;word-break:keep-all}.vs95 th{font-size:13px;padding:0 12px 4px;word-break:keep-all}}
+
+/* 페이지 나누기 (2026-10-23) */
+section[data-pg]{display:none}
+body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=about] section[data-pg~=about]{display:block}
+body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-pg~=os][hidden]{display:none}
+.pghead{background:var(--cream);padding:70px calc(var(--frame) + 14px) 54px;border-radius:0 0 28px 28px}
+.pghead .label{display:inline-block;margin-bottom:14px}
+.pghead h1{font-size:clamp(34px,6vw,64px);line-height:1.15;letter-spacing:-.02em}
+.pghead p{margin-top:16px;font-size:17px;opacity:.75;max-width:640px}
+.more{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+.more a{display:block;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:22px 20px;text-decoration:none;transition:transform .2s}
+.more a:hover{transform:translateY(-3px)}
+.more b{display:block;font-size:19px;margin:8px 0 6px}.more span{font-size:14px;opacity:.7;line-height:1.6}.more i{font-style:normal;font-size:26px}
+@media(max-width:860px){.more{grid-template-columns:1fr 1fr}}
+.chips-why{font-size:16px;opacity:.8;margin-top:12px;max-width:680px;line-height:1.75}
+.packs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 10px}
+.pack{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:20px 18px;text-align:center;position:relative}
+.pack .n{font-family:'Josefin Sans',Pretendard;font-weight:800;font-size:34px;line-height:1}.pack .n small{font-size:15px;margin-left:3px}
+.pack .w{font-size:20px;font-weight:800;margin:10px 0 2px}.pack .per{font-size:12.5px;opacity:.6}
+.pack a{display:block;margin-top:14px;padding:11px;border-radius:12px;background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;font-size:15px}
+.pack.best{background:var(--butter2)}.pack .rib{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fffaf0;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;white-space:nowrap}
+@media(max-width:860px){.packs{grid-template-columns:1fr 1fr}}
+.wallet{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--ink);color:#fffaf0;border-radius:16px;padding:14px 18px;margin:18px 0 6px;font-size:15px}
+.wallet b{font-size:20px}.wallet a{color:var(--cream)}
+.items{margin-top:26px;border-top:2px solid var(--ink)}
+.item{display:grid;grid-template-columns:86px 1fr auto;gap:14px;align-items:center;padding:16px 4px;border-bottom:1px solid rgba(67,47,46,.18)}
+.item .tier{font-size:12px;font-weight:800;opacity:.6}
+.item b{font-size:16.5px}.item p{font-size:14px;opacity:.72;margin-top:3px;line-height:1.6}
+.item .get{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.item .c{font-family:'Josefin Sans',Pretendard;font-weight:800;font-size:18px}
+.item button{font:800 14px Pretendard;padding:9px 14px;border-radius:10px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.item button:hover{background:var(--ink);color:#fffaf0}.item.soon{opacity:.5}.item.soon button{cursor:default}
+.item.mine button{background:var(--cream)}
+@media(max-width:640px){.item{grid-template-columns:1fr auto}.item .tier{grid-column:1/-1}}
+.chiprule{margin-top:22px;font-size:13.5px;line-height:1.8;opacity:.75}
+.teaser-chip{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:2px solid var(--ink);border-radius:24px;padding:26px 28px;margin-top:26px}
+.teaser-chip b{font-size:22px}.teaser-chip p{opacity:.75;margin-top:6px}
+.teaser-chip a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px}
 </style>
 <script>if(/[?&]embed=1/.test(location.search))document.write('<style>.float,.kakao,.teaser,.evt{display:none!important}html,body{overflow:hidden!important}</style>')</script>
 <meta name="naver-site-verification" content="aecfe5edab176758e8719dbd2ecf23cebaef1b66" />
 <link rel="canonical" href="https://mybrandium.com/">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "브랜디움 BRAND!UM", "alternateName": ["브랜디움", "brandium", "퍼스널 OS"], "url": "https://mybrandium.com/", "publisher": {"@type": "Organization", "name": "캐다", "alternateName": "keda", "url": "https://kedakorea.com/"}}</script>
 </head>
-<body>
+<body data-pg="home">
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="#what">WHAT</a><a href="#mobile">MOBILE</a><a href="#screens">SCREENS</a><a href="#price">PRICE</a><a href="#how">HOW</a><a href="#faq">FAQ</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd" href="account/" title="회원가입·로그인">로그인</a><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.com/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
+<div class="links"><a href="os/">OS</a><a href="how/">HOW</a><a href="shop/">SHOP</a><a href="how/#faq">FAQ</a><a href="about/">ABOUT</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd" href="account/" title="회원가입·로그인">로그인</a><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.com/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
 <div class="wrap">
 
-<section class="hero" id="top">
+<section data-pg="home" class="hero" id="top">
  <div class="stage"><svg id="art" viewBox="0 0 1400 700" role="img" aria-label="퍼스널 OS가 만드는 결과물 — 견적서, 보고서, 일정 브리핑, 계약서 날인, 안내 문자"></svg></div>
  <h1 class="sr">퍼스널 OS — Your work, Your OS.</h1>
  <div class="hero-copy">
@@ -486,7 +525,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 </section>
 <div class="ticker"><div>PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · PERSONAL OS · 나 대신 일하는 시스템 · ONE CHANNEL · 지시는 한 곳에서 · YOUR WORK, YOUR OS · 배우지 말고 맡기세요 · </div></div>
 
-<section class="pad orange">
+<section data-pg="home" class="pad orange">
  <div class="grid2 reveal">
   <div><span class="label">THE PROBLEM</span><h2>아무것도 안 했는데<br>벌써 점심이죠?</h2>
    <p class="big-q">메일 보고, 카톡 답하고, 파일 찾다 보면<br><mark>'내 일'은 늘 오후부터.</mark></p>
@@ -506,7 +545,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  <g fill="#8fb3cf"><rect x="572" y="60" width="28" height="40" rx="3"/><rect x="215" y="40" width="16" height="18"/><rect x="915" y="50" width="14" height="16"/></g></svg>
 </section>
 
-<section class="pad light" id="chat">
+<section data-pg="home" class="pad light" id="chat">
  <div class="reveal"><span class="label">HOW DO YOU USE AI?</span><h2>아직도 AI,<br>이렇게 쓰고 계세요?</h2></div>
  <div class="chat2 reveal">
   <div class="cw"><div class="bar"><i></i><i></i><i></i>ChatGPT · Gemini · … 채팅창</div><div class="in">
@@ -520,7 +559,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div>
 </section>
 
-<section class="pad ink" id="truth">
+<section data-pg="home" class="pad ink" id="truth">
  <div class="truth reveal">
   <div><span class="label">THE TRUTH</span><h2 style="word-break:keep-all">채팅창에 묻고,<br>답을 받아 내가<br>옮겨 쓰고 있다면</h2>
    <p class="need">AI를 <mark>겨우 5%</mark>만 쓰고 있는 셈입니다.</p>
@@ -536,13 +575,23 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  <p class="need">그 95%를 쓰려면, AI에게 <mark>일할 자리(내 일의 운영체제)</mark>를 만들어 줘야 합니다.</p></div>
 </section>
 
-<section class="pad light" id="notedu">
+<section data-pg="home" class="pad light" id="notedu">
  <div class="notedu reveal"><span class="lab2">FIRST, ONE THING</span>
   <h2 style="margin-top:14px">교육이 아닙니다.<br><em>내 일의 운영체제</em>를 만드는 일입니다.</h2>
   <p class="lead">프롬프트를 외우는 게 아니라, 내 일하는 방식이 컴퓨터 안에 '회사'로 자리 잡습니다. 한 번 만들어 두면 매일 그 위에서 일합니다.</p></div>
 </section>
+<section class="pad light" data-pg="home" id="more">
+ <div class="reveal"><span class="label">MORE</span><h2>더 알아보기</h2>
+ <div class="more">
+  <a href="os/"><i>🧠</i><b>퍼스널 OS란?</b><span>부서·매니저·업무 앱, 휴대폰으로 일하는 법, 실제 화면</span></a>
+  <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>설문 → 인터뷰 → 세팅 → 교육 → 30일 지원, 자주 묻는 질문</span></a>
+  <a href="shop/"><i>🪙</i><b>상점</b><span>세팅 상품과 칩으로 사는 업무·디자인 상품</span></a>
+  <a href="about/"><i>👋</i><b>브랜디움 소개</b><span>만든 사람과 운영사 캐다</span></a>
+ </div></div>
+</section>
 
-<section class="pad light" id="what">
+
+<section data-pg="os" class="pad light" id="what">
  <div class="reveal"><span class="label">WHAT IS PERSONAL OS</span>
  <h2>퍼스널 OS는 '도구'가 아니라<br>'조직'입니다</h2>
  <div class="dict"><p class="w">OS <small>[오에스] · Operating System · 운영체제</small></p>
@@ -557,7 +606,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div>
 </section>
 
-<section class="pad ink" id="system">
+<section data-pg="os" class="pad ink" id="system">
  <div class="reveal"><span class="label">BEYOND SKILLS</span><h2>AI는 배울 만큼 배우셨습니다.<br>이제 시스템을 만드세요.</h2>
  <p class="lead">강의를 듣고, 프롬프트를 모으고, 새 도구를 깔아도 — 그걸 <b>내 일에 어떻게 붙일지는 늘 대표님 몫</b>으로 남습니다. 그래서 저장해 둔 프롬프트는 늘어나는데 일은 그대로죠.</p>
  <div class="stair">
@@ -567,12 +616,12 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div></div>
 </section>
 
-<section class="say-it" id="outputs"><div class="say-in"><p class="big"><span>say it.</span><span>it&rsquo;s done.</span></p><p class="ko2">말 한마디면, 결과물이 됩니다.</p></div></section>
-<section class="show"><div class="pin">
+<section data-pg="home" class="say-it" id="outputs"><div class="say-in"><p class="big"><span>say it.</span><span>it&rsquo;s done.</span></p><p class="ko2">말 한마디면, 결과물이 됩니다.</p></div></section>
+<section data-pg="home" class="show"><div class="pin">
  <p class="scroll-hint">scroll<i></i></p>
 </div></section>
 
-<section class="pad ink easy">
+<section data-pg="os" class="pad ink easy">
  <div class="reveal"><span class="label">TOO HARD? NO.</span>
  <h2>어렵게 느껴지셨나요?<br>걱정 마세요.</h2>
  <p class="lead">부서, 매니저, 앱, 기록… 이 모든 건 세팅부터 운영까지 알아서 돌아갑니다.<br>대표님이 하실 일은 딱 하나.</p>
@@ -580,7 +629,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  <p class="lead">설정도, 공부도, 관리도 필요 없습니다.<br>직원에게 말하듯, 아니 그보다 더 편하게.</p></div>
 </section>
 
-<section class="pad lilac" id="day" hidden>
+<section data-pg="os" class="pad lilac" id="day" hidden>
  <div class="reveal"><span class="label">A DAY WITH OS</span><h2>이런 하루가 됩니다</h2>
  <div class="day">
   <div><h4>BEFORE</h4><ol><li><b>08:30</b>메일함 확인</li><li><b>09:10</b>캘린더 확인</li><li><b>09:40</b>견적서 답장 확인</li><li><b>10:20</b>세금계산서 발행</li><li><b>11:00</b>단톡방 정리</li><li><b>12:00</b>점심. 본업은 오후부터</li></ol></div>
@@ -589,7 +638,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  <p class="note">메일은 대표님이 확인하고 보낼 수 있게 임시보관함까지만. 중요한 결정은 언제나 대표님이 합니다.<span class="can">✓ 기본 세팅이 그렇다는 것 — 원하시면 메일 전송까지 맡기는 등, 대표님 방식대로 모두 바꿀 수 있어요.</span></p></div>
 </section>
 
-<section class="pad light" id="mobile">
+<section data-pg="os" class="pad light" id="mobile">
  <div class="mob reveal">
   <div><span class="label">ON THE GO</span><h2>노트북 없이,<br>휴대폰 하나로 일합니다</h2>
    <p class="lead">퍼스널 OS는 휴대폰에서도 그대로 열립니다. 외출 중에도 말 한 줄이면, 회사 컴퓨터가 대신 일하고 결과를 휴대폰으로 보내 드려요.</p>
@@ -602,7 +651,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div>
 </section>
 
-<section class="pad ink" id="mainpc">
+<section data-pg="os" class="pad ink" id="mainpc">
  <div class="reveal"><span class="label">THE MAIN PC</span><h2>휴대폰은 '리모컨',<br>메인 PC는 '직원의 책상'입니다</h2>
  <p class="lead">직원이 일하려면 책상과 컴퓨터가 있어야 하죠. 퍼스널 OS의 매니저도 같습니다. 대표님이 밖에서 휴대폰으로 말하면, 사무실 책상(메인 PC)에 앉은 매니저가 파일을 열고, 문서를 만들고, 결과를 보내 드립니다.</p>
  <div class="flow"><span>📱 대표님 휴대폰</span><i>→</i><span class="pc">🖥️ 메인 PC (매니저의 책상)</span><i>→</i><span>📄 결과물이 휴대폰으로</span></div>
@@ -619,14 +668,14 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div></div>
 </section>
 
-<section class="pad light" id="cases" hidden>
+<section data-pg="os" class="pad light" id="cases" hidden>
  <div class="reveal"><span class="label">REAL REQUESTS</span><h2>이런 것까지<br>말 한마디면 됩니다</h2>
  <p class="lead">실제 업무에서 매일 나오는 요청들입니다. 대표님은 한 줄만 보내고, 결과물은 파일로 받습니다.</p></div>
  <p class="swipe">← 옆으로 넘겨 보세요 →</p><div class="cases reveal"><div class="case"><span class="ctag">📱 외출 중, 휴대폰으로</span><div class="me">계약서에 직인이랑 내 이름, 오늘 날짜 넣어서 최종 파일로 올려 줘</div><div class="os"><b>퍼스널 OS</b>직인·대표자 성명·2026.10.12 날짜를 넣어 최종본으로 만들었어요. 휴대폰에서 바로 열어 보실 수 있어요.<div class="chips"><span class="chip">📄 계약서_최종_날인본.pdf</span></div></div></div><div class="case"><span class="ctag">💼 견적</span><div class="me">견적서랑 비교견적서 두 건 만들어서 보내 줘</div><div class="os"><b>퍼스널 OS</b>지난번 양식과 단가 기준으로 견적서 1건, 비교견적서 2건 만들었어요. 메일은 보내기 전에 확인하시도록 임시보관함에 넣어 뒀습니다.<div class="chips"><span class="chip">📄 견적서.pdf</span><span class="chip">📄 비교견적서_A.pdf</span><span class="chip">📄 비교견적서_B.pdf</span></div></div></div><div class="case"><span class="ctag">📊 보고</span><div class="me">이번 달 운영 결과 보고서 작성해 와 줘</div><div class="os"><b>퍼스널 OS</b>채널별 발행 수, 예산 집행표, 다음 달 제안까지 6쪽으로 정리했어요.<div class="chips"><span class="chip">📊 10월_운영보고서.pdf</span></div></div></div><div class="case"><span class="ctag">📍 변경 대응</span><div class="me">행사 장소가 바뀌었대. 관련된 거 다 고쳐 줘</div><div class="os"><b>퍼스널 OS</b>포스터·신청폼·교재·강의안의 장소를 모두 바꿨고, 신청자 17명에게 변경 안내 문자까지 보냈어요.<div class="chips"><span class="chip">🖼 포스터_장소변경.jpg</span><span class="chip">📚 교재_최종.pdf</span><span class="chip">✉️ 안내문자 17건</span></div></div></div><div class="case"><span class="ctag">☀️ 아침</span><div class="me">오늘 뭐 해야 해?</div><div class="os"><b>퍼스널 OS</b>오늘 마감 2건, 답장할 메일 3통, 오후 2시 미팅이 있어요. 마감 임박한 견적서부터 시작할까요?<div class="chips"><span class="chip">🗓 오늘의 브리핑</span></div></div></div><div class="case"><span class="ctag">💬 답장</span><div class="me">이 단톡방 캡처 보고 답장 써 줘</div><div class="os"><b>퍼스널 OS</b>말씀하신 톤으로 짧게 정리했어요. 그대로 복사해 보내시면 됩니다.<div class="chips"><span class="chip">💬 답장 초안</span></div></div></div></div>
  <p class="note">※ 실제 운영 중인 퍼스널 OS의 요청 사례를 바탕으로 재구성했습니다.</p>
 </section>
 
-<section class="pad light" id="screens">
+<section data-pg="os" class="pad light" id="screens">
  <div class="reveal"><span class="label">YOUR SCREEN</span><h2>이런 화면이<br>생겨요</h2>
  <p class="lead">대표님 업종과 취향에 맞춰 업무 앱 화면도 함께 만들어 드립니다. 컴퓨터와 휴대폰에서 같은 화면으로 열려요.</p></div>
  <div class="sgroup reveal"><div class="shead"><span class="stag">심플형</span><p>매일 열어 보기 편하게, 깔끔하게</p></div>
@@ -637,7 +686,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 </section>
 <div class="lb" id="lb" hidden><img alt=""><button aria-label="닫기">✕</button></div>
 
-<section class="pad lilac">
+<section data-pg="os" class="pad lilac">
  <div class="grid2 reveal">
   <div><span class="label">FOR YOU</span><h2>이런 분께<br>필요합니다</h2></div>
   <ul class="list">
@@ -649,7 +698,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div>
 </section>
 
-<section class="pad cream">
+<section data-pg="os" class="pad cream">
  <div class="reveal"><span class="label">NOT A CLASS</span><h2>배우는 상품이 아닙니다.<br>맡기는 상품입니다.</h2>
  <div class="cmpt" role="table">
   <div class="r h"><span></span><span>AI 자동화 도구</span><span>AI 강의·프롬프트</span><span class="o"><i class="pick">맡기면 끝</i>퍼스널 OS</span></div>
@@ -660,7 +709,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div></div>
 </section>
 
-<section class="pad ink" id="price">
+<section data-pg="home shop" class="pad ink" id="price">
  <div class="reveal"><span class="label">PRICE</span><h2>비용도 투명하게<br>공개합니다</h2>
 <div class="value">
   <div class="staff"><h4>직원을 한 명 뽑는다면</h4><p class="big">2,156,880<small>원 / 매달</small></p><p>2026년 최저임금 기준 월급(주 40시간). 4대 보험·퇴직금은 별도, 그리고 <b>매달</b> 나갑니다.</p><span class="tag">1년이면 약 2,590만 원 + 보험·퇴직금</span></div>
@@ -686,8 +735,28 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
    <ul><li><span>대표님 시간</span><em>인터뷰 최대 60분</em></li><li><span>세팅</span><em>대표님 업무에 맞춰 전부</em></li><li><span>사용 교육</span><em>포함</em></li><li><span>사후 관리</span><em>30일 포함</em></li></ul></div>
  </div></div>
 </section>
+<section class="pad cream" data-pg="home" id="chipteaser">
+ <div class="reveal"><span class="label">CHIP SHOP</span><h2>작게 더하고 싶을 땐,<br>칩 3개 1,000원부터</h2>
+ <div class="teaser-chip"><div><b>🪙 칩 상점</b><p>회의록 정리 규칙, 견적서 양식, 카드뉴스 템플릿처럼 필요한 업무를 하나씩 내 OS에 더하세요. 칩 1개부터 받을 수 있어요.</p></div><a href="shop/#chips">칩 상점 보기 →</a></div></div>
+</section>
+<section class="pad light" data-pg="shop" id="chips">
+ <div class="reveal"><span class="label">CHIP SHOP</span><h2>칩 상점</h2>
+ <p class="chips-why">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받은 상품은 담당 매니저가 1영업일 안에 대표님 OS에 설치해 드립니다.</p>
+ <div class="wallet" id="wallet"><span>🪙 내 칩</span><span id="wbal"><a href="account/">로그인하면 보여요</a></span></div>
+ <div class="packs">
+  <div class="pack"><div class="n">1<small>칩</small></div><div class="w">400원</div><div class="per">낱개</div><a href="order/?p=chip1">충전하기</a></div>
+  <div class="pack best"><span class="rib">가장 많이 사요</span><div class="n">3<small>칩</small></div><div class="w">1,000원</div><div class="per">칩당 333원</div><a href="order/?p=chip3">충전하기</a></div>
+  <div class="pack"><div class="n">10<small>칩</small></div><div class="w">3,000원</div><div class="per">칩당 300원</div><a href="order/?p=chip10">충전하기</a></div>
+  <div class="pack"><span class="rib">+보너스 3칩</span><div class="n">33<small>칩</small></div><div class="w">8,000원</div><div class="per">칩당 242원</div><a href="order/?p=chip30">충전하기</a></div>
+ </div>
+ <p class="chiprule" style="margin-top:6px">VAT 포함 · 칩은 퍼스널 OS 세팅을 받으신 분(또는 받으실 분)의 OS에 설치되는 상품용입니다.</p>
+ <div class="items" id="items"><p style="padding:18px 0;opacity:.6">상품을 불러오는 중…</p></div>
+ <p class="chiprule">· 칩은 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다. 일부를 쓴 뒤에는 쓴 칩을 1개 400원으로 계산해 뺀 나머지를 돌려드려요. 보너스 칩은 환불되지 않습니다.<br>· 칩으로 받은 상품은 받는 즉시 내 OS에 설치되는 디지털 상품이라 취소·환불되지 않습니다. 설명대로 작동하지 않으면 칩으로 돌려드립니다.<br>· 유효기간: 충전한 칩 5년 · 보너스 칩 1년. 자세한 내용은 <a href="refund/">환불 규정</a>을 확인해 주세요.</p>
+ </div>
+</section>
 
-<section class="pad light" id="how">
+
+<section data-pg="how" class="pad light" id="how">
  <div class="reveal"><span class="label">HOW IT WORKS</span><h2>진행 방식</h2>
  <p class="swipe">← 옆으로 넘겨 보세요 →</p><ol class="steps">
   <li><b>사전 설문</b><span>15분. 하시는 일과 쓰는 채널을 알려 주세요.</span></li>
@@ -701,7 +770,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  <div><i>💻</i><h4>REMOTE<small>원격형</small></h4><p>화상 인터뷰와 원격 접속으로 세팅합니다. 거리와 상관없이 진행됩니다.</p></div></div></div>
 </section>
 
-<section class="pad lilac" id="faq">
+<section data-pg="how" class="pad lilac" id="faq">
  <div class="reveal"><span class="label">FAQ</span><h2>미리 알아 두실 것</h2>
  <div class="faq">
   <details open><summary>컴퓨터가 따로 필요한가요?</summary><p>퍼스널 OS는 설치된 컴퓨터가 켜져 있는 동안 일합니다. 늘 켜 두는 데스크톱이 가장 좋고, 노트북이라면 <b>출근하면 노트북부터 켜 주세요 — 매니저와 직원들이 출근하는 순간입니다.</b> 노트북을 끄거나 덮으면 OS도 퇴근합니다. 외출하실 때 노트북을 열어 둔 채 가져가시면 휴대폰으로도 지시할 수 있어요. 늘 켜 둘 컴퓨터를 따로 두고 싶으시면 전용 미니 PC(맥 미니, 애플 공식몰 기준 약 119만 원~)를 함께 준비해 드릴 수 있습니다(실비, 별도 구매).</p></details>
@@ -715,19 +784,19 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div></div>
 </section>
 
-<section class="pad cream maker">
+<section data-pg="about" class="pad cream maker">
  <div class="reveal"><span class="label">MADE BY</span><h2>저도 바쁜 대표였습니다</h2>
  <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p>
  <p class="story"><span>솔직히, 저도 처음엔 AI를 못 믿었어요.</span><span>시켜 놓고 다시 확인하고, 결국 제 손으로 고치고.</span><span>'설마 이것까지 하겠어?' 싶던 일들이</span><span><b>지금은 말 한마디면 끝나 있습니다.</b></span><span class="gap">대표님의 하루를 갉아먹던 일은 퍼스널 OS에 맡기세요.</span><span><b>이제, 시간을 버세요.</b></span></p></div>
 </section>
 
-<section class="final orange" id="apply">
+<section data-pg="home os how shop about" class="final orange" id="apply">
  <div class="reveal"><span class="label">APPLY</span>
  <h2>당신만의<br>퍼스널 OS를<br>세팅해 드립니다</h2>
  <div class="ctas"><a class="cta" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 신청하기 →</a><a class="cta kk" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 카카오톡으로 문의하기</a></div>
  <p class="ask">궁금한 점만 먼저 물어보셔도 괜찮아요. 카카오톡 채널 <b>브랜디움</b>으로 편하게 문의 주세요.</p></div>
 </section>
-<section class="pad about" id="about">
+<section data-pg="about" class="pad about" id="about">
  <div class="reveal"><span class="label">ABOUT US</span><h2>브랜디움과 캐다</h2>
  <div class="two">
   <div class="box b"><img src="logo_butter.png" alt="BRANDiUM">
@@ -743,7 +812,7 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
  </div></div>
 </section>
 </div>
-<section class="fine" aria-label="이용 안내">
+<section data-pg="how shop" class="fine" aria-label="이용 안내">
 <h5>꼭 읽어 주세요 · 퍼스널 OS 이용 안내</h5>
 <ol>
 <li><b>퍼스널 OS는 새로운 AI도, 컴퓨터 운영체제도 아닙니다.</b> 윈도우·맥 같은 컴퓨터 운영체제를 바꾸지 않습니다. Anthropic의 AI 'Claude'를 대표님 컴퓨터와 연결하고, Claude가 대표님의 일을 대신 처리할 수 있도록 부서·업무 지침·화면·자동 업무로 이루어진 <b>'내 일의 운영 체계'</b>를 세팅해 드리는 서비스입니다.</li>
@@ -874,7 +943,7 @@ const close=()=>{e.hidden=true};e.querySelector('.evt-x').onclick=close;e.addEve
 e.querySelector('.evt-today').onclick=()=>{try{localStorage.setItem(k,'1')}catch(_){}close()};})();
 
 /* 메뉴 — 지금 보고 있는 칸 표시 */
-(function(){const as=[...document.querySelectorAll('nav .links a')],secs=as.map(a=>document.querySelector(a.getAttribute('href')));
+(function(){const as=[...document.querySelectorAll('nav .links a')].filter(a=>a.getAttribute('href').startsWith('#')),secs=as.map(a=>document.querySelector(a.getAttribute('href')));
 function mark(){const y=innerHeight*.35;let k=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<y)k=i});as.forEach((a,i)=>a.classList.toggle('on',i===k))}
 addEventListener('scroll',mark,{passive:true});mark();})();
 /* 화면 예시 크게 보기 */
@@ -882,5 +951,6 @@ addEventListener('scroll',mark,{passive:true});mark();})();
 document.querySelectorAll('.shot').forEach(f=>f.addEventListener('click',()=>{im.src=f.dataset.src;im.alt=f.querySelector('img').alt;lb.hidden=false}));
 lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true});})();
 </script>
+<script>document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const el=document.querySelector(a.getAttribute('href'));if(el&&el.offsetParent!==null){e.preventDefault();el.scrollIntoView({behavior:'smooth'});history.replaceState(null,'',location.pathname+a.getAttribute('href'))}});</script>
 </body>
 </html>

@@ -75,7 +75,7 @@ async function list() {
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
 function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
 // 사이트 회원·주문 (2026-10-23) — 관리자 로그인 세션으로 바로 읽는다(RLS: kedakorea@gmail.com)
-const OST = ["입금대기", "입금확인", "일정확정", "세팅완료", "취소"];
+const OST = ["입금대기", "입금확인", "칩지급", "일정확정", "세팅완료", "취소"];
 const PV = { kakao: "카카오", google: "구글", naver: "네이버", email: "이메일" };
 const dt = (t) => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
 async function orders() {
@@ -91,6 +91,15 @@ async function orders() {
     <td><b>${E(o.name || "")}</b><br><small>${E(o.phone || "")}<br>${E(o.email || "")}</small></td><td>${E(o.depositor || "")}</td>
     <td><small>${E(o.receipt_type || "—")}<br>${E(o.receipt_no || "")}</small></td><td><small>${E(o.want_dates || "")}<br>${E(o.memo || "")}</small></td>
     <td><select data-id="${o.id}" class="ost">${OST.map((s) => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>`).join("")}</table>` : `<p class="note">아직 주문이 없습니다.</p>`}`;
+  const { data: cl } = await sb.from("chip_ledger").select("*").not("item_key", "is", null).order("id", { ascending: false }).limit(100);
+  const nm = {}; (await sb.from("members").select("id,name,phone")).data?.forEach((m) => nm[m.id] = m);
+  $("tb").insertAdjacentHTML("beforeend", `<div class="top" style="margin-top:30px"><h1 style="font-size:22px">🪙 칩 상품 설치 요청</h1></div>
+   ${cl && cl.length ? `<table><tr><th>받은 때</th><th>회원</th><th>상품</th><th>칩</th><th>상태</th></tr>${cl.map((x) => `<tr><td><small>${dt(x.created_at)}</small></td><td><b>${E((nm[x.member_id] || {}).name || "")}</b><br><small>${E((nm[x.member_id] || {}).phone || "")}</small></td><td>${E(x.reason || "")}</td><td>${-x.delta}</td>
+    <td><select data-id="${x.id}" class="cst">${["설치대기", "설치완료", "취소"].map((s) => `<option ${s === x.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>`).join("")}</table>` : `<p class="note">아직 칩 상품 요청이 없습니다.</p>`}`);
+  document.querySelectorAll("select.cst").forEach((el) => el.onchange = async () => {
+    const { error } = await sb.from("chip_ledger").update({ status: el.value }).eq("id", el.dataset.id);
+    if (error) alert("바꾸지 못했습니다: " + error.message); else orders();
+  });
   document.querySelectorAll("select.ost").forEach((el) => el.onchange = async () => {
     const { error } = await sb.from("orders").update({ status: el.value }).eq("id", el.dataset.id);
     if (error) alert("바꾸지 못했습니다: " + error.message); else orders();

@@ -97,7 +97,7 @@ function joinView(u) {
     boot();
   };
 }
-function myView(u, m, od) {
+function myView(u, m, od, cb, cl) {
   const pv = { kakao: "카카오", google: "Google", naver: "네이버" }[m.provider] || m.provider || "";
   M.innerHTML = `<p class="en">MY PAGE</p><h1>${osEsc(m.name)}님, 반갑습니다</h1><p class="sub">브랜디움 회원으로 가입되어 있습니다.</p>
   <div class="card"><h2>내 정보</h2>
@@ -106,6 +106,8 @@ function myView(u, m, od) {
    <div class="row"><span>이메일</span><b>${osEsc(m.email || "—")}</b></div>
    <div class="row"><span>가입 방법</span><b>${osEsc(pv)}</b></div></div>
   <div class="card"><h2>내 주문</h2>${od.length ? od.map((o) => `<div class="row"><span>${osEsc(o.order_no)} · ${osEsc(o.product)}<br><small style="opacity:.6">${new Date(o.created_at).toLocaleDateString("ko-KR")} · ${o.price.toLocaleString("ko-KR")}원</small></span><b>${osEsc(o.status)}</b></div>`).join("") + (od.some((o) => o.status === "입금대기") ? '<p style="margin-top:10px;font-size:13px">입금 계좌: 기업은행 114-193627-04-019 (주)캐다</p>' : "") : "<p>아직 주문 내역이 없습니다.</p>"}</div>
+  <div class="card"><h2>🪙 내 칩 <span style="float:right">${cb}칩</span></h2>${cl.length ? cl.map((x) => `<div class="row"><span>${osEsc(x.reason || "")}${x.bonus ? " (보너스)" : ""}<br><small style="opacity:.6">${new Date(x.created_at).toLocaleDateString("ko-KR")}${x.item_key ? " · " + osEsc(x.status) : ""}</small></span><b>${x.delta > 0 ? "+" : ""}${x.delta}</b></div>`).join("") : "<p>아직 칩 내역이 없습니다.</p>"}
+   <p style="margin-top:10px;font-size:13px"><a href="../shop/#chips">칩 상점 가기 →</a> · <a href="../order/?p=chip3">칩 충전하기 →</a></p></div>
   <a class="btn dark" href="../order/">퍼스널 OS 구매하기</a>
   <a class="btn ghost" href="../#apply">상담 먼저 받아 보기</a>
   <a class="btn ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡으로 문의</a>
@@ -145,8 +147,8 @@ async function boot() {
   if (!m.email && me && !/@naver\.mybrandium\.com$/.test(me)) { m.email = me; await sb.from("members").update({ email: me }).eq("id", u.id); }
   const nx = sessionStorage.getItem("after_login");
   if (nx) { sessionStorage.removeItem("after_login"); return location.replace(nx); }
-  const { data: od } = await sb.from("orders").select("*").order("id", { ascending: false });
-  myView(u, m, od || []);
+  const [{ data: od }, { data: cb }, { data: cl }] = await Promise.all([sb.from("orders").select("*").order("id", { ascending: false }), sb.rpc("chip_balance"), sb.from("chip_ledger").select("*").order("id", { ascending: false }).limit(20)]);
+  myView(u, m, od || [], cb || 0, cl || []);
 }
 boot();
 </script>
