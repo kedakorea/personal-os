@@ -73,7 +73,38 @@ async function list() {
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
-function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
+function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "b" ? "on" : ""}" onclick="booking()">📅 예약</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
+// 세팅 예약 관리 (2026-10-23) — 칸을 눌러 막기/열기. 🗓 = 구글 캘린더 일정으로 자동으로 막힘
+async function booking() {
+  $("out").hidden = false;
+  $("main").innerHTML = `${tabs("b")}<div class="top"><h1>세팅 예약</h1><button class="btn g" onclick="booking()">새로고침</button></div>
+   <p class="note" style="margin:-6px 0 14px">칸을 누르면 <b>막기 ↔ 열기</b>가 바뀝니다. 🗓 는 대표님 구글 캘린더 일정으로 자동으로 막힌 칸(30분마다 맞춤)이고, 눌러서 열 수도 있어요. 손님 예약은 🙋 로 보여요.</p><div id="tb">불러오는 중…</div>`;
+  const [{ data: st }, { data: od }, { data: bl }] = await Promise.all([sb.from("booking_slot_state").select("*"), sb.from("orders").select("slot_at,name,product,status").not("slot_at", "is", null).neq("status", "취소"), sb.from("booking_blocks").select("*")]);
+  const S = {}, O = {}; (st || []).forEach((x) => S[new Date(x.slot_at).getTime()] = x); (od || []).forEach((x) => O[new Date(x.slot_at).getTime()] = x);
+  const BL = new Set((bl || []).map((x) => x.day));
+  const kst = (d, hm) => new Date(`${d}T${hm}:00+09:00`), ymd = (t) => new Date(t.getTime() + 9 * 3600e3).toISOString().slice(0, 10);
+  const today = ymd(new Date()); let rows = "";
+  for (let i = 0; i <= 60; i++) {
+    const d = new Date(today + "T12:00:00+09:00"); d.setDate(d.getDate() + i); const s = ymd(d), dw = d.getUTCDay(), we = dw === 0 || dw === 6;
+    const hms = we ? ["10:00", "14:00"] : ["10:00", "14:00", "18:00"];
+    const cells = hms.map((hm) => { const t = kst(s, hm).getTime(), o = O[t], x = S[t];
+      if (o) return `<span class="sl bk" title="${E(o.product)} · ${E(o.status)}">🙋 ${hm} ${E(o.name || "")}</span>`;
+      const closed = BL.has(s) || (x && x.state === "block");
+      return `<button class="sl ${closed ? "cl" : "op"}" data-t="${t}" data-st="${closed ? "block" : "open"}" title="${E(x && x.note || "")}">${x && x.source === "일정" && x.state === "block" ? "🗓 " : ""}${hm} ${closed ? "막힘" : "열림"}</button>`; }).join("");
+    rows += `<tr><td style="white-space:nowrap"><b>${+s.slice(5, 7)}/${+s.slice(8)}</b> (${"일월화수목금토"[dw]})${i < 5 ? ' <small style="opacity:.5">예약 불가 기간</small>' : ""}</td><td>${cells}</td><td><button class="btn g dayb" data-d="${s}" style="padding:6px 12px;font-size:13px">하루 막기</button></td></tr>`;
+  }
+  $("tb").innerHTML = `<style>.sl{display:inline-block;margin:2px 6px 2px 0;padding:7px 12px;border-radius:10px;font:700 13px Pretendard;border:2px solid var(--ink);cursor:pointer}.sl.op{background:#fff}.sl.cl{background:#ddd;color:#666;border-color:#bbb}.sl.bk{background:var(--cream);cursor:default}</style><table><tr><th>날짜</th><th>시간 (누르면 막기 ↔ 열기)</th><th></th></tr>${rows}</table>`;
+  document.querySelectorAll("button.sl").forEach((b) => b.onclick = async () => {
+    const iso = new Date(+b.dataset.t).toISOString(), next = b.dataset.st === "block" ? "open" : "block";
+    const { error } = await sb.from("booking_slot_state").upsert({ slot_at: iso, state: next, source: "직접", note: next === "block" ? "관리자에서 막음" : "관리자에서 엶", updated_at: new Date().toISOString() });
+    if (error) alert("바꾸지 못했습니다: " + error.message); else booking();
+  });
+  document.querySelectorAll("button.dayb").forEach((b) => b.onclick = async () => {
+    const s = b.dataset.d, dw = new Date(s + "T12:00:00+09:00").getUTCDay(), hms = dw === 0 || dw === 6 ? ["10:00", "14:00"] : ["10:00", "14:00", "18:00"];
+    const { error } = await sb.from("booking_slot_state").upsert(hms.map((hm) => ({ slot_at: kst(s, hm).toISOString(), state: "block", source: "직접", note: "하루 막기" })));
+    if (error) alert("막지 못했습니다: " + error.message); else booking();
+  });
+}
 // 사이트 회원·주문 (2026-10-23) — 관리자 로그인 세션으로 바로 읽는다(RLS: kedakorea@gmail.com)
 const OST = ["입금대기", "입금확인", "칩지급", "일정확정", "세팅완료", "취소"];
 const PV = { kakao: "카카오", google: "구글", naver: "네이버", email: "이메일" };
@@ -226,7 +257,7 @@ async function boot() {
   if (!data.session) return loginView();
   JWT = data.session.access_token;
   const q = new URLSearchParams(location.search), id = q.get("id");
-  id ? detail(id) : ({ keys: keys, clients: list, orders: orders }[q.get("tab")] || members)();
+  id ? detail(id) : ({ keys: keys, clients: list, orders: orders, booking: booking }[q.get("tab")] || members)();
 }
 sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
 $("out").onclick = async () => { await sb.auth.signOut(); loginView(); };
