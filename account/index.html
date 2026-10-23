@@ -141,6 +141,8 @@ async function boot() {
   const u = data.session.user;
   const { data: m } = await sb.from("members").select("*").eq("id", u.id).maybeSingle();
   if (!m || !m.agree_terms_at) return joinView(u);
+  const me = (u.user_metadata || {}).contact_email || (u.user_metadata || {}).email;   // 가입 뒤에 이메일 동의를 한 경우 채워 둔다
+  if (!m.email && me && !/@naver\.mybrandium\.com$/.test(me)) { m.email = me; await sb.from("members").update({ email: me }).eq("id", u.id); }
   const nx = sessionStorage.getItem("after_login");
   if (nx) { sessionStorage.removeItem("after_login"); return location.replace(nx); }
   const { data: od } = await sb.from("orders").select("*").order("id", { ascending: false });
