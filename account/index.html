@@ -1,0 +1,125 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>로그인 · BRANDiUM 퍼스널 OS</title><meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../os.js"></script>
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fffaf0;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+nav{background:var(--ink);color:#fffaf0;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+nav a{color:#fffaf0;text-decoration:none} nav img{height:22px;display:block}
+main{flex:1;width:100%;max-width:440px;margin:0 auto;padding:48px 22px 60px}
+.en{font-size:12px;letter-spacing:.14em;font-weight:700;opacity:.55}
+h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:15px;margin-bottom:28px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:14px;font:700 16px Pretendard;border:0;cursor:pointer;margin-bottom:12px;text-decoration:none}
+.kakao{background:#FEE500;color:#191600} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
+.dark{background:var(--ink);color:#fffaf0} .ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn svg{width:20px;height:20px}
+.note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
+.note a{color:inherit}
+label.f{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
+input[type=text],input[type=tel]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
+input:focus{outline:none;border-color:var(--ink)}
+.agree{background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:6px 16px;margin:22px 0 18px}
+.agree label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:14px;cursor:pointer}
+.agree label.all{font-weight:800;border-bottom:1px solid var(--sand);font-size:15px}
+.agree input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+.agree a{margin-left:auto;font-size:12px;opacity:.6;color:inherit}
+.card{background:#fff;border:1.5px solid var(--sand);border-radius:18px;padding:20px;margin-bottom:14px}
+.card h2{font-size:16px;margin-bottom:8px} .card p{font-size:14px;opacity:.8}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--sand)} .row:last-child{border:0}
+.err{color:#c0392b;font-size:14px;margin-top:10px;min-height:20px}
+.links{display:flex;justify-content:space-between;margin-top:24px;font-size:13px} .links button{background:none;border:0;color:var(--ink);opacity:.6;text-decoration:underline;cursor:pointer;font:13px Pretendard}
+footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:24px 22px} footer a{color:#ddd}
+</style></head><body>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><a href="../" style="font-size:13px;opacity:.75">← 사이트로</a></nav>
+<main id="m"><p class="sub">불러오는 중…</p></main>
+<footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
+<script>
+const sb = supabase.createClient(OS_URL, OS_ANON);
+const $ = (s) => document.querySelector(s), M = $("#m");
+const BACK = location.origin + location.pathname;
+const IC = {
+  kakao: '<svg viewBox="0 0 24 24"><path fill="#191600" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>',
+  google: '<svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>'
+};
+function loginView(msg) {
+  M.innerHTML = `<p class="en">SIGN IN</p><h1>브랜디움 시작하기</h1>
+  <p class="sub">쓰시던 계정으로 3초 만에 가입·로그인됩니다.</p>
+  <button class="btn kakao" data-p="kakao">${IC.kakao}카카오로 시작하기</button>
+  <button class="btn google" data-p="google">${IC.google}Google로 시작하기</button>
+  <p class="err">${msg || ""}</p>
+  <p class="note">처음이시면 로그인 뒤 이름·연락처만 적으면 가입이 끝납니다.<br>가입하면 <a href="../terms/">이용약관</a>과 <a href="../privacy/">개인정보처리방침</a>을 확인하게 됩니다.</p>`;
+  M.querySelectorAll("[data-p]").forEach((b) => b.onclick = async () => {
+    const opt = { redirectTo: BACK };
+    const { error } = await sb.auth.signInWithOAuth({ provider: b.dataset.p, options: opt });
+    if (error) $(".err").textContent = "로그인을 시작하지 못했습니다: " + error.message;
+  });
+}
+function joinView(u) {
+  const md = u.user_metadata || {};
+  M.innerHTML = `<p class="en">WELCOME</p><h1>가입 마무리</h1><p class="sub">진행 안내를 드릴 연락처만 알려 주세요.</p>
+  <label class="f">이름</label><input type="text" id="nm" value="${osEsc(md.full_name || md.name || md.nickname || "")}" placeholder="홍길동">
+  <label class="f">휴대폰 번호</label><input type="tel" id="ph" placeholder="010-0000-0000" inputmode="tel">
+  <div class="agree">
+   <label class="all"><input type="checkbox" id="all">모두 동의합니다</label>
+   <label><input type="checkbox" class="ck rq">[필수] 이용약관 동의<a href="../terms/" target="_blank">보기</a></label>
+   <label><input type="checkbox" class="ck rq">[필수] 개인정보 수집·이용 동의<a href="../privacy/" target="_blank">보기</a></label>
+   <label><input type="checkbox" class="ck rq">[필수] 만 14세 이상입니다</label>
+   <label><input type="checkbox" class="ck" id="mk">[선택] 새 소식·이벤트 안내 받기</label>
+  </div>
+  <button class="btn dark" id="go">가입 완료</button><p class="err"></p>
+  <div class="links"><button id="out">다른 계정으로</button></div>`;
+  const cks = [...M.querySelectorAll(".ck")];
+  $("#all").onchange = (e) => cks.forEach((c) => c.checked = e.target.checked);
+  cks.forEach((c) => c.onchange = () => $("#all").checked = cks.every((x) => x.checked));
+  $("#out").onclick = async () => { await sb.auth.signOut(); loginView(); };
+  $("#go").onclick = async () => {
+    const name = $("#nm").value.trim(), phone = $("#ph").value.replace(/[^0-9]/g, "");
+    if (!name) return $(".err").textContent = "이름을 적어 주세요.";
+    if (!/^01\d{8,9}$/.test(phone)) return $(".err").textContent = "휴대폰 번호를 확인해 주세요.";
+    if (!M.querySelectorAll(".rq:checked").length || M.querySelectorAll(".rq:not(:checked)").length) return $(".err").textContent = "필수 항목에 동의해 주세요.";
+    const ph = phone.replace(/^(\d{3})(\d{3,4})(\d{4})$/, "$1-$2-$3");
+    const { error } = await sb.from("members").upsert({ id: u.id, name, phone: ph, email: u.email || md.email || null,
+      provider: (u.app_metadata || {}).provider, agree_terms_at: new Date().toISOString(), agree_marketing: $("#mk").checked });
+    if (error) return $(".err").textContent = "저장하지 못했습니다: " + error.message;
+    boot();
+  };
+}
+function myView(u, m) {
+  const pv = { kakao: "카카오", google: "Google" }[m.provider] || m.provider || "";
+  M.innerHTML = `<p class="en">MY PAGE</p><h1>${osEsc(m.name)}님, 반갑습니다</h1><p class="sub">브랜디움 회원으로 가입되어 있습니다.</p>
+  <div class="card"><h2>내 정보</h2>
+   <div class="row"><span>이름</span><b>${osEsc(m.name)}</b></div>
+   <div class="row"><span>휴대폰</span><b>${osEsc(m.phone || "")}</b></div>
+   <div class="row"><span>이메일</span><b>${osEsc(m.email || "—")}</b></div>
+   <div class="row"><span>가입 방법</span><b>${osEsc(pv)}</b></div></div>
+  <div class="card"><h2>내 주문</h2><p>아직 주문 내역이 없습니다. 온라인 결제는 곧 열립니다 — 지금은 상담 신청으로 바로 예약을 도와 드려요.</p></div>
+  <a class="btn dark" href="../#apply">상담 신청하기</a>
+  <a class="btn ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡으로 문의</a>
+  <div class="links"><button id="out">로그아웃</button><button id="del">회원 탈퇴</button></div><p class="err"></p>`;
+  $("#out").onclick = async () => { await sb.auth.signOut(); loginView(); };
+  $("#del").onclick = async () => {
+    if (!confirm("탈퇴하면 회원 정보가 바로 지워집니다. 탈퇴할까요?")) return;
+    const { error } = await sb.rpc("delete_me");
+    if (error) return $(".err").textContent = "탈퇴하지 못했습니다: " + error.message;
+    await sb.auth.signOut(); loginView("탈퇴가 끝났습니다. 그동안 고마웠습니다.");
+  };
+}
+async function boot() {
+  const q = new URLSearchParams(location.hash.slice(1) || location.search);
+  const oerr = q.get("error_description");
+  const { data } = await sb.auth.getSession();
+  if (location.hash || location.search.includes("code=")) history.replaceState(null, "", location.pathname);
+  if (!data.session) return loginView(oerr ? "로그인이 취소되었거나 실패했습니다." : "");
+  const u = data.session.user;
+  const { data: m } = await sb.from("members").select("*").eq("id", u.id).maybeSingle();
+  if (!m || !m.agree_terms_at) return joinView(u);
+  myView(u, m);
+}
+boot();
+</script>
+</body></html>
