@@ -163,14 +163,13 @@ SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><
  }
  const own = (x) => mine.has(x.key) && x.tier !== "서비스";
  const btn = (x) => !x.active ? ["출시 예정", true] : own(x) ? ["설치 문구 보기", false] : [x.chips ? "받기" : "무료로 받기", false];
- const won = (x) => x.chips ? `약 ${(x.chips * 333).toLocaleString("ko-KR")}원` : "가입 선물";
  function draw() {
   document.getElementById("ftabs").innerHTML = CATS.map((c) => `<button class="${c === cat ? "on" : ""}" data-c="${E(c)}">${E(c)}</button>`).join("");
   document.querySelectorAll("#ftabs button").forEach((b) => b.onclick = () => { cat = b.dataset.c; draw(); });
   box.innerHTML = (it || []).filter((x) => cat === "전체" || x.tier === cat).map((x) => { const [bt, dis] = btn(x); return `<div class="prd ${x.active ? "" : "soon"} ${own(x) ? "mine" : ""}" data-k="${E(x.key)}">
    <div class="th ${TC(x.tier)}"><i>${x.icon || "📦"}</i><em>${E(x.tier || "")}</em>${x.badge ? `<span class="bd ${E(String(x.badge).split(" ")[0])}">${E(x.badge)}</span>` : ""}</div>
    <div class="tx"><div class="nm">${E(x.name)}</div><div class="sm">${E(x.summary || "")}</div>
-   <div class="pr"><b>${x.chips ? "🪙 " + x.chips + "칩" : "무료"}</b><small>${won(x)}</small></div>
+   <div class="pr"><b>${x.chips ? "🪙 " + x.chips + "칩" : "무료"}</b>${x.chips ? "" : "<small>가입 선물</small>"}</div>
    <button class="go" data-b="${E(x.key)}" ${dis ? "disabled" : ""}>${bt}</button></div></div>`; }).join("");
   box.querySelectorAll(".prd").forEach((c) => c.onclick = (e) => { if (e.target.closest("button.go")) return; open(c.dataset.k); });
   box.querySelectorAll("button.go").forEach((b) => b.onclick = () => own(it.find((y) => y.key === b.dataset.b)) ? showPrompt(b.dataset.b) : get(b.dataset.b));
@@ -180,7 +179,7 @@ SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><
   document.getElementById("pmth").className = "th " + TC(x.tier);
   document.getElementById("pmth").innerHTML = `<i>${x.icon || "📦"}</i>`;
   document.getElementById("pmin").innerHTML = `<button class="x" aria-label="닫기">✕</button><div class="tg">${E(x.tier || "")}${x.badge ? " · " + E(x.badge) : ""}</div><h3>${E(x.name)}</h3>
-   <div class="pp">${x.chips ? "🪙 " + x.chips + "칩" : "무료"}<small>${won(x)}</small></div>
+   <div class="pp">${x.chips ? "🪙 " + x.chips + "칩" : "무료"}</div>
    <h4>무엇을 해 주나요</h4><p class="w">${E(d.what || x.summary || "")}</p>
    ${(d.say || []).length ? `<h4>이렇게 말하면 돼요</h4><div class="say">${d.say.map((s) => `<span>${E(s)}</span>`).join("")}</div>` : ""}
    ${(d.get || []).length ? `<h4>받으면 생기는 것</h4><ul>${d.get.map((s) => `<li>${E(s)}</li>`).join("")}</ul>` : ""}
