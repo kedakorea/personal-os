@@ -68,7 +68,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .prd .go{margin-top:8px;font:800 14px Pretendard;padding:10px;border-radius:12px;border:0;background:var(--ink);color:#fffaf0;cursor:pointer}
 .prd .go[disabled]{background:#ddd;color:#777;cursor:default}.prd.mine .go{background:var(--cream);color:var(--ink)}
 .prd.soon{opacity:.6}
-.t-지시서{background:#c4dae8}.t-업무{background:#feefb8}.t-디자인{background:#f6c9c0}.t-자동{background:#cfe3c4}.t-서비스{background:#d9cdea}.t-맛보기{background:#fffaf0}.t-캐다{background:#ead9c6}
+.t-지시서{background:#c4dae8}.t-업무{background:#feefb8}.t-디자인{background:#f6c9c0}.t-자동{background:#cfe3c4}.t-서비스{background:#d9cdea}.t-사진·영상{background:#f2c6d8}.t-행사{background:#c9e4dc}.t-맛보기{background:#fffaf0}.t-캐다{background:#ead9c6}
 .pm{position:fixed;inset:0;background:rgba(30,20,20,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:18px}
 .pm[hidden]{display:none}
 .pm .box{background:#fffaf0;border:2px solid var(--ink);border-radius:24px;max-width:760px;width:100%;max-height:90vh;overflow:auto;display:grid;grid-template-columns:280px 1fr}
@@ -81,7 +81,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .pm .pp{font-family:'Josefin Sans',Pretendard;font-weight:800;font-size:26px}.pm .pp small{font-family:Pretendard;font-size:13px;opacity:.55;margin-left:6px;font-weight:600}
 .pm h4{font-size:14px;margin:18px 0 8px}.pm p.w{font-size:14.5px;line-height:1.7}
 .pm .say span{display:inline-block;background:var(--ink);color:#fffaf0;border-radius:16px 16px 4px 16px;padding:7px 12px;font-size:13.5px;margin:0 6px 6px 0}
-.pm ul{list-style:none;font-size:14px;line-height:1.9}.pm li:before{content:"✓ ";font-weight:800}
+.pm ul{list-style:none;font-size:14px;line-height:1.9}.pm li:before{content:"✓ ";font-weight:800}.pm ul.need li:before{content:"• "}.pm ul.need{opacity:.8}
 .pm .buy{width:100%;margin-top:18px;font:800 16px Pretendard;padding:15px;border-radius:14px;border:0;background:var(--ink);color:#fffaf0;cursor:pointer}
 .pm .buy[disabled]{background:#ddd;color:#777}
 .pm .nt{font-size:12px;opacity:.6;margin-top:10px;line-height:1.6}
@@ -183,6 +183,7 @@ SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><
    <h4>무엇을 해 주나요</h4><p class="w">${E(d.what || x.summary || "")}</p>
    ${(d.say || []).length ? `<h4>이렇게 말하면 돼요</h4><div class="say">${d.say.map((s) => `<span>${E(s)}</span>`).join("")}</div>` : ""}
    ${(d.get || []).length ? `<h4>받으면 생기는 것</h4><ul>${d.get.map((s) => `<li>${E(s)}</li>`).join("")}</ul>` : ""}
+   ${(d.need || []).length ? `<h4>필요한 것</h4><ul class="need">${d.need.map((s) => `<li>${E(s)}</li>`).join("")}</ul>` : ""}
    <button class="buy" ${dis ? "disabled" : ""}>${bt}</button>
    <p class="nt">${x.tier === "서비스" ? "받으면 담당자가 1영업일 안에 연락드려 일정을 잡습니다." : "받으면 바로 설치 문구가 나와요. 내 퍼스널 OS 채팅창에 붙여넣으면 매니저가 알아서 설치합니다."} 받은 상품은 디지털 상품이라 취소·환불되지 않습니다(작동하지 않으면 칩으로 돌려드림).</p>`;
   pm.hidden = false;
