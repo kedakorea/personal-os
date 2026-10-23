@@ -7,7 +7,7 @@ src = open(os.path.join(R, "_src/onepage.html")).read()
 
 # 원본 칸 순서대로 어느 페이지에 보일지
 PG = ["home", "home", "home", "home", "home", "os", "os", "home", "home", "os", "os", "os", "os", "os", "os", "os", "os",
-      "home shop", "how", "how", "home", "home os how shop", "home", "how shop"]
+      "home shop", "how", "how", "home", "home os how shop chips", "home", "how shop chips"]
 secs = list(re.finditer(r"<section\b", src))
 assert len(secs) == len(PG), (len(secs), len(PG))
 out, last = [], 0
@@ -19,23 +19,24 @@ PAGES = {
     "home": ("", "브랜디움 BRAND!UM — 퍼스널 OS, 나 대신 일하는 AI 시스템", None),
     "os": ("os/", "퍼스널 OS란? — 브랜디움 BRAND!UM", ("WHAT IS PERSONAL OS", "퍼스널 OS는<br>이렇게 일합니다", "도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 휴대폰 한 대로 움직입니다.")),
     "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "상담부터 세팅, 30일 적응 지원까지. 미리 알아 두실 것도 모았습니다.")),
-    "shop": ("shop/", "상점 — 퍼스널 OS 세팅 · 칩 상점 | 브랜디움 BRAND!UM", ("SHOP", "브랜디움<br>상점", "퍼스널 OS 세팅부터, 칩으로 하나씩 더하는 업무·디자인 상품까지.")),
+    "shop": ("shop/", "세팅 상품 — 퍼스널 OS 방문형·원격형 | 브랜디움 BRAND!UM", ("SHOP", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
+    "chips": ("chips/", "칩 상점 — 내 OS에 업무를 하나씩 더하기 | 브랜디움 BRAND!UM", ("CHIP SHOP", "칩<br>상점", "칩 3개 1,000원부터. 업무 지시서·템플릿·자동 업무를 받아 채팅창에 붙여넣으면 바로 설치돼요.")),
 }
 
 CSS = """
 /* 페이지 나누기 (2026-10-23) */
 section[data-pg]{display:none}
-body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop]{display:block}
+body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=chips] section[data-pg~=chips]{display:block}
 body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-pg~=os][hidden]{display:none}
 .pghead{background:var(--cream);padding:70px calc(var(--frame) + 14px) 54px;border-radius:0 0 28px 28px}
 .pghead .label{display:inline-block;margin-bottom:14px}
 .pghead h1{font-size:clamp(34px,6vw,64px);line-height:1.15;letter-spacing:-.02em}
 .pghead p{margin-top:16px;font-size:17px;opacity:.75;max-width:640px}
-.more{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.more{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
 .more a{display:block;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:22px 20px;text-decoration:none;transition:transform .2s}
 .more a:hover{transform:translateY(-3px)}
 .more b{display:block;font-size:19px;margin:8px 0 6px}.more span{font-size:14px;opacity:.7;line-height:1.6}.more i{font-style:normal;font-size:26px}
-@media(max-width:860px){.more{grid-template-columns:1fr}}
+@media(max-width:860px){.more{grid-template-columns:1fr 1fr}}
 .chips-why{font-size:16px;opacity:.8;margin-top:12px;max-width:680px;line-height:1.75}
 .packs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 10px}
 .pack{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:20px 18px;text-align:center;position:relative}
@@ -86,6 +87,12 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .pm .nt{font-size:12px;opacity:.6;margin-top:10px;line-height:1.6}
 .pm .steps3{padding-left:20px;font-size:14px;line-height:1.9}.pm .ptxt{width:100%;height:150px;margin-top:12px;border:1.5px solid var(--sand);border-radius:12px;padding:10px;font:12.5px/1.6 ui-monospace,Menlo,monospace;background:#fff;color:var(--ink);resize:vertical}
 .chiprule{margin-top:22px;font-size:13.5px;line-height:1.8;opacity:.75}
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}@media(max-width:760px){.svc{grid-template-columns:1fr}}
+.sv{display:block;background:#fff;border:2px solid var(--ink);border-radius:24px;overflow:hidden;text-decoration:none;transition:transform .2s,box-shadow .2s}.sv:hover{transform:translateY(-4px);box-shadow:0 10px 0 var(--ink)}
+.sv .im{aspect-ratio:16/9;background:#eee center/cover;border-bottom:2px solid var(--ink);position:relative}.sv .im span{position:absolute;left:14px;top:14px;background:var(--ink);color:#fffaf0;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:99px}
+.sv .tx{padding:20px 22px 22px}.sv em{font-style:normal;font-size:12.5px;font-weight:800;opacity:.6}.sv b{display:block;font-size:22px;margin:4px 0 8px}.sv p{font-size:14.5px;opacity:.75;line-height:1.7}
+.sv .pr{margin-top:14px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.sv .pr s{opacity:.45;font-size:14px}.sv .pr strong{font-size:26px}.sv .pr small{font-size:12px;opacity:.55}
+.sv .go{display:block;margin-top:14px;text-align:center;background:var(--ink);color:#fffaf0;font-weight:800;padding:13px;border-radius:14px}
 .teaser-chip{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:2px solid var(--ink);border-radius:24px;padding:26px 28px;margin-top:26px}
 .teaser-chip b{font-size:22px}.teaser-chip p{opacity:.75;margin-top:6px}
 .teaser-chip a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px}
@@ -96,20 +103,33 @@ MORE = """<section class="pad light" data-pg="home" id="more">
  <div class="more">
   <a href="os/"><i>🧠</i><b>퍼스널 OS란?</b><span>부서·매니저·업무 앱, 휴대폰으로 일하는 법, 실제 화면</span></a>
   <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>설문 → 인터뷰 → 세팅 → 교육 → 30일 지원, 자주 묻는 질문</span></a>
-  <a href="shop/"><i>🪙</i><b>상점</b><span>세팅 상품과 칩으로 사는 업무·디자인 상품</span></a>
+  <a href="shop/"><i>🛍️</i><b>세팅 상품</b><span>방문형·원격형 상세보기와 일정 예약</span></a>
+  <a href="chips/"><i>🪙</i><b>칩 상점</b><span>칩으로 하나씩 더하는 업무·디자인 상품</span></a>
  </div></div>
 </section>
 """
 
 TEASER = """<section class="pad cream" data-pg="home" id="chipteaser">
  <div class="reveal"><span class="label">CHIP SHOP</span><h2>작게 더하고 싶을 땐,<br>칩 3개 1,000원부터</h2>
- <div class="teaser-chip"><div><b>🪙 칩 상점</b><p>회의록 정리 규칙, 견적서 양식, 카드뉴스 템플릿처럼 필요한 업무를 하나씩 내 OS에 더하세요. 칩 1개부터 받을 수 있어요.</p></div><a href="shop/#chips">칩 상점 보기 →</a></div></div>
+ <div class="teaser-chip"><div><b>🪙 칩 상점</b><p>회의록 정리 규칙, 견적서 양식, 카드뉴스 템플릿처럼 필요한 업무를 하나씩 내 OS에 더하세요. 칩 1개부터 받을 수 있어요.</p></div><a href="chips/">칩 상점 보기 →</a></div></div>
 </section>
 """
 
-SHOP = """<section class="pad light" data-pg="shop" id="chips">
- <div class="reveal"><span class="label">CHIP SHOP</span><h2>칩 상점</h2>
- <p class="chips-why">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받으면 바로 <b>설치 문구</b>가 나와요. 내 퍼스널 OS 채팅창에 붙여넣기만 하면 매니저가 알아서 설치합니다. 기다릴 필요 없어요.</p>
+SVC = """<section class="pad light" data-pg="shop" id="svc">
+ <div class="reveal"><span class="label">PRODUCTS</span><h2>두 가지 중에 고르세요</h2>
+ <div class="svc">
+  <a class="sv" href="product/?p=visit"><div class="im" style="background-image:url(dash/07.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>☕ VISIT · 방문형</em><b>퍼스널 OS 방문형 세팅</b><p>노트북 들고 브랜디움 라운지로. 마주 앉아 처음부터 끝까지 옆에서 세팅해 드려요. 컴퓨터가 낯선 분께 추천.</p><div class="pr"><s>2,500,000원</s><strong>990,000원</strong><small>VAT 포함</small></div><span class="go">자세히 보고 예약하기 →</span></div></a>
+  <a class="sv" href="product/?p=remote"><div class="im" style="background-image:url(dash/04.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>💻 REMOTE · 원격형</em><b>퍼스널 OS 원격형 세팅</b><p>화상 인터뷰와 원격 접속으로 전국 어디서나. 늘 켜 두는 데스크톱에 세팅하면 가장 좋아요.</p><div class="pr"><s>2,200,000원</s><strong>880,000원</strong><small>VAT 포함</small></div><span class="go">자세히 보고 예약하기 →</span></div></a>
+ </div>
+ <p class="chiprule">두 상품 모두 사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 사용 교육 · 30일 적응 지원 포함 · Claude 구독료(월 $100)는 별도</p>
+ <div class="teaser-chip" style="margin-top:30px"><div><b>🪙 이미 세팅을 받으셨나요?</b><p>칩 상점에서 회의록 규칙·견적서 양식·카드뉴스 템플릿 같은 업무를 하나씩 더할 수 있어요.</p></div><a href="chips/">칩 상점 가기 →</a></div>
+ </div>
+</section>
+"""
+
+SHOP = """<section class="pad light" data-pg="chips" id="chips">
+ <div class="reveal">
+ <p class="chips-why" style="margin-top:0">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받으면 바로 <b>설치 문구</b>가 나와요. 내 퍼스널 OS 채팅창에 붙여넣기만 하면 매니저가 알아서 설치합니다. 기다릴 필요 없어요.</p>
  <div class="wallet" id="wallet"><span>🪙 내 칩</span><span id="wbal"><a href="account/">로그인하면 보여요</a></span></div>
  <div class="packs">
   <div class="pack"><div class="n">1<small>칩</small></div><div class="w">400원</div><div class="per">낱개</div><a href="order/?p=chip1">충전하기</a></div>
@@ -215,8 +235,8 @@ def build(pg):
     t = t.replace("<head>", '<head>\n<base href="/">', 1)
     t = re.sub(r"<body([^>]*)>", lambda m: '<body%s data-pg="%s">' % (m.group(1), pg), t, 1)
     on = lambda p: ' class="on"' if p == pg else ""
-    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SHOP</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
-           % (on("os"), on("how"), on("shop")))
+    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SHOP</a><a href="chips/"%s>CHIPS</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
+           % (on("os"), on("how"), on("shop"), on("chips")))
     t = t.replace(NAV_OLD, nav, 1)
     # 메인 섹션 링크(#what 등)가 다른 페이지로 옮겨간 것 바로잡기
     for a, b in [('href="#price"', 'href="shop/"' if pg != "home" else 'href="#price"'), ('href="#how"', 'href="how/"'), ('href="#faq"', 'href="how/#faq"'),
@@ -225,6 +245,8 @@ def build(pg):
     # 새 칸 넣기
     price_end = t.index("</section>", t.index('id="price"')) + len("</section>")
     t = t[:price_end] + "\n" + TEASER + SHOP + t[price_end:]
+    price_start = t.rindex("<section", 0, t.index('id="price"'))
+    t = t[:price_start] + SVC + t[price_start:]
     first = t.index("<section", t.index("<body"))
     if head:
         t = t[:first] + '<section class="pghead" data-pg="%s"><span class="label">%s</span><h1>%s</h1><p>%s</p></section>\n' % ((pg,) + head) + t[first:]
@@ -236,7 +258,9 @@ def build(pg):
                   "const as=[...document.querySelectorAll('nav .links a')].filter(a=>a.getAttribute('href').startsWith('#')),secs=as.map(a=>document.querySelector(a.getAttribute('href')));")
     # <base href="/"> 때문에 #칸 링크가 메인으로 가지 않게: 이 페이지에 그 칸이 보이면 그 자리로 스크롤
     t = t.replace("</body>", """<script>document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const el=document.querySelector(a.getAttribute('href'));if(el&&el.offsetParent!==null){e.preventDefault();el.scrollIntoView({behavior:'smooth'});history.replaceState(null,'',location.pathname+a.getAttribute('href'))}});</script>\n</body>""")
-    if pg == "shop":
+    if pg == "shop":   # 예전 주소(shop/#chips, shop/?item=) → 칩 상점
+        t = t.replace("<head>", "<head>\n<script>if(location.hash=='#chips'||/[?&]item=/.test(location.search))location.replace('/chips/'+location.search)</script>", 1)
+    if pg == "chips":
         t = t.replace("</body>", SHOPJS + "</body>")
     d = os.path.join(R, path)
     os.makedirs(d, exist_ok=True)
