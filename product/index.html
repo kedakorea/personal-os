@@ -20,7 +20,8 @@ nav img{height:21px;display:block}nav .r{display:flex;gap:16px;font-size:13.5px}
 .top{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;padding:34px 0 10px;align-items:start}
 @media(max-width:860px){.top{grid-template-columns:1fr;gap:18px}}
 .gal{border:2px solid var(--ink);border-radius:22px;overflow:hidden;background:#fff}
-.gal .main{aspect-ratio:16/10;background:#eee center/cover no-repeat}
+.gal .main{aspect-ratio:16/9;background:#eee center/cover no-repeat}
+.gal .cap{font-size:12.5px;font-weight:700;padding:8px 12px 0;opacity:.7}
 .gal .thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto}
 .gal .thumbs img{width:76px;height:50px;object-fit:cover;border-radius:8px;border:2px solid transparent;cursor:pointer;flex:none}
 .gal .thumbs img.on{border-color:var(--ink)}
@@ -97,12 +98,12 @@ const PR = {
     bring: ["세팅할 컴퓨터(늘 켜 두는 데스크톱 추천, 노트북도 가능)", "화상 회의가 되는 환경(카메라·마이크)", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)"] }
 };
 const qs = new URLSearchParams(location.search), K = PR[qs.get("p")] ? qs.get("p") : "visit", P = PR[K];
-const SHOTS = ["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`);
+const SHOTS = [`../img/thumb_${K}.jpg`, ...["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`)];
 document.title = P.name + " — 브랜디움 BRAND!UM";
 $("#barp").innerHTML = `${E(P.tag)}<b>${won(P.price)}</b>`;
 $("#m").innerHTML = `
 <section class="top">
- <div class="gal"><div class="main" id="gm" style="background-image:url(${SHOTS[0]})"></div><div class="thumbs">${SHOTS.map((s, i) => `<img src="${s}" class="${i ? "" : "on"}" alt="퍼스널 OS 화면 예시 ${i + 1}">`).join("")}</div></div>
+ <div class="gal"><div class="main" id="gm" style="background-image:url(${SHOTS[0]})"></div><p class="cap" id="gcap">${E(P.tag)} — 이렇게 진행돼요</p><div class="thumbs">${SHOTS.map((s, i) => `<img src="${s}" class="${i ? "" : "on"}" alt="${i ? "세팅 후 생기는 사무실 화면 예시 " + i : "상품 썸네일"}">`).join("")}</div></div>
  <div class="info">
   <span class="bdg">LAUNCHING EVENT</span>
   <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
@@ -164,7 +165,7 @@ $("#m").innerHTML = `
  <details><summary>환불은 어떻게 되나요?</summary><p>업무 인터뷰 전이면 전액, 인터뷰 후 세팅 전 70%, 세팅 시작 후 교육 전 30%입니다. <a href="../refund/">환불 규정 전체 보기</a></p></details>
 </section>`;
 /* 갤러리 */
-(function(){ const m = document.getElementById("gm"); document.querySelectorAll(".thumbs img").forEach((im) => im.onclick = () => { m.style.backgroundImage = `url(${im.src})`; document.querySelectorAll(".thumbs img").forEach((x) => x.classList.toggle("on", x === im)); }); })();
+(function(){ const m = document.getElementById("gm"); document.getElementById("gcap").dataset.t = document.getElementById("gcap").textContent; document.querySelectorAll(".thumbs img").forEach((im) => im.onclick = () => { m.style.backgroundImage = `url(${im.src})`; document.getElementById("gcap").textContent = /thumb_/.test(im.src) ? document.getElementById("gcap").dataset.t : "세팅 후 생기는 '사무실 화면' 예시 — 6가지 디자인 중 하나를 고르게 돼요"; document.querySelectorAll(".thumbs img").forEach((x) => x.classList.toggle("on", x === im)); }); })();
 /* 예약 달력 — 평일 10:00·15:00, 오늘+3일 ~ 60일 */
 (async function(){
  const sb = supabase.createClient(OS_URL, OS_ANON);
