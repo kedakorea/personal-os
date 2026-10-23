@@ -526,6 +526,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .pm .buy{width:100%;margin-top:18px;font:800 16px Pretendard;padding:15px;border-radius:14px;border:0;background:var(--ink);color:#fffaf0;cursor:pointer}
 .pm .buy[disabled]{background:#ddd;color:#777}
 .pm .nt{font-size:12px;opacity:.6;margin-top:10px;line-height:1.6}
+.pm .steps3{padding-left:20px;font-size:14px;line-height:1.9}.pm .ptxt{width:100%;height:150px;margin-top:12px;border:1.5px solid var(--sand);border-radius:12px;padding:10px;font:12.5px/1.6 ui-monospace,Menlo,monospace;background:#fff;color:var(--ink);resize:vertical}
 .chiprule{margin-top:22px;font-size:13.5px;line-height:1.8;opacity:.75}
 .teaser-chip{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:2px solid var(--ink);border-radius:24px;padding:26px 28px;margin-top:26px}
 .teaser-chip b{font-size:22px}.teaser-chip p{opacity:.75;margin-top:6px}
@@ -760,7 +761,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 </section>
 <section class="pad light" data-pg="shop" id="chips">
  <div class="reveal"><span class="label">CHIP SHOP</span><h2>칩 상점</h2>
- <p class="chips-why">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받은 상품은 담당 매니저가 1영업일 안에 대표님 OS에 설치해 드립니다.</p>
+ <p class="chips-why">칩은 브랜디움 전용 캐시입니다. 한 번 충전해 두면 업무 지시서·템플릿·자동 업무를 필요할 때마다 하나씩 받아 내 퍼스널 OS에 더할 수 있어요. 받으면 바로 <b>설치 문구</b>가 나와요. 내 퍼스널 OS 채팅창에 붙여넣기만 하면 매니저가 알아서 설치합니다. 기다릴 필요 없어요.</p>
  <div class="wallet" id="wallet"><span>🪙 내 칩</span><span id="wbal"><a href="account/">로그인하면 보여요</a></span></div>
  <div class="packs">
   <div class="pack"><div class="n">1<small>칩</small></div><div class="w">400원</div><div class="per">낱개</div><a href="order/?p=chip1">충전하기</a></div>
@@ -989,7 +990,7 @@ lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>
   document.getElementById("wbal").innerHTML = `<b>${bal}</b> 칩 · <a href="account/">내역 보기</a>`;
  }
  const own = (x) => mine.has(x.key) && x.tier !== "서비스";
- const btn = (x) => !x.active ? ["출시 예정", true] : own(x) ? ["받음 ✓", true] : [x.chips ? "받기" : "무료로 받기", false];
+ const btn = (x) => !x.active ? ["출시 예정", true] : own(x) ? ["설치 문구 보기", false] : [x.chips ? "받기" : "무료로 받기", false];
  const won = (x) => x.chips ? `약 ${(x.chips * 333).toLocaleString("ko-KR")}원` : "가입 선물";
  function draw() {
   document.getElementById("ftabs").innerHTML = CATS.map((c) => `<button class="${c === cat ? "on" : ""}" data-c="${E(c)}">${E(c)}</button>`).join("");
@@ -1000,7 +1001,7 @@ lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>
    <div class="pr"><b>${x.chips ? "🪙 " + x.chips + "칩" : "무료"}</b><small>${won(x)}</small></div>
    <button class="go" data-b="${E(x.key)}" ${dis ? "disabled" : ""}>${bt}</button></div></div>`; }).join("");
   box.querySelectorAll(".prd").forEach((c) => c.onclick = (e) => { if (e.target.closest("button.go")) return; open(c.dataset.k); });
-  box.querySelectorAll("button.go").forEach((b) => b.onclick = () => get(b.dataset.b));
+  box.querySelectorAll("button.go").forEach((b) => b.onclick = () => own(it.find((y) => y.key === b.dataset.b)) ? showPrompt(b.dataset.b) : get(b.dataset.b));
  }
  function open(k) {
   const x = it.find((y) => y.key === k), d = x.detail || {}, [bt, dis] = btn(x);
@@ -1012,10 +1013,10 @@ lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>
    ${(d.say || []).length ? `<h4>이렇게 말하면 돼요</h4><div class="say">${d.say.map((s) => `<span>${E(s)}</span>`).join("")}</div>` : ""}
    ${(d.get || []).length ? `<h4>받으면 생기는 것</h4><ul>${d.get.map((s) => `<li>${E(s)}</li>`).join("")}</ul>` : ""}
    <button class="buy" ${dis ? "disabled" : ""}>${bt}</button>
-   <p class="nt">받으면 담당 매니저가 1영업일 안에 대표님 OS에 설치해 드려요. 받은 상품은 바로 설치되는 디지털 상품이라 취소·환불되지 않습니다(작동하지 않으면 칩으로 돌려드림).</p>`;
+   <p class="nt">${x.tier === "서비스" ? "받으면 담당자가 1영업일 안에 연락드려 일정을 잡습니다." : "받으면 바로 설치 문구가 나와요. 내 퍼스널 OS 채팅창에 붙여넣으면 매니저가 알아서 설치합니다."} 받은 상품은 디지털 상품이라 취소·환불되지 않습니다(작동하지 않으면 칩으로 돌려드림).</p>`;
   pm.hidden = false;
   pm.querySelector(".x").onclick = () => pm.hidden = true;
-  pm.querySelector(".buy").onclick = () => get(k);
+  pm.querySelector(".buy").onclick = () => own(x) ? showPrompt(k) : get(k);
  }
  pm.addEventListener("click", (e) => { if (e.target === pm) pm.hidden = true; });
  addEventListener("keydown", (e) => { if (e.key === "Escape") pm.hidden = true; });
@@ -1025,10 +1026,28 @@ lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>
   if (!confirm(`'${x.name}'을(를) ${x.chips ? x.chips + "칩으로 " : ""}받을까요?\n\n받은 상품은 바로 내 OS에 설치되는 디지털 상품이라 취소·환불되지 않습니다.`)) return;
   const { data, error } = await sb.rpc("buy_item", { k });
   if (error) { if (error.message.includes("부족") && confirm(error.message + "\n칩 충전 화면으로 갈까요?")) location.href = "order/?p=chip3"; else if (!error.message.includes("부족")) alert(error.message); return; }
-  alert(`받았습니다! 담당 매니저가 1영업일 안에 대표님 OS에 설치해 드려요.\n남은 칩: ${data.balance}`);
-  pm.hidden = true; await load(); draw();
+  await load(); draw();
+  if (data.prompt) return showPrompt(k, data.prompt, data.balance);
+  alert(`받았습니다! 담당자가 1영업일 안에 연락드려 일정을 잡아 드려요.\n남은 칩: ${data.balance}`); pm.hidden = true;
+ }
+ async function showPrompt(k, txt, left) {
+  const x = it.find((y) => y.key === k);
+  if (!txt) { const { data } = await sb.from("shop_contents").select("prompt").eq("key", k).maybeSingle(); txt = data && data.prompt; }
+  if (!txt) { alert("이 상품은 담당자가 직접 진행합니다. 곧 연락드려요."); return; }
+  document.getElementById("pmth").className = "th " + TC(x.tier);
+  document.getElementById("pmth").innerHTML = `<i>${x.icon || "📦"}</i>`;
+  document.getElementById("pmin").innerHTML = `<button class="x" aria-label="닫기">✕</button><div class="tg">${left != null ? "받기 완료 · 남은 칩 " + left : "받은 상품"}</div><h3>${E(x.name)}</h3>
+   <h4>이렇게 설치하세요 — 1분이면 끝</h4>
+   <ol class="steps3"><li><b>[설치 문구 복사]</b>를 누르세요</li><li>내 <b>퍼스널 OS 앱 채팅창</b>에 붙여넣고 보내세요</li><li>매니저가 스스로 설치하고 <b>"✅ 설치 완료"</b>로 알려 드려요</li></ol>
+   <textarea class="ptxt" readonly>${E(txt)}</textarea>
+   <button class="buy" id="cpy">📋 설치 문구 복사</button>
+   <p class="nt">이 문구는 마이페이지·상점에서 언제든 다시 볼 수 있어요. 새 버전이 나오면 같은 문구를 다시 붙여넣으면 업데이트됩니다.</p>`;
+  pm.hidden = false;
+  pm.querySelector(".x").onclick = () => pm.hidden = true;
+  document.getElementById("cpy").onclick = async () => { try { await navigator.clipboard.writeText(txt); } catch (e) { const t = pm.querySelector(".ptxt"); t.select(); document.execCommand("copy"); } document.getElementById("cpy").textContent = "✓ 복사했어요 — 채팅창에 붙여넣으세요"; };
  }
  await load(); draw();
+ const q = new URLSearchParams(location.search).get("item"); if (q && it.some((y) => y.key === q)) (own(it.find((y) => y.key === q)) ? showPrompt(q) : open(q));
 })();
 </script>
 </body>
