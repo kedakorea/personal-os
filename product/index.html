@@ -90,6 +90,10 @@ footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:2
 <script>
 const $ = (s) => document.querySelector(s), E = osEsc, won = (n) => n.toLocaleString("ko-KR") + "원";
 const PR = {
+  trial: { name: "퍼스널 OS 체험단 (방문형)", tag: "OPEN EVENT · 체험단", price: 550000, list: 990000, place: "브랜디움 라운지 (경기 부천 · 7호선 신중동역 도보 10분)",
+    one: "방문형 세팅을 체험단 가격으로. 저희는 실제 세팅 사례가 필요하고, 대표님은 꼼꼼한 세팅이 필요하죠. 서로 돕는 체험단이에요. 선착순 5명.",
+    bring: ["늘 쓰시는 노트북(맥·윈도우) + 충전기", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)", "자주 쓰는 양식·자료가 있으면 USB나 메일로"],
+    deal: ["설치부터 쓰는 동안 불편했던 점 제보", "\"이건 이렇게 됐으면\" 솔직한 의견", "세팅 사례로 소개 동의(이름은 원하시는 대로)"] },
   visit: { name: "퍼스널 OS 방문형 세팅", tag: "VISIT · 방문형", price: 990000, list: 2500000, place: "브랜디움 라운지 (경기 부천 · 7호선 신중동역 도보 10분)",
     one: "노트북을 들고 오시면, 마주 앉아 처음부터 끝까지 옆에서 세팅해 드립니다. 컴퓨터가 낯선 분께 가장 편한 방법이에요.",
     bring: ["늘 쓰시는 노트북(맥·윈도우) + 충전기", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)", "자주 쓰는 양식·자료가 있으면 USB나 메일로"] },
@@ -98,16 +102,16 @@ const PR = {
     bring: ["세팅할 컴퓨터(늘 켜 두는 데스크톱 추천, 노트북도 가능)", "화상 회의가 되는 환경(카메라·마이크)", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)"] }
 };
 const qs = new URLSearchParams(location.search), K = PR[qs.get("p")] ? qs.get("p") : "visit", P = PR[K];
-const SHOTS = [`../img/thumb_${K}.jpg`, ...["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`)];
+const SHOTS = [`../img/thumb_${K === "trial" ? "visit" : K}.jpg`, ...["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`)];
 document.title = P.name + " — 브랜디움 BRAND!UM";
 $("#barp").innerHTML = `${E(P.tag)}<b>${won(P.price)}</b>`;
 $("#m").innerHTML = `
 <section class="top">
  <div class="gal"><div class="main" id="gm" style="background-image:url(${SHOTS[0]})"></div><p class="cap" id="gcap">${E(P.tag)} — 이렇게 진행돼요</p><div class="thumbs">${SHOTS.map((s, i) => `<img src="${s}" class="${i ? "" : "on"}" alt="${i ? "세팅 후 생기는 사무실 화면 예시 " + i : "상품 썸네일"}">`).join("")}</div></div>
  <div class="info">
-  <span class="bdg">LAUNCHING EVENT</span>
+  <span class="bdg">${K === "trial" ? "OPEN EVENT · 선착순 5명" : "LAUNCHING EVENT"}</span>
   <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
-  <div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>
+  ${K === "trial" ? "" : `<div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>`}
   <div class="price"><s>정가 ${won(P.list)}</s><br><span class="off">${Math.round((1 - P.price / P.list) * 100)}%</span><b>${P.price.toLocaleString("ko-KR")}</b><small>원 · VAT 포함 · 한 번만</small></div>
   <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (인터뷰 → 세팅 → 사용 교육) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 교육 · <b>30일 적응 지원</b></dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
   <a class="cta" href="#book">📅 세팅 날짜 고르기</a>
@@ -143,6 +147,7 @@ $("#m").innerHTML = `
   <div class="box"><h3>이런 분께 추천해요</h3><ul><li>혼자 또는 소수로 회사·학원·센터를 운영하는 대표님</li><li>서류·연락·일정이 끝없이 밀리는 분</li><li>AI가 좋은 건 알지만 배울 시간이 없는 분</li></ul></div>
   <div class="box"><h3>${K === "visit" ? "가져오실 것" : "준비해 주실 것"}</h3><ul>${P.bring.map((b) => `<li>${E(b)}</li>`).join("")}</ul></div>
  </div>
+ ${P.deal ? `<div class="box" style="margin-top:14px;background:#fff6d6"><h3>🙋 체험단으로 해 주실 것</h3><ul>${P.deal.map((b) => `<li>${E(b)}</li>`).join("")}</ul><p class="note" style="opacity:.75">체험단 가격 대신 위 세 가지를 부탁드려요. 주문할 때 동의 칸이 있어요.</p></div>` : ""}
  <div class="cost" style="margin-top:14px"><b>비용은 이게 전부예요</b><br>세팅비 <b>${won(P.price)}</b>(한 번만, VAT 포함) + Claude 구독료 <b>월 $100</b>(약 15만 원, 고객님 카드로 Claude에 직접 결제 · 결제·연결은 세팅 때 함께 해 드려요).</div>
 </section>
 

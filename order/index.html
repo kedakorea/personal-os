@@ -62,6 +62,7 @@ const $ = (s) => document.querySelector(s), M = $("#m");
 const P = [
   { k: "remote", name: "원격형", price: 880000, list: 2200000, inc: "화상 인터뷰 · 원격 세팅 · 화상 교육 · 30일 적응 지원" },
   { k: "visit", name: "방문형", price: 990000, list: 2500000, inc: "브랜디움 라운지(부천 신중동역) 대면 인터뷰 · 그 자리 세팅 · 사용 교육 · 30일 적응 지원" },
+  { k: "trial", name: "체험단(방문형)", price: 550000, list: 990000, inc: "방문형 세팅을 체험단 가격으로 · 사용 후기·불편 제보·세팅 사례 소개 동의 · 선착순 5명" },
   { k: "chip1", name: "칩 1개", price: 400, chip: 1, inc: "낱개" },
   { k: "chip3", name: "칩 3개", price: 1000, chip: 3, inc: "칩당 333원" },
   { k: "chip10", name: "칩 10개", price: 3000, chip: 10, inc: "칩당 300원" },
@@ -77,11 +78,11 @@ function form(u, m) {
   const pick = new URLSearchParams(location.search).get("p") || "remote";
   const CH = pick.startsWith("chip"), PL = P.filter((p) => !!p.chip === CH);
   const SL = new URLSearchParams(location.search).get("slot"), SLD = SL ? new Date(SL) : null;
-  if (!CH && (!SLD || isNaN(SLD))) { location.replace(`../product/?p=${pick === "remote" ? "remote" : "visit"}#book`); return; }
+  if (!CH && (!SLD || isNaN(SLD))) { location.replace(`../product/?p=${["remote", "trial"].includes(pick) ? pick : "visit"}#book`); return; }
   const slotTxt = SLD ? SLD.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }) : "";
   M.innerHTML = `<p class="en">ORDER</p><h1>${CH ? "칩 충전하기" : "주문서"}</h1><p class="sub">${CH ? "충전할 묶음을 고르고 주문하시면, 입금이 확인되는 대로 칩이 들어옵니다." : "고르신 일정으로 주문서를 확인해 주세요. 입금이 확인되면 예약이 확정되고, 사전 설문 안내를 보내 드립니다."}</p>
   <h3>상품 선택</h3>
-  ${PL.filter((p) => CH || p.k === pick).map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
+  ${PL.filter((p) => CH || p.k === pick).map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : p.k === "trial" ? '<span class="badge">체험단</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
   <p class="small">${CH ? "부가세 포함 · 충전한 칩 5년·보너스 칩 1년 유효 · 7일 안 미사용 시 전액 환불" : "부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제"}</p>
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
@@ -96,13 +97,13 @@ function form(u, m) {
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
   <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
-  <div class="agree"><label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다</span></label></div>
+  <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다</span></label></div>
   <input type="hidden" id="ch" value="${CH ? 1 : 0}"><div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
   const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").textContent = won(P.find((p) => p.k === k).price); };
   M.querySelectorAll(".prod").forEach((l) => l.onclick = () => sel(l.dataset.k));
   sel(PL.some((p) => p.k === pick) ? pick : PL[0].k);
-  if (!CH) M.querySelector(".prod").insertAdjacentHTML("afterend", `<p class="small" style="margin:-4px 0 6px"><a href="../product/?p=${pick === "visit" ? "remote" : "visit"}">${pick === "visit" ? "원격형" : "방문형"}으로 바꾸기 →</a></p>`);
+  if (!CH && pick !== "trial") M.querySelector(".prod").insertAdjacentHTML("afterend", `<p class="small" style="margin:-4px 0 6px"><a href="../product/?p=${pick === "visit" ? "remote" : "visit"}">${pick === "visit" ? "원격형" : "방문형"}으로 바꾸기 →</a></p>`);
   $("#rt").onchange = (e) => $("#rn").style.display = e.target.value ? "block" : "none";
   $("#go").onclick = async () => {
     const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
@@ -112,9 +113,10 @@ function form(u, m) {
     if (!v("dp")) return err("입금자명을 적어 주세요.");
     if (v("rt") && !v("rn")) return err("증빙에 쓸 번호를 적어 주세요.");
     if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
+    if ($("#agt") && !$("#agt").checked) return err("체험단 조건 동의에 체크해 주세요.");
     $("#go").disabled = true;
     const { data, error } = await sb.from("orders").insert({ member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: v("mo") || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
+      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
     if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : "주문을 저장하지 못했습니다: " + error.message);
     done(data);
