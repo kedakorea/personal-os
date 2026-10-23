@@ -73,7 +73,7 @@ function form(u, m) {
   const pick = new URLSearchParams(location.search).get("p") || "remote";
   M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">세팅 방식을 고르고 주문하시면, 입금 확인 뒤 담당자가 일정을 잡아 드립니다.</p>
   <h3>상품 선택</h3>
-  ${P.map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.k == "trial" ? '<span class="badge">OPEN EVENT</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr"><s>${won(p.list)}</s>${won(p.price)}</span><p>${p.inc}</p></label>`).join("")}
+  ${P.map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.k == "trial" ? '<span class="badge">OPEN EVENT</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr"><s>${won(p.list)}</s>${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
   <p class="small">부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제</p>
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
@@ -88,7 +88,7 @@ function form(u, m) {
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
   <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
   <div class="agree"><label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다</span></label></div>
-  <div class="sum"><span>결제 금액</span><em id="tot"></em></div>
+  <div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
   const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").textContent = won(P.find((p) => p.k === k).price); };
   M.querySelectorAll(".prod").forEach((l) => l.onclick = () => sel(l.dataset.k));
@@ -113,7 +113,7 @@ function form(u, m) {
 function done(o) {
   window.scrollTo(0, 0);
   M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}</p>
-  <div class="bank">입금하실 금액 <b>${won(o.price)}</b><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
+  <div class="bank">입금하실 금액 <b>${won(o.price)}</b> <small>(VAT 포함)</small><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
   <p class="small">· 주문일로부터 3일 안에 입금해 주세요. 기한이 지나면 주문이 자동 취소될 수 있습니다.<br>· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 업무 인터뷰 전에는 언제든 전액 환불됩니다(<a href="../refund/">환불 규정</a>).<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
   <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
 }
