@@ -92,7 +92,7 @@ function joinView(u) {
     if (!M.querySelectorAll(".rq:checked").length || M.querySelectorAll(".rq:not(:checked)").length) return $(".err").textContent = "필수 항목에 동의해 주세요.";
     const ph = phone.replace(/^(\d{3})(\d{3,4})(\d{4})$/, "$1-$2-$3");
     const { error } = await sb.from("members").upsert({ id: u.id, name, phone: ph, email: md.contact_email || (/@naver\.mybrandium\.com$/.test(u.email || "") ? null : u.email) || md.email || null,
-      provider: (u.app_metadata || {}).provider, agree_terms_at: new Date().toISOString(), agree_marketing: $("#mk").checked });
+      provider: md.naver_id ? "naver" : (u.app_metadata || {}).provider, agree_terms_at: new Date().toISOString(), agree_marketing: $("#mk").checked });
     if (error) return $(".err").textContent = "저장하지 못했습니다: " + error.message;
     boot();
   };

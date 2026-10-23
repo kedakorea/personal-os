@@ -73,7 +73,40 @@ async function list() {
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
-function tabs(on) { return `<div class="tabs"><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
+function tabs(on) { return `<div class="tabs"><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button></div>`; }
+// 사이트 회원·주문 (2026-10-23) — 관리자 로그인 세션으로 바로 읽는다(RLS: kedakorea@gmail.com)
+const OST = ["입금대기", "입금확인", "일정확정", "세팅완료", "취소"];
+const PV = { kakao: "카카오", google: "구글", naver: "네이버", email: "이메일" };
+const dt = (t) => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+async function orders() {
+  $("out").hidden = false;
+  $("main").innerHTML = `${tabs("o")}<div class="top"><h1>주문</h1><button class="btn g" onclick="orders()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  const { data, error } = await sb.from("orders").select("*").order("id", { ascending: false });
+  if (error) { $("tb").innerHTML = `<p class="err">${E(error.message)}</p>`; return; }
+  const n = (s) => data.filter((x) => x.status === s).length;
+  const sum = data.filter((x) => x.status !== "취소" && x.status !== "입금대기").reduce((a, x) => a + x.price, 0);
+  $("tb").innerHTML = `<div class="stats">${OST.map((s) => `<div><b>${n(s)}</b>${s}</div>`).join("")}<div><b>${sum.toLocaleString("ko-KR")}</b>입금 확인 합계(원)</div></div>
+   ${data.length ? `<table><tr><th>주문</th><th>상품</th><th>금액</th><th>주문자</th><th>입금자</th><th>증빙</th><th>희망 일정 · 요청</th><th>상태</th></tr>
+   ${data.map((o) => `<tr><td><b>${E(o.order_no)}</b><br><small>${dt(o.created_at)}</small></td><td>${E(o.product)}</td><td>${o.price.toLocaleString("ko-KR")}</td>
+    <td><b>${E(o.name || "")}</b><br><small>${E(o.phone || "")}<br>${E(o.email || "")}</small></td><td>${E(o.depositor || "")}</td>
+    <td><small>${E(o.receipt_type || "—")}<br>${E(o.receipt_no || "")}</small></td><td><small>${E(o.want_dates || "")}<br>${E(o.memo || "")}</small></td>
+    <td><select data-id="${o.id}" class="ost">${OST.map((s) => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>`).join("")}</table>` : `<p class="note">아직 주문이 없습니다.</p>`}`;
+  document.querySelectorAll("select.ost").forEach((el) => el.onchange = async () => {
+    const { error } = await sb.from("orders").update({ status: el.value }).eq("id", el.dataset.id);
+    if (error) alert("바꾸지 못했습니다: " + error.message); else orders();
+  });
+}
+async function members() {
+  $("out").hidden = false;
+  $("main").innerHTML = `${tabs("m")}<div class="top"><h1>사이트 회원</h1><button class="btn g" onclick="members()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  const [{ data, error }, { data: od }] = await Promise.all([sb.from("members").select("*").order("created_at", { ascending: false }), sb.from("orders").select("member_id,status")]);
+  if (error) { $("tb").innerHTML = `<p class="err">${E(error.message)}</p>`; return; }
+  const cnt = (id) => (od || []).filter((o) => o.member_id === id && o.status !== "취소").length;
+  const by = (p) => data.filter((x) => x.provider === p).length;
+  $("tb").innerHTML = `<div class="stats"><div><b>${data.length}</b>전체</div><div><b>${by("kakao")}</b>카카오</div><div><b>${by("naver")}</b>네이버</div><div><b>${by("google")}</b>구글</div><div><b>${data.filter((x) => x.agree_marketing).length}</b>소식 수신</div></div>
+   ${data.length ? `<table><tr><th>가입</th><th>이름</th><th>휴대폰</th><th>이메일</th><th>가입 방법</th><th>소식 수신</th><th>주문</th></tr>
+   ${data.map((m) => `<tr><td><small>${dt(m.created_at)}</small></td><td><b>${E(m.name || "")}</b></td><td>${E(m.phone || "")}</td><td><small>${E(m.email || "")}</small></td><td>${E(PV[m.provider] || m.provider || "")}</td><td>${m.agree_marketing ? "✓" : ""}</td><td>${cnt(m.id) || ""}</td></tr>`).join("")}</table>` : `<p class="note">아직 가입한 회원이 없습니다.</p>`}`;
+}
 async function keys() {
   history.replaceState(null, "", "?tab=keys");
   $("main").innerHTML = `${tabs("k")}<div class="top"><h1>고객 키</h1></div>

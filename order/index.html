@@ -82,7 +82,7 @@ function form(u, m) {
   <label class="f">희망 일정 (선택)</label><input type="text" id="wd" placeholder="예: 11월 둘째 주 평일 오후">
   <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea>
   <h3>결제 방법</h3>
-  <div class="pay">🏦 <b>계좌입금</b> — 주문 후 아래 계좌로 입금해 주세요</div>
+  <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 3일 안에 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
   <div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
