@@ -108,7 +108,7 @@ $("#m").innerHTML = `
   <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
   <div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>
   <div class="price"><s>정가 ${won(P.list)}</s><br><span class="off">${Math.round((1 - P.price / P.list) * 100)}%</span><b>${P.price.toLocaleString("ko-KR")}</b><small>원 · VAT 포함 · 한 번만</small></div>
-  <dl class="facts"><dt>세팅 당일</dt><dd>약 3~4시간 (인터뷰 → 세팅 → 사용 교육) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 교육 · <b>30일 적응 지원</b></dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
+  <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (인터뷰 → 세팅 → 사용 교육) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 교육 · <b>30일 적응 지원</b></dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
   <a class="cta" href="#book">📅 세팅 날짜 고르기</a>
   <a class="cta ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 먼저 카톡으로 물어보기</a>
   <p class="note">업무 인터뷰 전이면 언제든 전액 환불 · <a href="../refund/">환불 규정</a></p>
@@ -171,13 +171,14 @@ $("#m").innerHTML = `
  const { data } = await sb.rpc("taken_slots");
  const taken = new Set((data && data.taken || []).map((t) => new Date(t).getTime())), blocked = new Set(data && data.blocked || []);
  const closed = new Set((data && data.closed || []).map((t) => new Date(t).getTime()));
- const WD = [["10:00", "오전", "10시 ~ 14시경"], ["14:00", "오후", "14시 ~ 18시경"], ["18:00", "저녁", "18시 ~ 22시경"]];
+ const WD = [["10:00", "오전", "10시 ~ 13시경"], ["14:00", "오후", "14시 ~ 17시경"], ["18:00", "저녁", "18시 ~ 21시경"]];
  const TIMES_OF = (s) => { const dw = new Date(s + "T12:00:00+09:00").getUTCDay(); return dw === 0 || dw === 6 ? WD.slice(0, 2) : WD; };
  const kst = (d, hm) => new Date(`${d}T${hm}:00+09:00`);
  const ymd = (dt) => { const k = new Date(dt.getTime() + 9 * 3600e3); return k.toISOString().slice(0, 10); };
  const today = ymd(new Date()), addD = (s, n) => { const d = new Date(s + "T00:00:00+09:00"); d.setDate(d.getDate() + n); return ymd(d); };
  const from = addD(today, 5), to = addD(today, 60);
- const free = (s, hm) => { const t = kst(s, hm).getTime(); return !taken.has(t) && !closed.has(t); };
+ const GAP = 5 * 3600e3;   // 세팅 약 3시간 + 오가는 시간 — 다른 예약과 5시간 띄움
+ const free = (s, hm) => { const t = kst(s, hm).getTime(); return !closed.has(t) && ![...taken].some((x) => Math.abs(x - t) < GAP); };
  const dayOk = (s) => s >= from && s <= to && !blocked.has(s) && TIMES_OF(s).some(([hm]) => free(s, hm));
  let cur = from.slice(0, 7), selD = null, selT = null;
  function draw() {

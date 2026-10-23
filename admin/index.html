@@ -89,6 +89,8 @@ async function booking() {
     const hms = we ? ["10:00", "14:00"] : ["10:00", "14:00", "18:00"];
     const cells = hms.map((hm) => { const t = kst(s, hm).getTime(), o = O[t], x = S[t];
       if (o) return `<span class="sl bk" title="${E(o.product)} · ${E(o.status)}">🙋 ${hm} ${E(o.name || "")}</span>`;
+      const near = Object.keys(O).some((k) => Math.abs(+k - t) < 5 * 3600e3);
+      if (near) return `<span class="sl cl" style="cursor:default" title="손님 예약과 5시간 안쪽">${hm} 예약 근처</span>`;
       const closed = BL.has(s) || (x && x.state === "block");
       return `<button class="sl ${closed ? "cl" : "op"}" data-t="${t}" data-st="${closed ? "block" : "open"}" title="${E(x && x.note || "")}">${x && x.source === "일정" && x.state === "block" ? "🗓 " : ""}${hm} ${closed ? "막힘" : "열림"}</button>`; }).join("");
     rows += `<tr><td style="white-space:nowrap"><b>${+s.slice(5, 7)}/${+s.slice(8)}</b> (${"일월화수목금토"[dw]})${i < 5 ? ' <small style="opacity:.5">예약 불가 기간</small>' : ""}</td><td>${cells}</td><td><button class="btn g dayb" data-d="${s}" style="padding:6px 12px;font-size:13px">하루 막기</button></td></tr>`;
