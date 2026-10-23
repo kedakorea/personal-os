@@ -467,17 +467,17 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 
 /* 페이지 나누기 (2026-10-23) */
 section[data-pg]{display:none}
-body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=about] section[data-pg~=about]{display:block}
+body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop]{display:block}
 body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-pg~=os][hidden]{display:none}
 .pghead{background:var(--cream);padding:70px calc(var(--frame) + 14px) 54px;border-radius:0 0 28px 28px}
 .pghead .label{display:inline-block;margin-bottom:14px}
 .pghead h1{font-size:clamp(34px,6vw,64px);line-height:1.15;letter-spacing:-.02em}
 .pghead p{margin-top:16px;font-size:17px;opacity:.75;max-width:640px}
-.more{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+.more{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
 .more a{display:block;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:22px 20px;text-decoration:none;transition:transform .2s}
 .more a:hover{transform:translateY(-3px)}
 .more b{display:block;font-size:19px;margin:8px 0 6px}.more span{font-size:14px;opacity:.7;line-height:1.6}.more i{font-style:normal;font-size:26px}
-@media(max-width:860px){.more{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){.more{grid-template-columns:1fr}}
 .chips-why{font-size:16px;opacity:.8;margin-top:12px;max-width:680px;line-height:1.75}
 .packs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 10px}
 .pack{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:20px 18px;text-align:center;position:relative}
@@ -488,16 +488,44 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 @media(max-width:860px){.packs{grid-template-columns:1fr 1fr}}
 .wallet{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--ink);color:#fffaf0;border-radius:16px;padding:14px 18px;margin:18px 0 6px;font-size:15px}
 .wallet b{font-size:20px}.wallet a{color:var(--cream)}
-.items{margin-top:26px;border-top:2px solid var(--ink)}
-.item{display:grid;grid-template-columns:86px 1fr auto;gap:14px;align-items:center;padding:16px 4px;border-bottom:1px solid rgba(67,47,46,.18)}
-.item .tier{font-size:12px;font-weight:800;opacity:.6}
-.item b{font-size:16.5px}.item p{font-size:14px;opacity:.72;margin-top:3px;line-height:1.6}
-.item .get{display:flex;align-items:center;gap:10px;white-space:nowrap}
-.item .c{font-family:'Josefin Sans',Pretendard;font-weight:800;font-size:18px}
-.item button{font:800 14px Pretendard;padding:9px 14px;border-radius:10px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
-.item button:hover{background:var(--ink);color:#fffaf0}.item.soon{opacity:.5}.item.soon button{cursor:default}
-.item.mine button{background:var(--cream)}
-@media(max-width:640px){.item{grid-template-columns:1fr auto}.item .tier{grid-column:1/-1}}
+.ftabs{display:flex;gap:8px;flex-wrap:wrap;margin:34px 0 18px}
+.ftabs button{font:800 14px Pretendard;padding:9px 16px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.ftabs button.on{background:var(--ink);color:#fffaf0}
+@media(max-width:700px){.ftabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-right:calc(-1 * var(--frame) - 14px)}.ftabs button{flex:none}}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.grid{grid-template-columns:1fr 1fr;gap:12px}}
+.prd{background:#fff;border:2px solid var(--ink);border-radius:20px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
+.prd:hover{transform:translateY(-4px);box-shadow:0 10px 0 var(--ink)}
+.prd .th{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:2px solid var(--ink)}
+.prd .th i{font-style:normal;font-size:clamp(46px,7vw,72px);filter:drop-shadow(0 4px 0 rgba(67,47,46,.18))}
+.prd .th em{position:absolute;left:10px;bottom:10px;font-style:normal;font-size:11px;font-weight:800;background:#fffaf0;border:1.5px solid var(--ink);border-radius:99px;padding:3px 9px}
+.prd .bd{position:absolute;right:10px;top:10px;font-size:11px;font-weight:900;letter-spacing:.04em;padding:4px 9px;border-radius:99px;background:var(--ink);color:#fffaf0}
+.prd .bd.NEW{background:#e8573f}.prd .bd.무료{background:#2f9e6b}.prd .bd.출시{background:#999}
+.prd .tx{padding:14px 14px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.prd .nm{font-weight:800;font-size:15.5px;line-height:1.35}
+.prd .sm{font-size:12.5px;opacity:.65;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prd .pr{margin-top:auto;display:flex;align-items:baseline;gap:6px;padding-top:6px}
+.prd .pr b{font-family:'Josefin Sans',Pretendard;font-size:21px}.prd .pr small{font-size:11.5px;opacity:.55}
+.prd .go{margin-top:8px;font:800 14px Pretendard;padding:10px;border-radius:12px;border:0;background:var(--ink);color:#fffaf0;cursor:pointer}
+.prd .go[disabled]{background:#ddd;color:#777;cursor:default}.prd.mine .go{background:var(--cream);color:var(--ink)}
+.prd.soon{opacity:.6}
+.t-지시서{background:#c4dae8}.t-업무{background:#feefb8}.t-디자인{background:#f6c9c0}.t-자동{background:#cfe3c4}.t-서비스{background:#d9cdea}.t-맛보기{background:#fffaf0}.t-캐다{background:#ead9c6}
+.pm{position:fixed;inset:0;background:rgba(30,20,20,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:18px}
+.pm[hidden]{display:none}
+.pm .box{background:#fffaf0;border:2px solid var(--ink);border-radius:24px;max-width:760px;width:100%;max-height:90vh;overflow:auto;display:grid;grid-template-columns:280px 1fr}
+@media(max-width:700px){.pm .box{grid-template-columns:1fr}.pm .th{aspect-ratio:2/1!important}}
+.pm .th{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-right:2px solid var(--ink);position:relative}
+.pm .th i{font-style:normal;font-size:96px}
+.pm .in{padding:24px 24px 22px;position:relative}
+.pm .x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:24px;cursor:pointer;color:var(--ink)}
+.pm .tg{font-size:12px;font-weight:800;opacity:.6}.pm h3{font-size:24px;margin:4px 0 6px;line-height:1.3}
+.pm .pp{font-family:'Josefin Sans',Pretendard;font-weight:800;font-size:26px}.pm .pp small{font-family:Pretendard;font-size:13px;opacity:.55;margin-left:6px;font-weight:600}
+.pm h4{font-size:14px;margin:18px 0 8px}.pm p.w{font-size:14.5px;line-height:1.7}
+.pm .say span{display:inline-block;background:var(--ink);color:#fffaf0;border-radius:16px 16px 4px 16px;padding:7px 12px;font-size:13.5px;margin:0 6px 6px 0}
+.pm ul{list-style:none;font-size:14px;line-height:1.9}.pm li:before{content:"✓ ";font-weight:800}
+.pm .buy{width:100%;margin-top:18px;font:800 16px Pretendard;padding:15px;border-radius:14px;border:0;background:var(--ink);color:#fffaf0;cursor:pointer}
+.pm .buy[disabled]{background:#ddd;color:#777}
+.pm .nt{font-size:12px;opacity:.6;margin-top:10px;line-height:1.6}
 .chiprule{margin-top:22px;font-size:13.5px;line-height:1.8;opacity:.75}
 .teaser-chip{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:2px solid var(--ink);border-radius:24px;padding:26px 28px;margin-top:26px}
 .teaser-chip b{font-size:22px}.teaser-chip p{opacity:.75;margin-top:6px}
@@ -510,7 +538,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 </head>
 <body data-pg="os">
 <nav><a class="logo" href="#top"><img src="logo_butter.png" alt="BRANDiUM"><small>PERSONAL OS</small></a>
-<div class="links"><a href="os/" class="on">OS</a><a href="how/">HOW</a><a href="shop/">SHOP</a><a href="how/#faq">FAQ</a><a href="about/">ABOUT</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd" href="account/" title="회원가입·로그인">로그인</a><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.com/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
+<div class="links"><a href="os/" class="on">OS</a><a href="how/">HOW</a><a href="shop/">SHOP</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div><div class="navr"><a class="kd" href="account/" title="회원가입·로그인">로그인</a><a class="kd ks" href="start/" title="고객 키를 받으신 분 — 업무 파악 시작">🔑 고객 전용</a><a class="kd" href="https://kedakorea.com/" target="_blank" rel="noopener" title="운영사 캐다 홈페이지">keda ↗</a></div></nav>
 <div class="wrap">
 
 <section class="pghead" data-pg="os"><span class="label">WHAT IS PERSONAL OS</span><h1>퍼스널 OS는<br>이렇게 일합니다</h1><p>도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 휴대폰 한 대로 움직입니다.</p></section>
@@ -741,7 +769,8 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
   <div class="pack"><span class="rib">+보너스 3칩</span><div class="n">33<small>칩</small></div><div class="w">8,000원</div><div class="per">칩당 242원</div><a href="order/?p=chip30">충전하기</a></div>
  </div>
  <p class="chiprule" style="margin-top:6px">VAT 포함 · 칩은 퍼스널 OS 세팅을 받으신 분(또는 받으실 분)의 OS에 설치되는 상품용입니다.</p>
- <div class="items" id="items"><p style="padding:18px 0;opacity:.6">상품을 불러오는 중…</p></div>
+ <div class="ftabs" id="ftabs"></div>
+ <div class="grid" id="items"><p style="padding:18px 0;opacity:.6">상품을 불러오는 중…</p></div>
  <p class="chiprule">· 칩은 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다. 일부를 쓴 뒤에는 쓴 칩을 1개 400원으로 계산해 뺀 나머지를 돌려드려요. 보너스 칩은 환불되지 않습니다.<br>· 칩으로 받은 상품은 받는 즉시 내 OS에 설치되는 디지털 상품이라 취소·환불되지 않습니다. 설명대로 작동하지 않으면 칩으로 돌려드립니다.<br>· 유효기간: 충전한 칩 5년 · 보너스 칩 1년. 자세한 내용은 <a href="refund/">환불 규정</a>을 확인해 주세요.</p>
  </div>
 </section>
@@ -775,19 +804,19 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
  </div></div>
 </section>
 
-<section data-pg="about" class="pad cream maker">
+<section data-pg="home" class="pad cream maker">
  <div class="reveal"><span class="label">MADE BY</span><h2>저도 바쁜 대표였습니다</h2>
  <p>디자인 회사를 운영하며 행사·교육·콘텐츠 일을 동시에 굴리다 보니, 하루의 절반이 '확인'으로 사라졌습니다. 그래서 직접 만들었습니다.<br><b>지금 저는 퍼스널 OS 하나로 열한 개 부서를 움직이고 있습니다.</b><br>같은 고민을 하는 대표님께, 이번엔 처음부터 맞춰 드리려고 합니다.</p>
  <p class="story"><span>솔직히, 저도 처음엔 AI를 못 믿었어요.</span><span>시켜 놓고 다시 확인하고, 결국 제 손으로 고치고.</span><span>'설마 이것까지 하겠어?' 싶던 일들이</span><span><b>지금은 말 한마디면 끝나 있습니다.</b></span><span class="gap">대표님의 하루를 갉아먹던 일은 퍼스널 OS에 맡기세요.</span><span><b>이제, 시간을 버세요.</b></span></p></div>
 </section>
 
-<section data-pg="home os how shop about" class="final orange" id="apply">
+<section data-pg="home os how shop" class="final orange" id="apply">
  <div class="reveal"><span class="label">APPLY</span>
  <h2>당신만의<br>퍼스널 OS를<br>세팅해 드립니다</h2>
  <div class="ctas"><a class="cta" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 신청하기 →</a><a class="cta kk" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 카카오톡으로 문의하기</a></div>
  <p class="ask">궁금한 점만 먼저 물어보셔도 괜찮아요. 카카오톡 채널 <b>브랜디움</b>으로 편하게 문의 주세요.</p></div>
 </section>
-<section data-pg="about" class="pad about" id="about">
+<section data-pg="home" class="pad about" id="about">
  <div class="reveal"><span class="label">ABOUT US</span><h2>브랜디움과 캐다</h2>
  <div class="two">
   <div class="box b"><img src="logo_butter.png" alt="BRANDiUM">
