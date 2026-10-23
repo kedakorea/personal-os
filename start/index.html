@@ -442,7 +442,7 @@ async function makeProp(req) {
   const { data } = await sb.auth.getSession();
   const u = data.session && data.session.user;
   const { data: m } = u ? await sb.from("members").select("agree_terms_at").eq("id", u.id).maybeSingle() : { data: null };
-  if (m && m.agree_terms_at) return render();
+  if ((m && m.agree_terms_at) || (u && u.email === "kedakorea@gmail.com")) return render();   // 관리자(대표님)도 바로 들어간다
   sessionStorage.setItem("after_login", location.href);
   $("bar").style.width = "0%";
   $("main").innerHTML = `<div class="lab">PERSONAL OS · 고객 전용</div><h1>먼저 로그인해<br>주세요</h1>
