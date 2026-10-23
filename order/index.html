@@ -1,0 +1,129 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>구매하기 · BRANDiUM 퍼스널 OS</title>
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../os.js"></script>
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fffaf0;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+nav{background:var(--ink);color:#fffaf0;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+nav a{color:#fffaf0;text-decoration:none} nav img{height:22px;display:block}
+main{flex:1;width:100%;max-width:440px;margin:0 auto;padding:48px 22px 60px}
+.en{font-size:12px;letter-spacing:.14em;font-weight:700;opacity:.55}
+h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:15px;margin-bottom:28px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:14px;font:700 16px Pretendard;border:0;cursor:pointer;margin-bottom:12px;text-decoration:none}
+.kakao{background:#FEE500;color:#191600} .naver{background:#03C75A;color:#fff} .naver svg{width:16px;height:16px} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
+.dark{background:var(--ink);color:#fffaf0} .ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn svg{width:20px;height:20px}
+.note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
+.note a{color:inherit}
+label.f{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
+input[type=text],input[type=tel]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
+input:focus{outline:none;border-color:var(--ink)}
+.agree{background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:6px 16px;margin:22px 0 18px}
+.agree label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:14px;cursor:pointer}
+.agree label.all{font-weight:800;border-bottom:1px solid var(--sand);font-size:15px}
+.agree input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+.agree a{margin-left:auto;font-size:12px;opacity:.6;color:inherit}
+.card{background:#fff;border:1.5px solid var(--sand);border-radius:18px;padding:20px;margin-bottom:14px}
+.card h2{font-size:16px;margin-bottom:8px} .card p{font-size:14px;opacity:.8}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--sand)} .row:last-child{border:0}
+.err{color:#c0392b;font-size:14px;margin-top:10px;min-height:20px}
+.links{display:flex;justify-content:space-between;margin-top:24px;font-size:13px} .links button{background:none;border:0;color:var(--ink);opacity:.6;text-decoration:underline;cursor:pointer;font:13px Pretendard}
+footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:24px 22px} footer a{color:#ddd}
+
+main{max-width:520px}
+.prod{display:block;background:#fff;border:2px solid var(--sand);border-radius:16px;padding:16px 18px;margin-bottom:10px;cursor:pointer;position:relative}
+.prod input{position:absolute;opacity:0}
+.prod.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.prod b{font-size:17px} .prod .pr{float:right;font-weight:800;font-size:17px} .prod s{opacity:.45;font-size:13px;margin-right:6px}
+.prod p{font-size:13px;opacity:.7;margin-top:6px;clear:both}
+.badge{display:inline-block;font-size:11px;font-weight:800;background:var(--cream);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+h3{font-size:16px;margin:28px 0 4px}
+.pay{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;font-size:14px}
+.pay.off{border:1.5px dashed var(--sand);opacity:.55;margin-top:8px}
+select,textarea{width:100%;border:1.5px solid var(--sand);border-radius:12px;padding:12px 14px;font:15px Pretendard;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.sum{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);margin-top:24px;padding-top:14px;font-weight:800}
+.sum em{font-style:normal;font-size:26px}
+.bank{background:var(--cream);border-radius:16px;padding:18px 20px;margin:18px 0;font-size:15px;line-height:1.9}
+.bank b{font-size:18px}
+.small{font-size:12.5px;opacity:.65;line-height:1.7}
+</style></head><body>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><a href="../account/" style="font-size:13px;opacity:.75">마이페이지</a></nav>
+<main id="m"><p class="sub">불러오는 중…</p></main>
+<footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
+<script>
+const sb = supabase.createClient(OS_URL, OS_ANON);
+const $ = (s) => document.querySelector(s), M = $("#m");
+const P = [
+  { k: "remote", name: "원격형", price: 880000, list: 2200000, inc: "화상 인터뷰 · 원격 세팅 · 화상 교육 · 30일 적응 지원" },
+  { k: "visit", name: "방문형", price: 990000, list: 2500000, inc: "브랜디움 라운지(부천 신중동역) 대면 인터뷰 · 그 자리 세팅 · 사용 교육 · 30일 적응 지원" }
+];
+const won = (n) => n.toLocaleString("ko-KR") + "원";
+function needLogin() {
+  sessionStorage.setItem("after_login", location.href);
+  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·네이버·구글 계정으로 3초면 됩니다.</p>
+  <a class="btn dark" href="../account/">로그인하고 구매하기</a>`;
+}
+function form(u, m) {
+  const pick = new URLSearchParams(location.search).get("p") || "remote";
+  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">세팅 방식을 고르고 주문하시면, 입금 확인 뒤 담당자가 일정을 잡아 드립니다.</p>
+  <h3>상품 선택</h3>
+  ${P.map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.k == "trial" ? '<span class="badge">OPEN EVENT</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr"><s>${won(p.list)}</s>${won(p.price)}</span><p>${p.inc}</p></label>`).join("")}
+  <p class="small">부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제</p>
+  <h3>주문자</h3>
+  <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
+  <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
+  <label class="f">이메일 (진행 안내용)</label><input type="text" id="em" value="${osEsc(m.email || "")}" placeholder="name@example.com">
+  <label class="f">희망 일정 (선택)</label><input type="text" id="wd" placeholder="예: 11월 둘째 주 평일 오후">
+  <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea>
+  <h3>결제 방법</h3>
+  <div class="pay">🏦 <b>계좌입금</b> — 주문 후 아래 계좌로 입금해 주세요</div>
+  <div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>
+  <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
+  <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
+  <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
+  <div class="agree"><label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다</span></label></div>
+  <div class="sum"><span>결제 금액</span><em id="tot"></em></div>
+  <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
+  const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").textContent = won(P.find((p) => p.k === k).price); };
+  M.querySelectorAll(".prod").forEach((l) => l.onclick = () => sel(l.dataset.k));
+  sel(P.some((p) => p.k === pick) ? pick : "remote");
+  $("#rt").onchange = (e) => $("#rn").style.display = e.target.value ? "block" : "none";
+  $("#go").onclick = async () => {
+    const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
+    const v = (id) => $("#" + id).value.trim(), err = (t) => $(".err").textContent = t;
+    if (!v("nm")) return err("이름을 적어 주세요.");
+    if (!/^01\d{8,9}$/.test(v("ph").replace(/[^0-9]/g, ""))) return err("휴대폰 번호를 확인해 주세요.");
+    if (!v("dp")) return err("입금자명을 적어 주세요.");
+    if (v("rt") && !v("rn")) return err("증빙에 쓸 번호를 적어 주세요.");
+    if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
+    $("#go").disabled = true;
+    const { data, error } = await sb.from("orders").insert({ member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
+      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: v("mo") || null, agree_at: new Date().toISOString() }).select().single();
+    $("#go").disabled = false;
+    if (error) return err("주문을 저장하지 못했습니다: " + error.message);
+    done(data);
+  };
+}
+function done(o) {
+  window.scrollTo(0, 0);
+  M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}</p>
+  <div class="bank">입금하실 금액 <b>${won(o.price)}</b><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
+  <p class="small">· 주문일로부터 3일 안에 입금해 주세요. 기한이 지나면 주문이 자동 취소될 수 있습니다.<br>· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 업무 인터뷰 전에는 언제든 전액 환불됩니다(<a href="../refund/">환불 규정</a>).<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
+  <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
+}
+(async () => {
+  const { data } = await sb.auth.getSession();
+  if (!data.session) return needLogin();
+  const u = data.session.user;
+  const { data: m } = await sb.from("members").select("*").eq("id", u.id).maybeSingle();
+  if (!m || !m.agree_terms_at) return needLogin();
+  form(u, m);
+})();
+</script>
+</body></html>

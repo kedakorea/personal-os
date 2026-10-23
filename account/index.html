@@ -97,7 +97,7 @@ function joinView(u) {
     boot();
   };
 }
-function myView(u, m) {
+function myView(u, m, od) {
   const pv = { kakao: "카카오", google: "Google", naver: "네이버" }[m.provider] || m.provider || "";
   M.innerHTML = `<p class="en">MY PAGE</p><h1>${osEsc(m.name)}님, 반갑습니다</h1><p class="sub">브랜디움 회원으로 가입되어 있습니다.</p>
   <div class="card"><h2>내 정보</h2>
@@ -105,8 +105,9 @@ function myView(u, m) {
    <div class="row"><span>휴대폰</span><b>${osEsc(m.phone || "")}</b></div>
    <div class="row"><span>이메일</span><b>${osEsc(m.email || "—")}</b></div>
    <div class="row"><span>가입 방법</span><b>${osEsc(pv)}</b></div></div>
-  <div class="card"><h2>내 주문</h2><p>아직 주문 내역이 없습니다. 온라인 결제는 곧 열립니다 — 지금은 상담 신청으로 바로 예약을 도와 드려요.</p></div>
-  <a class="btn dark" href="../#apply">상담 신청하기</a>
+  <div class="card"><h2>내 주문</h2>${od.length ? od.map((o) => `<div class="row"><span>${osEsc(o.order_no)} · ${osEsc(o.product)}<br><small style="opacity:.6">${new Date(o.created_at).toLocaleDateString("ko-KR")} · ${o.price.toLocaleString("ko-KR")}원</small></span><b>${osEsc(o.status)}</b></div>`).join("") + (od.some((o) => o.status === "입금대기") ? '<p style="margin-top:10px;font-size:13px">입금 계좌: 기업은행 114-193627-04-019 (주)캐다</p>' : "") : "<p>아직 주문 내역이 없습니다.</p>"}</div>
+  <a class="btn dark" href="../order/">퍼스널 OS 구매하기</a>
+  <a class="btn ghost" href="../#apply">상담 먼저 받아 보기</a>
   <a class="btn ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡으로 문의</a>
   <div class="links"><button id="out">로그아웃</button><button id="del">회원 탈퇴</button></div><p class="err"></p>`;
   $("#out").onclick = async () => { await sb.auth.signOut(); loginView(); };
@@ -140,7 +141,10 @@ async function boot() {
   const u = data.session.user;
   const { data: m } = await sb.from("members").select("*").eq("id", u.id).maybeSingle();
   if (!m || !m.agree_terms_at) return joinView(u);
-  myView(u, m);
+  const nx = sessionStorage.getItem("after_login");
+  if (nx) { sessionStorage.removeItem("after_login"); return location.replace(nx); }
+  const { data: od } = await sb.from("orders").select("*").order("id", { ascending: false });
+  myView(u, m, od || []);
 }
 boot();
 </script>
