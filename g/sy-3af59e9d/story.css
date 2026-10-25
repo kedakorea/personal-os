@@ -197,3 +197,17 @@ body{background:#ececec}
 .cm img{width:100%;border-radius:10px;display:block;max-height:62vh;object-fit:contain;-webkit-touch-callout:default}
 .cm p{font-size:12.5px;color:#888;margin:10px 0}
 .cmb{display:flex;gap:8px}
+/* 2026-10-26 대표님: 휴대폰에서 한 화면에 한 사람씩, 여백 넉넉히 */
+.ch{padding:56px 24px 64px}
+.chhead{margin-bottom:34px}
+.sk{min-height:calc(100svh - 70px);display:flex;flex-direction:column;justify-content:center;margin:0;padding:40px 0}
+.puz{margin-top:60px}
+#usWrap.show{padding-top:40px}
+.orbt{margin-top:10px}
+.merge .pair{margin-top:40px}
+.sky{margin-top:56px}
+.game{margin-top:10px}
+.mem{margin-top:10px}.vows{margin-top:40px}.vw{margin:14px 0}
+.nextbar{margin-top:56px}
+.puz svg{touch-action:none}
+.sk .skname{align-self:center}

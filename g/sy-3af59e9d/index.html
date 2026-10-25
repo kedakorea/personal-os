@@ -460,12 +460,16 @@ sketch('skJ','이정웅','든든하게 지키는 사람',J);sketch('skY','최유
   g.style.transformBox='fill-box';g.style.transformOrigin='center';
   const put=()=>g.style.transform='translate('+P.x+'px,'+P.y+'px) rotate('+P.r+'deg)';put();
   let sx,sy,bx,by,drag=false;
-  g.addEventListener('pointerdown',e=>{if(g.classList.contains('in'))return;e.preventDefault();drag=true;sx=e.clientX;sy=e.clientY;bx=P.x;by=P.y;svg.appendChild(g);g.style.transition='rotate .2s';P.r=0;g.classList.add('hold');put()});
-  window.addEventListener('pointermove',e=>{if(!drag)return;const k=100/svg.getBoundingClientRect().width;P.x=bx+(e.clientX-sx)*k;P.y=by+(e.clientY-sy)*k;put()});
-  const up=()=>{if(!drag)return;drag=false;g.classList.remove('hold');g.style.transition='';
-   if(Math.hypot(P.x,P.y)<10){P.x=P.y=0;g.style.transform='none';g.classList.add('in');got++;$('puzTip').textContent=got<4?'딱! '+got+' / 4':'완성!';
+  const start=(x,y)=>{if(g.classList.contains('in'))return false;drag=true;sx=x;sy=y;bx=P.x;by=P.y;svg.appendChild(g);P.r=0;g.classList.add('hold');put();return true};
+  const move=(x,y)=>{if(!drag)return;const k=100/svg.getBoundingClientRect().width;P.x=bx+(x-sx)*k;P.y=by+(y-sy)*k;put()};
+  g.addEventListener('touchstart',e=>{const t=e.touches[0];if(start(t.clientX,t.clientY))e.preventDefault()},{passive:false});
+  window.addEventListener('touchmove',e=>{if(!drag)return;e.preventDefault();const t=e.touches[0];move(t.clientX,t.clientY)},{passive:false});
+  g.addEventListener('mousedown',e=>{if(start(e.clientX,e.clientY))e.preventDefault()});
+  window.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
+  const up=()=>{if(!drag)return;drag=false;g.classList.remove('hold');
+   if(Math.hypot(P.x,P.y)<16){P.x=P.y=0;g.style.transform='none';g.classList.add('in');got++;$('puzTip').textContent=got<4?'딱! '+got+' / 4':'완성!';
     if(got===4)setTimeout(()=>{$('puz').classList.add('done');$('puzTip').textContent='딱 맞았어요! 우리 둘 ♥';confetti(16);$('usWrap').classList.add('show')},500)}};
-  window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up)})})();
+  window.addEventListener('touchend',up);window.addEventListener('touchcancel',up);window.addEventListener('mouseup',up)})})();
 
 // 장 넘기기 — 위로 미끄러지지 않게 바로 바꿈
 let cur=0;const chs=[...document.querySelectorAll('.ch')];
@@ -479,21 +483,19 @@ document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goCh(+b.dataset.
 [...$('dots').children].forEach((d,i)=>d.onclick=()=>goCh(i));
 
 // 2장 아이메시지 퀴즈
-const Q=[['✈️ 여행을 준비할 때','가고 싶은 곳 다 모았어! 같은 호텔인데 이렇게 예약하면 훨씬 싸더라 🙌',['좋다! 그럼 일정표랑 예약 확인은 내가 한 번 더 볼게.','호텔은 됐고 그냥 차에서 자자 😴','여행 말고 집에서 야구나 보자']],
- ['🏠 지금 사는 집을 구할 때','매물이랑 조건은 내가 발품 팔아서 비교해 볼게!',['그럼 전세 계약이랑 버팀목 대출, 청약 서류는 내가 맡을게.','서류? 그건 나중에 생각하자~','부동산 사장님이 알아서 해 주시겠지 뭐']],
+const Q=[['🏠 지금 사는 집을 구할 때','매물이랑 조건은 내가 발품 팔아서 비교해 볼게!',['그럼 전세 계약이랑 버팀목 대출, 청약 서류는 내가 맡을게.','서류? 그건 나중에 생각하자~','부동산 사장님이 알아서 해 주시겠지 뭐']],
  ['📸 촬영 비용이 걱정될 때','카페랑 블로그에 결혼 준비 기록 올렸더니 스튜디오 촬영 협찬받았어 😎',['대단하다! 덕분에 아낀 예산은 내가 잘 정리해서 관리할게.','협찬 받았으니 오늘 플렉스하자 🛍️','블로그? 그거 해서 뭐가 돼?']],
- ['💭 생각이 서로 다를 때','나는 이렇게 하는 게 더 좋을 것 같은데…',['네 말 들어 보니 그 부분은 맞네. 나도 이건 바꿔 볼게.','무조건 내 말이 맞아.','몰라, 네 맘대로 해.']],
  ['🌧️ 한 사람이 지친 날','오늘 너무 힘들었어…',['고생했어. 밤 산책 가자, 맛있는 거 사 줄게.','나도 힘들어…','일찍 자~ 내일 얘기해']]];
 let qi=0,score=0;
 function quiz(){const q=Q[qi],opts=q[2].map((t,k)=>({t,ok:k===0})).sort(()=>Math.random()-.5);
- $('quizBox').innerHTML='<div class="qsc">'+(qi+1)+' / 5 · 맞힌 개수 '+score+'</div><div class="im"><div class="imh"><div class="av">정웅</div><small>이정웅 ›</small></div><div class="imb" id="imb"><div class="imt"><b>iMessage</b><br>'+q[0]+'</div><div class="br">'+q[1]+'</div><div class="read">읽음</div><div class="typingwrap" id="typ" style="justify-content:flex-start"><div class="typing" style="margin:6px 0 0"><i></i><i></i><i></i></div></div></div>'+
-  '<div class="imq" id="imq"><div class="q">정웅이의 답장은?</div>'+opts.map(o=>'<button class="opt" data-ok="'+(o.ok?1:0)+'">'+o.t+'</button>').join('')+'<div class="ok1" id="ok1">정답! 🎉</div><button class="qnext" id="qn">'+(qi<4?'다음 문제 ›':'결과 보기 ›')+'</button></div></div>';
+ $('quizBox').innerHTML='<div class="qsc">'+(qi+1)+' / '+Q.length+' · 맞힌 개수 '+score+'</div><div class="im"><div class="imh"><div class="av">정웅</div><small>이정웅 ›</small></div><div class="imb" id="imb"><div class="imt"><b>iMessage</b><br>'+q[0]+'</div><div class="br">'+q[1]+'</div><div class="read">읽음</div><div class="typingwrap" id="typ" style="justify-content:flex-start"><div class="typing" style="margin:6px 0 0"><i></i><i></i><i></i></div></div></div>'+
+  '<div class="imq" id="imq"><div class="q">정웅이의 답장은?</div>'+opts.map(o=>'<button class="opt" data-ok="'+(o.ok?1:0)+'">'+o.t+'</button>').join('')+'<div class="ok1" id="ok1">정답! 🎉</div><button class="qnext" id="qn">'+(qi<Q.length-1?'다음 문제 ›':'결과 보기 ›')+'</button></div></div>';
  let miss=0,done=0;
  $('quizBox').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(done)return;
   if(b.dataset.ok==='1'){done=1;if(!miss)score++;$('typ').outerHTML='<div class="bl" style="animation:send .45s cubic-bezier(.3,1.4,.5,1)">'+q[2][0]+'</div>';
    $('imq').querySelectorAll('.opt').forEach(x=>x.style.display='none');$('imq').querySelector('.q').classList.add('hide');$('ok1').textContent=miss?'이게 정답이었어요 😊':'정답! 🎉';$('ok1').classList.add('show');$('qn').classList.add('show');burst($('ok1'))}
   else if(!b.classList.contains('no')){b.classList.add('no');miss=1;b.textContent='땡! '+b.textContent}});
- $('qn').onclick=()=>{qi++;if(qi<5)quiz();else{$('quizBox').innerHTML='<div class="im" style="text-align:center;padding:28px 18px"><div style="font-size:44px">'+(score>=4?'🎉':'😊')+'</div><div style="font:800 19px Pretendard;margin-top:8px">5문제 중 '+score+'문제 정답!</div><p style="font-size:15px;line-height:1.8;color:#555;margin-top:6px">'+(score>=4?'벌써 정웅이를 아주 잘 아시네요':'앞으로 더 자주 보여 드릴게요')+'</p><button class="qnext show" id="qre">다시 풀기</button></div>';$('qre').onclick=()=>{qi=0;score=0;quiz()};confetti(score*4)}}}
+ $('qn').onclick=()=>{qi++;if(qi<Q.length)quiz();else{$('quizBox').innerHTML='<div class="im" style="text-align:center;padding:28px 18px"><div style="font-size:44px">'+(score>=Q.length-1?'🎉':'😊')+'</div><div style="font:800 19px Pretendard;margin-top:8px">'+Q.length+'문제 중 '+score+'문제 정답!</div><p style="font-size:15px;line-height:1.8;color:#555;margin-top:6px">'+(score>=Q.length-1?'벌써 정웅이를 아주 잘 아시네요':'앞으로 더 자주 보여 드릴게요')+'</p><button class="qnext show" id="qre">다시 풀기</button></div>';$('qre').onclick=()=>{qi=0;score=0;quiz()};confetti(score*4)}}}
 quiz();
 
 // 3장 오행 찾기
