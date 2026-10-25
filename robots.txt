@@ -4,5 +4,6 @@ Disallow: /_
 Disallow: /admin/
 Disallow: /start/
 Disallow: /tools/
+Disallow: /g/
 
 Sitemap: https://mybrandium.com/sitemap.xml
