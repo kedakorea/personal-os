@@ -233,7 +233,7 @@ p.t{font-size:14.5px;line-height:2}
 .cover{padding:26px 14px 30px}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="story.css"></head><body><div class="wrap">
+<link rel="stylesheet" href="story.css?v=261026b"></head><body><div class="wrap">
 
 <!-- 표지: 봉투에서 나온 편지 -->
 <section class="cover">
@@ -307,7 +307,6 @@ p.t{font-size:14.5px;line-height:2}
 
 <div id="story">
 <svg width="0" height="0" style="position:absolute"><filter id="wob"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter></svg>
-<div class="topbar"><div class="tocnote">우리 이야기 · 총 6장 · 눌러서 바로 가기</div><div class="chips" id="dots"><button class="on seen"><b>1</b>소개</button><button><b>2</b>퀴즈</button><button><b>3</b>궁합</button><button><b>4</b>케이크</button><button><b>5</b>약속</button><button><b>6</b>풍선</button></div></div>
 <div class="book" id="book">
 
  <!-- 01 -->
@@ -386,6 +385,7 @@ p.t{font-size:14.5px;line-height:2}
   <div class="nextbar"><button class="prev" data-go="4">‹ 앞 이야기</button><button class="next" data-go="0">처음부터 다시 보기</button></div>
  </section>
 </div>
+<nav class="pnav" id="pnav"><div class="pnow" id="pnow"><b>1</b> / 6 페이지 · 소개</div><div class="prow"><button class="pp" id="pPrev" aria-label="앞 페이지">‹</button><div class="chips" id="dots"><button class="on seen"><b>1</b>소개</button><button><b>2</b>퀴즈</button><button><b>3</b>궁합</button><button><b>4</b>케이크</button><button><b>5</b>약속</button><button><b>6</b>풍선</button></div><button class="pp" id="pNext" aria-label="다음 페이지">›</button></div></nav>
 </div>
 
 <div class="foot">이정웅 · 최유정</div>
@@ -454,10 +454,16 @@ function goCh(n){if(n===cur)return;const a=chs[cur],b=chs[n];a.classList.add('ou
  setTimeout(()=>{a.classList.remove('on','out');b.classList.add('on','inR');const html=document.documentElement,old=html.style.scrollBehavior;html.style.scrollBehavior='auto';
   window.scrollTo(0,$('story').getBoundingClientRect().top+window.scrollY);html.style.scrollBehavior=old;
   setTimeout(()=>b.classList.remove('inR'),600)},180);
- cur=n;[...$('dots').children].forEach((d,i)=>{d.classList.toggle('on',i===n);if(i===n){d.classList.add('seen');d.scrollIntoView({inline:'center',block:'nearest'})}});
+ cur=n;setNav();
  if(n===2)setTimeout(startOrb,250);if(n===3)setTimeout(startGame,250);if(n===5)loadRank()}
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goCh(+b.dataset.go));
 [...$('dots').children].forEach((d,i)=>d.onclick=()=>goCh(i));
+// 맨 아래 페이지 이동 바 (2026-10-26)
+const NM=['소개','퀴즈','궁합','케이크','약속','풍선'];
+function setNav(){[...$('dots').children].forEach((d,i)=>{d.classList.toggle('on',i===cur);if(i===cur)d.classList.add('seen')});
+ $('pnow').innerHTML='<b>'+(cur+1)+'</b> / 6 페이지 · '+NM[cur];$('pPrev').disabled=cur===0;$('pNext').disabled=cur===5}
+$('pPrev').onclick=()=>{if(cur>0)goCh(cur-1)};$('pNext').onclick=()=>{if(cur<5)goCh(cur+1)};setNav();
+new IntersectionObserver(es=>es.forEach(e=>{$('pnav').classList.toggle('show',e.isIntersecting);document.body.classList.toggle('navon',e.isIntersecting)})).observe($('book'));
 
 // 2장 아이메시지 퀴즈
 const Q=[['🏠 지금 사는 집을 구할 때','매물이랑 조건은 내가 발품 팔아서 비교해 볼게!',['그럼 전세 계약이랑 버팀목 대출, 청약 서류는 내가 맡을게.','서류? 그건 나중에 생각하자~','부동산 사장님이 알아서 해 주시겠지 뭐']],

@@ -243,3 +243,15 @@ body{background:#ececec}
 .chips{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%;max-width:400px;overflow:visible}
 .chips button{padding:5px 0 6px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px}
 .chips button b{margin:0;width:19px;height:19px;line-height:19px;font-size:11px}
+/* 맨 아래 페이지 이동 바 (2026-10-26) — 위쪽 목차 대신 */
+.pnav{position:fixed;left:50%;bottom:0;z-index:30;width:100%;max-width:430px;transform:translate(-50%,110%);transition:transform .35s ease;background:#fffffff2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #e6e2da;box-shadow:0 -6px 20px #0000000f;padding:8px 8px calc(10px + env(safe-area-inset-bottom))}
+.pnav.show{transform:translate(-50%,0)}
+.pnow{text-align:center;font:600 12.5px Pretendard;color:#888;margin-bottom:6px}
+.pnow b{color:#2f3a2b;font-size:15px;font-weight:900}
+.prow{display:flex;align-items:center;gap:6px}
+.pp{flex:none;width:40px;height:48px;border:0;border-radius:12px;background:#2f3a2b;color:#fff;font:900 24px Pretendard;line-height:1;cursor:pointer}
+.pp:disabled{background:#eee;color:#ccc;cursor:default}
+.pnav .chips{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:4px;max-width:none;width:auto}
+.pnav .chips button{height:48px;padding:0;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:700 11.5px Pretendard;letter-spacing:-.02em}
+.pnav .chips button b{width:20px;height:20px;line-height:20px;font-size:11.5px;margin:0}
+body.navon .wrap{padding-bottom:96px}
