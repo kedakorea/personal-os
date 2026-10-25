@@ -315,8 +315,8 @@ p.t{font-size:14.5px;line-height:2}
   <div class="chhead"><div class="k">CHAPTER 01</div><h4>저희 두 사람을 소개합니다</h4><p>그림을 옆으로 밀거나 ‹ › 를 눌러 넘겨 보세요</p></div>
   <div class="sk" id="skJ" style="--c:#516349;--tint:#dfe7d8"></div>
   <div class="sk" id="skY" style="--c:#832B33;--tint:#f4d9d9"></div>
-  <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>조각을 모아 하나가 됩니다</h4><p>흩어진 조각 4개를 하나씩 눌러 하트를 완성해 보세요</p></div>
-  <div class="puz" id="puz"><svg id="puzSvg" viewBox="0 0 100 100"></svg><div class="tip" id="puzTip">조각을 톡! 누르면 제자리로 쏙 · 0 / 4</div></div>
+  <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>반쪽 둘이 만나 하나가 됩니다</h4><p>하트를 톡! 눌러 보세요</p></div>
+  <div class="puz" id="puz"><svg id="puzSvg" viewBox="0 0 100 100"></svg><div class="tip" id="puzTip">👆 아무 데나 톡!</div></div>
   <div class="usbox" id="usWrap"><div class="sk" id="skU" style="--c:#2f3a2b;--tint:#efe4c9"></div></div>
   <div class="nextbar"><button class="next" data-go="1">다음 이야기 ›</button></div>
  </section>
@@ -442,26 +442,11 @@ function sketch(id,name,sub,data){const box=$(id),n=data.length;let i=0;
  draw(0)}
 sketch('skJ','이정웅','든든하게 지키는 사람',J);sketch('skY','최유정','길을 찾아 넓히는 사람',Y);sketch('skU','우리 둘','함께라서 더 좋은 점',US);
 
-// 퍼즐 하트 4조각 — 끌어다 맞추기
-(function(){const HEART='M50 92 C26 76 4 60 4 34 C4 18 16 6 30 6 C40 6 47 12 50 20 C53 12 60 6 70 6 C84 6 96 18 96 34 C96 60 74 76 50 92Z';
- const C=2,R=2,x0=4,y0=6,w=92/C,h=86/R,H=[[1,-1]],V=[[1],[-1]];
- const f=v=>v.toFixed(2);
- function edge(x1,y1,x2,y2,s){if(!s)return' L'+f(x2)+' '+f(y2);const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),nx=dy/L,ny=-dx/L,p=(t,o)=>f(x1+dx*t+nx*o*L*s)+' '+f(y1+dy*t+ny*o*L*s);
-  return' L'+p(.38,0)+' C'+p(.28,.26)+' '+p(.72,.26)+' '+p(.62,0)+' L'+f(x2)+' '+f(y2)}
- function cell(r,c){const x=x0+c*w,y=y0+r*h;return'M'+f(x)+' '+f(y)+edge(x,y,x+w,y,r?-H[r-1][c]:0)+edge(x+w,y,x+w,y+h,c<C-1?V[r][c]:0)+edge(x+w,y+h,x,y+h,r<R-1?H[r][c]:0)+edge(x,y+h,x,y,c?-V[r][c-1]:0)+'Z'}
- const svg=$('puzSvg');let s='<defs><linearGradient id="hg" x1="0" x2="1"><stop offset=".5" stop-color="#dfe7d8"/><stop offset=".5" stop-color="#f4d9d9"/></linearGradient><clipPath id="hc"><path d="'+HEART+'"/></clipPath>';
- const cells=[];for(let r=0;r<R;r++)for(let c=0;c<C;c++){cells.push(cell(r,c));s+='<clipPath id="pc'+cells.length+'"><path d="'+cells[cells.length-1]+'"/></clipPath>'}s+='</defs>';
- s+='<path d="'+HEART+'" fill="#fff" stroke="#bdbdbd" stroke-width="1.2" stroke-dasharray="3 2.4"/>';
- cells.forEach((d,i)=>{s+='<g class="pc" data-i="'+i+'"><g clip-path="url(#pc'+(i+1)+')"><path d="'+HEART+'" fill="url(#hg)" stroke="#2b2b2b" stroke-width="2"/><text x="27" y="42" text-anchor="middle" font-size="9" font-weight="800" fill="#2f3a2b">정웅</text><text x="73" y="42" text-anchor="middle" font-size="9" font-weight="800" fill="#832B33">유정</text></g><g clip-path="url(#hc)"><path class="edge" d="'+d+'"/></g></g>'});
- svg.innerHTML=s;let got=0;
- const SPOT=[[94,126,12],[6,128,-14],[94,-22,-10],[6,-24,14]];
- const ctr=[[27,28],[73,28],[27,72],[73,72]];
- [...svg.querySelectorAll('.pc')].forEach((g,i)=>{const P={x:SPOT[i][0]-ctr[i][0],y:SPOT[i][1]-ctr[i][1],r:SPOT[i][2]};
-  g.style.transformBox='fill-box';g.style.transformOrigin='center';
-  const put=()=>g.style.transform='translate('+P.x+'px,'+P.y+'px) rotate('+P.r+'deg)';put();
-  const snap=e=>{if(e)e.preventDefault();if(g.classList.contains('in'))return;svg.appendChild(g);P.x=P.y=P.r=0;g.style.transform='none';g.classList.add('in');got++;$('puzTip').textContent=got<4?'딱! '+got+' / 4':'완성!';
-   if(got===4)setTimeout(()=>{$('puz').classList.add('done');$('puzTip').textContent='딱 맞았어요! 우리 둘 ♥';confetti(16);$('usWrap').classList.add('show')},700)};
-  g.addEventListener('touchend',snap,{passive:false});g.addEventListener('click',snap)})})();
+// 반쪽 하트 둘 — 누르면 하나로
+(function(){const L='M50 20 C47 12 40 6 30 6 C16 6 4 18 4 34 C4 60 26 76 50 92 Z',R='M50 20 C53 12 60 6 70 6 C84 6 96 18 96 34 C96 60 74 76 50 92 Z';
+ $('puzSvg').innerHTML='<g class="hl"><path d="'+L+'" fill="#dfe7d8" stroke="#2b2b2b" stroke-width="2.4" stroke-linejoin="round"/><text x="28" y="42" text-anchor="middle" font-size="9" font-weight="800" fill="#2f3a2b">정웅</text></g><g class="hr"><path d="'+R+'" fill="#f4d9d9" stroke="#2b2b2b" stroke-width="2.4" stroke-linejoin="round"/><text x="72" y="42" text-anchor="middle" font-size="9" font-weight="800" fill="#832B33">유정</text></g>';
+ let done=false;const go=e=>{if(e&&e.cancelable)e.preventDefault();if(done)return;done=true;$('puz').classList.add('done');$('puzTip').textContent='하나가 되었어요! 우리 둘 ♥';setTimeout(()=>{confetti(16);$('usWrap').classList.add('show')},900)};
+ $('puz').addEventListener('click',go);$('puz').addEventListener('touchend',go,{passive:false})})();
 
 // 장 넘기기 — 위로 미끄러지지 않게 바로 바꿈
 let cur=0;const chs=[...document.querySelectorAll('.ch')];

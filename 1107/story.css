@@ -220,3 +220,12 @@ body{background:#ececec}
 .orb5{height:340px}
 .orb5 .me b{bottom:-22px}
 .orb5 .me b{left:50%;right:auto;transform:translateX(-50%);white-space:nowrap}
+/* 반쪽 하트 (2026-10-26) */
+.puz{height:330px;cursor:pointer;touch-action:manipulation}
+.puz svg{top:40px;width:220px;height:220px;margin-left:-110px;pointer-events:none}
+.puz .hl,.puz .hr{transition:transform .9s cubic-bezier(.3,1.4,.5,1)}
+.puz .hl{transform:translate(-14px,6px) rotate(-12deg);transform-origin:50px 50px}
+.puz .hr{transform:translate(14px,-4px) rotate(12deg);transform-origin:50px 50px}
+.puz.done .hl,.puz.done .hr{transform:none}
+.puz:not(.done) svg{animation:wig 1.6s ease-in-out infinite}
+@keyframes wig{50%{transform:scale(1.04)}}
