@@ -83,6 +83,7 @@ html,body{overflow-x:hidden}
 .kitbox.wait{background:var(--paper);box-shadow:none;border-style:dashed;font-size:15px;line-height:1.7}
 .kitsteps{margin:16px 0 0;padding-left:20px;font-size:15px;line-height:1.7}.kitsteps li{margin-bottom:8px}.kitsteps code{display:block;margin-top:6px;background:var(--ink);color:var(--cream);border-radius:10px;padding:10px 12px;font-size:13px;word-break:break-all;user-select:all}
 .cpy{margin-left:6px;font:inherit;font-size:12px;font-weight:700;border:1.5px solid var(--ink);background:#fff;border-radius:99px;padding:2px 10px;cursor:pointer}
+.guidebox{display:block;margin-top:14px;background:#ffd84d;border:3px solid var(--ink);border-radius:18px;padding:16px 18px;box-shadow:4px 4px 0 var(--ink);color:var(--ink);text-decoration:none}.guidebox b{display:block;font-size:19px}.guidebox small{display:block;margin-top:4px;font-size:14px;opacity:.8}
 </style></head><body>
 <header><a class="logo" href="../" title="퍼스널 OS 사이트로"><img src="../logo_choco.png" alt="BRANDiUM"></a><span id="saved" class="saved"></span><a class="home" href="../">← 퍼스널 OS 사이트</a></header>
 <div class="bar"><i id="bar"></i></div>
@@ -374,6 +375,7 @@ async function renderAI() {
     const t = (c.design && c.design.설정 && c.design.설정.직함) || "매니저", have = c.assets || [];
     const KINDS = [["로고", "🏷", "회사 로고", "견적서·제안서·카드뉴스에 들어가요"], ["직인", "🔴", "직인·서명 이미지", "견적서·계약서 날인 (배경은 저희가 지워 드려요)"], ["사업자등록증", "📄", "사업자등록증", "상호·주소·번호를 정확히 쓰게요"], ["명함", "📇", "명함 사진", "연락처·직함·메일 서명"], ["양식", "🗂", "자주 쓰는 양식", "견적서·계약서·안내문 등 — 같은 모양으로 만들게요"], ["기타", "📎", "그 밖의 자료", "소개서, 강의 자료, 입금 안내 문구 등"]];
     $("main").innerHTML = `<style>${OS_PROP_CSS}</style><div class="okbox">🎉 <b>확정되었습니다!</b><br>${osEsc(c.name)} 님의 퍼스널 OS를 준비합니다.<br>담당: <b>${c.chief ? osEsc(c.chief) + " " : ""}${osEsc(t)}</b></div>
+      ${(c.intake || {}).guide ? `<a class="guidebox" href="${osEsc(c.intake.guide)}" target="_blank" rel="noopener"><b>📘 내 사용 가이드 열기</b><small>하루 쓰는 법 · 처음 한 달 · 따라 해 보는 실습 — 막힐 때마다 여기서 다시 보세요</small></a>` : ""}
       ${(c.intake || {}).kit ? `<div class="kitbox"><div class="lab" style="margin:0 0 6px">STEP 5 · 설치</div><h2>📦 내 설치 키트가 준비됐어요</h2>
         <p>인터뷰로 만든 <b>${osEsc(c.name)} 님 전용</b> 키트입니다. 부서·매니저·업무 기준이 다 들어 있어요.</p>
         <button class="bigb" id="kitdl" type="button" style="background:var(--ink);color:var(--cream);margin-top:12px">⬇️ 설치 키트 받기</button>
