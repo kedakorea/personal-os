@@ -211,3 +211,12 @@ body{background:#ececec}
 .nextbar{margin-top:56px}
 .puz svg{touch-action:none}
 .sk .skname{align-self:center}
+/* 2026-10-26 대표님: 번호와 그림이 겹치지 않게 */
+.sknum{position:static;text-align:left;margin:18px 0 10px 2px;line-height:1}
+.skstage{height:auto;overflow:visible;margin-top:0}
+.skart{position:relative;inset:auto;height:230px}
+.skart svg{width:min(290px,82vw);height:220px}
+.pt-t{margin-top:22px}
+.orb5{height:340px}
+.orb5 .me b{bottom:-22px}
+.orb5 .me b{left:50%;right:auto;transform:translateX(-50%);white-space:nowrap}
