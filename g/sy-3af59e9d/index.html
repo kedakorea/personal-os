@@ -315,8 +315,8 @@ p.t{font-size:14.5px;line-height:2}
   <div class="chhead"><div class="k">CHAPTER 01</div><h4>저희 두 사람을 소개합니다</h4><p>그림을 옆으로 밀거나 ‹ › 를 눌러 넘겨 보세요</p></div>
   <div class="sk" id="skJ" style="--c:#516349;--tint:#dfe7d8"></div>
   <div class="sk" id="skY" style="--c:#832B33;--tint:#f4d9d9"></div>
-  <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>조각을 모아 하나가 됩니다</h4><p>흩어진 조각 4개를 손으로 끌어다 하트를 완성해 보세요</p></div>
-  <div class="puz" id="puz"><svg id="puzSvg" viewBox="0 0 100 100"></svg><div class="tip" id="puzTip">조각을 점선 하트 자리로 끌어 오세요 · 0 / 4</div></div>
+  <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>조각을 모아 하나가 됩니다</h4><p>흩어진 조각 4개를 하나씩 눌러 하트를 완성해 보세요</p></div>
+  <div class="puz" id="puz"><svg id="puzSvg" viewBox="0 0 100 100"></svg><div class="tip" id="puzTip">조각을 톡! 누르면 제자리로 쏙 · 0 / 4</div></div>
   <div class="usbox" id="usWrap"><div class="sk" id="skU" style="--c:#2f3a2b;--tint:#efe4c9"></div></div>
   <div class="nextbar"><button class="next" data-go="1">다음 이야기 ›</button></div>
  </section>
@@ -459,17 +459,9 @@ sketch('skJ','이정웅','든든하게 지키는 사람',J);sketch('skY','최유
  [...svg.querySelectorAll('.pc')].forEach((g,i)=>{const P={x:SPOT[i][0]-ctr[i][0],y:SPOT[i][1]-ctr[i][1],r:SPOT[i][2]};
   g.style.transformBox='fill-box';g.style.transformOrigin='center';
   const put=()=>g.style.transform='translate('+P.x+'px,'+P.y+'px) rotate('+P.r+'deg)';put();
-  let sx,sy,bx,by,drag=false;
-  const start=(x,y)=>{if(g.classList.contains('in'))return false;drag=true;sx=x;sy=y;bx=P.x;by=P.y;svg.appendChild(g);P.r=0;g.classList.add('hold');put();return true};
-  const move=(x,y)=>{if(!drag)return;const k=100/svg.getBoundingClientRect().width;P.x=bx+(x-sx)*k;P.y=by+(y-sy)*k;put()};
-  g.addEventListener('touchstart',e=>{const t=e.touches[0];if(start(t.clientX,t.clientY))e.preventDefault()},{passive:false});
-  window.addEventListener('touchmove',e=>{if(!drag)return;e.preventDefault();const t=e.touches[0];move(t.clientX,t.clientY)},{passive:false});
-  g.addEventListener('mousedown',e=>{if(start(e.clientX,e.clientY))e.preventDefault()});
-  window.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
-  const up=()=>{if(!drag)return;drag=false;g.classList.remove('hold');
-   if(Math.hypot(P.x,P.y)<16){P.x=P.y=0;g.style.transform='none';g.classList.add('in');got++;$('puzTip').textContent=got<4?'딱! '+got+' / 4':'완성!';
-    if(got===4)setTimeout(()=>{$('puz').classList.add('done');$('puzTip').textContent='딱 맞았어요! 우리 둘 ♥';confetti(16);$('usWrap').classList.add('show')},500)}};
-  window.addEventListener('touchend',up);window.addEventListener('touchcancel',up);window.addEventListener('mouseup',up)})})();
+  const snap=e=>{if(e)e.preventDefault();if(g.classList.contains('in'))return;svg.appendChild(g);P.x=P.y=P.r=0;g.style.transform='none';g.classList.add('in');got++;$('puzTip').textContent=got<4?'딱! '+got+' / 4':'완성!';
+   if(got===4)setTimeout(()=>{$('puz').classList.add('done');$('puzTip').textContent='딱 맞았어요! 우리 둘 ♥';confetti(16);$('usWrap').classList.add('show')},700)};
+  g.addEventListener('touchend',snap,{passive:false});g.addEventListener('click',snap)})})();
 
 // 장 넘기기 — 위로 미끄러지지 않게 바로 바꿈
 let cur=0;const chs=[...document.querySelectorAll('.ch')];

@@ -187,7 +187,7 @@ body{background:#ececec}
 .skrow button{background:#fff}
 .game{background:linear-gradient(#fff,#f7f7f7)}
 .mc.ok .b{background:#f5f5f5}
-.puz .pc{touch-action:none;cursor:grab}.puz .pc.hold{cursor:grabbing;filter:drop-shadow(0 3px 4px #0003)}.puz .pc.in{cursor:default}
+.puz .pc{cursor:pointer}.puz .pc.hold{cursor:grabbing;filter:drop-shadow(0 3px 4px #0003)}.puz .pc.in{cursor:default}
 .cakebtns{display:none;gap:8px;margin-top:14px}.cakebtns.show{display:flex;animation:pop .6s cubic-bezier(.3,1.4,.5,1)}
 .cakebtns button,.cmb button{flex:1;border:0;border-radius:14px;background:#832B33;color:#fff;padding:14px;font:800 15px Pretendard;cursor:pointer}
 .cakebtns .ghostb,.cmb .ghostb{flex:.5;background:#f0f0f0;color:#555}
