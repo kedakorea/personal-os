@@ -293,6 +293,8 @@ body.lock{overflow:hidden}
 .puz.done .hl,.puz.done .hr{transform:none!important;transition:transform .45s cubic-bezier(.5,1.8,.6,1)!important}
 .puz:not(.done) .hl{animation:hlw 2.2s ease-in-out infinite}.puz:not(.done) .hr{animation:hrw 2.2s ease-in-out infinite}
 @keyframes hlw{50%{translate:-4px 4px}}@keyframes hrw{50%{translate:4px -4px}}
+/* 아래 페이지 바에 '다음 이야기' 버튼이 가리지 않게 (2026-11-01) */
+#story.ov .ch{padding-bottom:calc(190px + env(safe-area-inset-bottom))}
 /* 창 닫기 눈에 띄게 */
 .sthead{padding:10px 12px}
 .sthead button{background:#832B33!important;color:#fff!important;padding:9px 15px!important;font:800 13.5px Pretendard,sans-serif!important;box-shadow:0 2px 8px #832b3355}
@@ -327,7 +329,8 @@ body.lock{overflow:hidden}
 .stagec .sk3{margin-top:18px;font:600 14px/1.7 Pretendard,sans-serif;background:#ffffff1a;border:1px solid #ffffff33;border-radius:14px;padding:12px 16px}
 .stagec .sk3::before{content:"🎯 미션  ";font-weight:800;color:#ffd75e}
 .stagec .sk4{margin-top:26px;font-size:12px;color:#ffffff99;animation:blink2 1.6s infinite}
-</style></head><body><div class="wrap">
+</style><script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js" crossorigin="anonymous"></script>
+</head><body><div class="wrap">
 
 <!-- 표지: 봉투에서 나온 편지 -->
 <section class="cover">
@@ -381,7 +384,7 @@ body.lock{overflow:hidden}
 </section>
 
 <!-- 오시는 길 -->
-<section>
+<section id="map">
  <h3 class="rv">오시는 길</h3>
  <p class="t rv">한정식 묵향<br>경기 부천시 원미구 중동로254번길 104<br>호정프라자 2층 206호 · 032-322-3481</p>
  <div class="map" style="margin-top:18px"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=%EA%B2%BD%EA%B8%B0%20%EB%B6%80%EC%B2%9C%EC%8B%9C%20%EC%9B%90%EB%AF%B8%EA%B5%AC%20%EC%A4%91%EB%8F%99%EB%A1%9C254%EB%B2%88%EA%B8%B8%20104&z=17&hl=ko&output=embed"></iframe></div>
@@ -792,11 +795,16 @@ function stageCard(n){$('scK').textContent='CHAPTER '+String(n+1).padStart(2,'0'
  const c=$('stagec');c.classList.remove('show');void c.offsetWidth;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),2600)}
 $('stagec').onclick=()=>$('stagec').classList.remove('show');
 
-// ===== 카톡 공유 (2026-11-01) — 휴대폰 공유창에서 카카오톡 선택 → 9번 사진이 크게 뜨는 미리보기 =====
-const SHARE_URL='https://mybrandium.com/1107/?s=2';
-$('kshare').onclick=async()=>{const d={title:'이정웅 · 최유정 상견례에 초대합니다',text:'2026년 11월 7일(토) 오후 1시 · 부천 신중동 한정식 묵향',url:SHARE_URL};
+// ===== 카톡 공유 (2026-11-01) — 카카오 공유 카드: 9번 사진 + [초대장 보기][위치보기] 버튼 =====
+const SHARE_URL='https://mybrandium.com/1107/';
+try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init('63c2c16eea85841bcb9b6836a975f259')}catch(e){}
+$('kshare').onclick=async()=>{
+ if(window.Kakao&&Kakao.isInitialized()){try{Kakao.Share.sendDefault({objectType:'feed',
+  content:{title:'이정웅 · 최유정 상견례에 초대합니다',description:'2026년 11월 7일(토) 오후 1시 · 부천 신중동 한정식 묵향',imageUrl:'https://mybrandium.com/1107/img/og_jeju.jpg',imageWidth:1200,imageHeight:900,link:{mobileWebUrl:SHARE_URL,webUrl:SHARE_URL}},
+  buttons:[{title:'초대장 보기',link:{mobileWebUrl:SHARE_URL,webUrl:SHARE_URL}},{title:'위치보기',link:{mobileWebUrl:SHARE_URL+'#map',webUrl:SHARE_URL+'#map'}}]});return}catch(e){}}
+ const d={title:'이정웅 · 최유정 상견례에 초대합니다',text:'2026년 11월 7일(토) 오후 1시 · 부천 신중동 한정식 묵향',url:SHARE_URL+'?s=2'};
  if(navigator.share){try{await navigator.share(d);return}catch(e){if(e.name==='AbortError')return}}
- try{await navigator.clipboard.writeText(SHARE_URL);$('sharemsg').textContent='주소를 복사했어요. 카카오톡 대화창에 붙여 넣어 주세요.'}catch(e){$('sharemsg').textContent=SHARE_URL}};
+ try{await navigator.clipboard.writeText(d.url);$('sharemsg').textContent='주소를 복사했어요. 카카오톡 대화창에 붙여 넣어 주세요.'}catch(e){$('sharemsg').textContent=d.url}};
 
 // 봉인 편지
 function openEnv(){const v=$('pw').value.trim();if(v==='0516'){$('env').classList.add('open');$('err').textContent='';confetti(26);
