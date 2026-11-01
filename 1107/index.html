@@ -3,7 +3,15 @@
 <meta name="robots" content="noindex,nofollow">
 <title>이정웅 ♥ 최유정 상견례 초대장</title>
 <meta property="og:type" content="website"><meta property="og:title" content="이정웅 ♥ 최유정 상견례 초대장"><meta property="og:description" content="11월 7일(토) 오후 1시 · 부천 묵향"><meta property="og:image" content="https://mybrandium.com/1107/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Dodum&family=Parisienne&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<!-- 2026-11-01: 한글 글꼴은 구글에서 조각으로 받다가 '분·최' 등이 다른 글꼴로 깨져서, 초대장 글자만 담아 직접 넣음(_글꼴만들기.py) -->
+<link rel="preload" href="fonts/nm700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Nanum Myeongjo";font-weight:400;src:url(fonts/nm400.woff2) format("woff2");font-display:block}
+@font-face{font-family:"Nanum Myeongjo";font-weight:700;src:url(fonts/nm700.woff2) format("woff2");font-display:block}
+@font-face{font-family:"Nanum Myeongjo";font-weight:800 900;src:url(fonts/nm800.woff2) format("woff2");font-display:block}
+@font-face{font-family:"Gowun Dodum";font-weight:400 900;src:url(fonts/gd400.woff2) format("woff2");font-display:block}
+</style>
 <style>
 :root{--ink:#383737;--sub:#6b6b6b;--green:#516349;--wax:#832B33;--line:#d9d3c8}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -233,7 +241,19 @@ p.t{font-size:14.5px;line-height:2}
 .cover{padding:26px 14px 30px}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="story.css?v=261026b"></head><body><div class="wrap">
+<link rel="stylesheet" href="story.css?v=261101"><style>/* 2026-11-01 대표님: 비밀번호 뒤 이야기 — 아래로 이어지지 않고 기존 화면 위로 열리는 창 */
+#story.ov{display:block;position:fixed;top:100%;bottom:auto;height:100%;left:0;right:0;margin:0 auto;width:100%;max-width:430px;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border-radius:18px 18px 0 0;box-shadow:0 -12px 40px #0004;transition:top .55s cubic-bezier(.2,.8,.2,1)}
+#story.ov.up{top:0;border-radius:0}
+#stDim{position:fixed;inset:0;background:#0007;z-index:39;opacity:0;pointer-events:none;transition:opacity .45s}
+#stDim.on{opacity:1;pointer-events:auto}
+.sthead{position:sticky;top:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fbfbfbf2;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid #ebe7df}
+.sthead b{font:700 14px "Nanum Myeongjo",serif;color:#2b2b2b}
+.sthead button{border:0;background:#f0ece4;color:#555;border-radius:20px;padding:7px 13px;font:700 13px Pretendard,sans-serif;cursor:pointer}
+body.lock{overflow:hidden}
+.pnav{z-index:50}.confetti,.heartfly{z-index:60}
+.reopen{display:none;margin:22px auto 0;border:0;border-radius:24px;background:#832B33;color:#fff;padding:12px 22px;font:700 14px "Nanum Myeongjo",serif;cursor:pointer}
+.reopen.show{display:inline-block}
+</style></head><body><div class="wrap">
 
 <!-- 표지: 봉투에서 나온 편지 -->
 <section class="cover">
@@ -302,16 +322,19 @@ p.t{font-size:14.5px;line-height:2}
  <div class="env" id="env"><img src="img/seal_heart.png" alt=""></div>
  <div class="pw" id="pwBox"><input id="pw" inputmode="numeric" maxlength="4" placeholder="····"><button class="btn" onclick="openEnv()">열기</button></div>
  <div class="err" id="err"></div>
- <p style="font-size:12px;color:#888">비밀번호는 그날 자리에서 알려 드리겠습니다</p>
+ <p style="font-size:12px;color:#888" id="pwHint">비밀번호는 그날 자리에서 알려 드리겠습니다</p>
+ <button class="reopen" id="reopen" onclick="openStory()">📖 이야기 다시 보기</button>
 </section>
 
+<div id="stDim" onclick="closeStory()"></div>
 <div id="story">
+<div class="sthead"><button onclick="closeStory()">✕ 닫기</button><b>저희가 준비한 이야기</b><span style="width:58px"></span></div>
 <svg width="0" height="0" style="position:absolute"><filter id="wob"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter></svg>
 <div class="book" id="book">
 
  <!-- 01 -->
  <section class="ch on" data-n="0">
-  <div class="chhead"><div class="k">CHAPTER 01 <span>/ 06</span></div><h4>저희 두 사람을 소개합니다</h4><p>그림을 옆으로 밀거나 ‹ › 를 눌러 넘겨 보세요</p></div>
+  <div class="chhead"><div class="k">CHAPTER 01 <span>/ 05</span></div><h4>저희 두 사람을 소개합니다</h4><p>그림을 옆으로 밀거나 ‹ › 를 눌러 넘겨 보세요</p></div>
   <div class="sk" id="skJ" style="--c:#516349;--tint:#dfe7d8"></div>
   <div class="sk" id="skY" style="--c:#832B33;--tint:#f4d9d9"></div>
   <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>반쪽 둘이 만나 하나가 됩니다</h4><p>하트를 톡! 눌러 보세요</p></div>
@@ -322,14 +345,7 @@ p.t{font-size:14.5px;line-height:2}
 
  <!-- 02 -->
  <section class="ch" data-n="1">
-  <div class="chhead"><div class="k">CHAPTER 02 <span>/ 06</span></div><h4>이럴 때 정웅이는 뭐라고 했을까요?</h4><p>실제로 저희가 나눈 대화입니다. 정웅이의 답장을 골라 보세요 🙂</p></div>
-  <div id="quizBox"></div>
-  <div class="nextbar"><button class="prev" data-go="0">‹</button><button class="next" data-go="2">다음 이야기 ›</button></div>
- </section>
-
- <!-- 03 -->
- <section class="ch" data-n="2">
-  <div class="chhead"><div class="k">CHAPTER 03 <span>/ 06</span></div><h4>재미로 본 저희의 궁합</h4><p>주변을 떠다니는 오행 중에서<br>각자의 기운을 찾아 눌러 보세요</p></div>
+  <div class="chhead"><div class="k">CHAPTER 02 <span>/ 05</span></div><h4>재미로 본 저희의 궁합</h4><p>주변을 떠다니는 오행 중에서<br>각자의 기운을 찾아 눌러 보세요</p></div>
   <div class="orbt" id="orbT">1. 유정이의 기운은 무엇일까요?</div>
   <div class="orb5" id="orb"></div>
   <div class="elx" id="elx">맞는 걸 누르면 커지고, 틀리면 꽝!</div>
@@ -345,31 +361,31 @@ p.t{font-size:14.5px;line-height:2}
     <p id="skyP"></p>
    </div>
   </div>
-  <div class="nextbar"><button class="prev" data-go="1">‹</button><button class="next" data-go="3">다음 이야기 ›</button></div>
+  <div class="nextbar"><button class="prev" data-go="0">‹</button><button class="next" data-go="2">다음 이야기 ›</button></div>
  </section>
 
- <!-- 04 -->
- <section class="ch" data-n="3">
-  <div class="chhead"><div class="k">CHAPTER 04 <span>/ 06</span></div><h4>결혼 준비로 웨딩 케이크 쌓기</h4><p>움직이는 케이크 층이 아래 층 위에 올 때<br>화면을 톡! 눌러 주세요</p></div>
+ <!-- 03 -->
+ <section class="ch" data-n="2">
+  <div class="chhead"><div class="k">CHAPTER 03 <span>/ 05</span></div><h4>결혼 준비로 웨딩 케이크 쌓기</h4><p>움직이는 케이크 층이 아래 층 위에 올 때<br>화면을 톡! 눌러 주세요</p></div>
   <div class="game" id="game"><div class="ghud"><span id="gN">0 / 8 층</span><span id="gP">0%</span></div><div class="gmsg" id="gMsg"></div><div class="tower" id="tower"></div></div>
   <div class="gbar"><i id="gBar"></i></div>
   <div class="gtip" id="gTip">지금까지 준비한 8가지로 케이크를 쌓아 주세요</div>
   <div class="cakebtns" id="cakeBtns"><button id="cakeSave">🎂 내 케이크 사진으로 남기기</button><button id="cakeAgain" class="ghostb">다시 쌓기</button></div>
   <div class="cakemodal" id="cakeModal"><div class="cm"><img id="cakeImg" alt="우리 웨딩 케이크"><p>사진을 길게 누르면 사진 앱에 저장할 수도 있어요</p><div class="cmb"><button id="cakeShare">📥 사진 저장 · 공유</button><button id="cakeClose" class="ghostb">닫기</button></div></div></div>
-  <div class="nextbar"><button class="prev" data-go="2">‹</button><button class="next" data-go="4">다음 이야기 ›</button></div>
+  <div class="nextbar"><button class="prev" data-go="1">‹</button><button class="next" data-go="3">다음 이야기 ›</button></div>
+ </section>
+
+ <!-- 04 -->
+ <section class="ch" data-n="3">
+  <div class="chhead"><div class="k">CHAPTER 04 <span>/ 05</span></div><h4>앞으로 이렇게 살겠습니다</h4><p>같은 그림 두 장을 찾으면 약속이 하나씩 열립니다</p></div>
+  <div class="mem" id="mem"></div>
+  <div class="vows" id="vows"></div>
+  <div class="nextbar"><button class="prev" data-go="2">‹</button><button class="next" data-go="4">마지막 이야기 ›</button></div>
  </section>
 
  <!-- 05 -->
  <section class="ch" data-n="4">
-  <div class="chhead"><div class="k">CHAPTER 05 <span>/ 06</span></div><h4>앞으로 이렇게 살겠습니다</h4><p>같은 그림 두 장을 찾으면 약속이 하나씩 열립니다</p></div>
-  <div class="mem" id="mem"></div>
-  <div class="vows" id="vows"></div>
-  <div class="nextbar"><button class="prev" data-go="3">‹</button><button class="next" data-go="5">마지막 이야기 ›</button></div>
- </section>
-
- <!-- 06 -->
- <section class="ch" data-n="5">
-  <div class="chhead"><div class="k">CHAPTER 06 <span>/ 06</span> · LAST</div><h4>10초 동안 풍선을 터뜨려 주세요</h4><p>올라오는 풍선을 톡톡! 풍선마다 점수가 달라요<br>끝나면 마지막 편지가 열립니다</p></div>
+  <div class="chhead"><div class="k">CHAPTER 05 <span>/ 05</span> · LAST</div><h4>10초 동안 풍선을 터뜨려 주세요</h4><p>올라오는 풍선을 톡톡! 풍선마다 점수가 달라요<br>끝나면 마지막 편지가 열립니다</p></div>
   <div class="field" id="field">
    <div class="board" id="board">READY<small>남은 시간 10초 · 0점</small></div>
    <div class="howto" id="howto">풍선에 적힌 숫자가 점수!<br>작고 빠른 풍선일수록 높아요 · ✨금색 10점</div>
@@ -382,10 +398,10 @@ p.t{font-size:14.5px;line-height:2}
   </div>
   <div class="save" id="save"><input id="nm" maxlength="20" placeholder="이름 (예: 이정웅)"><button id="saveBtn">랭킹에 올리기</button></div>
   <div class="rank"><h6>🏆 오늘의 랭킹</h6><ul id="rank"><li><span>불러오는 중…</span></li></ul></div>
-  <div class="nextbar"><button class="prev" data-go="4">‹ 앞 이야기</button><button class="next" data-go="0">처음부터 다시 보기</button></div>
+  <div class="nextbar"><button class="prev" data-go="3">‹ 앞 이야기</button><button class="next" data-go="0">처음부터 다시 보기</button></div>
  </section>
 </div>
-<nav class="pnav" id="pnav"><div class="pnow" id="pnow"><b>1</b> / 6 페이지 · 소개</div><div class="prow"><button class="pp" id="pPrev" aria-label="앞 페이지">‹</button><div class="chips" id="dots"><button class="on seen"><b>1</b>소개</button><button><b>2</b>퀴즈</button><button><b>3</b>궁합</button><button><b>4</b>케이크</button><button><b>5</b>약속</button><button><b>6</b>풍선</button></div><button class="pp" id="pNext" aria-label="다음 페이지">›</button></div></nav>
+<nav class="pnav" id="pnav"><div class="pnow" id="pnow"><b>1</b> / 5 페이지 · 소개</div><div class="prow"><button class="pp" id="pPrev" aria-label="앞 페이지">‹</button><div class="chips" id="dots"><button class="on seen"><b>1</b>소개</button><button><b>2</b>궁합</button><button><b>3</b>케이크</button><button><b>4</b>약속</button><button><b>5</b>풍선</button></div><button class="pp" id="pNext" aria-label="다음 페이지">›</button></div></nav>
 </div>
 
 <div class="foot">이정웅 · 최유정</div>
@@ -452,17 +468,17 @@ sketch('skJ','이정웅','든든하게 지키는 사람',J);sketch('skY','최유
 let cur=0;const chs=[...document.querySelectorAll('.ch')];
 function goCh(n){if(n===cur)return;const a=chs[cur],b=chs[n];a.classList.add('out');
  setTimeout(()=>{a.classList.remove('on','out');b.classList.add('on','inR');const html=document.documentElement,old=html.style.scrollBehavior;html.style.scrollBehavior='auto';
-  window.scrollTo(0,$('story').getBoundingClientRect().top+window.scrollY);html.style.scrollBehavior=old;
+  $('story').scrollTop=0;html.style.scrollBehavior=old;
   setTimeout(()=>b.classList.remove('inR'),600)},180);
  cur=n;setNav();
- if(n===2)setTimeout(startOrb,250);if(n===3)setTimeout(startGame,250);if(n===5)loadRank()}
+ if(n===1)setTimeout(startOrb,250);if(n===2)setTimeout(startGame,250);if(n===4)loadRank()}
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goCh(+b.dataset.go));
 [...$('dots').children].forEach((d,i)=>d.onclick=()=>goCh(i));
 // 맨 아래 페이지 이동 바 (2026-10-26)
-const NM=['소개','퀴즈','궁합','케이크','약속','풍선'];
+const NM=['소개','궁합','케이크','약속','풍선'];
 function setNav(){[...$('dots').children].forEach((d,i)=>{d.classList.toggle('on',i===cur);if(i===cur)d.classList.add('seen')});
- $('pnow').innerHTML='<b>'+(cur+1)+'</b> / 6 페이지 · '+NM[cur];$('pPrev').disabled=cur===0;$('pNext').disabled=cur===5}
-$('pPrev').onclick=()=>{if(cur>0)goCh(cur-1)};$('pNext').onclick=()=>{if(cur<5)goCh(cur+1)};setNav();
+ $('pnow').innerHTML='<b>'+(cur+1)+'</b> / 5 페이지 · '+NM[cur];$('pPrev').disabled=cur===0;$('pNext').disabled=cur===4}
+$('pPrev').onclick=()=>{if(cur>0)goCh(cur-1)};$('pNext').onclick=()=>{if(cur<4)goCh(cur+1)};setNav();
 new IntersectionObserver(es=>es.forEach(e=>{$('pnav').classList.toggle('show',e.isIntersecting);document.body.classList.toggle('navon',e.isIntersecting)})).observe($('book'));
 
 // 2장 아이메시지 퀴즈
@@ -479,7 +495,7 @@ function quiz(){const q=Q[qi],opts=q[2].map((t,k)=>({t,ok:k===0})).sort(()=>Math
    $('imq').querySelectorAll('.opt').forEach(x=>x.style.display='none');$('imq').querySelector('.q').classList.add('hide');$('ok1').textContent=miss?'이게 정답이었어요 😊':'정답! 🎉';$('ok1').classList.add('show');$('qn').classList.add('show');burst($('ok1'))}
   else if(!b.classList.contains('no')){b.classList.add('no');miss=1;b.textContent='땡! '+b.textContent}});
  $('qn').onclick=()=>{qi++;if(qi<Q.length)quiz();else{$('quizBox').innerHTML='<div class="im" style="text-align:center;padding:28px 18px"><div style="font-size:44px">'+(score>=Q.length-1?'🎉':'😊')+'</div><div style="font:800 19px Pretendard;margin-top:8px">'+Q.length+'문제 중 '+score+'문제 정답!</div><p style="font-size:15px;line-height:1.8;color:#555;margin-top:6px">'+(score>=Q.length-1?'벌써 정웅이를 아주 잘 아시네요':'앞으로 더 자주 보여 드릴게요')+'</p><button class="qnext show" id="qre">다시 풀기</button></div>';$('qre').onclick=()=>{qi=0;score=0;quiz()};confetti(score*4)}}}
-quiz();
+// 2026-11-01 대표님: 퀴즈 장 삭제 — quiz() 호출 안 함
 
 // 3장 오행 찾기
 const EL5=[['火','불','#f7c9bb'],['水','물','#cfe3f1'],['木','나무','#d5e6c9'],['土','흙','#ecdcc0'],['金','쇠','#f3e3a9']];
@@ -613,10 +629,12 @@ $('saveBtn').onclick=async()=>{const nm=$('nm').value.trim();if(!nm){$('nm').foc
 
 // 봉인 편지
 function openEnv(){const v=$('pw').value.trim();if(v==='0516'){$('env').classList.add('open');$('err').textContent='';confetti(26);
-  setTimeout(()=>{$('story').style.display='block';$('story').scrollIntoView({behavior:'smooth'})},900);localStorage.ok=1}
+  setTimeout(openStory,900);localStorage.ok=1;$('reopen').classList.add('show')}
  else{$('err').textContent='비밀번호를 다시 확인해 주세요';$('pwBox').classList.remove('shake');void $('pwBox').offsetWidth;$('pwBox').classList.add('shake')}}
 function confetti(n){for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.textContent=['♥','✿','✦','❀'][i%4];c.style.left=Math.random()*100+'vw';c.style.color=['#832B33','#c9a86a','#516349','#bb7273'][i%4];c.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500)}}
-if(localStorage.ok){$('story').style.display='block';$('env').classList.add('open')}
+function openStory(){const st=$('story');st.classList.add('ov');st.scrollTop=0;document.body.classList.add('lock');$('stDim').classList.add('on');requestAnimationFrame(()=>requestAnimationFrame(()=>st.classList.add('up')))}
+function closeStory(){const st=$('story');st.classList.remove('up');$('stDim').classList.remove('on');document.body.classList.remove('lock');$('pnav').classList.remove('show');setTimeout(()=>st.classList.remove('ov'),560)}
+if(localStorage.ok){$('env').classList.add('open');$('reopen').classList.add('show')}
 $('pw').addEventListener('keydown',e=>{if(e.key==='Enter')openEnv()});
 </script>
 </body></html>
