@@ -253,6 +253,48 @@ body.lock{overflow:hidden}
 .pnav{z-index:50}.confetti,.heartfly{z-index:60}
 .reopen{display:none;margin:22px auto 0;border:0;border-radius:24px;background:#832B33;color:#fff;padding:12px 22px;font:700 14px "Nanum Myeongjo",serif;cursor:pointer}
 .reopen.show{display:inline-block}
+</style><style>/* 갤러리 */
+.gal{text-align:center}
+.ggrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:22px}
+.ggrid button{border:0;padding:0;background:#eee;aspect-ratio:3/4;overflow:hidden;cursor:pointer;border-radius:2px}
+.ggrid button:nth-child(5n+1){grid-column:span 2;aspect-ratio:4/3}
+.ggrid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.ggrid button:active img{transform:scale(1.04)}
+.lb{position:fixed;inset:0;z-index:70;background:#111f;display:none;flex-direction:column;color:#fff}
+.lb.show{display:flex}
+.lbtop{display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;font:600 13px Pretendard,sans-serif}
+.lbtop button{border:0;background:none;color:#fff;font-size:22px;cursor:pointer}
+.lbimg{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y}
+.lbimg img{max-width:100%;max-height:100%;object-fit:contain;-webkit-touch-callout:default;transition:opacity .25s}
+.lbbot{display:flex;justify-content:center;align-items:center;gap:14px;padding:12px 16px 4px}
+.lbar{border:0;background:#ffffff1f;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer}
+.lbsave{border:0;background:#fff;color:#2b2b2b;border-radius:24px;padding:13px 26px;font:800 15px Pretendard,sans-serif;cursor:pointer}
+.lbtip{font-size:11.5px;color:#aaa;text-align:center;padding:6px 0 calc(14px + env(safe-area-inset-bottom))}
+</style><style>/* 튜토리얼·장 시작 카드 */
+.pro{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100% - 52px);padding:30px 24px 40px;text-align:center;cursor:pointer}
+.pro.show{display:flex}
+.prok{font:700 11px Pretendard,sans-serif;letter-spacing:.3em;color:#516349;background:#eef1ea;padding:6px 12px;border-radius:20px}
+.proart{min-height:150px;display:flex;align-items:center;justify-content:center;margin:26px 0 10px;font-size:64px}
+.proart img{width:96px;animation:pop .7s cubic-bezier(.3,1.4,.5,1)}
+.proart .stages{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.proart .stg{width:58px;padding:9px 0 7px;border-radius:12px;background:#fff;border:1.5px solid #e4dfd5;font:700 11px Pretendard,sans-serif;color:#555;opacity:0;animation:stgin .45s forwards}
+.proart .stg i{display:block;font-style:normal;font-size:24px;margin-bottom:4px}
+@keyframes stgin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.probub{position:relative;background:#fff;border:1.5px solid #2b2b2b;border-radius:18px;padding:18px 18px;max-width:330px;font:600 15.5px/1.75 Pretendard,sans-serif;color:#2b2b2b;min-height:96px;box-shadow:4px 4px 0 #2b2b2b}
+.probub b{color:#832B33}
+.proctl{display:flex;gap:10px;margin-top:26px}
+.proctl button{border:0;border-radius:24px;padding:12px 22px;font:800 14.5px Pretendard,sans-serif;cursor:pointer}
+.proskip{background:#efece6;color:#777}.pronext{background:#832B33;color:#fff;min-width:150px}
+.protap{margin-top:14px;font-size:11.5px;color:#aaa;animation:blink2 1.6s infinite}
+@keyframes blink2{50%{opacity:.35}}
+.stagec{position:fixed;inset:0;z-index:45;display:none;flex-direction:column;align-items:center;justify-content:center;background:#1d241b;color:#fff;text-align:center;padding:30px;cursor:pointer}
+.stagec.show{display:flex;animation:scin .4s ease}
+@keyframes scin{from{opacity:0}to{opacity:1}}
+.stagec .sk1{font:700 12px Pretendard,sans-serif;letter-spacing:.4em;color:#c9d6bf}
+.stagec .sk2{font:800 25px/1.4 "Nanum Myeongjo",serif;margin-top:14px;animation:pop .6s cubic-bezier(.3,1.4,.5,1)}
+.stagec .sk3{margin-top:18px;font:600 14px/1.7 Pretendard,sans-serif;background:#ffffff1a;border:1px solid #ffffff33;border-radius:14px;padding:12px 16px}
+.stagec .sk3::before{content:"🎯 미션  ";font-weight:800;color:#ffd75e}
+.stagec .sk4{margin-top:26px;font-size:12px;color:#ffffff99;animation:blink2 1.6s infinite}
 </style></head><body><div class="wrap">
 
 <!-- 표지: 봉투에서 나온 편지 -->
@@ -315,6 +357,18 @@ body.lock{overflow:hidden}
  <div class="how rv"><b>🚆 지하철</b>7호선 신중동역 3번 출구에서 약 260m, 도보 4분<b>🚗 자차</b>호정프라자 지하주차장 · 묵향 이용 시 2시간 무료<b>📞 식당</b><a href="tel:0323223481" style="color:inherit">032-322-3481</a></div>
 </section>
 
+<!-- 제주 스냅 갤러리 (2026-11-01 대표님) -->
+<section class="gal">
+ <div class="en rv">JEJU · OCT 2026</div>
+ <h3 class="rv" style="margin-top:8px">제주에서의 하루</h3>
+ <p class="t rv">결혼 사진을 미리 조금 담아 왔습니다.<br>사진을 누르면 크게 보고 저장하실 수 있어요.</p>
+ <div class="ggrid" id="ggrid"></div>
+</section>
+<div class="lb" id="lb"><div class="lbtop"><span id="lbN">1 / 12</span><button onclick="lbClose()">✕</button></div>
+ <div class="lbimg" id="lbImgWrap"><img id="lbImg" alt="제주 스냅"></div>
+ <div class="lbbot"><button class="lbar" onclick="lbGo(-1)">‹</button><button class="lbsave" onclick="lbSave()">📥 사진 저장</button><button class="lbar" onclick="lbGo(1)">›</button></div>
+ <p class="lbtip">옆으로 밀어 넘겨 보세요 · 저장이 안 되면 사진을 길게 눌러 주세요</p></div>
+
 <!-- 봉인된 편지 -->
 <section class="letter" id="envSec">
  <h3 class="rv">봉인된 편지</h3>
@@ -323,13 +377,22 @@ body.lock{overflow:hidden}
  <div class="pw" id="pwBox"><input id="pw" inputmode="numeric" maxlength="4" placeholder="····"><button class="btn" onclick="openEnv()">열기</button></div>
  <div class="err" id="err"></div>
  <p style="font-size:12px;color:#888" id="pwHint">비밀번호는 그날 자리에서 알려 드리겠습니다</p>
- <button class="reopen" id="reopen" onclick="openStory()">📖 이야기 다시 보기</button>
+ <button class="reopen" id="reopen" onclick="openStory(0)">📖 이야기 이어 보기</button> <button class="reopen ghost" id="reopen2" onclick="openStory(1)" style="background:#efece6;color:#555">처음 안내부터</button>
 </section>
 
 <div id="stDim" onclick="closeStory()"></div>
 <div id="story">
 <div class="sthead"><button onclick="closeStory()">✕ 닫기</button><b>저희가 준비한 이야기</b><span style="width:58px"></span></div>
 <svg width="0" height="0" style="position:absolute"><filter id="wob"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter></svg>
+<!-- 튜토리얼 (2026-11-01 대표님: 편지를 열면 게임 안내처럼 자연스럽게 이어지게) -->
+<div class="pro" id="pro">
+ <div class="prok" id="proK">TUTORIAL 1 / 4</div>
+ <div class="proart" id="proArt"></div>
+ <div class="probub" id="proBub"></div>
+ <div class="proctl"><button class="proskip" id="proSkip">건너뛰기</button><button class="pronext" id="proNext">다음 ›</button></div>
+ <div class="protap" id="proTap">화면을 눌러도 넘어가요</div>
+</div>
+<div class="stagec" id="stagec"><div class="sk1" id="scK">CHAPTER 01</div><div class="sk2" id="scT"></div><div class="sk3" id="scM"></div><div class="sk4">톡 눌러 시작</div></div>
 <div class="book" id="book">
 
  <!-- 01 -->
@@ -470,7 +533,7 @@ function goCh(n){if(n===cur)return;const a=chs[cur],b=chs[n];a.classList.add('ou
  setTimeout(()=>{a.classList.remove('on','out');b.classList.add('on','inR');const html=document.documentElement,old=html.style.scrollBehavior;html.style.scrollBehavior='auto';
   $('story').scrollTop=0;html.style.scrollBehavior=old;
   setTimeout(()=>b.classList.remove('inR'),600)},180);
- cur=n;setNav();
+ cur=n;setNav();setTimeout(()=>stageCard(n),200);
  if(n===1)setTimeout(startOrb,250);if(n===2)setTimeout(startGame,250);if(n===4)loadRank()}
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>goCh(+b.dataset.go));
 [...$('dots').children].forEach((d,i)=>d.onclick=()=>goCh(i));
@@ -627,14 +690,54 @@ async function loadRank(){try{const r=await fetch(SB_URL+'/rest/v1/game_scores?g
 $('saveBtn').onclick=async()=>{const nm=$('nm').value.trim();if(!nm){$('nm').focus();return}$('saveBtn').disabled=true;
  try{await fetch(SB_URL+'/rest/v1/game_scores',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({game:'sangyeon1107',name:nm.slice(0,20),score:Math.min(999,bg.pt),detail:'풍선 '+bg.n+'개'})});myName=nm.slice(0,20).trim().replace(/\s+/g,' ');$('save').classList.remove('show');loadRank()}catch(e){alert('잠시 뒤 다시 눌러 주세요')}$('saveBtn').disabled=false};
 
+
+// ===== 제주 스냅 갤러리 (2026-11-01) =====
+const GN=12;let gi=0;
+(function(){const g=$('ggrid');for(let i=1;i<=GN;i++){const n=String(i).padStart(2,'0');const b=document.createElement('button');b.innerHTML='<img loading="lazy" src="img/gallery/g'+n+'.jpg" alt="제주 스냅 '+i+'">';b.onclick=()=>lbOpen(i-1);g.append(b)}})();
+function lbShow(){const n=String(gi+1).padStart(2,'0');$('lbImg').style.opacity=0;$('lbImg').onload=()=>$('lbImg').style.opacity=1;$('lbImg').src='img/gallery/g'+n+'.jpg';$('lbN').textContent=(gi+1)+' / '+GN}
+function lbOpen(i){gi=i;lbShow();$('lb').classList.add('show');document.body.classList.add('lock')}
+function lbClose(){$('lb').classList.remove('show');if(!$('story').classList.contains('ov'))document.body.classList.remove('lock')}
+function lbGo(d){gi=(gi+d+GN)%GN;lbShow()}
+async function lbSave(){const n=String(gi+1).padStart(2,'0'),name='정웅유정_제주스냅_'+n+'.jpg',url='img/gallery/s'+n+'.jpg';
+ try{const blob=await (await fetch(url)).blob();const file=new File([blob],name,{type:'image/jpeg'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){if(e&&e.name==='AbortError')return;window.open(url,'_blank')}}
+(function(){let sx=null;const w=$('lbImgWrap');w.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});w.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>40)lbGo(dx<0?1:-1)});
+ document.addEventListener('keydown',e=>{if(!$('lb').classList.contains('show'))return;if(e.key==='ArrowRight')lbGo(1);if(e.key==='ArrowLeft')lbGo(-1);if(e.key==='Escape')lbClose()})})();
+
+
+// ===== 튜토리얼 · 장 시작 카드 (2026-11-01) =====
+const MIS=['그림을 옆으로 넘겨 두 사람을 알아보고, 하트를 눌러 하나로 만들어 주세요','떠다니는 오행 중에서 두 사람의 기운을 찾아 눌러 주세요','움직이는 케이크 층이 아래 층 위에 올 때 톡! 눌러 8층을 쌓아 주세요','같은 그림 두 장을 찾아 약속을 하나씩 열어 주세요','10초 동안 풍선을 톡톡 터뜨리면 마지막 편지가 열립니다'];
+const TTL=['저희 두 사람을 소개합니다','재미로 본 저희의 궁합','결혼 준비로 웨딩 케이크 쌓기','앞으로 이렇게 살겠습니다','마지막 편지 — 풍선 터뜨리기'];
+const STG=[['💑','소개'],['🔮','궁합'],['🎂','케이크'],['💍','약속'],['🎈','풍선']];
+const PRO=[
+ {art:'<img src="img/seal_heart.png" alt="">',t:'<b>봉인이 풀렸습니다!</b><br>편지를 열어 주셔서 감사합니다.<br>지금부터 저희 두 사람이 준비한 이야기가 시작됩니다.'},
+ {art:'stages',t:'이야기는 모두 <b>다섯 장</b>이에요.<br>장마다 <b>작은 미션</b>이 하나씩 숨어 있어요.'},
+ {art:'👆',t:'조작은 간단해요.<br><b>톡 누르기</b>와 <b>옆으로 밀기</b>면 충분합니다.<br>화면 아래 <b>페이지 바</b>로 언제든 다른 장으로 갈 수 있어요.'},
+ {art:'💌',t:'마지막 미션까지 마치면<br><b>저희의 마지막 편지</b>가 열립니다.<br>준비되셨나요?'}];
+let ps=0,typing=null;
+function proDraw(){const it=PRO[ps];$('proK').textContent='TUTORIAL '+(ps+1)+' / '+PRO.length;
+ $('proArt').innerHTML=it.art==='stages'?'<div class="stages">'+STG.map((x,i)=>'<div class="stg" style="animation-delay:'+(i*.12)+'s"><i>'+x[0]+'</i>'+(i+1)+'. '+x[1]+'</div>').join('')+'</div>':(it.art.startsWith('<')?it.art:'<span style="display:inline-block;animation:pop .7s cubic-bezier(.3,1.4,.5,1)">'+it.art+'</span>');
+ const b=$('proBub');clearInterval(typing);const full=it.t;let k=0;b.innerHTML='';
+ typing=setInterval(()=>{k+=2;if(full[k-1]==='<'||full[k-2]==='<'){const e=full.indexOf('>',k-2);if(e>0)k=e+1}b.innerHTML=full.slice(0,k);if(k>=full.length){clearInterval(typing);typing=null}},28);
+ $('proNext').textContent=ps===PRO.length-1?'▶ 이야기 시작하기':'다음 ›'}
+function proNext(){if(typing){clearInterval(typing);typing=null;$('proBub').innerHTML=PRO[ps].t;return}if(ps<PRO.length-1){ps++;proDraw()}else proEnd()}
+function proStart(){ps=0;$('pro').classList.add('show');$('book').style.display='none';proDraw()}
+function proEnd(){clearInterval(typing);$('pro').classList.remove('show');$('book').style.display='';$('story').scrollTop=0;stageCard(cur)}
+$('pro').addEventListener('click',e=>{if(e.target.closest('.proskip'))return;proNext()});
+$('proSkip').onclick=e=>{e.stopPropagation();proEnd()};
+function stageCard(n){$('scK').textContent='CHAPTER '+String(n+1).padStart(2,'0')+' / 05';$('scT').textContent=TTL[n];$('scM').textContent=MIS[n];
+ const c=$('stagec');c.classList.remove('show');void c.offsetWidth;c.classList.add('show');clearTimeout(c._t);c._t=setTimeout(()=>c.classList.remove('show'),2600)}
+$('stagec').onclick=()=>$('stagec').classList.remove('show');
+
 // 봉인 편지
 function openEnv(){const v=$('pw').value.trim();if(v==='0516'){$('env').classList.add('open');$('err').textContent='';confetti(26);
-  setTimeout(openStory,900);localStorage.ok=1;$('reopen').classList.add('show')}
+  setTimeout(()=>openStory(1),900);localStorage.ok=1;$('reopen').classList.add('show');$('reopen2').classList.add('show')}
  else{$('err').textContent='비밀번호를 다시 확인해 주세요';$('pwBox').classList.remove('shake');void $('pwBox').offsetWidth;$('pwBox').classList.add('shake')}}
 function confetti(n){for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.textContent=['♥','✿','✦','❀'][i%4];c.style.left=Math.random()*100+'vw';c.style.color=['#832B33','#c9a86a','#516349','#bb7273'][i%4];c.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500)}}
-function openStory(){const st=$('story');st.classList.add('ov');st.scrollTop=0;document.body.classList.add('lock');$('stDim').classList.add('on');requestAnimationFrame(()=>requestAnimationFrame(()=>st.classList.add('up')))}
+function openStory(tut){const st=$('story');if(tut)proStart();else{$('pro').classList.remove('show');$('book').style.display=''}st.classList.add('ov');st.scrollTop=0;document.body.classList.add('lock');$('stDim').classList.add('on');requestAnimationFrame(()=>requestAnimationFrame(()=>st.classList.add('up')))}
 function closeStory(){const st=$('story');st.classList.remove('up');$('stDim').classList.remove('on');document.body.classList.remove('lock');$('pnav').classList.remove('show');setTimeout(()=>st.classList.remove('ov'),560)}
-if(localStorage.ok){$('env').classList.add('open');$('reopen').classList.add('show')}
+if(localStorage.ok){$('env').classList.add('open');$('reopen').classList.add('show');$('reopen2').classList.add('show')}
 $('pw').addEventListener('keydown',e=>{if(e.key==='Enter')openEnv()});
 </script>
 </body></html>
