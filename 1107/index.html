@@ -466,9 +466,10 @@ body.lock{overflow:hidden}
    <div class="kname kjn">정웅</div><div class="kname kyn">유정</div>
   </div>
   <div class="tcard" id="tcard"><div class="tcempty">말풍선을 누르면 여기에 이야기가 나와요</div></div>
+  <div class="ch1and" style="display:none"><!-- 2026-11-01 대표님: 함께라서 좋은 점은 5장 약속과 겹쳐서 1장에서 뺌 -->
   <div class="chhead" style="margin:10px 0 0"><div class="k">AND</div><h4>반쪽 둘이 만나 하나가 됩니다</h4><p>떨어져 있는 반쪽 하트를 톡! 눌러 보세요</p></div>
   <div class="puz" id="puz"><svg id="puzSvg" viewBox="0 0 100 100"></svg><div class="tip" id="puzTip">👆 아무 데나 톡!</div></div>
-  <div class="usbox" id="usWrap"><div class="sk" id="skU" style="--c:#2f3a2b;--tint:#efe4c9"></div></div>
+  <div class="usbox" id="usWrap"><div class="sk" id="skU" style="--c:#2f3a2b;--tint:#efe4c9"></div></div></div>
   <div class="nextbar"><button class="next" data-go="1">다음 이야기 ›</button></div>
  </section>
 
@@ -780,7 +781,7 @@ function lbGo(d){gi=(gi+d+GN)%GN;lbShow()}
  document.addEventListener('keydown',e=>{if(!$('lb').classList.contains('show'))return;if(e.key==='ArrowRight')lbGo(1);if(e.key==='ArrowLeft')lbGo(-1);if(e.key==='Escape')lbClose()})})();
 
 // ===== 튜토리얼 · 장 시작 카드 (2026-11-01) =====
-const MIS=['두 사람 머리 위 말풍선을 눌러 장점을 알아보고, 떨어진 반쪽 하트를 톡 눌러 붙여 주세요','떠다니는 오행 중에서 두 사람의 기운을 찾아 눌러 주세요','움직이는 케이크 층이 아래 층 위에 올 때 톡! 눌러 8층을 쌓아 주세요','같은 그림 두 장을 찾아 약속을 하나씩 열어 주세요','10초 동안 풍선을 톡톡 터뜨리면 마지막 편지가 열립니다'];
+const MIS=['두 사람 머리 위 말풍선을 눌러 서로의 장점을 알아봐 주세요','떠다니는 오행 중에서 두 사람의 기운을 찾아 눌러 주세요','움직이는 케이크 층이 아래 층 위에 올 때 톡! 눌러 8층을 쌓아 주세요','같은 그림 두 장을 찾아 약속을 하나씩 열어 주세요','10초 동안 풍선을 톡톡 터뜨리면 마지막 편지가 열립니다'];
 const TTL=['저희 두 사람을 소개합니다','재미로 본 저희의 궁합','결혼 준비로 웨딩 케이크 쌓기','앞으로 이렇게 살겠습니다','마지막 편지 — 풍선 터뜨리기'];
 const STG=[['💑','소개'],['🔮','궁합'],['🎂','케이크'],['💍','약속'],['🎈','풍선']];
 const PRO=[
