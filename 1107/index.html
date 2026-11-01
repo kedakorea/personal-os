@@ -594,7 +594,7 @@ sketch('skU','우리 둘','함께라서 더 좋은 점',US);
  [[J,PJ,'j','정웅','#516349'],[Y,PY,'y','유정','#832B33']].forEach(([data,pos,who,nm,col])=>data.forEach((it,i)=>{
   const b=document.createElement('button');b.className='bub2 '+who;b.style.left=pos[i][0]+'%';b.style.top=pos[i][1]+'%';b.style.animationDelay=(-Math.random()*3).toFixed(2)+'s';b.innerHTML=EM[it[0]];
   b.onclick=()=>{box.querySelectorAll('.bub2').forEach(x=>x.classList.remove('sel'));b.classList.add('sel','seen');seen.add(who+i);$('duoCnt').textContent=seen.size;
-   $('tcard').innerHTML='<div class="tcw" style="--c:'+col+'"><div class="tcn">'+nm+'의 장점 · '+(i+1)+'</div><div class="tca">'+pic(it[0],1)+'</div><b>'+it[1]+'</b><p>'+it[2]+'</p></div>';
+   $('tcard').innerHTML='<div class="tcw" style="--c:'+col+'"><div class="tcn">'+nm+'의 장점</div><div class="tca">'+pic(it[0],1)+'</div><b>'+it[1]+'</b><p>'+it[2]+'</p></div>';
    $('tcard').scrollIntoView({behavior:'smooth',block:'nearest'});if(seen.size===10){$('duoTip').innerHTML='🎉 두 사람의 장점을 모두 봤어요!';confetti(14)}};
   box.append(b)}))})();
 
