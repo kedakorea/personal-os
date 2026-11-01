@@ -623,7 +623,7 @@ new IntersectionObserver(es=>es.forEach(e=>{$('pnav').classList.toggle('show',e.
 
 // 2장 아이메시지 퀴즈
 const Q=[['🏠 지금 사는 집을 구할 때','매물이랑 조건은 내가 발품 팔아서 비교해 볼게!',['그럼 전세 계약이랑 버팀목 대출, 청약 서류는 내가 맡을게.','서류? 그건 나중에 생각하자~','부동산 사장님이 알아서 해 주시겠지 뭐']],
- ['📸 촬영 비용이 걱정될 때','카페랑 블로그에 결혼 준비 기록 올렸더니 스튜디오 촬영 협찬받았어 😎',['대단하다! 덕분에 아낀 예산은 내가 잘 정리해서 관리할게.','협찬 받았으니 오늘 플렉스하자 🛍️','블로그? 그거 해서 뭐가 돼?']],
+ ['📸 촬영 비용이 걱정될 때','카페랑 블로그에 결혼 준비 기록하면서 모은 포인트로 스튜디오 촬영 저렴하게 했어 😎',['대단하다! 덕분에 아낀 예산은 내가 잘 정리해서 관리할게.','아꼈으니 오늘 플렉스하자 🛍️','블로그? 그거 해서 뭐가 돼?']],
  ['🌧️ 한 사람이 지친 날','오늘 너무 힘들었어…',['고생했어. 밤 산책 가자, 맛있는 거 사 줄게.','나도 힘들어…','일찍 자~ 내일 얘기해']]];
 let qi=0,score=0;
 function quiz(){const q=Q[qi],opts=q[2].map((t,k)=>({t,ok:k===0})).sort(()=>Math.random()-.5);
@@ -672,7 +672,7 @@ function sky(){const v=+$('skyR').value/100,floor=196-v*40,ceil=150-v*120,coins=
 $('skyR').addEventListener('input',()=>{$('slHint').classList.add('hide');sky()});
 
 // 4장 웨딩 케이크 쌓기
-const ST=[['💒 예식장','#f6e7d7'],['💍 웨딩 반지','#f2cfd2'],['📋 플래닝 업체','#d5e2cc'],['👗 드레스·예복','#ddd5ea'],['📷 본식 사진·영상','#f6e6b4'],['✈️ 신혼여행','#d3e5ef'],['🍊 제주 촬영','#f7d6bf'],['💞 상견례','#e9b8bd']],GH=['📸 선물받은 스튜디오 촬영','청첩장 · 한복','2027. 5. 16. 결혼식'];
+const ST=[['💒 예식장','#f6e7d7'],['💍 웨딩 반지','#f2cfd2'],['📋 플래닝 업체','#d5e2cc'],['👗 드레스·예복','#ddd5ea'],['📷 본식 사진·영상','#f6e6b4'],['✈️ 신혼여행','#d3e5ef'],['🍊 제주 촬영','#f7d6bf'],['💞 상견례','#e9b8bd']],GH=['📸 스튜디오 촬영','청첩장 · 한복','2027. 5. 16. 결혼식'];
 let gTimer=null,gOn=false,stack=[],mv=null,mx=0,dir=1,gw=0;const BH=40;
 function startGame(){if(gOn)return;gOn=true;gw=$('game').clientWidth;const W0=Math.min(240,gw-60);stack=[{x:(gw-W0)/2,w:W0,i:0}];$('tower').innerHTML='';
  const sd=document.createElement('div');sd.className='stand';sd.style.left=(stack[0].x-16)+'px';sd.style.width=(W0+32)+'px';
