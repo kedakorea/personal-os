@@ -86,7 +86,7 @@ footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:2
 <nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><div class="r"><a href="../shop/">스토어</a><a href="../how/#faq">FAQ</a><a href="../account/">마이페이지</a></div></nav>
 <main class="w" id="m"></main>
 <div class="bar"><div class="p" id="barp"></div><a href="#book" id="bara">일정 고르고 구매하기</a></div>
-<footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호 · 010-8225-6242<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
+<footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호<br>인천광역시 부평구 길주로647번길 20, 801호 A35 · 010-8225-6242 · kedakorea@gmail.com<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
 <script>
 const $ = (s) => document.querySelector(s), E = osEsc, won = (n) => n.toLocaleString("ko-KR") + "원";
 const PR = {
@@ -113,7 +113,7 @@ $("#m").innerHTML = `
   <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
   ${K === "trial" ? "" : `<div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>`}
   <div class="price"><s>정가 ${won(P.list)}</s><br><span class="off">${Math.round((1 - P.price / P.list) * 100)}%</span><b>${P.price.toLocaleString("ko-KR")}</b><small>원 · VAT 포함 · 한 번만</small></div>
-  <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (업무 인터뷰 → 맞춤 설치 → 바로 사용) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 맞춤 설치 · 휴대폰 앱 연결 · <b>설치 후 30일 무상 A/S</b></dd><dt>결제</dt><dd>1회 결제 · 정기결제 없음</dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
+  <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (업무 인터뷰 → 맞춤 설치 → 바로 사용) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 맞춤 설치 · 휴대폰 앱 연결 · <b>설치 후 30일 무상 A/S</b></dd><dt>배송</dt><dd>배송 상품 없음 — 방문·원격으로 설치해 제공(배송비 없음)</dd><dt>결제</dt><dd>1회 결제 · 정기결제 없음</dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
   <a class="cta" href="#book">📅 설치 날짜 고르고 구매하기</a>
   <a class="cta ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 먼저 카톡으로 물어보기</a>
   <p class="note">설치 시작 전이면 전액 환불 · <a href="../refund/">환불 규정</a></p>
