@@ -18,7 +18,7 @@ out.append(src[last:]); s = "".join(out)
 PAGES = {
     "home": ("", "브랜디움 BRAND!UM — 퍼스널 OS, 나 대신 일하는 AI 시스템", None),
     "os": ("os/", "퍼스널 OS란? — 브랜디움 BRAND!UM", ("WHAT IS PERSONAL OS", "퍼스널 OS는<br>이렇게 일합니다", "도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 휴대폰 한 대로 움직입니다.")),
-    "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "상담부터 세팅, 30일 적응 지원까지. 미리 알아 두실 것도 모았습니다.")),
+    "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "구매하면 날짜를 잡고, 설치하면 끝. 미리 알아 두실 것도 모았습니다.")),
     "shop": ("shop/", "세팅 상품 — 퍼스널 OS 방문형·원격형 | 브랜디움 BRAND!UM", ("SHOP", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
     "chips": ("chips/", "OS 확장 상점 — 세팅 후에도 내 OS에 기능 더하기 | 브랜디움 BRAND!UM", ("OS PLUS STORE", "OS 확장<br>상점", "퍼스널 OS를 세팅받은 뒤에도, 필요한 기능을 하나씩 골라 내 OS에 더하는 곳입니다. 앱스토어처럼 고르고, 붙여넣으면 매니저가 설치해요.")),
 }
@@ -106,9 +106,8 @@ MORE = """<section class="pad light" data-pg="home" id="more">
  <div class="reveal"><span class="label">MORE</span><h2>더 알아보기</h2>
  <div class="more">
   <a href="os/"><i>🧠</i><b>퍼스널 OS란?</b><span>부서·매니저·업무 앱, 휴대폰으로 일하는 법, 실제 화면</span></a>
-  <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>설문 → 인터뷰 → 세팅 → 교육 → 30일 지원, 자주 묻는 질문</span></a>
-  <a href="shop/"><i>🛍️</i><b>세팅 상품</b><span>방문형·원격형 상세보기와 일정 예약</span></a>
-  <a href="chips/"><i>🧩</i><b>OS 확장 상점</b><span>세팅 후에도 기능을 하나씩 더하는 곳</span></a>
+  <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>구매 → 날짜 선택 → 설치 완료, 자주 묻는 질문</span></a>
+  <a href="shop/"><i>🛍️</i><b>세팅 상품</b><span>방문형·원격형 고르고 바로 구매</span></a>
  </div></div>
 </section>
 """
@@ -128,11 +127,11 @@ TEASER = """<section class="pad cream" data-pg="home" id="chipteaser">
 SVC = """<section class="pad light" data-pg="shop" id="svc">
  <div class="reveal"><span class="label">PRODUCTS</span><h2>두 가지 중에 고르세요</h2>
  <div class="svc">
-  <a class="sv" href="product/?p=visit"><div class="im" style="background-image:url(img/thumb_visit.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>☕ VISIT · 방문형</em><b>퍼스널 OS 방문형 세팅</b><p>노트북 들고 브랜디움 라운지로. 마주 앉아 처음부터 끝까지 옆에서 세팅해 드려요. 컴퓨터가 낯선 분께 추천.</p><div class="pr"><s>2,500,000원</s><strong>990,000원</strong><small>VAT 포함</small></div><span class="go">자세히 보고 예약하기 →</span></div></a>
-  <a class="sv" href="product/?p=remote"><div class="im" style="background-image:url(img/thumb_remote.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>💻 REMOTE · 원격형</em><b>퍼스널 OS 원격형 세팅</b><p>화상 인터뷰와 원격 접속으로 전국 어디서나. 늘 켜 두는 데스크톱에 세팅하면 가장 좋아요.</p><div class="pr"><s>2,200,000원</s><strong>880,000원</strong><small>VAT 포함</small></div><span class="go">자세히 보고 예약하기 →</span></div></a>
+  <a class="sv" href="product/?p=visit"><div class="im" style="background-image:url(img/thumb_visit.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>☕ VISIT · 방문형</em><b>퍼스널 OS 방문형 세팅</b><p>노트북 들고 브랜디움 라운지로. 마주 앉아 처음부터 끝까지 옆에서 세팅해 드려요. 컴퓨터가 낯선 분께 추천.</p><div class="pr"><s>2,500,000원</s><strong>990,000원</strong><small>VAT 포함</small></div><span class="go">구매하기 →</span></div></a>
+  <a class="sv" href="product/?p=remote"><div class="im" style="background-image:url(img/thumb_remote.jpg)"><span>LAUNCHING EVENT</span></div><div class="tx"><em>💻 REMOTE · 원격형</em><b>퍼스널 OS 원격형 세팅</b><p>화상 인터뷰와 원격 접속으로 전국 어디서나. 늘 켜 두는 데스크톱에 세팅하면 가장 좋아요.</p><div class="pr"><s>2,200,000원</s><strong>880,000원</strong><small>VAT 포함</small></div><span class="go">구매하기 →</span></div></a>
  </div>
- <p class="chiprule">두 상품 모두 사전 설문 · 업무 인터뷰 · 설계서 · 세팅 · 사용 교육 · 30일 적응 지원 포함 · Claude 구독료(월 $100)는 별도</p>
- <div class="teaser-chip" style="margin-top:30px"><div><b>🧩 이미 세팅을 받으셨나요?</b><p>OS 확장 상점에서 견적서 양식·인물사진 합성·행사 문서 세트 같은 기능을 하나씩 더할 수 있어요.</p></div><a href="chips/">OS 확장 상점 가기 →</a></div>
+ <p class="chiprule">두 상품 모두 업무 인터뷰 · 맞춤 설치 · 휴대폰 앱 연결 · 설치 후 30일 무상 A/S 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님이 Claude에 직접 결제</p>
+ <p class="chiprule">구매 → 날짜 선택 → 설치 완료. 설치 시작 전이면 전액 환불됩니다. <a href="refund/">환불 규정</a></p>
  </div>
 </section>
 """
@@ -245,8 +244,8 @@ def build(pg):
     t = t.replace("<head>", '<head>\n<base href="/">', 1)
     t = re.sub(r"<body([^>]*)>", lambda m: '<body%s data-pg="%s">' % (m.group(1), pg), t, 1)
     on = lambda p: ' class="on"' if p == pg else ""
-    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SETUP</a><a href="chips/"%s>STORE</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
-           % (on("os"), on("how"), on("shop"), on("chips")))
+    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SETUP</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
+           % (on("os"), on("how"), on("shop")))
     t = t.replace(NAV_OLD, nav, 1)
     # 메인 섹션 링크(#what 등)가 다른 페이지로 옮겨간 것 바로잡기
     for a, b in [('href="#price"', 'href="shop/"' if pg != "home" else 'href="#price"'), ('href="#how"', 'href="how/"'), ('href="#faq"', 'href="how/#faq"'),
@@ -254,7 +253,7 @@ def build(pg):
         t = t.replace(a, b)
     # 새 칸 넣기
     price_end = t.index("</section>", t.index('id="price"')) + len("</section>")
-    t = t[:price_end] + "\n" + TEASER + SHOP + t[price_end:]
+    t = t[:price_end] + "\n" + SHOP + t[price_end:]   # 상점 홍보칸(TEASER)은 PG 심사용으로 메인에서 뺌 (2026-11-02)
     price_start = t.rindex("<section", 0, t.index('id="price"'))
     t = t[:price_start] + SVC + t[price_start:]
     first = t.index("<section", t.index("<body"))
