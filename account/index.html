@@ -21,7 +21,7 @@ h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:
 .note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
 .note a{color:inherit}
 label.f{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
-input[type=text],input[type=tel]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
+input[type=text],input[type=tel],input[type=email],input[type=password]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
 input:focus{outline:none;border-color:var(--ink)}
 .agree{background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:6px 16px;margin:22px 0 18px}
 .agree label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:14px;cursor:pointer}
@@ -54,8 +54,14 @@ function loginView(msg) {
   <button class="btn kakao" data-p="kakao">${IC.kakao}카카오로 시작하기</button>
   <button class="btn naver" data-p="naver">${IC.naver}네이버로 시작하기</button>
   <button class="btn google" data-p="google">${IC.google}Google로 시작하기</button>
+  <details class="idlogin" style="margin-top:14px"><summary style="cursor:pointer;font-size:14px;opacity:.7">아이디로 로그인</summary>
+   <input type="email" id="lid" placeholder="아이디(이메일)" autocomplete="username" style="margin-top:10px">
+   <input type="password" id="lpw" placeholder="비밀번호" autocomplete="current-password" style="margin-top:8px">
+   <button class="btn dark" id="lgo" style="margin-top:10px">로그인</button></details>
   <p class="err">${msg || ""}</p>
   <p class="note">처음이시면 로그인 뒤 이름·연락처만 적으면 가입이 끝납니다.<br>가입하면 <a href="../terms/">이용약관</a>과 <a href="../privacy/">개인정보처리방침</a>을 확인하게 됩니다.</p>`;
+  const lgo = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("#lid").value.trim(), password: $("#lpw").value }); if (error) return $(".err").textContent = "아이디 또는 비밀번호를 확인해 주세요."; boot(); };
+  $("#lgo").onclick = lgo; $("#lpw").onkeydown = (e) => { if (e.key === "Enter") lgo(); };
   M.querySelectorAll("[data-p]").forEach((b) => b.onclick = async () => {
     if (b.dataset.p === "naver") {
       const st = crypto.randomUUID(); sessionStorage.setItem("nv_state", st);
@@ -106,8 +112,8 @@ function myView(u, m, od, cb, cl) {
    <div class="row"><span>이메일</span><b>${osEsc(m.email || "—")}</b></div>
    <div class="row"><span>가입 방법</span><b>${osEsc(pv)}</b></div></div>
   <div class="card"><h2>내 주문</h2>${od.length ? od.map((o) => `<div class="row"><span>${osEsc(o.order_no)} · ${osEsc(o.product)}<br><small style="opacity:.6">${new Date(o.created_at).toLocaleDateString("ko-KR")} · ${o.price.toLocaleString("ko-KR")}원</small></span><b>${osEsc(o.status)}</b></div>`).join("") + (od.some((o) => o.status === "입금대기") ? '<p style="margin-top:10px;font-size:13px">입금 계좌: 기업은행 114-193627-04-019 (주)캐다</p>' : "") : "<p>아직 주문 내역이 없습니다.</p>"}</div>
-  <div class="card"><h2>🪙 내 칩 <span style="float:right">${cb}칩</span></h2>${cl.length ? cl.map((x) => `<div class="row"><span>${osEsc(x.reason || "")}${x.bonus ? " (보너스)" : ""}<br><small style="opacity:.6">${new Date(x.created_at).toLocaleDateString("ko-KR")}${x.item_key ? ` · <a href="../chips/?item=${osEsc(x.item_key)}">${x.status === "자동설치" ? "설치 문구 보기" : osEsc(x.status)}</a>` : ""}</small></span><b>${x.delta > 0 ? "+" : ""}${x.delta}</b></div>`).join("") : "<p>아직 칩 내역이 없습니다.</p>"}
-   <p style="margin-top:10px;font-size:13px"><a href="../chips/">OS 확장 상점 가기 →</a> · <a href="../order/?p=chip3">칩 충전하기 →</a></p></div>
+  ${cl.length ? `<div class="card"><h2>🪙 내 칩 <span style="float:right">${cb}칩</span></h2>${cl.length ? cl.map((x) => `<div class="row"><span>${osEsc(x.reason || "")}${x.bonus ? " (보너스)" : ""}<br><small style="opacity:.6">${new Date(x.created_at).toLocaleDateString("ko-KR")}${x.item_key ? ` · <a href="../chips/?item=${osEsc(x.item_key)}">${x.status === "자동설치" ? "설치 문구 보기" : osEsc(x.status)}</a>` : ""}</small></span><b>${x.delta > 0 ? "+" : ""}${x.delta}</b></div>`).join("") : "<p>아직 칩 내역이 없습니다.</p>"}
+   <p style="margin-top:10px;font-size:13px"><a href="../chips/">OS 확장 상점 가기 →</a> · <a href="../order/?p=chip3">칩 충전하기 →</a></p></div>` : ""}
   <a class="btn dark" href="../order/">퍼스널 OS 구매하기</a>
   <a class="btn ghost" href="../#apply">상담 먼저 받아 보기</a>
   <a class="btn ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡으로 문의</a>
