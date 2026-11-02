@@ -102,7 +102,7 @@ const PR = {
     bring: ["세팅할 컴퓨터(늘 켜 두는 데스크톱 추천, 노트북도 가능)", "화상 회의가 되는 환경(카메라·마이크)", "Claude 구독을 결제할 카드", "휴대폰(앱 연결용)"] }
 };
 const qs = new URLSearchParams(location.search), K = PR[qs.get("p")] ? qs.get("p") : "visit", P = PR[K];
-const SHOTS = [`../img/thumb_${K === "trial" ? "visit" : K}.jpg`, ...["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`)];
+const SHOTS = [`../img/thumb_${K === "trial" ? "visit" : K}.jpg?v=1102`, ...["07", "04", "02", "03", "08", "01", "05", "06"].map((n) => `../dash/${n}.jpg`)];
 document.title = P.name + " — 브랜디움 BRAND!UM";
 $("#barp").innerHTML = `${E(P.tag)}<b>${won(P.price)}</b>`;
 $("#m").innerHTML = `
