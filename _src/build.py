@@ -7,7 +7,7 @@ src = open(os.path.join(R, "_src/onepage.html")).read()
 
 # 원본 칸 순서대로 어느 페이지에 보일지
 PG = ["home", "home", "home", "home", "home", "os", "os", "home", "home", "os", "os", "os", "os", "os", "os", "os", "os",
-      "home shop", "how", "how", "home", "home os how shop chips", "home", "how shop chips"]
+      "shop", "how", "how", "home", "home os how shop chips", "home", "how shop chips"]
 secs = list(re.finditer(r"<section\b", src))
 assert len(secs) == len(PG), (len(secs), len(PG))
 out, last = [], 0
@@ -19,7 +19,7 @@ PAGES = {
     "home": ("", "브랜디움 BRAND!UM — 퍼스널 OS, 나 대신 일하는 AI 시스템", None),
     "os": ("os/", "퍼스널 OS란? — 브랜디움 BRAND!UM", ("WHAT IS PERSONAL OS", "퍼스널 OS는<br>이렇게 일합니다", "도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 휴대폰 한 대로 움직입니다.")),
     "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "구매하면 날짜를 잡고, 설치하면 끝. 미리 알아 두실 것도 모았습니다.")),
-    "shop": ("shop/", "세팅 상품 — 퍼스널 OS 방문형·원격형 | 브랜디움 BRAND!UM", ("SHOP", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
+    "shop": ("shop/", "스토어 — 퍼스널 OS 방문형·원격형 구매 | 브랜디움 BRAND!UM", ("STORE", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
     "chips": ("chips/", "OS 확장 상점 — 세팅 후에도 내 OS에 기능 더하기 | 브랜디움 BRAND!UM", ("OS PLUS STORE", "OS 확장<br>상점", "퍼스널 OS를 세팅받은 뒤에도, 필요한 기능을 하나씩 골라 내 OS에 더하는 곳입니다. 앱스토어처럼 고르고, 붙여넣으면 매니저가 설치해요.")),
 }
 
@@ -102,15 +102,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
 .teaser-chip a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px}
 """
 
-MORE = """<section class="pad light" data-pg="home" id="more">
- <div class="reveal"><span class="label">MORE</span><h2>더 알아보기</h2>
- <div class="more">
-  <a href="os/"><i>🧠</i><b>퍼스널 OS란?</b><span>부서·매니저·업무 앱, 휴대폰으로 일하는 법, 실제 화면</span></a>
-  <a href="how/"><i>🛠</i><b>진행 방식 · FAQ</b><span>구매 → 날짜 선택 → 설치 완료, 자주 묻는 질문</span></a>
-  <a href="shop/"><i>🛍️</i><b>세팅 상품</b><span>방문형·원격형 고르고 바로 구매</span></a>
- </div></div>
-</section>
-"""
+MORE = None   # 메인 "더 알아보기"는 바로 구매 카드(SVC)로 바꿈 (2026-11-02 대표님)
 
 TEASER = """<section class="pad cream" data-pg="home" id="chipteaser">
  <div class="reveal"><span class="label">OS PLUS STORE</span><h2>세팅이 끝이 아닙니다.<br>내 OS는 계속 자라요</h2>
@@ -244,11 +236,11 @@ def build(pg):
     t = t.replace("<head>", '<head>\n<base href="/">', 1)
     t = re.sub(r"<body([^>]*)>", lambda m: '<body%s data-pg="%s">' % (m.group(1), pg), t, 1)
     on = lambda p: ' class="on"' if p == pg else ""
-    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>SETUP</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
+    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="how/"%s>HOW</a><a href="shop/"%s>STORE</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
            % (on("os"), on("how"), on("shop")))
     t = t.replace(NAV_OLD, nav, 1)
     # 메인 섹션 링크(#what 등)가 다른 페이지로 옮겨간 것 바로잡기
-    for a, b in [('href="#price"', 'href="shop/"' if pg != "home" else 'href="#price"'), ('href="#how"', 'href="how/"'), ('href="#faq"', 'href="how/#faq"'),
+    for a, b in [('href="#price"', 'href="shop/"'), ('href="#how"', 'href="how/"'), ('href="#faq"', 'href="how/#faq"'),
                  ('href="#what"', 'href="os/"'), ('href="#mobile"', 'href="os/#mobile"'), ('href="#screens"', 'href="os/#screens"'), ('href="#about"', 'href="/#about"' if pg != "home" else 'href="#about"')]:
         t = t.replace(a, b)
     # 새 칸 넣기
@@ -261,7 +253,7 @@ def build(pg):
         t = t[:first] + '<section class="pghead" data-pg="%s"><span class="label">%s</span><h1>%s</h1><p>%s</p></section>\n' % ((pg,) + head) + t[first:]
     else:
         notedu_end = t.index("</section>", t.index('id="notedu"')) + len("</section>")
-        t = t[:notedu_end] + "\n" + MORE + t[notedu_end:]
+        t = t[:notedu_end] + "\n" + SVC.replace('data-pg="shop" id="svc"', 'data-pg="home" id="buy"').replace('<span class="label">PRODUCTS</span><h2>두 가지 중에 고르세요</h2>', '<span class="label">STORE</span><h2>지금 바로 구매하세요</h2>') + t[notedu_end:]
     # 메뉴 표시: 같은 페이지 안 칸(#…)만 따라가고, 페이지 메뉴는 고정 표시
     t = t.replace("const as=[...document.querySelectorAll('nav .links a')],secs=as.map(a=>document.querySelector(a.getAttribute('href')));",
                   "const as=[...document.querySelectorAll('nav .links a')].filter(a=>a.getAttribute('href').startsWith('#')),secs=as.map(a=>document.querySelector(a.getAttribute('href')));")
