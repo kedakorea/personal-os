@@ -113,7 +113,7 @@ $("#m").innerHTML = `
   <h1>${E(P.name)}</h1><p class="one">${E(P.one)}</p>
   ${K === "trial" ? "" : `<div class="tabs2"><a href="?p=visit" class="${K === "visit" ? "on" : ""}">☕ 방문형</a><a href="?p=remote" class="${K === "remote" ? "on" : ""}">💻 원격형</a></div>`}
   <div class="price"><s>정가 ${won(P.list)}</s><br><span class="off">${Math.round((1 - P.price / P.list) * 100)}%</span><b>${P.price.toLocaleString("ko-KR")}</b><small>원 · VAT 포함 · 한 번만</small></div>
-  <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (업무 인터뷰 → 맞춤 설치 → 바로 사용) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 맞춤 설치 · 휴대폰 앱 연결 · <b>설치 후 30일 무상 A/S</b></dd><dt>제공 기간</dt><dd>결제 후 최대 60일 안에 고르신 날짜에 설치 완료 + 설치 후 30일 무상 A/S (최대 약 3개월)</dd><dt>배송</dt><dd>배송 상품 없음 — 방문·원격으로 설치해 제공(배송비 없음)</dd><dt>결제</dt><dd>1회 결제 · 정기결제 없음</dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
+  <dl class="facts"><dt>세팅 당일</dt><dd>약 3시간 (업무 인터뷰 → 맞춤 설치 → 바로 사용) · 평일 10·14·18시, 주말 10·14시</dd><dt>장소</dt><dd>${E(P.place)}</dd><dt>포함</dt><dd>사전 설문 · 업무 인터뷰 · 맞춤 설치 · 휴대폰 앱 연결 · <b>설치 후 30일 무상 A/S</b></dd><dt>제공 기간</dt><dd>결제 후 최대 30일 안에 고르신 날짜에 설치 완료 + 설치 후 30일 무상 A/S (최대 약 2개월)</dd><dt>배송</dt><dd>배송 상품 없음 — 방문·원격으로 설치해 제공(배송비 없음)</dd><dt>결제</dt><dd>1회 결제 · 정기결제 없음</dd><dt>별도</dt><dd>Claude 구독료 월 $100 — 고객님 카드로 Claude에 직접</dd></dl>
   <a class="cta" href="#book">📅 설치 날짜 고르고 구매하기</a>
   <a class="cta ghost" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 먼저 카톡으로 물어보기</a>
   <p class="note">설치 시작 전이면 전액 환불 · <a href="../refund/">환불 규정</a></p>
@@ -152,7 +152,7 @@ $("#m").innerHTML = `
 <section class="sec" id="book"><span class="en">BOOKING</span><h2>세팅 날짜를 골라 주세요</h2>
  <div class="bk">
   <div class="cal"><div class="hd"><button id="pv" aria-label="이전 달">‹</button><b id="mt"></b><button id="nx" aria-label="다음 달">›</button></div><div class="g" id="cg"></div>
-   <p class="legend">노란 날짜를 고를 수 있어요 · 평일 10·14·18시 · 주말 10·14시 · 오늘부터 5일 뒤~두 달 안</p></div>
+   <p class="legend">노란 날짜를 고를 수 있어요 · 평일 10·14·18시 · 주말 10·14시 · 결제일로부터 30일 안 (오늘부터 5일 뒤~30일)</p></div>
   <div class="times"><h4 id="th">날짜를 먼저 골라 주세요</h4><div class="t" id="tt"></div>
    <div class="pick" id="pk" hidden></div>
    <button class="cta" id="go" disabled>날짜·시간을 고르면 구매할 수 있어요</button>
@@ -169,7 +169,7 @@ $("#m").innerHTML = `
 </section>`;
 /* 갤러리 */
 (function(){ const m = document.getElementById("gm"); document.getElementById("gcap").dataset.t = document.getElementById("gcap").textContent; document.querySelectorAll(".thumbs img").forEach((im) => im.onclick = () => { m.style.backgroundImage = `url(${im.src})`; document.getElementById("gcap").textContent = /thumb_/.test(im.src) ? document.getElementById("gcap").dataset.t : "세팅 후 생기는 '사무실 화면' 예시 — 6가지 디자인 중 하나를 고르게 돼요"; document.querySelectorAll(".thumbs img").forEach((x) => x.classList.toggle("on", x === im)); }); })();
-/* 예약 달력 — 평일 10:00·15:00, 오늘+3일 ~ 60일 */
+/* 예약 달력 — 평일 10:00·15:00, 오늘+5일 ~ 30일 */
 (async function(){
  const sb = supabase.createClient(OS_URL, OS_ANON);
  const { data } = await sb.rpc("taken_slots");
@@ -180,7 +180,7 @@ $("#m").innerHTML = `
  const kst = (d, hm) => new Date(`${d}T${hm}:00+09:00`);
  const ymd = (dt) => { const k = new Date(dt.getTime() + 9 * 3600e3); return k.toISOString().slice(0, 10); };
  const today = ymd(new Date()), addD = (s, n) => { const d = new Date(s + "T00:00:00+09:00"); d.setDate(d.getDate() + n); return ymd(d); };
- const from = addD(today, 5), to = addD(today, 60);
+ const from = addD(today, 5), to = addD(today, 30);
  const GAP = 5 * 3600e3;   // 세팅 약 3시간 + 오가는 시간 — 다른 예약과 5시간 띄움
  const free = (s, hm) => { const t = kst(s, hm).getTime(); return !closed.has(t) && ![...taken].some((x) => Math.abs(x - t) < GAP); };
  const dayOk = (s) => s >= from && s <= to && !blocked.has(s) && TIMES_OF(s).some(([hm]) => free(s, hm));
