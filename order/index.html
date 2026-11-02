@@ -92,7 +92,7 @@ function form(u, m) {
   <div ${CH ? "hidden" : ""}><input type="hidden" id="wd" value="">
   <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea></div>
   <h3>결제 방법</h3>
-  <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 3일 안에 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
+  <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>12시간 안에</b> 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
   <div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
@@ -126,7 +126,7 @@ function done(o) {
   window.scrollTo(0, 0);
   M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}${o.slot_at ? `<br>📅 세팅 일정 <b>${new Date(o.slot_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" })}</b> (입금 확인 후 확정)` : ""}</p>
   <div class="bank">입금하실 금액 <b>${won(o.price)}</b> <small>(VAT 포함)</small><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
-  <p class="small">· 주문일로부터 3일 안에 입금해 주세요. 기한이 지나면 주문이 자동 취소될 수 있습니다.<br>${/^칩/.test(o.product) ? "· 입금이 확인되면 칩이 바로 들어옵니다. 상점에서 원하는 상품을 받으세요.<br>· 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)." : "· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 설치 시작 전에는 언제든 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)."}<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
+  <p class="small">· 주문한 때부터 <b>12시간 안에</b> 입금해 주세요. 기한이 지나면 고르신 날짜가 다른 분께 열리고 주문이 취소될 수 있습니다.<br>${/^칩/.test(o.product) ? "· 입금이 확인되면 칩이 바로 들어옵니다. 상점에서 원하는 상품을 받으세요.<br>· 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)." : "· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 설치 시작 전에는 언제든 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)."}<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
   <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
 }
 (async () => {
