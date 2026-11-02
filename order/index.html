@@ -69,12 +69,26 @@ const P = [
   { k: "chip30", name: "칩 30개+보너스 3", price: 8000, chip: 33, inc: "칩당 242원 · 보너스 3칩(1년)" }
 ];
 const won = (n) => n.toLocaleString("ko-KR") + "원";
+/* 토스페이먼츠 결제창 — 가맹 심사 중이라 테스트 키, 심사용 계정(또는 ?pg=test)에서만 보임 (2026-11-02) */
+const TOSS_CK = "test_ck_d46qopOB89RQzpDlvPRK3ZmM75y0";
+const PGT_ON = (u) => (u && u.email === "tosstest@mybrandium.com") || new URLSearchParams(location.search).get("pg") === "test";
+function loadToss() { return window.TossPayments ? Promise.resolve() : new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "https://js.tosspayments.com/v2/standard"; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); }
+async function payCard(u, o, p) {
+  await loadToss();
+  const pay = TossPayments(TOSS_CK).payment({ customerKey: u.id });
+  const no = String(o.order_no || o.id).replace(/[^A-Za-z0-9_-]/g, "");
+  const back = location.origin + "/order/?no=" + encodeURIComponent(o.order_no || "");
+  await pay.requestPayment({ method: "CARD", amount: { currency: "KRW", value: p.price }, orderId: ("BRD-" + no + "-" + Date.now().toString(36)).slice(0, 64),
+    orderName: "퍼스널 OS " + p.name, customerName: o.name || "", customerEmail: o.email || undefined,
+    successUrl: back + "&paid=ok", failUrl: back + "&paid=fail", card: { useEscrow: false, flowMode: "DEFAULT", useCardPoint: false, useAppCardOnly: false } });
+}
 function needLogin() {
   sessionStorage.setItem("after_login", location.href);
   M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·네이버·구글 계정으로 3초면 됩니다.</p>
   <a class="btn dark" href="../account/">로그인하고 구매하기</a>`;
 }
 function form(u, m) {
+  window.PGT = PGT_ON(u);
   const pick = new URLSearchParams(location.search).get("p") || "remote";
   const CH = pick.startsWith("chip"), PL = P.filter((p) => !!p.chip === CH);
   const SL = new URLSearchParams(location.search).get("slot"), SLD = SL ? new Date(SL) : null;
@@ -93,7 +107,7 @@ function form(u, m) {
   <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea></div>
   <h3>결제 방법</h3>
   <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>12시간 안에</b> 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
-  <div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>
+  ${PGT ? `<label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="card" checked> 💳 <b>신용카드</b> <span class="small">(토스페이먼츠 결제창)</span></label><label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="bank"> 🏦 <b>계좌입금</b> (위 계좌)</label>` : '<div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>'}
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
   <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
@@ -119,6 +133,7 @@ function form(u, m) {
       depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
     if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : "주문을 저장하지 못했습니다: " + error.message);
+    if (window.PGT && (M.querySelector("input[name=pm]:checked") || {}).value === "card") { try { await payCard(u, data, p); return; } catch (e) { return err("결제창을 열지 못했습니다: " + (e.message || e)); } }
     done(data);
   };
 }
@@ -130,6 +145,14 @@ function done(o) {
   <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
 }
 (async () => {
+  const q = new URLSearchParams(location.search);
+  if (q.get("paid")) {
+    window.scrollTo(0, 0);
+    M.innerHTML = q.get("paid") === "ok"
+      ? `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b><br>담당자가 1영업일 안에 연락드려 설치 일정을 확정합니다.</p><a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`
+      : `<p class="en">PAYMENT</p><h1>결제가 완료되지 않았습니다</h1><p class="sub">${osEsc(q.get("message") || "결제를 취소하셨거나 오류가 났습니다.")}</p><a class="btn dark" href="../shop/">다시 구매하기</a>`;
+    return;
+  }
   const { data } = await sb.auth.getSession();
   if (!data.session) return needLogin();
   const u = data.session.user;
