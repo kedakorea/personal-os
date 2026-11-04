@@ -8,3 +8,4 @@ Disallow: /g/
 Disallow: /1107/
 
 Sitemap: https://mybrandium.com/sitemap.xml
+Disallow: /paytest/

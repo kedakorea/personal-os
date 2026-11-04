@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>결제 시험 · 브랜디움</title>
+<!-- 2026-11-04 토스 결제위젯 시험 페이지 (메뉴·링크 없음, 테스트 키 — 실제 돈 안 나감). 카드사 심사 끝나면 구매 화면에 옮긴다 -->
+<script src="https://js.tosspayments.com/v2/standard"></script>
+<style>
+body{margin:0;background:#FAFAFA;color:#242424;font-family:-apple-system,"Apple SD Gothic Neo",Pretendard,sans-serif}
+.w{max-width:560px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:22px;margin:0 0 6px}.s{color:#888;font-size:14px;margin:0 0 18px}
+.t{display:inline-block;background:#FAD6E6;color:#D90368;font-weight:700;font-size:12px;border-radius:8px;padding:3px 8px;margin-bottom:10px}
+.p{display:flex;gap:10px;margin:14px 0}.p label{flex:1;border:2px solid #e3e3e8;border-radius:14px;padding:12px;cursor:pointer;background:#fff}
+.p input{margin-right:6px}.p label.on{border-color:#242424}
+.p b{display:block;font-size:18px;margin-top:4px}
+button{width:100%;border:0;border-radius:14px;background:#242424;color:#fff;font-size:17px;font-weight:700;padding:16px;margin-top:14px;cursor:pointer}
+button:disabled{opacity:.5}
+</style></head><body><div class="w">
+<span class="t">시험용 · 실제 결제 안 됨</span>
+<h1>퍼스널 OS 설치 결제 시험</h1>
+<p class="s">토스 결제위젯이 브랜디움에서 제대로 열리고 승인까지 되는지 확인하는 숨은 페이지입니다.</p>
+<div class="p" id="prod">
+ <label class="on"><input type="radio" name="price" value="660000" checked>추천 코드가<b>660,000원</b></label>
+ <label><input type="radio" name="price" value="550000">행사 코드가<b>550,000원</b></label>
+</div>
+<div id="payment-method"></div><div id="agreement"></div>
+<button id="pay" disabled>결제하기</button>
+</div>
+<script>
+const CLIENT_KEY = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";   // 토스 공개 문서용 테스트 키 → 상점 테스트 키 → 심사 뒤 라이브 키로 교체
+(async () => {
+  const toss = TossPayments(CLIENT_KEY);
+  const widgets = toss.widgets({ customerKey: TossPayments.ANONYMOUS });
+  let amount = 660000;
+  await widgets.setAmount({ currency: "KRW", value: amount });
+  await Promise.all([
+    widgets.renderPaymentMethods({ selector: "#payment-method", variantKey: "DEFAULT" }),
+    widgets.renderAgreement({ selector: "#agreement", variantKey: "AGREEMENT" }),
+  ]);
+  const btn = document.getElementById("pay"); btn.disabled = false;
+  document.querySelectorAll("#prod input").forEach((r) => r.addEventListener("change", async () => {
+    document.querySelectorAll("#prod label").forEach((l) => l.classList.toggle("on", l.contains(r) && r.checked));
+    amount = Number(r.value); await widgets.setAmount({ currency: "KRW", value: amount });
+  }));
+  btn.onclick = async () => {
+    const orderId = "TEST-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+    await widgets.requestPayment({
+      orderId, orderName: "퍼스널 OS 설치 (시험)",
+      successUrl: location.origin + "/paytest/success/",
+      failUrl: location.origin + "/paytest/fail/",
+    });
+  };
+})();
+</script></body></html>
