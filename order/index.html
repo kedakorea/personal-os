@@ -98,6 +98,9 @@ function form(u, m) {
   <h3>상품 선택</h3>
   ${PL.filter((p) => CH || p.k === pick).map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : p.k === "trial" ? '<span class="badge">체험단</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
   <p class="small">${CH ? "부가세 포함 · 충전한 칩 5년·보너스 칩 1년 유효 · 7일 안 미사용 시 전액 환불" : "부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제"}</p>
+  ${CH || pick === "trial" ? "" : `<div class="pay" id="refbox" style="margin-top:10px">🎟️ <b>추천인 코드</b> <span class="small">(있으신 분만)</span>
+   <div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="rc" placeholder="코드 입력" style="flex:1;text-transform:uppercase;margin:0"><button type="button" class="btn" id="rcb" style="margin:0;padding:0 16px;white-space:nowrap">적용</button></div>
+   <p class="small" id="rcm" style="margin:6px 0 0"></p></div>`}
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
   <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
@@ -114,10 +117,20 @@ function form(u, m) {
   <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다${CH ? "" : " (설치를 시작한 뒤에는 맞춤 작업이라 환불되지 않는다는 점을 확인했습니다)"}</span></label></div>
   <input type="hidden" id="ch" value="${CH ? 1 : 0}"><div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
-  const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").textContent = won(P.find((p) => p.k === k).price); };
+  let REF = null;   // { code, partner, price } — 추천인 코드 적용 시 (2026-11-04)
+  const priceOf = (k) => { const p = P.find((x) => x.k === k); return REF && ["remote", "visit"].includes(k) ? Math.min(p.price, REF.price) : p.price; };
+  const sel = (k) => { M.querySelectorAll(".prod").forEach((l) => { const on = l.dataset.k === k; l.classList.toggle("on", on); l.querySelector("input").checked = on; }); $("#tot").innerHTML = REF && ["remote", "visit"].includes(k) ? `<s style="opacity:.45;font-size:.8em;margin-right:6px">${won(P.find((p) => p.k === k).price)}</s>${won(priceOf(k))}` : won(priceOf(k)); };
   M.querySelectorAll(".prod").forEach((l) => l.onclick = () => sel(l.dataset.k));
   sel(PL.some((p) => p.k === pick) ? pick : PL[0].k);
   if (!CH && pick !== "trial") M.querySelector(".prod").insertAdjacentHTML("afterend", `<p class="small" style="margin:-4px 0 6px"><a href="../product/?p=${pick === "visit" ? "remote" : "visit"}">${pick === "visit" ? "원격형" : "방문형"}으로 바꾸기 →</a></p>`);
+  if ($("#rcb")) $("#rcb").onclick = async () => {
+    const c = $("#rc").value.trim().toUpperCase(), msg = $("#rcm");
+    if (!c) { REF = null; msg.textContent = ""; sel(M.querySelector(".prod.on").dataset.k); return; }
+    const { data, error } = await sb.rpc("check_ref", { c });
+    if (error || !data || !data.length) { REF = null; msg.style.color = "#c0392b"; msg.textContent = "추천인 코드를 확인해 주세요."; }
+    else { REF = { code: c, partner: data[0].partner, price: data[0].price }; msg.style.color = "#1a7f5a"; msg.textContent = `✓ 추천인 코드가 적용되었어요 — ${won(data[0].price)}`; }
+    sel(M.querySelector(".prod.on").dataset.k);
+  };
   $("#rt").onchange = (e) => $("#rn").style.display = e.target.value ? "block" : "none";
   $("#go").onclick = async () => {
     const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
@@ -130,10 +143,10 @@ function form(u, m) {
     if ($("#agt") && !$("#agt").checked) return err("체험단 조건 동의에 체크해 주세요.");
     $("#go").disabled = true;
     const { data, error } = await sb.from("orders").insert({ member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
+      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
-    if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : "주문을 저장하지 못했습니다: " + error.message);
-    if (window.PGT && (M.querySelector("input[name=pm]:checked") || {}).value === "card") { try { await payCard(u, data, p); return; } catch (e) { return err("결제창을 열지 못했습니다: " + (e.message || e)); } }
+    if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : /추천인 코드/.test(error.message) ? "추천인 코드를 확인해 주세요." : "주문을 저장하지 못했습니다: " + error.message);
+    if (window.PGT && (M.querySelector("input[name=pm]:checked") || {}).value === "card") { try { await payCard(u, data, { ...p, price: data.price }); return; } catch (e) { return err("결제창을 열지 못했습니다: " + (e.message || e)); } }
     done(data);
   };
 }
