@@ -25,7 +25,7 @@ button:disabled{opacity:.5}
 <button id="pay" disabled>결제하기</button>
 </div>
 <script>
-const CLIENT_KEY = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";   // 토스 공개 문서용 테스트 키 → 상점 테스트 키 → 심사 뒤 라이브 키로 교체
+const CLIENT_KEY = "test_gck_oEjb0gm23POdPmxeAxpn8pGwBJn5";   // 캐다 상점 결제위젯 테스트 키(2026-11-04) → 심사 뒤 라이브 키로 교체
 (async () => {
   const toss = TossPayments(CLIENT_KEY);
   const widgets = toss.widgets({ customerKey: TossPayments.ANONYMOUS });
