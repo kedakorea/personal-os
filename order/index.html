@@ -99,7 +99,7 @@ function form(u, m) {
   ${PL.filter((p) => CH || p.k === pick).map((p) => `<label class="prod" data-k="${p.k}"><input type="radio" name="p" value="${p.k}"><b>${p.name}</b>${p.chip ? '<span class="badge">🪙 칩</span>' : p.k === "trial" ? '<span class="badge">체험단</span>' : '<span class="badge">런칭 이벤트</span>'}<span class="pr">${p.list ? `<s>${won(p.list)}</s>` : ""}${won(p.price)} <small style="font-size:11px;font-weight:600;opacity:.6">VAT 포함</small></span><p>${p.inc}</p></label>`).join("")}
   <p class="small">${CH ? "부가세 포함 · 충전한 칩 5년·보너스 칩 1년 유효 · 7일 안 미사용 시 전액 환불" : "부가세 포함 · 1회 결제(정기결제 없음) · Claude 구독료(월 $100)는 고객님 명의로 Claude에 직접 결제"}</p>
   ${CH || pick === "trial" ? "" : `<div class="pay" id="refbox" style="margin-top:10px">🎟️ <b>추천인 코드</b> <span class="small">(있으신 분만)</span>
-   <div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="rc" placeholder="코드 입력" style="flex:1;text-transform:uppercase;margin:0"><button type="button" class="btn" id="rcb" style="margin:0;padding:0 16px;white-space:nowrap">적용</button></div>
+   <div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="rc" placeholder="코드 입력" style="flex:1 1 auto;width:auto;min-width:0;text-transform:uppercase;margin:0"><button type="button" class="btn" id="rcb" style="flex:0 0 auto;width:auto;margin:0;padding:0 22px;white-space:nowrap">적용</button></div>
    <p class="small" id="rcm" style="margin:6px 0 0"></p></div>`}
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
