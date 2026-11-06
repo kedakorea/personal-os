@@ -34,6 +34,7 @@ input:focus,textarea:focus{outline:3px solid var(--butter)}
 .cards.mini{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.cards.mini button{min-height:44px;font-size:15px;padding:10px 12px}.cards.mini button em{display:inline;font-size:16px;margin:0 4px 0 0}
 .cards button.on{background:var(--ink);color:var(--cream)}
 .cards.one button.on{background:var(--butter);color:var(--ink)}
+.fucards{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.fucards button{border:2px solid var(--ink);border-radius:999px;padding:8px 16px;background:#fff;font-size:16px;font-weight:700;cursor:pointer}.fucards button.on{background:var(--ink);color:#fff}.fuq{margin-top:22px;padding:18px;border:2px solid var(--ink);border-radius:16px;background:#fff}.fuq .t{font-weight:800;font-size:19px}
 .memo{margin-top:28px;border-top:2px dashed var(--sand);padding-top:18px;display:none}
 body.iv .memo{display:block}
 .memo label{font-size:15px;font-weight:800;opacity:.75}
@@ -105,21 +106,21 @@ const STEPS = [
     { k: "role", t: "직함·하시는 일 한 줄", type: "text", hint: "예) ○○학원 원장, 1인 컨설팅 대표, 대학 겸임교수" },
     { k: "tel", t: "연락처", type: "tel" },
     { k: "call", t: "매니저가 나를 뭐라고 부르면 좋을까요?", type: "oneplus", opts: ["대표님", "원장님", "교수님"], hint: "고르거나, 아래 칸에 직접 적어 주세요", ph: "직접 적기 (예: 선생님, 연심님)" } ] },
-  { lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
+  { fu: 1, lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
     { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
     { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
-  { lab: "03 · 맡길 일", h: "평소에 하시는 일이나, 앞으로 AI 매니저에게 시키고 싶은 일을 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
+  { fu: 1, lab: "03 · 맡길 일", h: "평소에 하시는 일이나, 앞으로 AI 매니저에게 시키고 싶은 일을 골라 주세요", sub: "많이 골라도 괜찮습니다. 없는 건 아래에 적어 주세요.", qs: [
     { k: "work", type: "cards", opts: WORK },
     { k: "work_etc", t: "그 밖의 일", type: "text", hint: "여러 개면 쉼표(,)로 나눠 적어 주세요" } ] },
-  { lab: "04 · 맡기는 방법", h: "고르신 일을 매니저에게 어떻게 맡길까요?", sub: "일마다 매니저가 어디까지 할지 정하는 단계예요. 한 가지 일이 여러 칸에 들어가도 괜찮습니다.", qs: [
+  { fu: 1, lab: "04 · 맡기는 방법", h: "고르신 일을 매니저에게 어떻게 맡길까요?", sub: "일마다 매니저가 어디까지 할지 정하는 단계예요. 한 가지 일이 여러 칸에 들어가도 괜찮습니다.", qs: [
     { k: "full", t: "🤖 통째로 맡길 일", hint: "매니저가 처음부터 끝까지 — 쉽지만 시간이 오래 걸리는 반복 일", type: "cards", from: "work", mini: true },
     { k: "coop", t: "🤝 같이 할 일", hint: "매니저가 초안·자료를 만들고, 마무리는 내가 — 어렵거나 내 판단이 들어가는 일", type: "cards", from: "work", mini: true },
     { k: "onlyme", t: "🙋 내가 직접 할 일", hint: "나만 할 수 있는 일 — 매니저는 준비물·일정만 챙겨요", type: "cards", from: "work", mini: true },
     { k: "split_more", t: "덧붙이고 싶은 말 (선택)", type: "text" } ] },
-  { lab: "05 · 하루", h: "어제 하루를 아침부터 들려주세요", sub: "몇 시에 무엇을 했는지, 어떤 프로그램·앱을 열었는지. 대충이어도 괜찮습니다.", qs: [
+  { fu: 1, lab: "05 · 하루", h: "어제 하루를 아침부터 들려주세요", sub: "몇 시에 무엇을 했는지, 어떤 프로그램·앱을 열었는지. 대충이어도 괜찮습니다.", qs: [
     { k: "day", type: "area", big: true },
     { k: "missed", t: "최근에 놓치거나 실수한 일이 있다면", type: "text", hint: "이게 매니저의 '주의할 점'이 됩니다" } ] },
-  { lab: "06 · 앞으로", h: "앞으로 할 일을 들려주세요", sub: "꼭 해야 할 일도, 해 보고 싶은 일도 함께 적어 주세요. 마감이 있으면 날짜도 같이요.", qs: [
+  { fu: 1, lab: "06 · 앞으로", h: "앞으로 할 일을 들려주세요", sub: "꼭 해야 할 일도, 해 보고 싶은 일도 함께 적어 주세요. 마감이 있으면 날짜도 같이요.", qs: [
     { k: "future", type: "area", big: true } ] },
   { lab: "07 · 쓰는 도구", h: "평소 쓰는 것을 골라 주세요", qs: [
     { k: "mail", t: "메일", type: "multi", opts: ["지메일", "네이버 메일", "회사 메일", "메일은 잘 안 봐요"] },
@@ -187,6 +188,7 @@ function field(q) {
 }
 function render() {
   if (S.token && (S.keyOk || new URLSearchParams(location.search).get("t"))) return renderAI();
+  if (FU) return renderFU();
   const st = STEPS[S.step];
   $("bar").style.width = Math.round((S.step / (STEPS.length - 2)) * 100) + "%";
   $("nav").style.display = (st.id === "start" || st.id === "done") ? "none" : "flex";
@@ -245,6 +247,29 @@ function render() {
   $("main").innerHTML = h;
   window.scrollTo(0, 0);
 }
+/* ── 챕터마다 AI 보충 질문 (2026-11-06 대표님) — 답이 짧으면 그 페이지에서 바로 2~3개만 더 묻는다 ── */
+let FU = null;
+function stepAnswers(st) {
+  const j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
+  return st.qs.map((q) => `[${q.t || q.k}] ${j(S.a[q.k])}`).join("\n") + (S.memo[S.step] ? `\n[인터뷰 메모] ${S.memo[S.step]}` : "");
+}
+async function askFU(st) {
+  $("next").disabled = true; $("next").textContent = "답을 읽는 중…";
+  let r = { ok: false };
+  try { r = await osCall({ action: "followup", key: S.key, step: st.lab + " — " + st.h, answers: stepAnswers(st), before: summary() }); } catch (e) {}
+  $("next").disabled = false;
+  S.fuDone = S.fuDone || {};
+  if (!r.ok || !r.qs || !r.qs.length) { S.fuDone[S.step] = true; S.step = Math.min(STEPS.length - 1, S.step + 1); save(); render(); return; }
+  FU = { step: S.step, qs: r.qs, ans: r.qs.map(() => "") }; render();
+}
+function renderFU() {
+  const st = STEPS[FU.step];
+  $("nav").style.display = "flex"; $("back").disabled = false; $("next").textContent = "다음";
+  $("main").innerHTML = `<div class="lab">${st.lab} · 조금만 더</div><h1 style="font-size:26px">조금만 더 여쭤볼게요</h1>
+    <p class="sub">적어 주신 내용을 읽고 궁금한 것만 골랐어요. 보기를 누르거나 말하듯 적어 주세요. 모르시면 비워 두고 넘어가셔도 됩니다.</p>
+    ${FU.qs.map((q, i) => `<div class="fuq"><span class="t">${esc(q.q)}</span>${(q.opts || []).length ? `<div class="fucards">${q.opts.map((o) => `<button type="button" data-fuo="${i}" data-v="${esc(o)}" class="${FU.ans[i].split(", ").includes(o) ? "on" : ""}">${esc(o)}</button>`).join("")}</div>` : ""}<textarea data-fu="${i}" placeholder="${esc(q.ex ? "예) " + q.ex : "여기에 적어 주세요")}" style="min-height:70px;margin-top:8px">${esc(FU.ans[i])}</textarea></div>`).join("")}`;
+  window.scrollTo(0, 0);
+}
 function summary() {
   const a = S.a, L = [];
   const j = (x) => Array.isArray(x) ? x.join(", ") : (x || "");
@@ -256,18 +281,21 @@ function summary() {
   L.push(`[도구] 메일 ${j(a.mail)} / 일정 ${j(a.cal)} / 연락 ${j(a.chat)} / 문서 ${j(a.doc)} / 채널 ${j(a.ch)} / AI ${j(a.ai)} ${a.ai_etc || ""}`);
   L.push(`[맡기는 범위] 보내기 ${a.ask_send || ""} / 올리기 ${a.ask_post || ""} / 일정 ${a.ask_cal || ""} / 파일 ${a.ask_file || ""} / 결제 ${a.ask_pay || ""} / 개인정보 ${a.ask_info || ""}`, `[절대 맡기기 싫은 일] ${a.never || ""}`);
   L.push(`[기기] ${a.pctype || ""} · ${a.pc || ""} · ${a.on || ""} · ${a.phone || ""}`, `[매니저] 말투 ${a.tone || ""} · 브리핑 ${j(a.brief)} · 호칭 ${a.chief_title || ""} · 이름 ${a.chief || ""}`);
-  const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => `  (${STEPS[k] && STEPS[k].lab}) ${v}`);
+  const m = Object.entries(S.memo || {}).filter(([, v]) => v).map(([k, v]) => { const fu = String(k).startsWith("fu"), st = STEPS[fu ? +String(k).slice(2) : k]; return `  (${st && st.lab}${fu ? " · 보충 질문" : ""}) ${v}`; });
   if (m.length) L.push("[인터뷰 메모]", ...m);
   if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
   return L.join("\n");
 }
 document.addEventListener("input", (e) => {
+  if (FU && e.target.dataset.fu !== undefined) { FU.ans[+e.target.dataset.fu] = e.target.value; return; }
   const k = e.target.dataset.k, m = e.target.dataset.memo;
   if (k && e.target.dataset.plus) { e.target.closest(".q").querySelectorAll(".cards button").forEach((x) => x.classList.remove("on")); }
   if (k) S.a[k] = e.target.value; else if (m !== undefined) S.memo[m] = e.target.value; else return;
   save();
 });
 document.addEventListener("click", async (e) => {
+  const fo = e.target.closest("[data-fuo]");
+  if (fo && FU) { const i = +fo.dataset.fuo, v = fo.dataset.v; let arr = FU.ans[i].split(", ").map((x) => x.trim()).filter(Boolean); arr = arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v); FU.ans[i] = arr.join(", "); fo.classList.toggle("on"); const ta = document.querySelector(`[data-fu="${i}"]`); if (ta) ta.value = FU.ans[i]; return; }
   const md = e.target.closest("[data-mode]");
   if (md) { S.mode = md.dataset.mode; document.body.classList.toggle("iv", S.mode === "interview"); S.step = Math.max(1, S.step === 0 ? 1 : S.step); save(); render(); return; }
   if (e.target.id === "reset" || e.target.id === "again") { e.preventDefault(); if (confirm("작성한 내용을 지우고 처음부터 할까요?")) { S = { a: {}, memo: {}, step: 0, key: S.key, keyOk: S.keyOk }; save(); render(); } return; }
@@ -279,8 +307,13 @@ document.addEventListener("click", async (e) => {
     save();
   }
 });
-$("back").onclick = () => { if (S.step > 0) { S.step--; save(); render(); } };
+$("back").onclick = () => { if (FU) { FU = null; render(); return; } if (S.step > 0) { S.step--; save(); render(); } };
 $("next").onclick = async () => {
+  if (FU) {   // 보충 질문 답 → 그 페이지 인터뷰 메모로 (인터뷰어·설계가 함께 읽는다)
+    const t = FU.qs.map((q, i) => FU.ans[i].trim() ? `${q.q} → ${FU.ans[i].trim()}` : "").filter(Boolean).join(" / ");
+    if (t) S.memo["fu" + FU.step] = t;
+    S.fuDone = S.fuDone || {}; S.fuDone[FU.step] = true; S.step = Math.min(STEPS.length - 1, FU.step + 1); FU = null; save(); render(); return;
+  }
   const st = STEPS[S.step];
   if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
   if (st.id === "review") {
@@ -292,6 +325,7 @@ $("next").onclick = async () => {
     try { const p = new URLSearchParams(); p.append(FORM.e.mode, S.mode === "interview" ? "인터뷰" : "직접 작성"); p.append(FORM.e.name, S.a.name || ""); p.append(FORM.e.co, S.a.co || ""); p.append(FORM.e.tel, S.a.tel || ""); p.append(FORM.e.sum, summary()); p.append(FORM.e.json, JSON.stringify({ v: 1, token: r.customer.token, a: S.a, memo: S.memo })); fetch(FORM.action, { method: "POST", mode: "no-cors", body: p }); } catch (e) {}
     S.token = r.customer.token; AI = r; save(); history.replaceState(null, "", "?t=" + S.token); render(); return;
   }
+  if (st.fu && !(S.fuDone || {})[S.step] && S.key) { await askFU(st); return; }
   S.step = Math.min(STEPS.length - 1, S.step + 1); save(); render();
 };
 /* ── AI 인터뷰 · 제안서 · 컨펌 (2026-10-17) ── */
