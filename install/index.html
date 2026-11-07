@@ -66,6 +66,21 @@ textarea{width:100%;min-height:90px;font:15px/1.5 Pretendard;padding:12px;border
 .tl{counter-reset:k;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}.tl li{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;font-size:clamp(16px,1.8vw,21px);font-weight:700}.tl li::before{counter-increment:k;content:counter(k) ". ";color:#2f9a6a}
 .chart{width:100%;background:#fff;border-radius:16px}
 .tips{display:grid;gap:12px}.tips div{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:18px 22px;font-size:clamp(18px,2vw,24px);font-weight:800}.tips b{display:inline-block;width:40px;height:40px;border-radius:50%;background:var(--butter);text-align:center;line-height:40px;margin-right:12px}.tips small{display:block;font-size:15px;font-weight:500;opacity:.7;margin:6px 0 0 52px}
+
+.deck{background:#fff8e6;border:3px solid var(--ink);border-radius:24px;aspect-ratio:16/10;padding:4.5% 6% 7%;position:relative;cursor:pointer;overflow:hidden;margin-bottom:14px;container-type:inline-size;user-select:none}
+.deck:fullscreen{border-radius:0;border:0;aspect-ratio:auto;padding:5vh 7vw 9vh;display:flex;flex-direction:column;justify-content:center}
+.deck .pg{height:100%;display:flex;flex-direction:column;justify-content:center}
+.deck .kk{font-size:2.1cqw;font-weight:800;opacity:.55;margin-bottom:1.2cqw}
+.deck h1{font-size:5.6cqw;line-height:1.25;letter-spacing:-.02em}
+.deck mark{background:#f7d968;color:var(--ink);padding:0 .15em}
+.deck .ld{font-size:2.5cqw;line-height:1.6;margin-top:2.2cqw;opacity:.9}
+.deck .eq{margin-top:2.6cqw}.deck .eq div{padding:1.6cqw}.deck .eq b{font-size:2.6cqw}.deck .eq small{font-size:1.7cqw}.deck .eq span{font-size:3cqw}
+.deck .cols{margin-top:2.4cqw}.deck .cols b{font-size:2.6cqw}.deck .cols li{font-size:2.2cqw}
+.deck .tips{margin-top:2cqw;gap:1.2cqw}.deck .tips div{font-size:2.5cqw;padding:1.4cqw 2cqw}.deck .tips small{font-size:1.7cqw}
+.deck .chartbox{margin-top:1.4cqw;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:.8cqw 1.4cqw}.deck .chartbox svg{display:block;max-height:28cqw;width:100%}
+.dctl{position:absolute;right:2cqw;bottom:1.6cqw;display:flex;gap:.8cqw;align-items:center;font:800 1.7cqw Pretendard}
+.dctl button{font:900 2cqw Pretendard;width:5cqw;height:4cqw;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.minis .item{padding:10px 14px}.minis .item .t{font-size:15px}.minis .item .d{font-size:13px}
 </style></head><body>
 <header><img src="../logo_butter.png" alt="BRANDiUM"><span>설치 진행</span><a href="../admin/">관리자</a><button id="out" hidden>로그아웃</button></header>
 <main id="main"></main>
@@ -94,11 +109,12 @@ const S = [
    ["n1", "클로드 Max 결제·로그인", "고객이 직접", 1, 1],
    ["n2", "설치 한 줄 → 끝까지", "키트를 고객 다운로드 폴더로 · 실행", 1, 1],
    ["n3", "바탕화면 앱이 열린다", "매니저 첫 인사가 보이면 OK", 1, 1]]},
- { id: "s3b", name: "이해하기", when: "15분 · 공식 시간", tip: "노트북으로 설명 화면을 크게 띄워 보여 드려요(📺 버튼). 설치가 돌아가는 사이에 하면 기다림 없이 딱 맞아요. 이 시간을 건너뛰면 '왜 안 되지?' 문의가 늘어요.",
+ { id: "s3b", name: "이해하기", when: "15분 · 공식 시간", deck: true, tip: "아래 화면을 노트북으로 보여 드리며 한 장씩 넘겨요(→ 키·화면 누르기·⛶ 전체 화면). 넘긴 장의 체크는 저절로 됩니다. 설치가 돌아가는 사이에 하면 딱 맞아요.",
   items: [
    ["u1", "퍼스널 OS가 무엇인지", "새 AI·새 플랫폼이 아니라, 클로드를 내 컴퓨터에 붙이고 맞춤 화면·부서를 세팅해 직접 설치해 주는 서비스", 1, 1],
    ["u2", "처음 2주 학습 곡선", "처음엔 내가 하는 게 더 빨라 보여도, 한 번 가르쳐 두면 그다음부터 더 빠르고 나를 더 잘 안다", 1, 1],
-   ["u3", "기록은 내 컴퓨터 + 노션 도서관", "매일 밤 노션 '퍼스널 OS 도서관'에 자동 보관 — 컴퓨터가 고장 나도 기록이 남는다", 1, 1]]},
+   ["u3", "기록은 내 컴퓨터 + 노션 도서관", "매일 밤 노션 '퍼스널 OS 도서관'에 자동 보관 — 컴퓨터가 고장 나도 기록이 남는다", 1, 1],
+   ["u4", "꼭 알아 둘 것", "구독료 별도 · 멈출 수 있음 · 완성도는 쓰는 방법 · 외부 서비스 변경", 1, 1]]},
  { id: "s4", name: "연결", when: "40분", tip: "노션은 꼭 연결해요(도서관 백업). 안드로이드는 테일스케일 '앱별 분할 터널링'에서 크롬만 켜고 '항상 켜진 VPN' 끄기 → 삼성페이·은행 앱이 열리는지 확인.",
   items: [
    ["c1", "캘린더·지메일·노션 연결", "노션은 필수 — 매일 밤 도서관에 자동 보관", 1, 1],
@@ -135,9 +151,6 @@ const MORE = {
  i2: { t: "부서 이름은 고객이 쓰는 말로(강의실·행정실). 첫 화면은 6종 중에서 골라요.", img: [SC + "hq_big.jpg", SC + "village_big.jpg", SC + "cyworld_big.jpg", SC + "minimal_big.jpg", SC + "diary_big.jpg", SC + "magazine_big.jpg"], btn: [["🖼 첫 화면 6종 고르기", "../start/screens/"]] },
  n2: { t: "맥: 터미널에 설치 한 줄 붙여넣기 → 끝까지 엔터. 중간에 클로드 로그인 창이 뜨면 고객이 로그인. 15분 넘게 막히면 핫스팟 → USB 키트." },
  n3: { t: "앱이 열리면 매니저가 먼저 인사하고 부서를 소개해요. 고른 첫 화면(예: 본사형)이 보이면 성공.", img: [SC + "hq_big.jpg"] },
- u1: { t: "\"새로운 AI나 새 앱을 쓰시는 게 아니에요. 지금 가장 일 잘하는 AI인 클로드를 대표님 컴퓨터에 붙이고, 대표님 회사처럼 부서와 화면을 맞춰 설치해 드리는 거예요. 그래서 대표님 파일을 직접 만들고, 대표님 계정으로 일하고, 기록은 대표님 컴퓨터에 남아요.\"", btn: [["📺 퍼스널 OS란? 보여 주기", "slide:what"]] },
- u2: { t: "\"처음 1~2주는 설명하는 게 귀찮고, 내가 하는 게 더 빨라 보여요. 그런데 한 번 가르쳐 두면 지침으로 남아서 그다음부터는 말 한마디로 끝나요. 이 구간만 버티시면 됩니다.\"", btn: [["📈 학습 곡선 그래프 보여 주기", "slide:curve"], ["💡 버티는 요령 3가지", "slide:tips"]] },
- u3: { t: "모든 기록은 고객 컴퓨터(~/퍼스널OS)에 있고, 매일 밤 22:30 노션 '📚 퍼스널 OS 도서관'(업무일지·대화 원본·결과물·지침)에, 23:40 금고 폴더에 한 번 더 보관돼요. 노션 연결만 해 두면 고객이 따로 세팅할 건 없어요.", btn: [["📺 기록 보관 구조 보여 주기", "slide:data"]] },
  c1: { t: "claude.ai/settings/connectors → Google Calendar · Gmail · Notion 각각 [연결] → 같은 구글 계정으로 허용. 노션이 연결되면 첫날 밤에 도서관 페이지가 저절로 만들어져요.", btn: [["🔗 커넥터 화면 열기", "https://claude.ai/settings/connectors"]] },
  c2: { t: "휴대폰으로 앱 주소 열기 → 공유 → 홈 화면에 추가 → 알림 허용 → 매니저에게 \"알림 시험\" 한 번." },
  x1: { t: "매니저에게 \"설치 기념 카드뉴스 만들어 줘\" 한마디. 고객 OS에 실제로 있는 직원 캐릭터로 카드 6장 + 움직이는 숏폼이 나와요(2~3분).", img: ["img/card01.jpg", "img/card02.jpg", "img/card05.jpg", "img/card06.jpg"], btn: [["▶ 숏폼 예시 보기", "img/shortform.mp4"]] },
@@ -147,6 +160,52 @@ const MORE = {
  m1: { t: "고객이 앱을 닫았다가 직접 열고 \"브리핑\"을 쳐 보게 해요." },
  m3: { t: "브랜디움 카카오 채널 · 바탕화면 '원격도움' 아이콘 · 앱에서 \"가이드 보여 줘\".", btn: [["📘 이용 방법", "../how/"], ["💬 카카오 채널", "https://pf.kakao.com/_gMxogd"]] }
 };
+
+
+/* ── 이해하기 = PPT처럼 한 장씩 (2026-11-08 대표님: 열고 닫지 않게, 한 장에 한 내용) ── */
+const CURVE = `<svg viewBox="0 0 1000 430" width="100%">
+<rect x="70.0" y="30" width="244.75" height="340" fill="#ffd84d" opacity=".28"/>
+<text x="192.375" y="58" text-anchor="middle" font-size="22" font-weight="800" fill="#432f2e">가르치는 시간</text>
+<text x="192.375" y="84" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".75">조금 귀찮을 수 있어요</text>
+<line x1="70" y1="370" x2="960" y2="370" stroke="#432f2e" stroke-width="3"/>
+<line x1="70" y1="30" x2="70" y2="370" stroke="#432f2e" stroke-width="3"/>
+<text x="70.0" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">설치 날</text><text x="181.25" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">1주</text><text x="292.5" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">2주</text><text x="403.75" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">3주</text><text x="515.0" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">1달</text><text x="737.5" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">6주</text><text x="960.0" y="400" text-anchor="middle" font-size="17" fill="#432f2e" opacity=".7">2달</text>
+<path d="M70.0,47.0 L81.1,63.5 L92.2,79.0 L103.4,93.5 L114.5,107.2 L125.6,120.0 L136.8,132.1 L147.9,143.4 L159.0,154.0 L170.1,164.0 L181.2,173.4 L192.4,182.2 L203.5,190.5 L214.6,198.3 L225.8,205.6 L236.9,212.5 L248.0,218.9 L259.1,225.0 L270.2,230.7 L281.4,236.0 L292.5,241.1 L303.6,245.8 L314.8,250.2 L325.9,254.4 L337.0,258.3 L348.1,262.0 L359.2,265.4 L370.4,268.7 L381.5,271.7 L392.6,274.6 L403.8,277.3 L414.9,279.8 L426.0,282.2 L437.1,284.4 L448.2,286.5 L459.4,288.5 L470.5,290.3 L481.6,292.1 L492.8,293.7 L503.9,295.2 L515.0,296.7 L526.1,298.0 L537.2,299.3 L548.4,300.5 L559.5,301.6 L570.6,302.7 L581.8,303.7 L592.9,304.6 L604.0,305.5 L615.1,306.3 L626.2,307.0 L637.4,307.8 L648.5,308.5 L659.6,309.1 L670.8,309.7 L681.9,310.3 L693.0,310.8 L704.1,311.3 L715.2,311.8 L726.4,312.2 L737.5,312.6 L748.6,313.0 L759.8,313.4 L770.9,313.7 L782.0,314.0 L793.1,314.3 L804.2,314.6 L815.4,314.9 L826.5,315.1 L837.6,315.4 L848.8,315.6 L859.9,315.8 L871.0,316.0 L882.1,316.2 L893.2,316.3 L904.4,316.5 L915.5,316.6 L926.6,316.8 L937.8,316.9 L948.9,317.0 L960.0,317.2" fill="none" stroke="#b8a69c" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>
+<path d="M70.0,363.8 L81.1,362.8 L92.2,361.7 L103.4,360.4 L114.5,358.9 L125.6,357.1 L136.8,355.2 L147.9,352.9 L159.0,350.3 L170.1,347.3 L181.2,344.0 L192.4,340.2 L203.5,335.9 L214.6,331.0 L225.8,325.6 L236.9,319.6 L248.0,312.9 L259.1,305.6 L270.2,297.6 L281.4,288.9 L292.5,279.6 L303.6,269.6 L314.8,259.2 L325.9,248.2 L337.0,236.9 L348.1,225.3 L359.2,213.6 L370.4,201.9 L381.5,190.3 L392.6,179.0 L403.8,168.0 L414.9,157.6 L426.0,147.6 L437.1,138.3 L448.2,129.6 L459.4,121.6 L470.5,114.3 L481.6,107.6 L492.8,101.6 L503.9,96.2 L515.0,91.3 L526.1,87.0 L537.2,83.2 L548.4,79.9 L559.5,76.9 L570.6,74.3 L581.8,72.0 L592.9,70.1 L604.0,68.3 L615.1,66.8 L626.2,65.5 L637.4,64.4 L648.5,63.4 L659.6,62.6 L670.8,61.8 L681.9,61.2 L693.0,60.6 L704.1,60.2 L715.2,59.8 L726.4,59.4 L737.5,59.1 L748.6,58.8 L759.8,58.6 L770.9,58.4 L782.0,58.2 L793.1,58.1 L804.2,58.0 L815.4,57.9 L826.5,57.8 L837.6,57.7 L848.8,57.6 L859.9,57.6 L871.0,57.5 L882.1,57.5 L893.2,57.4 L904.4,57.4 L915.5,57.4 L926.6,57.3 L937.8,57.3 L948.9,57.3 L960.0,57.3" fill="none" stroke="#432f2e" stroke-width="7" stroke-linecap="round"/>
+<circle cx="403.75" cy="168.03870741257117" r="11" fill="#ffd84d" stroke="#432f2e" stroke-width="4"/>
+<text x="421.75" y="208.03870741257117" font-size="20" font-weight="800" fill="#432f2e">여기서부터 훨씬 편해져요</text>
+<text x="948.875" y="41.310273835686075" text-anchor="end" font-size="19" font-weight="800" fill="#432f2e">매니저가 알아서 하는 일</text>
+<text x="948.875" y="301.04907802935764" text-anchor="end" font-size="18" fill="#8a7a72">대표님이 설명하는 시간</text>
+</svg>`;
+const DECK = [
+ { k: null, h: `<p class="kk">설치하는 동안 10분</p><h1>퍼스널 OS,<br><mark>이렇게 이해해 주세요</mark></h1><p class="ld">오늘부터 함께 일할 우리 회사를 소개합니다.</p>` },
+ { k: "u1", h: `<p class="kk">1 · 무엇인가요</p><h1>퍼스널 OS는<br><mark>새로운 AI도, 운영체제도 아닙니다</mark></h1><div class="eq"><div><b>🧠 Claude</b><small>지금 가장 일 잘하는 AI</small></div><span>+</span><div><b>💻 내 컴퓨터</b><small>내 파일·내 계정으로 직접</small></div><span>+</span><div><b>🏢 우리 회사 세팅</b><small>부서·지침·화면·자동 업무</small></div></div><p class="ld">윈도우·맥은 그대로 두고, Claude를 대표님 컴퓨터에 연결해 <b>대표님이 일하기 좋게 세팅해 설치해 드린 서비스</b>예요.</p>` },
+ { k: "u1", h: `<p class="kk">1 · 무엇인가요</p><h1>그래서 <mark>채팅창 AI와 달라요</mark></h1><div class="cols"><div><b>채팅창 AI</b><ul><li>답을 복사해서 내가 붙여 넣기</li><li>매번 처음부터 설명</li><li>파일은 내가 다시 만들기</li></ul></div><div class="hl"><b>퍼스널 OS</b><ul><li>파일을 직접 만들고 저장</li><li>회사·말투·거래처를 기억</li><li>휴대폰으로 시키면 컴퓨터가 처리</li></ul></div></div>` },
+ { k: "u2", h: `<p class="kk">2 · 처음 몇 주</p><h1>처음 몇 주는<br><mark>매니저를 가르치는 시간</mark>이에요</h1><p class="ld">새로 온 직원도 첫날엔 우리 회사를 몰라요. 처음에 알려 주신 만큼, 그다음부터는 <b>매니저가 알아서</b> 합니다.</p><div class="chartbox">${CURVE}</div>` },
+ { k: "u2", h: `<p class="kk">2 · 처음 몇 주</p><h1>이 시간을 <mark>버티는 요령 3가지</mark></h1><div class="tips"><div><b>1</b>같은 일은 같은 말로 시키기<small>"견적서 만들어 줘" — 매번 같은 말이면 더 빨리 익혀요</small></div><div><b>2</b>틀리면 고쳐서 말하기<small>"이건 이렇게 해 줘" 한마디가 지침으로 남아요</small></div><div><b>3</b>하루 한 번 "브리핑"<small>쓸수록 대표님을 더 잘 알게 돼요</small></div></div>` },
+ { k: "u3", h: `<p class="kk">3 · 기록</p><h1>대표님 데이터는<br><mark>대표님 것</mark>이에요</h1><div class="eq"><div><b>💻 내 컴퓨터</b><small>모든 원본</small></div><span>→</span><div><b>📚 노션 도서관</b><small>매일 밤 자동 보관</small></div><span>→</span><div><b>🗄 금고 폴더</b><small>한 벌 더</small></div></div><p class="ld">어디 서버에 올리는 게 아니라 대표님 컴퓨터에 있는 회사예요. 그래서 기록은 매일 밤 <b>대표님 노션에 도서관처럼</b> 쌓아 둡니다.</p>` },
+ { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>Claude 구독료는<br><mark>별도</mark>예요</h1><p class="ld">Claude Max <b>월 $100</b>(약 15만 원)는 대표님 명의 카드로 Claude에 직접 내는 비용이에요. 원화 금액은 환율에 따라 조금씩 달라져요.</p>` },
+ { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1><mark>멈추거나 오류</mark>가<br>날 수 있어요</h1><div class="eq"><div><b>☁️ Claude 장애</b></div><div><b>💤 컴퓨터 꺼짐·절전</b></div><div><b>📶 인터넷 문제</b></div></div><p class="ld">이럴 땐 일을 하지 못하지만, <b>문제가 풀리면 다시 정상</b>으로 돌아와요. 컴퓨터는 켜 두세요.</p>` },
+ { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>완성도는<br><mark>쓰는 방법</mark>에 따라 달라져요</h1><p class="ld">지시하고 다듬을수록 좋아져요. 설치만으로 전문가 수준을 보장하지는 않아요 — 처음 몇 주의 가르침이 그래서 중요해요.</p>` },
+ { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>외부 서비스가 바뀌면<br><mark>바로 안내</mark>해 드려요</h1><p class="ld">Claude·노션 같은 외부 서비스의 요금·기능 변경은 캐다가 정할 수 없어요. 바뀌면 30일 지원 기간에도, 그 뒤에도 안내해 드립니다.</p>` },
+ { k: null, h: `<p class="kk">이제 연결하러 가요</p><h1>궁금한 점<br><mark>있으세요?</mark></h1><p class="ld">다음은 캘린더·메일·노션·휴대폰 연결이에요.</p>` }
+];
+let DI = 0;
+function deckGo(i) {
+  DI = Math.max(0, Math.min(DECK.length - 1, i));
+  const k = DECK[DI].k;
+  if (k && RUN) { const it = S.find((x) => x.id === "s3b").items.find((x) => x[0] === k); let ch = false;
+    keysOf(it).forEach((kk) => { if (!RUN.checks[kk]) { RUN.checks[kk] = new Date().toISOString(); ch = true; } }); if (ch) save(); }
+  const el = $("deck"); if (!el) return draw();
+  el.querySelector(".pg").innerHTML = DECK[DI].h; $("dn").textContent = `${DI + 1} / ${DECK.length}`;
+  if (k) draw();
+}
+function deckHtml() {
+  return `<div class="deck" id="deck"><div class="pg">${DECK[DI].h}</div><div class="dctl"><button id="dp">←</button><span id="dn">${DI + 1} / ${DECK.length}</span><button id="dx">→</button><button id="dfs">⛶</button></div></div>`;
+}
+document.addEventListener("keydown", (e) => { if (!RUN || S[STAGE].id !== "s3b" || ($("ov") && $("ov").style.display === "flex")) return;
+  if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); deckGo(DI + 1); }
+  if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); deckGo(DI - 1); } });
 
 /* ── 노트북으로 보여 주는 설명 화면 ── */
 const SLIDES = {
@@ -220,7 +279,7 @@ function draw() {
    ${RUN.finished_at ? `<div class="done-banner"><b>✅ 설치 완료</b>${new Date(RUN.finished_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}</div>` : ""}
    <div class="stagehead"><h2>${STAGE + 1}. ${s.name}</h2><small>${s.when}</small></div>
    <div class="tip">${E(s.tip)}</div>
-   ${items}
+   ${s.deck ? deckHtml() + `<div class="minis">${items}</div>` : items}
    ${last ? `<label>막힘 노트 · 메모</label><textarea id="nt" placeholder="막힌 곳, 걸린 시간, 다음에 고칠 것">${E(RUN.notes || "")}</textarea>` : ""}
    <div class="nav">${STAGE > 0 ? `<button class="btn g" id="prev">← 이전</button>` : ""}
      ${S[STAGE].id === "s6" && !RUN.finished_at ? `<button class="btn y" id="fin">🎉 설치 완료</button>` : ""}
@@ -228,6 +287,9 @@ function draw() {
    ${left.length ? `<p class="warn">남은 필수: ${E(left.slice(0, 4).join(", "))}${left.length > 4 ? ` 외 ${left.length - 4}개` : ""}</p>` : ""}`;
   document.querySelectorAll("[data-k]").forEach((el) => el.onclick = async (e) => { e.stopPropagation(); const k = el.dataset.k; RUN.checks = RUN.checks || {};
     if (RUN.checks[k]) delete RUN.checks[k]; else RUN.checks[k] = new Date().toISOString(); draw(); await save(); });
+  if ($("deck")) { $("dp").onclick = (e) => { e.stopPropagation(); deckGo(DI - 1); }; $("dx").onclick = (e) => { e.stopPropagation(); deckGo(DI + 1); };
+    $("dfs").onclick = (e) => { e.stopPropagation(); const d = $("deck"); if (document.fullscreenElement) document.exitFullscreen(); else (d.requestFullscreen || d.webkitRequestFullscreen).call(d); };
+    $("deck").onclick = (e) => { if (e.target.closest(".dctl")) return; deckGo(DI + 1); }; }
   document.querySelectorAll("[data-more]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); OPEN[el.dataset.more] = !OPEN[el.dataset.more]; draw(); });
   document.querySelectorAll("[data-act]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); act(el.dataset.act); });
   document.querySelectorAll("[data-zoom]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); zoom(el.dataset.zoom); });
