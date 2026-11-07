@@ -52,6 +52,20 @@ label{display:block;font-weight:800;font-size:14px;margin-top:14px}
 .warn{color:var(--red);font-weight:800;font-size:14px;text-align:center;margin-top:8px}
 .done-banner{background:var(--green);color:#fff;border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}.done-banner b{font-size:24px;display:block;margin-bottom:6px}
 textarea{width:100%;min-height:90px;font:15px/1.5 Pretendard;padding:12px;border:2px solid var(--ink);border-radius:12px;margin-top:6px}
+.more{margin-top:10px;font:800 13px Pretendard;border:0;background:none;color:#7a5a3a;cursor:pointer;padding:4px 0}
+.mbox{margin-top:8px;background:#fffaf0;border:1.5px dashed var(--sand);border-radius:12px;padding:12px;font-size:14.5px;line-height:1.6;cursor:default}
+.imgs{display:flex;gap:8px;overflow-x:auto;margin-top:10px}.imgs img{height:150px;border-radius:10px;border:1.5px solid var(--sand);cursor:zoom-in}
+.mbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn.sm{font-size:14px;padding:9px 14px}
+#ov{position:fixed;inset:0;z-index:50;background:rgba(30,22,20,.92);display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.sl{background:#fff8e6;color:var(--ink);border-radius:24px;padding:40px 44px;max-width:1000px;width:100%;max-height:82vh;overflow:auto}
+.sl h2{font-size:clamp(26px,3.6vw,42px);margin-bottom:22px}.sl .big2{font-size:clamp(17px,2vw,24px);line-height:1.6;margin-top:22px}
+.slnav{display:flex;gap:10px;align-items:center;margin-top:16px;color:#fff}
+.zm{max-width:94vw;max-height:80vh;border-radius:14px;background:#fff}
+.eq{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.eq div{flex:1;min-width:150px;background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:18px;text-align:center}.eq b{display:block;font-size:clamp(18px,2.2vw,26px)}.eq small{font-size:14px;opacity:.7}.eq span{font-size:30px;font-weight:900}.eq .r{background:var(--butter)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}.cols div{background:#fff;border:2.5px solid var(--sand);border-radius:18px;padding:20px}.cols .hl{border-color:#2f9a6a;background:#eef8f1}.cols b{font-size:22px}.cols li{margin:10px 0 0 20px;font-size:18px}
+.tl{counter-reset:k;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}.tl li{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;font-size:clamp(16px,1.8vw,21px);font-weight:700}.tl li::before{counter-increment:k;content:counter(k) ". ";color:#2f9a6a}
+.chart{width:100%;background:#fff;border-radius:16px}
+.tips{display:grid;gap:12px}.tips div{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:18px 22px;font-size:clamp(18px,2vw,24px);font-weight:800}.tips b{display:inline-block;width:40px;height:40px;border-radius:50%;background:var(--butter);text-align:center;line-height:40px;margin-right:12px}.tips small{display:block;font-size:15px;font-weight:500;opacity:.7;margin:6px 0 0 52px}
 </style></head><body>
 <header><img src="../logo_butter.png" alt="BRANDiUM"><span>설치 진행</span><a href="../admin/">관리자</a><button id="out" hidden>로그아웃</button></header>
 <main id="main"></main>
@@ -69,20 +83,25 @@ const S = [
    ["p4", "예비 길 챙김", "휴대폰 핫스팟 · USB 설치 키트 · 내 맥북 충전", 0, 0]]},
  { id: "s1", name: "시작", when: "10분", tip: "로그인·결제·비밀번호는 고객이 직접 넣는다는 걸 먼저 말씀드려요. 화면 기록(사례용) 허락도 이때.",
   items: [
-   ["o1", "오늘 순서 안내", "진행 안내 한 장 보여 드리기", 0, 0],
+   ["o1", "오늘 순서 안내", "📺 '오늘 순서' 화면을 노트북으로 보여 드리기", 0, 0],
    ["o2", "직접 입력 원칙 + 기록 허락", "로그인·결제·비밀번호는 고객 손으로", 1, 0]]},
  { id: "s2", name: "인터뷰·확정", when: "50분", tip: "2인 이상: 한 분 인터뷰하는 동안 다른 분은 클로드 Max 가입을 먼저 해 두면 시간이 맞아요.",
   items: [
    ["i1", "인터뷰 끝", "하루 흐름 · 가장 귀찮은 일 3개 · 맡기는 범위", 1, 1],
-   ["i2", "부서·매니저 이름 확정", "제안서를 고객이 직접 읽고 \"네\"", 1, 1]]},
- { id: "s3", name: "설치", when: "40분", tip: "막히면 15분 넘기지 말고 예비 길로: 와이파이 → 핫스팟 → USB 키트. 2인 이상이면 설치는 동시에 돌려요.",
+   ["i2", "부서·매니저 이름·첫 화면 확정", "제안서를 고객이 직접 읽고 \"네\"", 1, 1]]},
+ { id: "s3", name: "설치", when: "40분", tip: "막히면 15분 넘기지 말고 예비 길로: 와이파이 → 핫스팟 → USB 키트. 2인 이상이면 설치는 동시에 돌려요. 설치가 돌아가는 동안 다음 단계 '이해하기'를 진행하면 시간이 딱 맞아요.",
   items: [
    ["n1", "클로드 Max 결제·로그인", "고객이 직접", 1, 1],
    ["n2", "설치 한 줄 → 끝까지", "키트를 고객 다운로드 폴더로 · 실행", 1, 1],
    ["n3", "바탕화면 앱이 열린다", "매니저 첫 인사가 보이면 OK", 1, 1]]},
- { id: "s4", name: "연결", when: "40분", tip: "안드로이드는 테일스케일 '앱별 분할 터널링'에서 크롬만 켜고 '항상 켜진 VPN' 끄기 → 삼성페이·은행 앱이 열리는지 꼭 확인.",
+ { id: "s3b", name: "이해하기", when: "15분 · 공식 시간", tip: "노트북으로 설명 화면을 크게 띄워 보여 드려요(📺 버튼). 설치가 돌아가는 사이에 하면 기다림 없이 딱 맞아요. 이 시간을 건너뛰면 '왜 안 되지?' 문의가 늘어요.",
   items: [
-   ["c1", "캘린더·지메일 연결", "고객이 허용 (노션은 원하면)", 1, 1],
+   ["u1", "퍼스널 OS가 무엇인지", "새 AI·새 플랫폼이 아니라, 클로드를 내 컴퓨터에 붙이고 맞춤 화면·부서를 세팅해 직접 설치해 주는 서비스", 1, 1],
+   ["u2", "처음 2주 학습 곡선", "처음엔 내가 하는 게 더 빨라 보여도, 한 번 가르쳐 두면 그다음부터 더 빠르고 나를 더 잘 안다", 1, 1],
+   ["u3", "기록은 내 컴퓨터 + 노션 도서관", "매일 밤 노션 '퍼스널 OS 도서관'에 자동 보관 — 컴퓨터가 고장 나도 기록이 남는다", 1, 1]]},
+ { id: "s4", name: "연결", when: "40분", tip: "노션은 꼭 연결해요(도서관 백업). 안드로이드는 테일스케일 '앱별 분할 터널링'에서 크롬만 켜고 '항상 켜진 VPN' 끄기 → 삼성페이·은행 앱이 열리는지 확인.",
+  items: [
+   ["c1", "캘린더·지메일·노션 연결", "노션은 필수 — 매일 밤 도서관에 자동 보관", 1, 1],
    ["c2", "휴대폰 홈 화면 + 알림 한 번 받기", "", 1, 1],
    ["c3", "컴퓨터 잠자기 끔", "늘 켜 둬야 일한다는 것 안내", 1, 1]]},
  { id: "s5", name: "실습 3가지", when: "40분", tip: "고객이 직접 말로 시켜요. 세 가지가 끝나면 고객 화면에 '오늘 설치 공식 완료' 화면이 떠요(매니저에게 \"설치 완료\"라고 하면 됨).",
@@ -95,7 +114,7 @@ const S = [
   items: [
    ["m1", "혼자 앱 켜고 지시 넣을 수 있다", "", 1, 1],
    ["m2", "메일은 임시보관함까지만 간다는 걸 안다", "", 1, 1],
-   ["m3", "문의처·30일 지원·원격 도움을 안다", "카카오 채널 · 원격도움 아이콘", 1, 1],
+   ["m3", "문의처·30일 지원·원격 도움을 안다", "카카오 채널 · 원격도움 아이콘 · 사용 가이드", 1, 1],
    ["m4", "만족도·후기·사진 부탁", "", 0, 0]]},
  { id: "s7", name: "다음 날", when: "다음 날까지", tip: "막힌 곳은 바로 키트·사이트에 반영해야 다음 설치가 빨라져요.",
   items: [
@@ -104,6 +123,41 @@ const S = [
    ["d3", "막힘 노트 → 키트·사이트 고치기", "", 0, 0],
    ["d4", "후기·사진 → 사례 창고 · 1주 뒤 안부 할일", "", 0, 0]]}
 ];
+
+/* ── 항목별 '자세히' — 설명·이미지·보여 줄 화면 (2026-11-08 대표님: 이 페이지 하나로 필요한 자료가 다 보이게) ── */
+const SC = "../start/screens/";
+const MORE = {
+ p1: { t: "맥이면 키트 그대로, 윈도우면 윈도우 설치판. 노트북이면 '덮으면 퇴근'이라는 걸 미리 말씀드려요. 늘 켜 둘 데스크톱이 있으면 그쪽을 권해요." },
+ p3: { t: "관리자 → 고객 → 키 복사. 고객이 인터뷰(업무 파악)를 미리 했으면 답이 설계에 자동으로 들어가요.", btn: [["🔑 관리자 열기", "../admin/"]] },
+ o1: { t: "8단계를 한 화면으로 보여 드리면 고객이 '언제 뭘 하는지' 알고 편하게 따라와요.", btn: [["📺 오늘 순서 보여 주기", "slide:order"]] },
+ o2: { t: "\"비밀번호와 결제는 제가 보지 않게 직접 넣어 주세요\" — 신뢰가 생기는 한마디. 사례용 화면 기록은 얼굴·개인정보 가린 뒤에만 쓴다고 함께 말씀드려요." },
+ i1: { t: "인터뷰 화면의 칸마다 🎤로 받아쓰기. 막히면 '평소 하루를 처음부터 끝까지 말해 주세요'로 시작하면 쉬워요.", btn: [["🎙 고객 인터뷰 화면", "../start/"]] },
+ i2: { t: "부서 이름은 고객이 쓰는 말로(강의실·행정실). 첫 화면은 6종 중에서 골라요.", img: [SC + "hq_big.jpg", SC + "village_big.jpg", SC + "cyworld_big.jpg", SC + "minimal_big.jpg", SC + "diary_big.jpg", SC + "magazine_big.jpg"], btn: [["🖼 첫 화면 6종 고르기", "../start/screens/"]] },
+ n2: { t: "맥: 터미널에 설치 한 줄 붙여넣기 → 끝까지 엔터. 중간에 클로드 로그인 창이 뜨면 고객이 로그인. 15분 넘게 막히면 핫스팟 → USB 키트." },
+ n3: { t: "앱이 열리면 매니저가 먼저 인사하고 부서를 소개해요. 고른 첫 화면(예: 본사형)이 보이면 성공.", img: [SC + "hq_big.jpg"] },
+ u1: { t: "\"새로운 AI나 새 앱을 쓰시는 게 아니에요. 지금 가장 일 잘하는 AI인 클로드를 대표님 컴퓨터에 붙이고, 대표님 회사처럼 부서와 화면을 맞춰 설치해 드리는 거예요. 그래서 대표님 파일을 직접 만들고, 대표님 계정으로 일하고, 기록은 대표님 컴퓨터에 남아요.\"", btn: [["📺 퍼스널 OS란? 보여 주기", "slide:what"]] },
+ u2: { t: "\"처음 1~2주는 설명하는 게 귀찮고, 내가 하는 게 더 빨라 보여요. 그런데 한 번 가르쳐 두면 지침으로 남아서 그다음부터는 말 한마디로 끝나요. 이 구간만 버티시면 됩니다.\"", btn: [["📈 학습 곡선 그래프 보여 주기", "slide:curve"], ["💡 버티는 요령 3가지", "slide:tips"]] },
+ u3: { t: "모든 기록은 고객 컴퓨터(~/퍼스널OS)에 있고, 매일 밤 22:30 노션 '📚 퍼스널 OS 도서관'(업무일지·대화 원본·결과물·지침)에, 23:40 금고 폴더에 한 번 더 보관돼요. 노션 연결만 해 두면 고객이 따로 세팅할 건 없어요.", btn: [["📺 기록 보관 구조 보여 주기", "slide:data"]] },
+ c1: { t: "claude.ai/settings/connectors → Google Calendar · Gmail · Notion 각각 [연결] → 같은 구글 계정으로 허용. 노션이 연결되면 첫날 밤에 도서관 페이지가 저절로 만들어져요.", btn: [["🔗 커넥터 화면 열기", "https://claude.ai/settings/connectors"]] },
+ c2: { t: "휴대폰으로 앱 주소 열기 → 공유 → 홈 화면에 추가 → 알림 허용 → 매니저에게 \"알림 시험\" 한 번." },
+ x1: { t: "매니저에게 \"설치 기념 카드뉴스 만들어 줘\" 한마디. 고객 OS에 실제로 있는 직원 캐릭터로 카드 6장 + 움직이는 숏폼이 나와요(2~3분).", img: ["img/card01.jpg", "img/card02.jpg", "img/card05.jpg", "img/card06.jpg"], btn: [["▶ 숏폼 예시 보기", "img/shortform.mp4"]] },
+ x2: { t: "\"어디에 올려 드릴까요? 여러 개 골라도 돼요\" → 인스타·네이버 블로그(·유튜브). 업로드 창에서 고객이 로그인 한 번(2단계 인증 포함). 블로그는 사진 → 설명 순서로 올라가요.", btn: [["📝 블로그 예시", "https://blog.naver.com/kedakorea/224468725720"], ["📷 인스타 예시", "https://www.instagram.com/brandium__official/p/Dfch5EZk5Kw/"]] },
+ x3: { t: "휴대폰 앱에서 인터뷰 때 나온 '가장 귀찮은 일'을 하나 시켜요 → 컴퓨터가 처리 → 끝나면 휴대폰 알림. '밖에서도 된다'는 게 가장 큰 놀람 포인트." },
+ x4: { t: "세 가지가 끝나면 고객 화면에 이 완료 화면이 떠요(\"설치 완료\"라고 해도 됨). 30일 지원 마감일·사용 가이드·카카오 채널 버튼이 함께 있어요.", img: ["img/done.jpg"] },
+ m1: { t: "고객이 앱을 닫았다가 직접 열고 \"브리핑\"을 쳐 보게 해요." },
+ m3: { t: "브랜디움 카카오 채널 · 바탕화면 '원격도움' 아이콘 · 앱에서 \"가이드 보여 줘\".", btn: [["📘 이용 방법", "../how/"], ["💬 카카오 채널", "https://pf.kakao.com/_gMxogd"]] }
+};
+
+/* ── 노트북으로 보여 주는 설명 화면 ── */
+const SLIDES = {
+ order: [`<h2>오늘 이렇게 진행해요</h2><ol class="tl">${["시작 — 오늘 순서", "인터뷰 — 하루·귀찮은 일", "확정 — 부서·매니저·화면", "설치 — 내 컴퓨터에", "이해하기 — 퍼스널 OS란", "연결 — 캘린더·메일·노션·휴대폰", "실습 3가지 — 만들고·올리고·맡기고", "🎉 설치 완료"].map((x) => `<li>${x}</li>`).join("")}</ol>`],
+ what: [`<h2>퍼스널 OS는 새 AI가 아니에요</h2><div class="eq"><div><b>🧠 클로드</b><small>지금 가장 일 잘하는 AI</small></div><span>+</span><div><b>💻 내 컴퓨터</b><small>내 파일·내 계정으로 직접</small></div><span>+</span><div><b>🏢 우리 회사 세팅</b><small>부서·매니저·맞춤 화면</small></div><span>=</span><div class="r"><b>퍼스널 OS</b><small>내 컴퓨터에 설치된 우리 회사</small></div></div><p class="big2">새 앱을 배우는 게 아니라, <b>클로드를 내 컴퓨터에 붙이고 내가 일하기 좋게 세팅해 드리는 설치 서비스</b>예요.</p>`,
+        `<h2>그래서 이런 게 달라요</h2><div class="cols"><div><b>채팅창 AI</b><ul><li>답을 복사해서 내가 붙여 넣기</li><li>매번 처음부터 설명</li><li>파일은 내가 다시 만들기</li></ul></div><div class="hl"><b>퍼스널 OS</b><ul><li>파일을 직접 만들고 저장</li><li>회사·말투·거래처를 기억</li><li>휴대폰으로 시키면 컴퓨터가 처리</li></ul></div></div>`],
+ curve: [`<h2>처음 2주만 버티면 됩니다</h2><svg viewBox="0 0 640 340" class="chart"><rect x="70" y="20" width="150" height="270" fill="#feefb8"/><text x="145" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#432f2e">버티는 구간</text><line x1="70" y1="290" x2="620" y2="290" stroke="#432f2e" stroke-width="3"/><line x1="70" y1="20" x2="70" y2="290" stroke="#432f2e" stroke-width="3"/><text x="20" y="160" font-size="13" fill="#432f2e" transform="rotate(-90 20 160)" text-anchor="middle">한 가지 일에 드는 시간</text>${["1주", "2주", "3주", "4주", "2달"].map((w, i) => `<text x="${110 + i * 120}" y="314" text-anchor="middle" font-size="14" fill="#432f2e">${w}</text>`).join("")}<line x1="70" y1="150" x2="620" y2="150" stroke="#9a8f8a" stroke-width="4" stroke-dasharray="10 8"/><text x="615" y="140" text-anchor="end" font-size="14" fill="#6b625e">내가 직접 할 때</text><path d="M70 70 C 160 60, 200 120, 260 170 S 420 255, 620 265" fill="none" stroke="#2f9a6a" stroke-width="6"/><text x="610" y="252" text-anchor="end" font-size="16" font-weight="800" fill="#2f9a6a">퍼스널 OS</text><circle cx="236" cy="150" r="9" fill="#c8372d"/><text x="250" y="132" font-size="14" font-weight="800" fill="#c8372d">여기서 역전</text></svg><p class="big2">처음엔 가르치느라 시간이 더 들어요. 하지만 한 번 알려 준 건 <b>지침으로 남아서</b> 다음부터는 말 한마디로 끝나요.</p>`],
+ tips: [`<h2>버티는 요령 3가지</h2><div class="tips"><div><b>1</b>같은 일은 같은 말로 시키기<small>"견적서 만들어 줘" — 매번 같은 말이면 더 빨리 익혀요</small></div><div><b>2</b>틀리면 고쳐서 말하기<small>"이건 이렇게 해 줘" 한마디가 지침으로 남아요</small></div><div><b>3</b>하루 한 번 "브리핑"<small>쓸수록 나를 더 잘 알게 돼요</small></div></div>`],
+ data: [`<h2>내 기록은 이렇게 지켜져요</h2><div class="eq"><div><b>💻 내 컴퓨터</b><small>모든 원본 (~/퍼스널OS)</small></div><span>→</span><div><b>📚 노션 도서관</b><small>매일 밤 22:30 자동 보관</small></div><span>→</span><div><b>🗄 금고 폴더</b><small>매일 밤 23:40 한 번 더</small></div></div><p class="big2">서버에 올리는 서비스가 아니라 <b>대표님 컴퓨터에 있는 회사</b>예요. 그래서 기록은 매일 밤 대표님 노션에 도서관처럼 쌓아 둡니다 — 컴퓨터가 고장 나도 기록은 남아요.</p>`]
+};
+
 
 let RUN = null, STAGE = 0;
 function people() { return (RUN.checks && RUN.checks._meta && RUN.checks._meta.people) || [RUN.customer]; }
@@ -116,6 +170,33 @@ function mustLeft(s) { const left = []; s.items.forEach((it) => { if (!it[3]) re
 
 async function save() { const { error } = await sb.from("install_runs").update({ checks: RUN.checks, finished_at: RUN.finished_at }).eq("id", RUN.id); if (error) alert("저장 실패: " + error.message); }
 
+let OPEN = {};
+function moreHtml(id) {
+  const m = MORE[id]; if (!m) return "";
+  const on = OPEN[id];
+  return `<button class="more" data-more="${id}">${on ? "▲ 접기" : "▼ 자세히"}</button>` + (on ? `<div class="mbox"><p>${E(m.t)}</p>${(m.img || []).length ? `<div class="imgs">${m.img.map((u) => `<img src="${u}" data-zoom="${u}" loading="lazy">`).join("")}</div>` : ""}${(m.btn || []).length ? `<div class="mbtns">${m.btn.map((b) => `<button class="btn y sm" data-act="${E(b[1])}">${E(b[0])}</button>`).join("")}</div>` : ""}</div>` : "");
+}
+function act(a) {
+  if (a.startsWith("slide:")) return showSlides(a.slice(6));
+  if (/\.(jpg|png|mp4)$/.test(a)) return zoom(a);
+  window.open(a, "_blank");
+}
+let SL = null, SI = 0;
+function showSlides(k) { SL = SLIDES[k]; SI = 0; drawSlide(); }
+function drawSlide() {
+  let o = $("ov"); if (!o) { o = document.createElement("div"); o.id = "ov"; document.body.appendChild(o); }
+  o.innerHTML = `<div class="sl">${SL[SI]}</div><div class="slnav">${SL.length > 1 ? `<button class="btn g" id="sp">←</button><span>${SI + 1} / ${SL.length}</span><button class="btn g" id="sn">→</button>` : ""}<button class="btn" id="sx">닫기</button><button class="btn g" id="sf">⛶ 전체 화면</button></div>`;
+  o.style.display = "flex";
+  $("sx").onclick = closeOv; $("sf").onclick = () => { (o.requestFullscreen || o.webkitRequestFullscreen || (() => {})).call(o); };
+  if ($("sp")) { $("sp").onclick = () => { SI = (SI + SL.length - 1) % SL.length; drawSlide(); }; $("sn").onclick = () => { SI = (SI + 1) % SL.length; drawSlide(); }; }
+}
+function zoom(u) {
+  let o = $("ov"); if (!o) { o = document.createElement("div"); o.id = "ov"; document.body.appendChild(o); }
+  o.innerHTML = (/\.mp4$/.test(u) ? `<video src="${u}" controls autoplay playsinline class="zm"></video>` : `<img src="${u}" class="zm">`) + `<div class="slnav"><button class="btn" id="sx">닫기</button></div>`;
+  o.style.display = "flex"; $("sx").onclick = closeOv; SL = null;
+}
+function closeOv() { const o = $("ov"); if (o) { o.style.display = "none"; o.innerHTML = ""; } if (document.fullscreenElement) document.exitFullscreen(); }
+document.addEventListener("keydown", (e) => { if (!$("ov") || $("ov").style.display !== "flex") return; if (e.key === "Escape") closeOv(); if (SL && e.key === "ArrowRight") { SI = (SI + 1) % SL.length; drawSlide(); } if (SL && e.key === "ArrowLeft") { SI = (SI + SL.length - 1) % SL.length; drawSlide(); } });
 function draw() {
   const [d, n] = total(), pct = Math.round(d / n * 100), s = S[STAGE], ps = people(), multi = ps.length > 1;
   const stageBtns = S.map((x, i) => { const [a, b] = stageCount(x); return `<button class="${a === b ? "done" : ""} ${i === STAGE ? "cur" : ""}" data-s="${i}">${a === b ? "✓ " : ""}${i + 1}. ${x.name}</button>`; }).join("");
@@ -124,9 +205,9 @@ function draw() {
     if (ks.length > 1) {
       const all = ks.every(isOn);
       return `<div class="item multi ${all ? "on" : ""}"><div class="box">${all ? "✓" : ""}</div><div style="flex:1"><div class="t">${lab}</div>${it[2] ? `<div class="d">${E(it[2])}</div>` : ""}
-        <div class="who">${ks.map((k, i) => `<button class="${isOn(k) ? "on" : ""}" data-k="${k}">${isOn(k) ? "✓ " : ""}${E(ps[i])}</button>`).join("")}</div></div></div>`;
+        <div class="who">${ks.map((k, i) => `<button class="${isOn(k) ? "on" : ""}" data-k="${k}">${isOn(k) ? "✓ " : ""}${E(ps[i])}</button>`).join("")}</div>${moreHtml(it[0])}</div></div>`;
     }
-    return `<div class="item ${isOn(ks[0]) ? "on" : ""}" data-k="${ks[0]}"><div class="box">${isOn(ks[0]) ? "✓" : ""}</div><div><div class="t">${lab}</div>${it[2] ? `<div class="d">${E(it[2])}</div>` : ""}</div></div>`;
+    return `<div class="item ${isOn(ks[0]) ? "on" : ""}"><div class="box" data-k="${ks[0]}">${isOn(ks[0]) ? "✓" : ""}</div><div style="flex:1"><div class="t" data-k="${ks[0]}">${lab}</div>${it[2] ? `<div class="d" data-k="${ks[0]}">${E(it[2])}</div>` : ""}${moreHtml(it[0])}</div></div>`;
   }).join("");
   const last = STAGE === S.length - 1, left = mustLeft(s);
   $("main").innerHTML = `
@@ -142,15 +223,18 @@ function draw() {
    ${items}
    ${last ? `<label>막힘 노트 · 메모</label><textarea id="nt" placeholder="막힌 곳, 걸린 시간, 다음에 고칠 것">${E(RUN.notes || "")}</textarea>` : ""}
    <div class="nav">${STAGE > 0 ? `<button class="btn g" id="prev">← 이전</button>` : ""}
-     ${STAGE === 6 && !RUN.finished_at ? `<button class="btn y" id="fin">🎉 설치 완료</button>` : ""}
+     ${S[STAGE].id === "s6" && !RUN.finished_at ? `<button class="btn y" id="fin">🎉 설치 완료</button>` : ""}
      ${!last ? `<button class="btn" id="next">다음 단계 →</button>` : ""}</div>
    ${left.length ? `<p class="warn">남은 필수: ${E(left.slice(0, 4).join(", "))}${left.length > 4 ? ` 외 ${left.length - 4}개` : ""}</p>` : ""}`;
   document.querySelectorAll("[data-k]").forEach((el) => el.onclick = async (e) => { e.stopPropagation(); const k = el.dataset.k; RUN.checks = RUN.checks || {};
     if (RUN.checks[k]) delete RUN.checks[k]; else RUN.checks[k] = new Date().toISOString(); draw(); await save(); });
+  document.querySelectorAll("[data-more]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); OPEN[el.dataset.more] = !OPEN[el.dataset.more]; draw(); });
+  document.querySelectorAll("[data-act]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); act(el.dataset.act); });
+  document.querySelectorAll("[data-zoom]").forEach((el) => el.onclick = (e) => { e.stopPropagation(); zoom(el.dataset.zoom); });
   document.querySelectorAll("[data-s]").forEach((el) => el.onclick = () => { STAGE = +el.dataset.s; draw(); scrollTo(0, 0); });
   if ($("prev")) $("prev").onclick = () => { STAGE--; draw(); scrollTo(0, 0); };
   if ($("next")) $("next").onclick = () => { if (left.length && !confirm("아직 필수 항목이 남았어요:\n· " + left.join("\n· ") + "\n\n그래도 다음 단계로 갈까요?")) return; STAGE++; draw(); scrollTo(0, 0); };
-  if ($("fin")) $("fin").onclick = async () => { const all = S.slice(0, 7).flatMap(mustLeft); if (all.length && !confirm("필수 " + all.length + "개가 남았어요. 그래도 설치 완료로 닫을까요?")) return; RUN.finished_at = new Date().toISOString(); await save(); STAGE = 7; draw(); };
+  if ($("fin")) $("fin").onclick = async () => { const all = S.filter((x) => x.id !== "s7").flatMap(mustLeft); if (all.length && !confirm("필수 " + all.length + "개가 남았어요. 그래도 설치 완료로 닫을까요?")) return; RUN.finished_at = new Date().toISOString(); await save(); STAGE = S.length - 1; draw(); };
   if ($("nt")) $("nt").onchange = async (e) => { RUN.notes = e.target.value; await sb.from("install_runs").update({ notes: RUN.notes }).eq("id", RUN.id); };
 }
 
