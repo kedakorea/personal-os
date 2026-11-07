@@ -67,19 +67,52 @@ textarea{width:100%;min-height:90px;font:15px/1.5 Pretendard;padding:12px;border
 .chart{width:100%;background:#fff;border-radius:16px}
 .tips{display:grid;gap:12px}.tips div{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:18px 22px;font-size:clamp(18px,2vw,24px);font-weight:800}.tips b{display:inline-block;width:40px;height:40px;border-radius:50%;background:var(--butter);text-align:center;line-height:40px;margin-right:12px}.tips small{display:block;font-size:15px;font-weight:500;opacity:.7;margin:6px 0 0 52px}
 
-.deck{background:#fff8e6;border:3px solid var(--ink);border-radius:24px;aspect-ratio:16/10;padding:4.5% 6% 7%;position:relative;cursor:pointer;overflow:hidden;margin-bottom:14px;container-type:inline-size;user-select:none}
-.deck:fullscreen{border-radius:0;border:0;aspect-ratio:auto;padding:5vh 7vw 9vh;display:flex;flex-direction:column;justify-content:center}
-.deck .pg{height:100%;display:flex;flex-direction:column;justify-content:center}
-.deck .kk{font-size:2.1cqw;font-weight:800;opacity:.55;margin-bottom:1.2cqw}
-.deck h1{font-size:5.6cqw;line-height:1.25;letter-spacing:-.02em}
-.deck mark{background:#f7d968;color:var(--ink);padding:0 .15em}
-.deck .ld{font-size:2.5cqw;line-height:1.6;margin-top:2.2cqw;opacity:.9}
-.deck .eq{margin-top:2.6cqw}.deck .eq div{padding:1.6cqw}.deck .eq b{font-size:2.6cqw}.deck .eq small{font-size:1.7cqw}.deck .eq span{font-size:3cqw}
-.deck .cols{margin-top:2.4cqw}.deck .cols b{font-size:2.6cqw}.deck .cols li{font-size:2.2cqw}
-.deck .tips{margin-top:2cqw;gap:1.2cqw}.deck .tips div{font-size:2.5cqw;padding:1.4cqw 2cqw}.deck .tips small{font-size:1.7cqw}
-.deck .chartbox{margin-top:1.4cqw;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:.8cqw 1.4cqw}.deck .chartbox svg{display:block;max-height:28cqw;width:100%}
-.dctl{position:absolute;right:2cqw;bottom:1.6cqw;display:flex;gap:.8cqw;align-items:center;font:800 1.7cqw Pretendard}
-.dctl button{font:900 2cqw Pretendard;width:5cqw;height:4cqw;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.deck{background:#fff8e6;border:3px solid var(--ink);border-radius:22px;aspect-ratio:16/10;position:relative;cursor:pointer;overflow:hidden;margin-bottom:14px;container-type:inline-size;user-select:none}
+.deck:fullscreen{border-radius:0;border:0;aspect-ratio:auto}
+.deck .pg{position:absolute;inset:0;padding:6cqw 7cqw 9cqw;display:grid;grid-template-rows:auto auto 1fr;align-content:start}
+.deck .kk{font-size:1.9cqw;font-weight:800;letter-spacing:.04em;color:#a07a3a;margin-bottom:1.6cqw}
+.deck h1{font-size:5.4cqw;line-height:1.22;letter-spacing:-.025em;font-weight:900}
+.deck mark{background:linear-gradient(transparent 55%,#f7d968 55%);color:var(--ink);padding:0 .08em}
+.deck .body{align-self:center;display:flex;flex-direction:column;gap:2.4cqw;margin-top:3cqw}
+.deck .ld{font-size:3cqw;line-height:1.55;font-weight:600}
+.deck .note{font-size:2.2cqw;line-height:1.6;opacity:.85}.deck .note b{opacity:1;font-weight:900}
+.stack{display:flex;align-items:stretch;gap:1.4cqw}.stack>div{flex:1;background:#fff;border:2px solid var(--ink);border-radius:2cqw;padding:2cqw 1.6cqw;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5cqw}
+.stack i{font-style:normal;font-size:4cqw;line-height:1}.stack b{font-size:2.5cqw}.stack small{font-size:1.6cqw;opacity:.65}.stack em{font-style:normal;font-weight:900;font-size:3cqw;align-self:center}
+.stack.flow>div{flex-direction:row;gap:1.2cqw;text-align:left;justify-content:center}.stack.flow small{display:none}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:2cqw}.vs>div{border-radius:2cqw;padding:2.4cqw 2.6cqw;border:2px solid var(--sand);background:#fff}
+.vs b{display:block;font-size:2.7cqw;margin-bottom:1.2cqw}.vs p{font-size:2.1cqw;line-height:1.5;padding:.7cqw 0;border-top:1px dashed var(--sand)}
+.vs .lo{opacity:.6}.vs .hi{border-color:#2f9a6a;background:#eef8f1}.vs .hi b{color:#1f7a50}
+.chartbox{background:#fff;border:2px solid var(--ink);border-radius:2cqw;padding:1cqw 1.6cqw}.chartbox svg{display:block;width:100%;height:auto;max-height:30cqw}
+.tips{display:grid;gap:1.3cqw}.tips>div{display:flex;align-items:center;gap:2cqw;background:#fff;border:2px solid var(--ink);border-radius:2cqw;padding:1.5cqw 2.2cqw}
+.tips b{flex:none;width:5cqw;height:5cqw;border-radius:50%;background:var(--butter);display:flex;align-items:center;justify-content:center;font-size:2.6cqw;font-weight:900}
+.tips p{font-size:2.6cqw;font-weight:700;line-height:1.35}.tips strong{font-weight:900;background:linear-gradient(transparent 60%,#f7d968 60%)}.tips small{display:block;font-size:1.7cqw;font-weight:500;opacity:.65;margin-top:.3cqw}
+.hero{background:#fff;border:3px solid var(--ink);border-radius:2.4cqw;padding:2.6cqw;text-align:center}.hero b{display:block;font-size:8cqw;line-height:1.1;font-weight:900;letter-spacing:-.03em}.hero span{display:block;font-size:2.2cqw;opacity:.7;margin-top:.8cqw}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw}.tiles>div{background:#fff;border:2px solid var(--ink);border-radius:2cqw;padding:2.2cqw 1cqw;text-align:center;font-size:2.3cqw;font-weight:800}.tiles i{display:block;font-style:normal;font-size:4.4cqw;margin-bottom:.8cqw}
+.dctl{position:absolute;right:2.4cqw;bottom:2.2cqw;display:flex;gap:1cqw;align-items:center;font:800 1.8cqw Pretendard;color:#8a7a70}
+.dctl button{font:900 2.2cqw Pretendard;width:5.6cqw;height:4.4cqw;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+/* 휴대폰: 세로로 길게, 글씨 키우고 한 줄씩 쌓기 */
+@container (max-width: 620px){
+ .deck .pg{padding:7cqw 7cqw 16cqw}
+ .deck .kk{font-size:3.4cqw;margin-bottom:2cqw}.deck h1{font-size:8.6cqw}
+ .deck .body{gap:4cqw;margin-top:5cqw;align-self:start}
+ .deck .ld{font-size:5cqw}.deck .note{font-size:4cqw}
+ .stack{flex-direction:column;gap:2cqw}.stack>div{flex-direction:row;justify-content:flex-start;text-align:left;gap:3cqw;padding:3.2cqw 4cqw;border-radius:4cqw}
+ .stack i{font-size:7cqw}.stack b{font-size:4.6cqw}.stack small{display:block;font-size:3.2cqw;margin-left:auto;text-align:right}.stack em{font-size:5cqw}
+ .stack.flow small{display:block}
+ .vs{grid-template-columns:1fr;gap:3cqw}.vs>div{padding:3.6cqw 4.4cqw;border-radius:4cqw}.vs b{font-size:4.8cqw;margin-bottom:1.6cqw}.vs p{font-size:3.9cqw;padding:1.4cqw 0}
+ .chartbox{border-radius:4cqw;padding:2cqw}.chartbox svg{max-height:none}
+ .tips{gap:2.6cqw}.tips>div{gap:3.6cqw;padding:3.4cqw 4cqw;border-radius:4cqw}.tips b{width:9cqw;height:9cqw;font-size:4.8cqw}.tips p{font-size:4.6cqw}.tips small{font-size:3.3cqw}
+ .hero{padding:5cqw;border-radius:4cqw}.hero b{font-size:15cqw}.hero span{font-size:3.8cqw}
+ .tiles{grid-template-columns:1fr;gap:2.4cqw}.tiles>div{display:flex;align-items:center;gap:4cqw;font-size:4.6cqw;padding:3.4cqw 4.4cqw;text-align:left;border-radius:4cqw}.tiles i{font-size:7cqw;margin:0}
+ .dctl{right:4cqw;bottom:4cqw;gap:2cqw;font-size:3.6cqw}.dctl button{font-size:4.6cqw;width:12cqw;height:9cqw}
+}
+@media (max-width: 640px){ .deck{aspect-ratio:auto} }
+.deck .pg.cover{align-content:center}.deck .pg.cover .body{align-self:start}
+.deck .chartbox svg{max-height:21cqw}.deck .body{margin-top:2.4cqw;gap:2cqw}
+.tips>div{padding:1.1cqw 2cqw}.tips{gap:1cqw}
+@container (max-width: 620px){ .deck .pg{position:relative;inset:auto;min-height:inherit;padding-bottom:18cqw} .deck .chartbox svg{max-height:none} .tips>div{padding:3.4cqw 4cqw}.tips{gap:2.6cqw} .deck .body{margin-top:5cqw;gap:4cqw} }
+@media (max-width: 640px){ .deck .pg{min-height:min(calc(100svh - 200px),640px)} .deck .pg:not(.cover) .body{align-self:center} }
+
 .minis .item{padding:10px 14px}.minis .item .t{font-size:15px}.minis .item .d{font-size:13px}
 </style></head><body>
 <header><img src="../logo_butter.png" alt="BRANDiUM"><span>설치 진행</span><a href="../admin/">관리자</a><button id="out" hidden>로그아웃</button></header>
@@ -178,17 +211,16 @@ const CURVE = `<svg viewBox="0 0 1000 430" width="100%">
 <text x="948.875" y="301.04907802935764" text-anchor="end" font-size="18" fill="#8a7a72">대표님이 설명하는 시간</text>
 </svg>`;
 const DECK = [
- { k: null, h: `<p class="kk">설치하는 동안 10분</p><h1>퍼스널 OS,<br><mark>이렇게 이해해 주세요</mark></h1><p class="ld">오늘부터 함께 일할 우리 회사를 소개합니다.</p>` },
- { k: "u1", h: `<p class="kk">1 · 무엇인가요</p><h1>퍼스널 OS는<br><mark>새로운 AI도, 운영체제도 아닙니다</mark></h1><div class="eq"><div><b>🧠 Claude</b><small>지금 가장 일 잘하는 AI</small></div><span>+</span><div><b>💻 내 컴퓨터</b><small>내 파일·내 계정으로 직접</small></div><span>+</span><div><b>🏢 우리 회사 세팅</b><small>부서·지침·화면·자동 업무</small></div></div><p class="ld">윈도우·맥은 그대로 두고, Claude를 대표님 컴퓨터에 연결해 <b>대표님이 일하기 좋게 세팅해 설치해 드린 서비스</b>예요.</p>` },
- { k: "u1", h: `<p class="kk">1 · 무엇인가요</p><h1>그래서 <mark>채팅창 AI와 달라요</mark></h1><div class="cols"><div><b>채팅창 AI</b><ul><li>답을 복사해서 내가 붙여 넣기</li><li>매번 처음부터 설명</li><li>파일은 내가 다시 만들기</li></ul></div><div class="hl"><b>퍼스널 OS</b><ul><li>파일을 직접 만들고 저장</li><li>회사·말투·거래처를 기억</li><li>휴대폰으로 시키면 컴퓨터가 처리</li></ul></div></div>` },
- { k: "u2", h: `<p class="kk">2 · 처음 몇 주</p><h1>처음 몇 주는<br><mark>매니저를 가르치는 시간</mark>이에요</h1><p class="ld">새로 온 직원도 첫날엔 우리 회사를 몰라요. 처음에 알려 주신 만큼, 그다음부터는 <b>매니저가 알아서</b> 합니다.</p><div class="chartbox">${CURVE}</div>` },
- { k: "u2", h: `<p class="kk">2 · 처음 몇 주</p><h1>이 시간을 <mark>버티는 요령 3가지</mark></h1><div class="tips"><div><b>1</b>같은 일은 같은 말로 시키기<small>"견적서 만들어 줘" — 매번 같은 말이면 더 빨리 익혀요</small></div><div><b>2</b>틀리면 고쳐서 말하기<small>"이건 이렇게 해 줘" 한마디가 지침으로 남아요</small></div><div><b>3</b>하루 한 번 "브리핑"<small>쓸수록 대표님을 더 잘 알게 돼요</small></div></div>` },
- { k: "u3", h: `<p class="kk">3 · 기록</p><h1>대표님 데이터는<br><mark>대표님 것</mark>이에요</h1><div class="eq"><div><b>💻 내 컴퓨터</b><small>모든 원본</small></div><span>→</span><div><b>📚 노션 도서관</b><small>매일 밤 자동 보관</small></div><span>→</span><div><b>🗄 금고 폴더</b><small>한 벌 더</small></div></div><p class="ld">어디 서버에 올리는 게 아니라 대표님 컴퓨터에 있는 회사예요. 그래서 기록은 매일 밤 <b>대표님 노션에 도서관처럼</b> 쌓아 둡니다.</p>` },
- { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>Claude 구독료는<br><mark>별도</mark>예요</h1><p class="ld">Claude Max <b>월 $100</b>(약 15만 원)는 대표님 명의 카드로 Claude에 직접 내는 비용이에요. 원화 금액은 환율에 따라 조금씩 달라져요.</p>` },
- { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1><mark>멈추거나 오류</mark>가<br>날 수 있어요</h1><div class="eq"><div><b>☁️ Claude 장애</b></div><div><b>💤 컴퓨터 꺼짐·절전</b></div><div><b>📶 인터넷 문제</b></div></div><p class="ld">이럴 땐 일을 하지 못하지만, <b>문제가 풀리면 다시 정상</b>으로 돌아와요. 컴퓨터는 켜 두세요.</p>` },
- { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>완성도는<br><mark>쓰는 방법</mark>에 따라 달라져요</h1><p class="ld">지시하고 다듬을수록 좋아져요. 설치만으로 전문가 수준을 보장하지는 않아요 — 처음 몇 주의 가르침이 그래서 중요해요.</p>` },
- { k: "u4", h: `<p class="kk">4 · 꼭 알아 두세요</p><h1>외부 서비스가 바뀌면<br><mark>바로 안내</mark>해 드려요</h1><p class="ld">Claude·노션 같은 외부 서비스의 요금·기능 변경은 캐다가 정할 수 없어요. 바뀌면 30일 지원 기간에도, 그 뒤에도 안내해 드립니다.</p>` },
- { k: null, h: `<p class="kk">이제 연결하러 가요</p><h1>궁금한 점<br><mark>있으세요?</mark></h1><p class="ld">다음은 캘린더·메일·노션·휴대폰 연결이에요.</p>` }
+ { k: null, c: 1, h: `<p class="kk">설치하는 동안 10분</p><h1>퍼스널 OS,<br><mark>이렇게 이해해 주세요</mark></h1><div class="body"><p class="ld">오늘부터 함께 일할<br>우리 회사를 소개합니다.</p></div>` },
+ { k: "u1", h: `<p class="kk">01 · 무엇인가요</p><h1>새로운 AI가<br><mark>아닙니다</mark></h1><div class="body"><div class="stack"><div><i>🧠</i><b>Claude</b><small>지금 가장 일 잘하는 AI</small></div><em>+</em><div><i>💻</i><b>내 컴퓨터</b><small>내 파일·내 계정으로 직접</small></div><em>+</em><div><i>🏢</i><b>우리 회사 세팅</b><small>부서·지침·화면·자동 업무</small></div></div><p class="note">윈도우·맥은 그대로. Claude를 내 컴퓨터에 붙여 <b>일하기 좋게 세팅해 드린 설치 서비스</b>예요.</p></div>` },
+ { k: "u1", h: `<p class="kk">01 · 무엇인가요</p><h1>그래서<br><mark>채팅창 AI와 달라요</mark></h1><div class="body"><div class="vs"><div class="lo"><b>채팅창 AI</b><p>답을 복사해서 붙여 넣기</p><p>매번 처음부터 설명</p><p>파일은 내가 다시 만들기</p></div><div class="hi"><b>퍼스널 OS</b><p>파일을 직접 만들고 저장</p><p>회사·말투·거래처 기억</p><p>휴대폰으로 시키면 처리</p></div></div></div>` },
+ { k: "u2", h: `<p class="kk">02 · 처음 몇 주</p><h1>처음 몇 주는<br><mark>가르치는 시간</mark>이에요</h1><div class="body"><div class="chartbox">${CURVE}</div><p class="note">처음에 알려 주신 만큼, 그다음부터는 <b>매니저가 알아서</b> 합니다.</p></div>` },
+ { k: "u2", h: `<p class="kk">02 · 처음 몇 주</p><h1>버티는 요령<br><mark>딱 3가지</mark></h1><div class="body"><div class="tips"><div><b>1</b><p>같은 일은 <strong>같은 말로</strong><small>매번 같은 말이면 더 빨리 익혀요</small></p></div><div><b>2</b><p>틀리면 <strong>고쳐서 말하기</strong><small>한마디가 지침으로 남아요</small></p></div><div><b>3</b><p>하루 한 번 <strong>"브리핑"</strong><small>쓸수록 나를 더 잘 알게 돼요</small></p></div></div></div>` },
+ { k: "u3", h: `<p class="kk">03 · 기록</p><h1>대표님 데이터는<br><mark>대표님 것</mark></h1><div class="body"><div class="stack flow"><div><i>💻</i><b>내 컴퓨터</b><small>모든 원본</small></div><em>↓</em><div><i>📚</i><b>노션 도서관</b><small>매일 밤 자동 보관</small></div><em>↓</em><div><i>🗄</i><b>금고 폴더</b><small>한 벌 더</small></div></div><p class="note">컴퓨터가 고장 나도 <b>기록은 남아요.</b></p></div>` },
+ { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>Claude 구독료는<br><mark>별도</mark>예요</h1><div class="body"><div class="hero"><b>월 $100</b><span>약 15만 원 · Claude Max</span></div><p class="note">대표님 명의 카드로 Claude에 직접 내요.<br>원화 금액은 환율에 따라 조금 달라져요.</p></div>` },
+ { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>가끔 <mark>멈출 수</mark><br>있어요</h1><div class="body"><div class="tiles"><div><i>☁️</i>Claude 장애</div><div><i>💤</i>컴퓨터 꺼짐·절전</div><div><i>📶</i>인터넷 문제</div></div><p class="note">문제가 풀리면 <b>다시 정상</b>이에요. 컴퓨터는 켜 두세요.</p></div>` },
+ { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>완성도는<br><mark>쓰는 방법</mark>에 따라</h1><div class="body"><div class="hero"><b>다듬을수록 ↑</b><span>지시하고 고쳐 줄수록 좋아져요</span></div><p class="note">설치만으로 전문가 수준을 보장하진 않아요.<br>그래서 <b>처음 몇 주의 가르침</b>이 중요해요.</p></div>` },
+ { k: null, c: 1, h: `<p class="kk">이제 연결하러 가요</p><h1>궁금한 점<br><mark>있으세요?</mark></h1><div class="body"><p class="ld">다음은 캘린더 · 메일 · 노션 · 휴대폰 연결이에요.</p></div>` }
 ];
 let DI = 0;
 function deckGo(i) {
@@ -197,11 +229,11 @@ function deckGo(i) {
   if (k && RUN) { const it = S.find((x) => x.id === "s3b").items.find((x) => x[0] === k); let ch = false;
     keysOf(it).forEach((kk) => { if (!RUN.checks[kk]) { RUN.checks[kk] = new Date().toISOString(); ch = true; } }); if (ch) save(); }
   const el = $("deck"); if (!el) return draw();
-  el.querySelector(".pg").innerHTML = DECK[DI].h; $("dn").textContent = `${DI + 1} / ${DECK.length}`;
+  el.querySelector(".pg").innerHTML = DECK[DI].h; el.querySelector(".pg").classList.toggle("cover", !!DECK[DI].c); $("dn").textContent = `${DI + 1} / ${DECK.length}`;
   if (k) draw();
 }
 function deckHtml() {
-  return `<div class="deck" id="deck"><div class="pg">${DECK[DI].h}</div><div class="dctl"><button id="dp">←</button><span id="dn">${DI + 1} / ${DECK.length}</span><button id="dx">→</button><button id="dfs">⛶</button></div></div>`;
+  return `<div class="deck" id="deck"><div class="pg${DECK[DI].c ? " cover" : ""}">${DECK[DI].h}</div><div class="dctl"><button id="dp">←</button><span id="dn">${DI + 1} / ${DECK.length}</span><button id="dx">→</button><button id="dfs">⛶</button></div></div>`;
 }
 document.addEventListener("keydown", (e) => { if (!RUN || S[STAGE].id !== "s3b" || ($("ov") && $("ov").style.display === "flex")) return;
   if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); deckGo(DI + 1); }
