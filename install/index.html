@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>설치 진행 | 퍼스널 OS</title>
+<link rel="icon" type="image/png" href="../favicon.png?v=3">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../os.js"></script>
+<style>
+/* 설치 전용 페이지 (2026-11-08) — 설치하면서 바로 체크. 한 번에 한 단계만, 꼭 할 것만, 전체 진행률은 늘 위에. 1인 / 2인 이상(사람별 체크) */
+:root{--ink:#432f2e;--cream:#feefb8;--paper:#fff8e6;--sand:#ead9c6;--butter:#ffd84d;--green:#2f9a6a;--red:#c8372d}
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow-x:hidden}
+body{background:#f6efe2;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-tap-highlight-color:transparent}
+header{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--ink);color:var(--cream)}
+header img{height:18px}header span{flex:1;opacity:.8;font-size:14px}
+header a,header button{color:var(--cream);font:600 13px Pretendard;border:1px solid var(--cream);border-radius:99px;padding:6px 12px;background:none;text-decoration:none;cursor:pointer}
+main{max-width:860px;margin:0 auto;padding:18px 16px 120px}
+h1{font-size:24px}h2{font-size:21px}
+.btn{font:800 16px Pretendard;padding:13px 20px;border-radius:99px;border:2px solid var(--ink);background:var(--ink);color:var(--cream);cursor:pointer}
+.btn.g{background:#fff;color:var(--ink)}.btn.y{background:var(--butter);color:var(--ink)}
+input,select{width:100%;font:16px Pretendard;padding:12px 14px;border:2px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);margin-top:6px}
+label{display:block;font-weight:800;font-size:14px;margin-top:14px}
+.card{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:18px}
+.note{font-size:13px;opacity:.65}
+.err{color:var(--red);margin-top:8px}
+.list .row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--sand);cursor:pointer}.list .row:last-child{border:0}
+.mini{flex:0 0 120px;height:8px;background:var(--sand);border-radius:9px;overflow:hidden}.mini i{display:block;height:100%;background:var(--green)}
+.seg{display:flex;gap:8px;margin-top:6px}.seg button{flex:1;font:800 15px Pretendard;padding:14px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}.seg button.on{background:var(--ink);color:var(--cream)}
+/* 위쪽 고정: 전체 진행 */
+.sticky{position:sticky;top:0;z-index:5;background:#f6efe2;padding:12px 0 10px;margin:-6px 0 14px}
+.big{display:flex;align-items:center;gap:12px}.big b{font-size:34px;min-width:84px}
+.track{flex:1;height:16px;background:#fff;border:2px solid var(--ink);border-radius:99px;overflow:hidden}.track i{display:block;height:100%;background:var(--green);transition:width .3s}
+.stages{display:flex;gap:6px;margin-top:10px;overflow-x:auto;padding-bottom:2px}
+.stages button{flex:0 0 auto;font:700 13px Pretendard;padding:8px 11px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.stages button.done{background:var(--green);border-color:var(--green);color:#fff}.stages button.cur{background:var(--ink);color:var(--cream)}
+.people{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:13px}.people span{background:#fff;border:1.5px solid var(--ink);border-radius:99px;padding:4px 10px}
+/* 단계 */
+.stagehead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}.stagehead small{font-size:14px;opacity:.6}
+.tip{background:var(--cream);border:2px solid var(--ink);border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.6;margin:10px 0 14px}
+.item{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;user-select:none}
+.item .box{flex:0 0 34px;height:34px;border:3px solid var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff}
+.item.on{background:#eef8f1;border-color:var(--green)}.item.on .box{background:var(--green);border-color:var(--green)}
+.item .t{font-size:17px;font-weight:800;line-height:1.4}.item .d{font-size:14px;opacity:.7;margin-top:3px;line-height:1.5}
+.must{display:inline-block;font-size:11.5px;font-weight:900;color:#fff;background:var(--red);border-radius:6px;padding:2px 6px;margin-right:6px;vertical-align:2px}
+.who{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.who button{font:800 14px Pretendard;padding:9px 14px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.who button.on{background:var(--green);border-color:var(--green);color:#fff}
+.item.multi{cursor:default}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#f6efe2;border-top:2px solid var(--ink);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:6}
+.nav .btn{flex:1;max-width:400px}
+.warn{color:var(--red);font-weight:800;font-size:14px;text-align:center;margin-top:8px}
+.done-banner{background:var(--green);color:#fff;border-radius:18px;padding:22px;text-align:center;margin-bottom:14px}.done-banner b{font-size:24px;display:block;margin-bottom:6px}
+textarea{width:100%;min-height:90px;font:15px/1.5 Pretendard;padding:12px;border:2px solid var(--ink);border-radius:12px;margin-top:6px}
+</style></head><body>
+<header><img src="../logo_butter.png" alt="BRANDiUM"><span>설치 진행</span><a href="../admin/">관리자</a><button id="out" hidden>로그아웃</button></header>
+<main id="main"></main>
+<script>
+const sb = supabase.createClient(OS_URL, OS_ANON);
+const $ = (id) => document.getElementById(id), E = osEsc;
+
+/* ── 단계 (꼭 할 것만. must = 빠뜨리면 안 되는 것, each = 2인 이상이면 사람마다 체크) ── */
+const S = [
+ { id: "s0", name: "준비", when: "전날까지", tip: "전날 문자에 가져오실 것 5가지: ① 컴퓨터+충전기 ② 컴퓨터 로그인 비밀번호 ③ 휴대폰(구글·카카오 로그인) ④ 구글 계정 비밀번호 ⑤ 클로드 결제용 카드",
+  items: [
+   ["p1", "컴퓨터 종류 확인", "맥/윈도우 · 노트북/데스크톱 · 늘 켜 둘 수 있는지", 1, 1],
+   ["p2", "전날 안내 문자 보냄", "시간·장소 + 가져오실 것 5가지", 1, 0],
+   ["p3", "고객 키·입장 링크 확인", "관리자 → 고객 키 · start/?k=키", 1, 1],
+   ["p4", "예비 길 챙김", "휴대폰 핫스팟 · USB 설치 키트 · 내 맥북 충전", 0, 0]]},
+ { id: "s1", name: "시작", when: "10분", tip: "로그인·결제·비밀번호는 고객이 직접 넣는다는 걸 먼저 말씀드려요. 화면 기록(사례용) 허락도 이때.",
+  items: [
+   ["o1", "오늘 순서 안내", "진행 안내 한 장 보여 드리기", 0, 0],
+   ["o2", "직접 입력 원칙 + 기록 허락", "로그인·결제·비밀번호는 고객 손으로", 1, 0]]},
+ { id: "s2", name: "인터뷰·확정", when: "50분", tip: "2인 이상: 한 분 인터뷰하는 동안 다른 분은 클로드 Max 가입을 먼저 해 두면 시간이 맞아요.",
+  items: [
+   ["i1", "인터뷰 끝", "하루 흐름 · 가장 귀찮은 일 3개 · 맡기는 범위", 1, 1],
+   ["i2", "부서·매니저 이름 확정", "제안서를 고객이 직접 읽고 \"네\"", 1, 1]]},
+ { id: "s3", name: "설치", when: "40분", tip: "막히면 15분 넘기지 말고 예비 길로: 와이파이 → 핫스팟 → USB 키트. 2인 이상이면 설치는 동시에 돌려요.",
+  items: [
+   ["n1", "클로드 Max 결제·로그인", "고객이 직접", 1, 1],
+   ["n2", "설치 한 줄 → 끝까지", "키트를 고객 다운로드 폴더로 · 실행", 1, 1],
+   ["n3", "바탕화면 앱이 열린다", "매니저 첫 인사가 보이면 OK", 1, 1]]},
+ { id: "s4", name: "연결", when: "40분", tip: "안드로이드는 테일스케일 '앱별 분할 터널링'에서 크롬만 켜고 '항상 켜진 VPN' 끄기 → 삼성페이·은행 앱이 열리는지 꼭 확인.",
+  items: [
+   ["c1", "캘린더·지메일 연결", "고객이 허용 (노션은 원하면)", 1, 1],
+   ["c2", "휴대폰 홈 화면 + 알림 한 번 받기", "", 1, 1],
+   ["c3", "컴퓨터 잠자기 끔", "늘 켜 둬야 일한다는 것 안내", 1, 1]]},
+ { id: "s5", name: "실습 3가지", when: "40분", tip: "고객이 직접 말로 시켜요. 세 가지가 끝나면 고객 화면에 '오늘 설치 공식 완료' 화면이 떠요(매니저에게 \"설치 완료\"라고 하면 됨).",
+  items: [
+   ["x1", "① 콘텐츠 만들기", "\"설치 기념 카드뉴스 만들어 줘\" → 카드 6장 + 우리 직원 캐릭터 숏폼", 1, 1],
+   ["x2", "② 콘텐츠 올리기", "\"인스타·블로그에 올려 줘\" → 업로드 창에서 로그인 한 번 → 올라간 주소 확인", 1, 1],
+   ["x3", "③ 휴대폰으로 내 일 맡기기", "휴대폰에서 인터뷰 때 말한 '가장 귀찮은 일' 하나 → 컴퓨터가 처리 → 알림", 1, 1],
+   ["x4", "🎉 설치 완료 화면이 떴다", "고객 OS 화면에 완료 안내 + 휴대폰 알림", 1, 1]]},
+ { id: "s6", name: "마무리", when: "15분", tip: "다 체크되면 오늘 설치는 끝이에요. 아래 '설치 완료'를 눌러 기록을 닫아요.",
+  items: [
+   ["m1", "혼자 앱 켜고 지시 넣을 수 있다", "", 1, 1],
+   ["m2", "메일은 임시보관함까지만 간다는 걸 안다", "", 1, 1],
+   ["m3", "문의처·30일 지원·원격 도움을 안다", "카카오 채널 · 원격도움 아이콘", 1, 1],
+   ["m4", "만족도·후기·사진 부탁", "", 0, 0]]},
+ { id: "s7", name: "다음 날", when: "다음 날까지", tip: "막힌 곳은 바로 키트·사이트에 반영해야 다음 설치가 빨라져요.",
+  items: [
+   ["d1", "감사 메시지 + 원격 마무리 일정", "", 1, 0],
+   ["d2", "세금계산서 / 현금영수증", "", 1, 0],
+   ["d3", "막힘 노트 → 키트·사이트 고치기", "", 0, 0],
+   ["d4", "후기·사진 → 사례 창고 · 1주 뒤 안부 할일", "", 0, 0]]}
+];
+
+let RUN = null, STAGE = 0;
+function people() { return (RUN.checks && RUN.checks._meta && RUN.checks._meta.people) || [RUN.customer]; }
+function keysOf(it) { const ps = people(); return it[4] && ps.length > 1 ? ps.map((_, i) => it[0] + "@" + i) : [it[0]]; }
+function isOn(k) { return !!(RUN.checks || {})[k]; }
+function stageCount(s) { let n = 0, d = 0; s.items.forEach((it) => keysOf(it).forEach((k) => { n++; if (isOn(k)) d++; })); return [d, n]; }
+function total() { let d = 0, n = 0; S.forEach((s) => { const [a, b] = stageCount(s); d += a; n += b; }); return [d, n]; }
+function personPct(i) { let d = 0, n = 0; S.forEach((s) => s.items.forEach((it) => { if (!it[4]) return; n++; if (isOn(it[0] + "@" + i)) d++; })); return n ? Math.round(d / n * 100) : 0; }
+function mustLeft(s) { const left = []; s.items.forEach((it) => { if (!it[3]) return; keysOf(it).forEach((k, i) => { if (!isOn(k)) left.push(it[1] + (keysOf(it).length > 1 ? ` (${people()[i]})` : "")); }); }); return left; }
+
+async function save() { const { error } = await sb.from("install_runs").update({ checks: RUN.checks, finished_at: RUN.finished_at }).eq("id", RUN.id); if (error) alert("저장 실패: " + error.message); }
+
+function draw() {
+  const [d, n] = total(), pct = Math.round(d / n * 100), s = S[STAGE], ps = people(), multi = ps.length > 1;
+  const stageBtns = S.map((x, i) => { const [a, b] = stageCount(x); return `<button class="${a === b ? "done" : ""} ${i === STAGE ? "cur" : ""}" data-s="${i}">${a === b ? "✓ " : ""}${i + 1}. ${x.name}</button>`; }).join("");
+  const items = s.items.map((it) => {
+    const ks = keysOf(it), lab = `${it[3] ? '<span class="must">필수</span>' : ""}${E(it[1])}`;
+    if (ks.length > 1) {
+      const all = ks.every(isOn);
+      return `<div class="item multi ${all ? "on" : ""}"><div class="box">${all ? "✓" : ""}</div><div style="flex:1"><div class="t">${lab}</div>${it[2] ? `<div class="d">${E(it[2])}</div>` : ""}
+        <div class="who">${ks.map((k, i) => `<button class="${isOn(k) ? "on" : ""}" data-k="${k}">${isOn(k) ? "✓ " : ""}${E(ps[i])}</button>`).join("")}</div></div></div>`;
+    }
+    return `<div class="item ${isOn(ks[0]) ? "on" : ""}" data-k="${ks[0]}"><div class="box">${isOn(ks[0]) ? "✓" : ""}</div><div><div class="t">${lab}</div>${it[2] ? `<div class="d">${E(it[2])}</div>` : ""}</div></div>`;
+  }).join("");
+  const last = STAGE === S.length - 1, left = mustLeft(s);
+  $("main").innerHTML = `
+   <div class="sticky">
+     <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><h1 style="flex:1">${E(ps.join(" · "))} <small style="font-size:14px;opacity:.6">${multi ? ps.length + "명 동시" : "1인"} · ${E(RUN.os || "")}</small></h1><button class="btn g" style="padding:8px 14px;font-size:13px" onclick="home()">목록</button></div>
+     <div class="big"><b>${pct}%</b><div class="track"><i style="width:${pct}%"></i></div></div>
+     ${multi ? `<div class="people">${ps.map((p, i) => `<span>${E(p)} ${personPct(i)}%</span>`).join("")}</div>` : ""}
+     <div class="stages">${stageBtns}</div>
+   </div>
+   ${RUN.finished_at ? `<div class="done-banner"><b>✅ 설치 완료</b>${new Date(RUN.finished_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}</div>` : ""}
+   <div class="stagehead"><h2>${STAGE + 1}. ${s.name}</h2><small>${s.when}</small></div>
+   <div class="tip">${E(s.tip)}</div>
+   ${items}
+   ${last ? `<label>막힘 노트 · 메모</label><textarea id="nt" placeholder="막힌 곳, 걸린 시간, 다음에 고칠 것">${E(RUN.notes || "")}</textarea>` : ""}
+   <div class="nav">${STAGE > 0 ? `<button class="btn g" id="prev">← 이전</button>` : ""}
+     ${STAGE === 6 && !RUN.finished_at ? `<button class="btn y" id="fin">🎉 설치 완료</button>` : ""}
+     ${!last ? `<button class="btn" id="next">다음 단계 →</button>` : ""}</div>
+   ${left.length ? `<p class="warn">남은 필수: ${E(left.slice(0, 4).join(", "))}${left.length > 4 ? ` 외 ${left.length - 4}개` : ""}</p>` : ""}`;
+  document.querySelectorAll("[data-k]").forEach((el) => el.onclick = async (e) => { e.stopPropagation(); const k = el.dataset.k; RUN.checks = RUN.checks || {};
+    if (RUN.checks[k]) delete RUN.checks[k]; else RUN.checks[k] = new Date().toISOString(); draw(); await save(); });
+  document.querySelectorAll("[data-s]").forEach((el) => el.onclick = () => { STAGE = +el.dataset.s; draw(); scrollTo(0, 0); });
+  if ($("prev")) $("prev").onclick = () => { STAGE--; draw(); scrollTo(0, 0); };
+  if ($("next")) $("next").onclick = () => { if (left.length && !confirm("아직 필수 항목이 남았어요:\n· " + left.join("\n· ") + "\n\n그래도 다음 단계로 갈까요?")) return; STAGE++; draw(); scrollTo(0, 0); };
+  if ($("fin")) $("fin").onclick = async () => { const all = S.slice(0, 7).flatMap(mustLeft); if (all.length && !confirm("필수 " + all.length + "개가 남았어요. 그래도 설치 완료로 닫을까요?")) return; RUN.finished_at = new Date().toISOString(); await save(); STAGE = 7; draw(); };
+  if ($("nt")) $("nt").onchange = async (e) => { RUN.notes = e.target.value; await sb.from("install_runs").update({ notes: RUN.notes }).eq("id", RUN.id); };
+}
+
+async function openRun(id) {
+  const { data, error } = await sb.from("install_runs").select("*").eq("id", id).single();
+  if (error) return alert(error.message);
+  RUN = data; RUN.checks = RUN.checks || {};
+  STAGE = S.findIndex((s) => mustLeft(s).length > 0); if (STAGE < 0) STAGE = S.length - 1;
+  history.replaceState(null, "", "?id=" + id); draw(); scrollTo(0, 0);
+}
+
+async function home() {
+  history.replaceState(null, "", location.pathname);
+  $("main").innerHTML = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><h1 style="flex:1">설치 진행</h1><button class="btn y" id="new">＋ 새 설치</button></div><div class="card list" id="ls">불러오는 중…</div>`;
+  $("new").onclick = newForm;
+  const { data, error } = await sb.from("install_runs").select("*").order("install_at", { ascending: false, nullsFirst: false });
+  if (error) { $("ls").innerHTML = `<p class="err">${E(error.message)}</p>`; return; }
+  $("ls").innerHTML = data.length ? data.map((r) => { RUN = r; RUN.checks = RUN.checks || {}; const [d, n] = total(), ps = people();
+    return `<div class="row" data-id="${r.id}"><div style="flex:1"><b>${E(ps.join(" · "))}</b> <small class="note">${ps.length > 1 ? ps.length + "명" : "1인"}</small><br><small class="note">${r.install_at ? new Date(r.install_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" }) : "날짜 미정"}</small></div>
+      <div class="mini"><i style="width:${Math.round(d / n * 100)}%"></i></div><small>${r.finished_at ? "✅" : Math.round(d / n * 100) + "%"}</small></div>`; }).join("") : `<p class="note">아직 설치 건이 없어요. ＋ 새 설치로 시작하세요.</p>`;
+  RUN = null;
+  document.querySelectorAll(".row").forEach((el) => el.onclick = () => openRun(+el.dataset.id));
+}
+
+function newForm() {
+  let mode = 1;
+  $("main").innerHTML = `<h1 style="margin-bottom:12px">새 설치</h1><div class="card">
+   <label>몇 분 설치하나요?</label><div class="seg"><button class="on" data-m="1">1인</button><button data-m="2">2인 이상 함께</button></div>
+   <label id="nl">고객 이름</label><input id="nm" placeholder="예: 이강남">
+   <label>설치 날짜·시간</label><input id="dt" type="datetime-local">
+   <label>컴퓨터</label><select id="os"><option>맥</option><option>윈도우</option><option>맥+윈도우</option></select>
+   <label>고객 키 (있으면)</label><input id="ky" placeholder="관리자 → 고객 키">
+   <div style="margin-top:18px;display:flex;gap:10px"><button class="btn g" onclick="home()">취소</button><button class="btn" id="mk" style="flex:1">시작</button></div><p class="err" id="er"></p></div>`;
+  document.querySelectorAll("[data-m]").forEach((b) => b.onclick = () => { mode = +b.dataset.m; document.querySelectorAll("[data-m]").forEach((x) => x.classList.toggle("on", x === b));
+    $("nl").textContent = mode > 1 ? "고객 이름 (쉼표로 나눠서)" : "고객 이름"; $("nm").placeholder = mode > 1 ? "예: 안자선, 양진" : "예: 이강남"; });
+  $("mk").onclick = async () => {
+    const ps = $("nm").value.split(/[,，·\/]/).map((x) => x.trim()).filter(Boolean);
+    if (!ps.length) { $("er").textContent = "이름을 적어 주세요"; return; }
+    if (mode > 1 && ps.length < 2) { $("er").textContent = "2인 이상이면 이름을 쉼표로 둘 이상"; return; }
+    const v = $("dt").value;
+    const { data, error } = await sb.from("install_runs").insert({ customer: ps.join(" · "), key_code: $("ky").value.trim() || null, os: $("os").value,
+      install_at: v ? new Date(v + ":00+09:00").toISOString() : null, checks: { _meta: { people: mode > 1 ? ps : [ps[0]], v: 2 } } }).select().single();
+    if (error) { $("er").textContent = error.message; return; }
+    openRun(data.id);
+  };
+}
+
+function loginView() {
+  $("main").innerHTML = `<div class="card" style="max-width:380px;margin:60px auto"><h1 style="margin-bottom:10px">관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="관리자 비밀번호"><button class="btn" id="go" style="width:100%;margin-top:12px">로그인</button><p class="err" id="er"></p></div>`;
+  const go = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } boot(); };
+  $("go").onclick = go; $("pw").onkeydown = (e) => { if (e.key === "Enter") go(); };
+}
+async function boot() {
+  const { data } = await sb.auth.getSession();
+  if (!data.session) { $("out").hidden = true; return loginView(); }
+  $("out").hidden = false; $("out").onclick = async () => { await sb.auth.signOut(); boot(); };
+  const id = new URLSearchParams(location.search).get("id"); if (id) openRun(+id); else home();
+}
+boot();
+</script></body></html>
