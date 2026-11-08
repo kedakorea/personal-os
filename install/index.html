@@ -150,7 +150,7 @@ const S = [
    ["u4", "꼭 알아 둘 것", "구독료 별도 · 멈출 수 있음 · 완성도는 쓰는 방법", 1, 1]]},
  { id: "s4", name: "연결", when: "40분", tip: "노션은 꼭 연결해요(도서관 백업). 안드로이드는 테일스케일 '앱별 분할 터널링'에서 크롬만 켜고 '항상 켜진 VPN' 끄기 → 삼성페이·은행 앱이 열리는지 확인.",
   items: [
-   ["c1", "캘린더·지메일·노션 연결", "노션은 필수 — 매일 밤 도서관에 자동 보관", 1, 1],
+   ["c1", "캘린더·지메일·드라이브·노션 연결", "노션은 필수 — 매일 밤 도서관에 자동 보관", 1, 1],
    ["c2", "휴대폰 홈 화면 + 알림 한 번 받기", "", 1, 1],
    ["c3", "컴퓨터 잠자기 끔", "늘 켜 둬야 일한다는 것 안내", 1, 1]]},
  { id: "s5", name: "실습 3가지", when: "40분", tip: "고객이 직접 말로 시켜요. 세 가지가 끝나면 고객 화면에 '오늘 설치 공식 완료' 화면이 떠요(매니저에게 \"설치 완료\"라고 하면 됨).",
@@ -220,7 +220,7 @@ const DECK = [
  { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>Claude 구독료는<br><mark>별도</mark>예요</h1><div class="body"><div class="hero"><b>월 $100</b><span>약 15만 원 · Claude Max</span></div><p class="note">대표님 명의 카드로 Claude에 직접 내요.<br>원화 금액은 환율에 따라 조금 달라져요.</p></div>` },
  { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>가끔 <mark>멈출 수</mark><br>있어요</h1><div class="body"><div class="tiles"><div><i>☁️</i>Claude 장애</div><div><i>💤</i>컴퓨터 꺼짐·절전</div><div><i>📶</i>인터넷 문제</div></div><p class="note">문제가 풀리면 <b>다시 정상</b>이에요. 컴퓨터는 켜 두세요.</p></div>` },
  { k: "u4", h: `<p class="kk">04 · 꼭 알아 두세요</p><h1>완성도는<br><mark>쓰는 방법</mark>에 따라</h1><div class="body"><div class="hero"><b>다듬을수록 ↑</b><span>지시하고 고쳐 줄수록 좋아져요</span></div><p class="note">설치만으로 전문가 수준을 보장하진 않아요.<br>그래서 <b>처음 몇 주의 가르침</b>이 중요해요.</p></div>` },
- { k: null, c: 1, h: `<p class="kk">이제 연결하러 가요</p><h1>궁금한 점<br><mark>있으세요?</mark></h1><div class="body"><p class="ld">다음은 캘린더 · 메일 · 노션 · 휴대폰 연결이에요.</p></div>` }
+ { k: null, c: 1, h: `<p class="kk">이제 연결하러 가요</p><h1>궁금한 점<br><mark>있으세요?</mark></h1><div class="body"><p class="ld">다음은 캘린더 · 메일 · 드라이브 · 노션 · 휴대폰 연결이에요.</p></div>` }
 ];
 let DI = 0;
 function deckGo(i) {
@@ -241,7 +241,7 @@ document.addEventListener("keydown", (e) => { if (!RUN || S[STAGE].id !== "s3b" 
 
 /* ── 노트북으로 보여 주는 설명 화면 ── */
 const SLIDES = {
- order: [`<h2>오늘 이렇게 진행해요</h2><ol class="tl">${["시작 — 오늘 순서", "인터뷰 — 하루·귀찮은 일", "확정 — 부서·매니저·화면", "설치 — 내 컴퓨터에", "이해하기 — 퍼스널 OS란", "연결 — 캘린더·메일·노션·휴대폰", "실습 3가지 — 만들고·올리고·맡기고", "🎉 설치 완료"].map((x) => `<li>${x}</li>`).join("")}</ol>`],
+ order: [`<h2>오늘 이렇게 진행해요</h2><ol class="tl">${["시작 — 오늘 순서", "인터뷰 — 하루·귀찮은 일", "확정 — 부서·매니저·화면", "설치 — 내 컴퓨터에", "이해하기 — 퍼스널 OS란", "연결 — 캘린더·메일·드라이브·노션·휴대폰", "실습 3가지 — 만들고·올리고·맡기고", "🎉 설치 완료"].map((x) => `<li>${x}</li>`).join("")}</ol>`],
  what: [`<h2>퍼스널 OS는 새 AI가 아니에요</h2><div class="eq"><div><b>🧠 클로드</b><small>지금 가장 일 잘하는 AI</small></div><span>+</span><div><b>💻 내 컴퓨터</b><small>내 파일·내 계정으로 직접</small></div><span>+</span><div><b>🏢 우리 회사 세팅</b><small>부서·매니저·맞춤 화면</small></div><span>=</span><div class="r"><b>퍼스널 OS</b><small>내 컴퓨터에 설치된 우리 회사</small></div></div><p class="big2">새 앱을 배우는 게 아니라, <b>클로드를 내 컴퓨터에 붙이고 내가 일하기 좋게 세팅해 드리는 설치 서비스</b>예요.</p>`,
         `<h2>그래서 이런 게 달라요</h2><div class="cols"><div><b>채팅창 AI</b><ul><li>답을 복사해서 내가 붙여 넣기</li><li>매번 처음부터 설명</li><li>파일은 내가 다시 만들기</li></ul></div><div class="hl"><b>퍼스널 OS</b><ul><li>파일을 직접 만들고 저장</li><li>회사·말투·거래처를 기억</li><li>휴대폰으로 시키면 컴퓨터가 처리</li></ul></div></div>`],
  curve: [`<h2>처음 2주만 버티면 됩니다</h2><svg viewBox="0 0 640 340" class="chart"><rect x="70" y="20" width="150" height="270" fill="#feefb8"/><text x="145" y="44" text-anchor="middle" font-size="15" font-weight="800" fill="#432f2e">버티는 구간</text><line x1="70" y1="290" x2="620" y2="290" stroke="#432f2e" stroke-width="3"/><line x1="70" y1="20" x2="70" y2="290" stroke="#432f2e" stroke-width="3"/><text x="20" y="160" font-size="13" fill="#432f2e" transform="rotate(-90 20 160)" text-anchor="middle">한 가지 일에 드는 시간</text>${["1주", "2주", "3주", "4주", "2달"].map((w, i) => `<text x="${110 + i * 120}" y="314" text-anchor="middle" font-size="14" fill="#432f2e">${w}</text>`).join("")}<line x1="70" y1="150" x2="620" y2="150" stroke="#9a8f8a" stroke-width="4" stroke-dasharray="10 8"/><text x="615" y="140" text-anchor="end" font-size="14" fill="#6b625e">내가 직접 할 때</text><path d="M70 70 C 160 60, 200 120, 260 170 S 420 255, 620 265" fill="none" stroke="#2f9a6a" stroke-width="6"/><text x="610" y="252" text-anchor="end" font-size="16" font-weight="800" fill="#2f9a6a">퍼스널 OS</text><circle cx="236" cy="150" r="9" fill="#c8372d"/><text x="250" y="132" font-size="14" font-weight="800" fill="#c8372d">여기서 역전</text></svg><p class="big2">처음엔 가르치느라 시간이 더 들어요. 하지만 한 번 알려 준 건 <b>지침으로 남아서</b> 다음부터는 말 한마디로 끝나요.</p>`],
