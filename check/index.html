@@ -16,6 +16,7 @@ header{position:sticky;top:0;z-index:5;background:var(--c);color:#fff;padding:12
 .sum{display:flex;align-items:baseline;gap:8px;padding:14px 16px 4px}.sum b{font:900 34px/1 Pretendard}.sum em{font:700 15px Pretendard;font-style:normal;color:#6a74a0;flex:1}
 .sum label{font:700 14px Pretendard;display:flex;gap:6px;align-items:center}.sum input{width:18px;height:18px;accent-color:var(--c)}
 .bar{height:7px;background:#fff;border-radius:9px;margin:6px 16px 0;overflow:hidden}.bar i{display:block;height:100%;background:var(--c);transition:width .2s}
+.allb{display:flex;gap:7px;padding:9px 16px 0}.allb button{flex:1;border:1.5px solid #c2cbe0;border-radius:10px;background:#fff;color:var(--navy);font:800 14px Pretendard;padding:9px 0}.allb button:disabled{opacity:.4}
 .inf{padding:9px 16px 2px;font:600 13px/1.45 Pretendard;color:#56618c}
 h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .list{margin:0 12px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(29,50,112,.08)}
@@ -76,13 +77,25 @@ function draw() {
    <div class="prow"><button class="step" id="pv"${ai ? "" : " disabled"}>‹</button><button class="pick" id="pick"><small>체크 시점 ${ai + 1} / ${D.activities.length} · ${osEsc(a.day)} ${osEsc(a.t)}</small>${osEsc(a.n)}</button><button class="step" id="nx"${ai < D.activities.length - 1 ? "" : " disabled"}>›</button></div>
    <div class="view">${[["bus", "버스별"], ["ban", "반·조별"], ["room", "방별"]].map(([v, t]) => `<button data-v="${v}" class="${v === VIEW ? "on" : ""}">${t}</button>`).join("")}</div>${pick}</header>
    <div class="sum"><b>${d}</b><em>/ ${n}명 · 남은 ${n - d}명</em><label><input type="checkbox" id="only"${ONLY ? " checked" : ""}>안 온 사람만</label></div><div class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></div>
+   <div class="allb"><button id="alOn"${d >= n ? " disabled" : ""}>✓ 전체 체크</button><button id="alOff"${d ? "" : " disabled"}>↺ 전체 취소</button></div>
    ${b ? `<p class="inf">${osEsc(b.car)} · 스태프 ${osEsc(b.staff)}<br>인솔 ${osEsc(b.lead)}</p>` : ""}${body}${!L.length ? `<p class="e">모두 체크했어요 ✓</p>` : ""}`;
   window.scrollTo(0, y);
-  $("pick").onclick = sheet; $("me").onclick = askName; $("sos").onclick = sos; $("tk").onclick = talk; $("only").onchange = (e) => { ONLY = e.target.checked; draw(); };
+  $("alOn").onclick = () => bulk(true); $("alOff").onclick = () => bulk(false); $("pick").onclick = sheet; $("me").onclick = askName; $("sos").onclick = sos; $("tk").onclick = talk; $("only").onchange = (e) => { ONLY = e.target.checked; draw(); };
   $("pv").onclick = () => { setAc(D.activities[ai - 1].k); draw(); window.scrollTo(0, 0); }; $("nx").onclick = () => { setAc(D.activities[ai + 1].k); draw(); window.scrollTo(0, 0); };
   document.querySelectorAll("[data-v]").forEach((x) => x.onclick = () => { VIEW = x.dataset.v; localStorage.setItem("trip_view", VIEW); draw(); window.scrollTo(0, 0); });
   document.querySelectorAll("[data-g]").forEach((x) => x.onclick = () => pickG(x.dataset.g));
   document.querySelectorAll("[data-p]").forEach((x) => x.onclick = (e) => { if (!e.target.closest("a")) toggle(+x.dataset.p); });
+}
+async function bulk(on) {
+  if (!WHO) return askName();
+  const a = D.activities.find((x) => x.k === AC), G = SEL[VIEW], l = D.roster.filter((p) => inG(p, VIEW, G)), t = l.filter((p) => !!C[key(AC, p.id)] !== on);
+  const name = VIEW === "bus" ? G + "호차" : VIEW === "ban" ? G + "반" : G === "all" ? "전체 방" : G + "번 방";
+  if (!t.length || !confirm(on ? `[${a.n}]\n${name} ${l.length}명을 정말 전체 체크할까요?` : `[${a.n}]\n${name}의 체크 ${t.length}명을 정말 전체 취소할까요?\n취소하면 되돌릴 수 없어요.`)) return;
+  busy++;
+  try { if (!await rpc("trip_set_many", { p_code: CODE, p_activity: AC, p_persons: t.map((p) => p.id), p_on: on, p_by: WHO })) throw 0;
+    t.forEach((p) => { if (on) C[key(AC, p.id)] = { by: WHO, at: new Date().toISOString() }; else delete C[key(AC, p.id)]; }); }
+  catch (e) { toast("처리되지 않았어요. 다시 눌러 주세요"); }
+  busy--; draw();
 }
 async function toggle(p) {
   if (!WHO) return askName();
