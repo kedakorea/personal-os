@@ -8,5 +8,6 @@ Disallow: /g/
 Disallow: /1107/
 Disallow: /paytest/
 Disallow: /check/
+Disallow: /andong/
 
 Sitemap: https://mybrandium.com/sitemap.xml
