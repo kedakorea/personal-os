@@ -20,6 +20,7 @@ header{position:sticky;top:0;z-index:5;background:var(--c);color:#fff;padding:12
 h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .list{margin:0 12px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(29,50,112,.08)}
 .tel{flex:none;width:42px;height:42px;border-radius:50%;background:#e8f0fd;display:flex;align-items:center;justify-content:center;font-size:19px;text-decoration:none}.nb{color:var(--navy)!important;font-weight:700!important}.sm{font:600 13px Pretendard;color:#6a74a0}a.a{text-decoration:none}
+.n mark{background:#ffe27a;color:var(--navy);border-radius:5px;padding:0 3px}.r.on .n mark{background:#f3e7b8;color:#7c88ad}
 .r{cursor:pointer;width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:0;border-bottom:1px solid #e4eaf5;padding:10px 12px;text-align:left;color:inherit;min-height:66px}.r:last-child{border:0}
 .ck{flex:none;width:32px;height:32px;border-radius:50%;border:2.5px solid #c2cbe0;display:flex;align-items:center;justify-content:center;font:900 18px Pretendard;color:transparent}
 .r.on{background:#f1f6fe}.r.on .ck{background:var(--c);border-color:var(--c);color:#fff}.r.on .n b{color:#7c88ad}
@@ -53,13 +54,14 @@ async function load() {
     D = d; C = {}; d.checks.forEach((c) => C[key(c.a, c.p)] = c); if (!D.activities.some((a) => a.k === AC)) setAc(D.activities[0].k); document.title = D.title + " 체크"; if (!$("ov").innerHTML || !$("ov").dataset.keep) draw(); return true;
   } catch (e) { toast("인터넷 연결을 확인해 주세요"); return false; }
 }
+const callName = (p) => { const i = p.call ? p.ko.lastIndexOf(p.call) : -1; if (i < 0) return osEsc(p.ko); return osEsc(p.ko.slice(0, i)) + `<mark>${osEsc(p.call)}</mark>` + osEsc(p.ko.slice(i + p.call.length)); };
 function draw() {
   const G = SEL[VIEW], ai = D.activities.findIndex((x) => x.k === AC), a = D.activities[ai], y = window.scrollY;
   document.documentElement.style.setProperty("--c", COLOR[VIEW === "bus" ? G : VIEW === "ban" ? G : "room"]);
   const [d, n] = count(AC, VIEW, G), rooms = [...new Set(D.roster.map((p) => p.room))].sort((p, q) => p - q);
   const L = D.roster.filter((p) => inG(p, VIEW, G)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || !C[key(AC, p.id)]);
   const tag = (p) => VIEW === "bus" ? `${p.ban}반 ${p.no}조<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : VIEW === "ban" ? `${p.bus}호차<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : `${p.bus}호차<small>${p.ban}반 ${p.no}조 · ${osEsc(p.uni)}</small>`;
-  const row = (p) => { const c = C[key(AC, p.id)]; return `<div class="r${c ? " on" : ""}" data-p="${p.id}" role="button"><span class="ck">✓</span><span class="n"><b>${osEsc(p.ko)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${p.tel ? `<i class="nb">${osEsc(p.tel)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; };
+  const row = (p) => { const c = C[key(AC, p.id)]; return `<div class="r${c ? " on" : ""}" data-p="${p.id}" role="button"><span class="ck">✓</span><span class="n"><b>${callName(p)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${p.tel ? `<i class="nb">${osEsc(p.tel)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; };
   const sec = (t, g) => g.length ? `<h3>${t}</h3><div class="list">${g.map(row).join("")}</div>` : "";
   let body = "";
   if (VIEW === "bus") body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
