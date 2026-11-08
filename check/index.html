@@ -9,6 +9,9 @@ body{font-family:Pretendard,-apple-system,sans-serif;color:var(--navy);word-brea
 header{position:sticky;top:0;z-index:5;background:var(--c);color:#fff;padding:12px 16px 12px;transition:background .15s}
 .t{display:flex;align-items:center;gap:8px;font:700 13px Pretendard;opacity:.95}.t span{flex:1}.t button{background:rgba(255,255,255,.2);border:0;color:#fff;font:700 12px Pretendard;border-radius:99px;padding:5px 10px}
 .pick{margin-top:9px;width:100%;background:#fff;color:var(--navy);border:0;border-radius:12px;padding:12px 38px 12px 13px;font:800 17px Pretendard;text-align:left;position:relative}.pick:after{content:"▾";position:absolute;right:14px;color:var(--c)}
+.prow{display:flex;gap:7px;margin-top:9px}.prow .pick{margin-top:0;flex:1;min-width:0;font-size:16px;padding:10px 30px 10px 11px}.prow .pick small{display:block;font:700 12px Pretendard;color:#6a74a0;margin-bottom:1px}.step{flex:none;width:44px;border:0;border-radius:12px;background:rgba(255,255,255,.22);color:#fff;font:900 22px Pretendard}.step:disabled{opacity:.35}
+.view{display:grid;grid-template-columns:repeat(3,1fr);margin-top:9px;background:rgba(0,0,0,.16);border-radius:12px;padding:3px}.view button{border:0;background:none;color:#fff;font:800 14.5px Pretendard;padding:7px 0;border-radius:9px}.view button.on{background:#fff;color:var(--c)}
+.rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}.rooms button{border:0;border-radius:10px;background:rgba(255,255,255,.22);color:#fff;padding:5px 1px;font:800 14px/1.15 Pretendard}.rooms button small{display:block;font:700 11px Pretendard}.rooms button.on{background:#fff;color:var(--c)}
 .bus{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.bus button{border:0;border-radius:12px;background:rgba(255,255,255,.22);color:#fff;padding:8px 2px;font:800 17px/1.15 Pretendard}.bus button small{display:block;font:700 12.5px Pretendard;margin-top:2px}.bus button.on{background:#fff;color:var(--c)}
 .sum{display:flex;align-items:baseline;gap:8px;padding:14px 16px 4px}.sum b{font:900 34px/1 Pretendard}.sum em{font:700 15px Pretendard;font-style:normal;color:#6a74a0;flex:1}
 .sum label{font:700 14px Pretendard;display:flex;gap:6px;align-items:center}.sum input{width:18px;height:18px;accent-color:var(--c)}
@@ -33,32 +36,46 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 <script>
 /* 행사 인원 체크판 (2026-11-08) — 명단은 페이지에 없고, 링크의 코드로 trip_get 해서 받는다 */
 const CODE = new URLSearchParams(location.search).get("k") || "", $ = (i) => document.getElementById(i);
-const COLOR = { 1: "#2f7fe6", 2: "#f37a1f", 3: "#16a394" }, STAFF = ["최유정", "이미나", "김윤근"];
-let D = null, AC = localStorage.getItem("trip_ac") || "", BUS = localStorage.getItem("trip_bus") || "1", ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, busy = 0;
+const COLOR = { 1: "#2f7fe6", 2: "#f37a1f", 3: "#16a394", A: "#2f7fe6", B: "#f37a1f", room: "#4a5bb5" }, STAFF = ["최유정", "이미나", "김윤근"];
+let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, busy = 0;
 const rpc = async (f, b) => { const r = await fetch(`${OS_URL}/rest/v1/rpc/${f}`, { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON, Authorization: "Bearer " + OS_ANON }, body: JSON.stringify(b) }); if (!r.ok) throw new Error(r.status); return r.json(); };
 const toast = (t) => { $("msg").textContent = t; $("msg").style.display = "block"; setTimeout(() => $("msg").style.display = "none", 2600); };
 const key = (a, p) => a + ":" + p, hm = (s) => new Date(s).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
-const count = (a, b) => { const l = D.roster.filter((p) => String(p.bus) === String(b)); return [l.filter((p) => C[key(a, p.id)]).length, l.length]; };
+const inG = (p, v, g) => g === "all" ? true : String(v === "bus" ? p.bus : v === "ban" ? p.ban : p.room) === String(g);
+const count = (a, v, g) => { const l = D.roster.filter((p) => inG(p, v, g)); return [l.filter((p) => C[key(a, p.id)]).length, l.length]; };
+const setAc = (k) => { AC = k; localStorage.setItem("trip_ac", AC); const a = D.activities.find((x) => x.k === k); if (a && a.m) { VIEW = a.m; localStorage.setItem("trip_view", VIEW); } };
+const pickG = (g) => { SEL[VIEW] = g; localStorage.setItem("trip_sel", JSON.stringify(SEL)); draw(); window.scrollTo(0, 0); };
 async function load() {
   if (busy) return;
   try { const d = await rpc("trip_get", { p_code: CODE }); if (busy) return; if (!d) { $("app").innerHTML = `<p class="e">링크가 맞지 않거나 사용 기간이 끝났어요.</p>`; return false; }
-    D = d; C = {}; d.checks.forEach((c) => C[key(c.a, c.p)] = c); if (!D.activities.some((a) => a.k === AC)) AC = D.activities[0].k; document.title = D.title + " 체크"; if (!$("ov").innerHTML || !$("ov").dataset.keep) draw(); return true;
+    D = d; C = {}; d.checks.forEach((c) => C[key(c.a, c.p)] = c); if (!D.activities.some((a) => a.k === AC)) setAc(D.activities[0].k); document.title = D.title + " 체크"; if (!$("ov").innerHTML || !$("ov").dataset.keep) draw(); return true;
   } catch (e) { toast("인터넷 연결을 확인해 주세요"); return false; }
 }
 function draw() {
-  document.documentElement.style.setProperty("--c", COLOR[BUS]);
-  const a = D.activities.find((x) => x.k === AC), [d, n] = count(AC, BUS), b = D.buses[BUS], y = window.scrollY;
-  const L = D.roster.filter((p) => String(p.bus) === BUS).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || !C[key(AC, p.id)]);
-  const row = (p) => { const c = C[key(AC, p.id)]; return `<button class="r${c ? " on" : ""}" data-p="${p.id}"><span class="ck">✓</span><span class="n"><b>${osEsc(p.ko)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${p.ban}반 ${p.no}조<small>${osEsc(p.uni)} · ${p.room}번 방</small></span></button>`; };
-  const sec = (x) => { const g = L.filter((p) => p.ban === x); return g.length ? `<h3>${x}반</h3><div class="list">${g.map(row).join("")}</div>` : ""; };
+  const G = SEL[VIEW], ai = D.activities.findIndex((x) => x.k === AC), a = D.activities[ai], y = window.scrollY;
+  document.documentElement.style.setProperty("--c", COLOR[VIEW === "bus" ? G : VIEW === "ban" ? G : "room"]);
+  const [d, n] = count(AC, VIEW, G), rooms = [...new Set(D.roster.map((p) => p.room))].sort((p, q) => p - q);
+  const L = D.roster.filter((p) => inG(p, VIEW, G)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || !C[key(AC, p.id)]);
+  const tag = (p) => VIEW === "bus" ? `${p.ban}반 ${p.no}조<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : VIEW === "ban" ? `${p.bus}호차<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : `${p.bus}호차<small>${p.ban}반 ${p.no}조 · ${osEsc(p.uni)}</small>`;
+  const row = (p) => { const c = C[key(AC, p.id)]; return `<button class="r${c ? " on" : ""}" data-p="${p.id}"><span class="ck">✓</span><span class="n"><b>${osEsc(p.ko)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span></button>`; };
+  const sec = (t, g) => g.length ? `<h3>${t}</h3><div class="list">${g.map(row).join("")}</div>` : "";
+  let body = "";
+  if (VIEW === "bus") body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
+  else if (VIEW === "ban") for (let t = 1; t <= 6; t++) body += sec(`${G}반 ${t}조`, L.filter((p) => p.no === t));
+  else for (const r of rooms) body += sec(`${r}번 방`, L.filter((p) => p.room === r));
+  const btn = (v, g, t) => { const [p, q] = count(AC, v, g); return `<button data-g="${g}" class="${String(G) === String(g) ? "on" : ""}">${t}<small>${p} / ${q}</small></button>`; };
+  const pick = VIEW === "bus" ? `<div class="bus">${btn("bus", "1", "1호차")}${btn("bus", "2", "2호차")}${btn("bus", "3", "3호차")}</div>` : VIEW === "ban" ? `<div class="bus" style="grid-template-columns:1fr 1fr">${btn("ban", "A", "A반")}${btn("ban", "B", "B반")}</div>` : `<div class="rooms">${btn("room", "all", "전체")}${rooms.map((r) => btn("room", r, r + "번 방")).join("")}</div>`;
+  const b = VIEW === "bus" ? D.buses[G] : null;
   $("app").innerHTML = `<header><div class="t"><span>${osEsc(D.title)}</span><button id="me">${osEsc(WHO || "이름")} ✎</button></div>
-   <button class="pick" id="pick">${osEsc(a.day)} · ${osEsc(a.n)}</button>
-   <div class="bus">${["1", "2", "3"].map((x) => { const [p, q] = count(AC, x); return `<button data-b="${x}" class="${x === BUS ? "on" : ""}">${x}호차<small>${p} / ${q}</small></button>`; }).join("")}</div></header>
+   <div class="prow"><button class="step" id="pv"${ai ? "" : " disabled"}>‹</button><button class="pick" id="pick"><small>체크 시점 ${ai + 1} / ${D.activities.length} · ${osEsc(a.day)} ${osEsc(a.t)}</small>${osEsc(a.n)}</button><button class="step" id="nx"${ai < D.activities.length - 1 ? "" : " disabled"}>›</button></div>
+   <div class="view">${[["bus", "버스별"], ["ban", "반·조별"], ["room", "방별"]].map(([v, t]) => `<button data-v="${v}" class="${v === VIEW ? "on" : ""}">${t}</button>`).join("")}</div>${pick}</header>
    <div class="sum"><b>${d}</b><em>/ ${n}명 · 남은 ${n - d}명</em><label><input type="checkbox" id="only"${ONLY ? " checked" : ""}>안 온 사람만</label></div><div class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></div>
-   <p class="inf">${osEsc(b.car)} · 스태프 ${osEsc(b.staff)}<br>인솔 ${osEsc(b.lead)}</p>${sec("A")}${sec("B")}${!L.length ? `<p class="e">모두 체크했어요 ✓</p>` : ""}`;
+   ${b ? `<p class="inf">${osEsc(b.car)} · 스태프 ${osEsc(b.staff)}<br>인솔 ${osEsc(b.lead)}</p>` : ""}${body}${!L.length ? `<p class="e">모두 체크했어요 ✓</p>` : ""}`;
   window.scrollTo(0, y);
   $("pick").onclick = sheet; $("me").onclick = askName; $("only").onchange = (e) => { ONLY = e.target.checked; draw(); };
-  document.querySelectorAll("[data-b]").forEach((x) => x.onclick = () => { BUS = x.dataset.b; localStorage.setItem("trip_bus", BUS); draw(); window.scrollTo(0, 0); });
+  $("pv").onclick = () => { setAc(D.activities[ai - 1].k); draw(); window.scrollTo(0, 0); }; $("nx").onclick = () => { setAc(D.activities[ai + 1].k); draw(); window.scrollTo(0, 0); };
+  document.querySelectorAll("[data-v]").forEach((x) => x.onclick = () => { VIEW = x.dataset.v; localStorage.setItem("trip_view", VIEW); draw(); window.scrollTo(0, 0); });
+  document.querySelectorAll("[data-g]").forEach((x) => x.onclick = () => pickG(x.dataset.g));
   document.querySelectorAll("[data-p]").forEach((x) => x.onclick = () => toggle(+x.dataset.p));
 }
 async function toggle(p) {
@@ -74,10 +91,10 @@ function close_() { $("ov").innerHTML = ""; $("ov").dataset.keep = ""; }
 function open_(h) { $("ov").innerHTML = `<div class="ov" id="bg"><div class="sh">${h}</div></div>`; $("ov").dataset.keep = "1"; $("bg").onclick = (e) => { if (e.target.id === "bg" && WHO) close_(); }; }
 function sheet() {
   const days = [...new Set(D.activities.map((a) => a.day))];
-  open_(`<h2>어떤 활동을 체크할까요?</h2>` + days.map((d) => `<h4>${osEsc(d)}</h4>` + D.activities.filter((a) => a.day === d).map((a) => { const t = ["1", "2", "3"].reduce((s, b) => s + count(a.k, b)[0], 0); return `<button class="a${a.k === AC ? " on" : ""}" data-a="${a.k}"><span>${osEsc(a.n)}</span><time>${osEsc(a.t)}</time><em>${t}/${D.roster.length}</em></button>`; }).join("")).join("") +
+  open_(`<h2>어떤 활동을 체크할까요?</h2>` + days.map((d) => `<h4>${osEsc(d)}</h4>` + D.activities.filter((a) => a.day === d).map((a) => { const t = count(a.k, "bus", "all")[0]; return `<button class="a${a.k === AC ? " on" : ""}" data-a="${a.k}"><span>${osEsc(a.n)}</span><time>${osEsc(a.t)}</time><em>${t}/${D.roster.length}</em></button>`; }).join("")).join("") +
    `<div class="add"><input id="na" placeholder="활동 추가 (예: 단체사진)" maxlength="30"><button id="ad">추가</button></div>`);
-  document.querySelectorAll("[data-a]").forEach((x) => x.onclick = () => { AC = x.dataset.a; localStorage.setItem("trip_ac", AC); close_(); draw(); window.scrollTo(0, 0); });
-  $("ad").onclick = async () => { const n = $("na").value.trim(); if (!n) return; try { D.activities = await rpc("trip_add_activity", { p_code: CODE, p_day: "추가", p_name: n }); AC = D.activities[D.activities.length - 1].k; localStorage.setItem("trip_ac", AC); close_(); draw(); } catch (e) { toast("추가되지 않았어요"); } };
+  document.querySelectorAll("[data-a]").forEach((x) => x.onclick = () => { setAc(x.dataset.a); close_(); draw(); window.scrollTo(0, 0); });
+  $("ad").onclick = async () => { const n = $("na").value.trim(); if (!n) return; try { D.activities = await rpc("trip_add_activity", { p_code: CODE, p_day: "추가", p_name: n }); setAc(D.activities[D.activities.length - 1].k); close_(); draw(); } catch (e) { toast("추가되지 않았어요"); } };
 }
 function askName() {
   open_(`<h2>누가 체크하나요?</h2>` + STAFF.map((n) => `<button class="nm" data-n="${n}">${n}</button>`).join("") + `<div class="add"><input id="on" placeholder="다른 이름" maxlength="20"><button id="ok">확인</button></div>`);
