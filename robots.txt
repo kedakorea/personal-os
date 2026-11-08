@@ -7,5 +7,6 @@ Disallow: /tools/
 Disallow: /g/
 Disallow: /1107/
 Disallow: /paytest/
+Disallow: /check/
 
 Sitemap: https://mybrandium.com/sitemap.xml
