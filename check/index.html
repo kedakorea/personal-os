@@ -9,7 +9,7 @@ body{font-family:Pretendard,-apple-system,sans-serif;color:var(--navy);word-brea
 header{position:sticky;top:0;z-index:5;background:var(--c);color:#fff;padding:12px 16px 12px;transition:background .15s}
 .t{display:flex;align-items:center;gap:8px;font:700 13px Pretendard;opacity:.95}.t span{flex:1}.t button{background:rgba(255,255,255,.2);border:0;color:#fff;font:700 12px Pretendard;border-radius:99px;padding:5px 10px}
 .pick{margin-top:9px;width:100%;background:#fff;color:var(--navy);border:0;border-radius:12px;padding:12px 38px 12px 13px;font:800 17px Pretendard;text-align:left;position:relative}.pick:after{content:"▾";position:absolute;right:14px;color:var(--c)}
-.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}.tools button{border:0;border-radius:10px;background:rgba(255,255,255,.22);color:#fff;font:800 12.5px Pretendard;padding:8px 0;white-space:nowrap}
+.tools{display:flex;gap:5px;margin-top:9px}.tools button{flex:1 1 auto;border:0;border-radius:10px;background:rgba(255,255,255,.22);color:#fff;font:800 12.5px Pretendard;padding:8px 0;white-space:nowrap}
 .prow{display:flex;gap:7px;margin-top:9px}.prow .pick{margin-top:0;flex:1;min-width:0;font-size:16px;padding:10px 30px 10px 11px}.prow .pick small{display:block;font:700 12px Pretendard;color:#6a74a0;margin-bottom:1px}.step{flex:none;width:44px;border:0;border-radius:12px;background:rgba(255,255,255,.22);color:#fff;font:900 22px Pretendard}.step:disabled{opacity:.35}
 .view{display:grid;grid-template-columns:repeat(3,1fr);margin-top:9px;background:rgba(0,0,0,.16);border-radius:12px;padding:3px}.view button{border:0;background:none;color:#fff;font:800 14.5px Pretendard;padding:7px 0;border-radius:9px}.view button.on{background:#fff;color:var(--c)}
 .rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}.rooms button{border:0;border-radius:10px;background:rgba(255,255,255,.22);color:#fff;padding:5px 1px;font:800 14px/1.15 Pretendard}.rooms button small{display:block;font:700 11px Pretendard}.rooms button.on{background:#fff;color:var(--c)}
@@ -35,6 +35,9 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .pg{margin-bottom:7px}.pg summary{list-style:none;display:flex;align-items:center;gap:8px;background:#eaf0fb;border-radius:12px;padding:14px;font:800 17px Pretendard;cursor:pointer}.pg summary::-webkit-details-marker{display:none}.pg summary em{margin-left:auto;font:700 13px Pretendard;font-style:normal;color:#6a74a0}.pg summary:after{content:"▾";color:var(--c);transition:transform .15s}.pg[open] summary{margin-bottom:6px}.pg[open] summary:after{transform:rotate(180deg)}
 .sh.wide{max-height:90vh}.tb{overflow:auto;max-height:64vh;border:1px solid #e4eaf5;border-radius:10px}.tb table{border-collapse:separate;border-spacing:0;font:600 13px Pretendard;white-space:nowrap;width:100%}.tb th{position:sticky;top:0;background:#1d3270;color:#fff;font:800 12px Pretendard;padding:8px;z-index:2;text-align:left}.tb td{padding:8px;border-bottom:1px solid #e4eaf5}.tb td:first-child,.tb th:first-child{position:sticky;left:0;background:#fff;z-index:1;font-weight:800}.tb th:first-child{background:#1d3270;z-index:3}.tb a{color:#2f7fe6;text-decoration:none;font-weight:700}.tb .nt{color:#c8322b;font-weight:800}.srch{width:100%;border:1.5px solid #c2cbe0;border-radius:10px;padding:10px;font:600 16px Pretendard;margin:0 0 7px}.cnt{font:700 12.5px Pretendard;color:#6a74a0;margin:0 2px 6px}
 .day{background:var(--navy);color:#fff;font:900 16px Pretendard;border-radius:10px;padding:10px 12px;margin:9px 0 5px}.ti{display:flex;gap:9px;padding:9px 6px;border-bottom:1px solid #e4eaf5;align-items:baseline}.ti time{flex:none;width:92px;font:800 13px Pretendard;color:#2f7fe6}.ti b{display:block;font:800 15.5px/1.3 Pretendard}.ti span{display:block;font:600 13px/1.35 Pretendard;color:#6a74a0}.ti.now{background:#fff5d6;border-radius:9px;box-shadow:inset 3px 0 0 #f37a1f}.ti.now b:after{content:" · 지금";color:#f37a1f}
+.mt{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}.mt div{background:#eaf0fb;border-radius:10px;padding:7px 2px;text-align:center;font:700 11.5px/1.25 Pretendard;overflow-wrap:anywhere}.mt b{display:block;font:900 20px Pretendard;color:#2f7fe6}.mt .no b{color:#c8322b}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}.mg button{border:0;border-radius:10px;background:#eef2fa;color:var(--navy);font:800 14px/1.2 Pretendard;padding:8px 2px}.mg button small{display:block;font:700 11.5px Pretendard}.mg button.on{background:var(--navy);color:#fff}
+.mr{padding:10px 4px;border-bottom:1px solid #e4eaf5}.mr>div:first-child{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}.mr b{font:800 16.5px Pretendard}.mr small{font:600 12px Pretendard;color:#6a74a0;overflow-wrap:anywhere}.mc{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.mc button{border:1.5px solid #c2cbe0;border-radius:9px;background:#fff;color:var(--navy);font:800 13.5px/1.2 Pretendard;padding:9px 2px;overflow-wrap:anywhere}.mc button.on{background:#2f7fe6;border-color:#2f7fe6;color:#fff}.mm{width:100%;margin-top:6px;border:1.5px solid #e4eaf5;border-radius:9px;padding:8px 10px;font:600 16px Pretendard;color:var(--navy)}
 .sh h2{font:900 19px Pretendard;margin:0 4px 10px}.sh h4{font:800 13px Pretendard;color:#6a74a0;margin:12px 4px 5px}
 .a{width:100%;display:flex;gap:9px;align-items:center;background:#f4f7fc;border:0;border-radius:11px;padding:12px;margin-bottom:6px;font:800 16px Pretendard;color:inherit;text-align:left}.a span{flex:1}.a time{font:700 12.5px Pretendard;color:#6a74a0}.a em{font:800 13px Pretendard;font-style:normal;color:var(--c)}.a.on{outline:2px solid var(--c);background:#eaf2fe}
 .nm{width:100%;background:var(--navy);color:#fff;border:0;border-radius:12px;padding:15px;font:800 18px Pretendard;margin-bottom:8px}
@@ -47,7 +50,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 /* 행사 인원 체크판 (2026-11-08) — 명단은 페이지에 없고, 링크의 코드로 trip_get 해서 받는다 */
 const CODE = new URLSearchParams(location.search).get("k") || "", $ = (i) => document.getElementById(i);
 const COLOR = { 1: "#2f7fe6", 2: "#f37a1f", 3: "#16a394", A: "#2f7fe6", B: "#f37a1f", room: "#4a5bb5" }, STAFF = ["최유정", "이미나", "김윤근"];
-let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, busy = 0;
+let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, M = {}, MG = localStorage.getItem("trip_mg") || "1", busy = 0;
 const rpc = async (f, b) => { const r = await fetch(`${OS_URL}/rest/v1/rpc/${f}`, { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON, Authorization: "Bearer " + OS_ANON }, body: JSON.stringify(b) }); if (!r.ok) throw new Error(r.status); return r.json(); };
 const toast = (t) => { $("msg").textContent = t; $("msg").style.display = "block"; setTimeout(() => $("msg").style.display = "none", 2600); };
 const key = (a, p) => a + ":" + p, hm = (s) => new Date(s).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -58,7 +61,7 @@ const pickG = (g) => { SEL[VIEW] = g; localStorage.setItem("trip_sel", JSON.stri
 async function load() {
   if (busy) return;
   try { const d = await rpc("trip_get", { p_code: CODE }); if (busy) return; if (!d) { $("app").innerHTML = `<p class="e">링크가 맞지 않거나 사용 기간이 끝났어요.</p>`; return false; }
-    D = d; C = {}; d.checks.forEach((c) => C[key(c.a, c.p)] = c); if (!D.activities.some((a) => a.k === AC)) setAc(D.activities[0].k); document.title = D.title + " 체크"; if (!$("ov").innerHTML || !$("ov").dataset.keep) draw(); return true;
+    D = d; C = {}; d.checks.forEach((c) => C[key(c.a, c.p)] = c); M = {}; (d.menus || []).forEach((m) => M[m.p] = m); if (!D.activities.some((a) => a.k === AC)) setAc(D.activities[0].k); document.title = D.title + " 체크"; if (!$("ov").innerHTML || !$("ov").dataset.keep) draw(); else if ($("ml") && document.activeElement.tagName !== "INPUT") paintMenu(); return true;
   } catch (e) { toast("인터넷 연결을 확인해 주세요"); return false; }
 }
 const callName = (p) => { const i = p.call ? p.ko.lastIndexOf(p.call) : -1; if (i < 0) return osEsc(p.ko); return osEsc(p.ko.slice(0, i)) + `<mark>${osEsc(p.call)}</mark>` + osEsc(p.ko.slice(i + p.call.length)); };
@@ -78,14 +81,14 @@ function draw() {
   const pick = VIEW === "bus" ? `<div class="bus">${btn("bus", "1", "1호차")}${btn("bus", "2", "2호차")}${btn("bus", "3", "3호차")}</div>` : VIEW === "ban" ? `<div class="bus" style="grid-template-columns:1fr 1fr">${btn("ban", "A", "A반")}${btn("ban", "B", "B반")}</div>` : `<div class="rooms">${btn("room", "all", "전체")}${rooms.map((r) => btn("room", r, r + "번 방")).join("")}</div>`;
   const b = VIEW === "bus" ? D.buses[G] : null;
   $("app").innerHTML = `<header><div class="t"><span>${osEsc(D.title)}</span><button id="me">${osEsc(WHO || "이름")} ✎</button></div>
-   <div class="tools"><button id="tt">🗓 시간표</button><button id="sh">📑 전체명단</button><button id="tk">💬 영어</button><button id="sos">🚨 긴급</button></div>
+   <div class="tools"><button id="tt">🗓 시간표</button><button id="sh">📑 전체명단</button><button id="mn">🍽 메뉴</button><button id="tk">💬 영어</button><button id="sos">🚨 긴급</button></div>
    <div class="prow"><button class="step" id="pv"${ai ? "" : " disabled"}>‹</button><button class="pick" id="pick"><small>체크 시점 ${ai + 1} / ${D.activities.length} · ${osEsc(a.day)} ${osEsc(a.t)}</small>${osEsc(a.n)}</button><button class="step" id="nx"${ai < D.activities.length - 1 ? "" : " disabled"}>›</button></div>
    <div class="view">${[["bus", "버스별"], ["ban", "반·조별"], ["room", "방별"]].map(([v, t]) => `<button data-v="${v}" class="${v === VIEW ? "on" : ""}">${t}</button>`).join("")}</div>${pick}</header>
    <div class="sum"><b>${d}</b><em>/ ${n}명 · 남은 ${n - d}명</em><label><input type="checkbox" id="only"${ONLY ? " checked" : ""}>안 온 사람만</label></div><div class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></div>
    <div class="allb"><button id="alOn"${d >= n ? " disabled" : ""}>✓ 전체 체크</button><button id="alOff"${d ? "" : " disabled"}>↺ 전체 취소</button></div>
    ${b ? `<p class="inf">${osEsc(b.car)} · 스태프 ${osEsc(b.staff)}<br>인솔 ${osEsc(b.lead)}</p>` : ""}${body}${!L.length ? `<p class="e">모두 체크했어요 ✓</p>` : ""}`;
   window.scrollTo(0, y);
-  $("alOn").onclick = () => bulk(true); $("alOff").onclick = () => bulk(false); $("pick").onclick = sheet; $("me").onclick = askName; $("sos").onclick = sos; $("tt").onclick = timetable; $("sh").onclick = sheetAll; $("tk").onclick = talk; $("only").onchange = (e) => { ONLY = e.target.checked; draw(); };
+  $("alOn").onclick = () => bulk(true); $("alOff").onclick = () => bulk(false); $("pick").onclick = sheet; $("me").onclick = askName; $("sos").onclick = sos; $("tt").onclick = timetable; $("sh").onclick = sheetAll; $("tk").onclick = talk; $("mn").onclick = menu; $("only").onchange = (e) => { ONLY = e.target.checked; draw(); };
   $("pv").onclick = () => { setAc(D.activities[ai - 1].k); draw(); window.scrollTo(0, 0); }; $("nx").onclick = () => { setAc(D.activities[ai + 1].k); draw(); window.scrollTo(0, 0); };
   document.querySelectorAll("[data-v]").forEach((x) => x.onclick = () => { VIEW = x.dataset.v; localStorage.setItem("trip_view", VIEW); draw(); window.scrollTo(0, 0); });
   document.querySelectorAll("[data-g]").forEach((x) => x.onclick = () => pickG(x.dataset.g));
@@ -156,6 +159,34 @@ function sheetAll() {
   open_(`<h2>전체 명단</h2><p class="hint">이름·학교·전화·호차·방으로 찾아요. 표는 옆으로 밀어서 보세요.</p><input class="srch" id="sq" placeholder="검색"><p class="cnt" id="sc">${L.length}명</p><div class="tb"><table><thead><tr><th>이름</th><th>호차</th><th>반·조</th><th>방</th><th>학교</th><th>연락처</th><th>성별</th><th>국적</th><th>영문명</th><th>특이사항</th></tr></thead><tbody>${L.map((p) => `<tr data-q="${osEsc([p.ko, p.en, p.uni, p.tel, p.bus + "호차", p.room + "번", p.ban + "반", p.nat, p.note].join(" ").toLowerCase())}"><td>${callName(p)}</td><td>${p.bus}호차</td><td>${p.ban}반 ${p.no}조</td><td>${p.room}번</td><td>${osEsc(p.uni)}</td><td>${p.tel ? `<a href="tel:${p.tel}">${osEsc(p.tel)}</a>` : "없음"}</td><td>${osEsc(p.sex || "")}</td><td>${osEsc(p.nat || "")}</td><td>${osEsc(p.en)}</td><td class="nt">${p.absent ? "결석 " : ""}${osEsc(p.note || "")}</td></tr>`).join("")}</tbody></table></div>`);
   document.querySelector(".sh").classList.add("wide");
   $("sq").oninput = (e) => { const q = e.target.value.trim().toLowerCase(); let n = 0; document.querySelectorAll("tbody tr").forEach((r) => { const on = r.dataset.q.includes(q); r.style.display = on ? "" : "none"; if (on) n++; }); $("sc").textContent = n + "명"; };
+}
+/* 메뉴 고르기·메모 (2026-11-09) — 메뉴 이름은 buses.menu_names, 사람별 선택은 trip_menus */
+const menuNames = () => { const n = D.buses.menu_names || []; return [1, 2, 3, 4].map((i) => n[i - 1] || "메뉴" + i); };
+function paintMenu() {
+  if (!$("ml")) return;
+  const N = menuNames(), R = D.roster.filter((p) => !p.absent), t = [1, 2, 3, 4].map((i) => R.filter((p) => M[p.id] && M[p.id].menu === i).length), S = $("ov").querySelector(".sh"), y = S.scrollTop;
+  $("mt").innerHTML = N.map((x, i) => `<div><b>${t[i]}</b>${osEsc(x)}</div>`).join("") + `<div class="no"><b>${R.length - t.reduce((a, b) => a + b, 0)}</b>안 고름</div>`;
+  const left = (g) => { const l = R.filter((p) => g === "all" || String(p.bus) === g); return `${l.filter((p) => M[p.id] && M[p.id].menu).length}/${l.length}`; };
+  $("mg").innerHTML = [["1", "1호차"], ["2", "2호차"], ["3", "3호차"], ["all", "전체"]].map(([g, x]) => `<button data-mg="${g}" class="${MG === g ? "on" : ""}">${x}<small>${left(g)}</small></button>`).join("");
+  const L = R.filter((p) => MG === "all" || String(p.bus) === MG).sort((p, q) => p.bus - q.bus || p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko));
+  $("ml").innerHTML = L.map((p) => { const m = M[p.id] || {}; return `<div class="mr"><div><b>${callName(p)}</b><small>${p.bus}호차 · ${p.ban}반 ${p.no}조${p.note ? " · " + osEsc(p.note) : ""}</small></div><div class="mc">${N.map((x, i) => `<button data-mp="${p.id}" data-mv="${i + 1}" class="${m.menu === i + 1 ? "on" : ""}">${osEsc(x)}</button>`).join("")}</div><input class="mm" data-mo="${p.id}" maxlength="100" placeholder="메모 (예: 돼지고기 빼기)" value="${osEsc(m.memo || "")}"></div>`; }).join("");
+  S.scrollTop = y;
+  document.querySelectorAll("[data-mg]").forEach((x) => x.onclick = () => { MG = x.dataset.mg; localStorage.setItem("trip_mg", MG); paintMenu(); S.scrollTop = 0; });
+  document.querySelectorAll("[data-mp]").forEach((x) => x.onclick = () => { const p = +x.dataset.mp, v = +x.dataset.mv, m = M[p] || {}; saveMenu(p, m.menu === v ? null : v, m.memo || ""); });
+  document.querySelectorAll("[data-mo]").forEach((x) => x.onchange = () => { const p = +x.dataset.mo; saveMenu(p, (M[p] || {}).menu || null, x.value.trim()); });
+}
+async function saveMenu(p, v, memo) {
+  const had = M[p]; M[p] = { p, menu: v, memo, by: WHO }; busy++; paintMenu();
+  try { if (!await rpc("trip_menu_set", { p_code: CODE, p_person: p, p_menu: v, p_memo: memo, p_by: WHO })) throw 0; }
+  catch (e) { if (had) M[p] = had; else delete M[p]; toast("저장되지 않았어요. 다시 눌러 주세요"); }
+  busy--; paintMenu();
+}
+function menu() {
+  if (!WHO) return askName();
+  open_(`<h2>메뉴 선택 · 메모</h2><p class="hint">누르면 바로 저장돼요. 같은 메뉴를 한 번 더 누르면 취소돼요.</p><div class="mt" id="mt"></div><details class="pg"><summary>✎ 메뉴 이름 바꾸기</summary>${menuNames().map((x, i) => `<div class="add"><input id="mname${i}" maxlength="20" value="${osEsc(x)}"></div>`).join("")}<div class="add"><button id="msv" style="flex:1;padding:11px">이름 저장</button></div></details><div class="mg" id="mg"></div><div id="ml"></div>`);
+  document.querySelector(".sh").classList.add("wide");
+  $("msv").onclick = async () => { const n = [0, 1, 2, 3].map((i) => $("mname" + i).value.trim() || "메뉴" + (i + 1)); try { D.buses.menu_names = await rpc("trip_menu_names", { p_code: CODE, p_names: n }); menu(); } catch (e) { toast("저장되지 않았어요"); } };
+  paintMenu();
 }
 function askName() {
   open_(`<h2>누가 체크하나요?</h2>` + STAFF.map((n) => `<button class="nm" data-n="${n}">${n}</button>`).join("") + `<div class="add"><input id="on" placeholder="다른 이름" maxlength="20"><button id="ok">확인</button></div>`);
