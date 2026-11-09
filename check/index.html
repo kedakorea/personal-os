@@ -39,6 +39,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}.mg button{border:0;border-radius:10px;background:#eef2fa;color:var(--navy);font:800 14px/1.2 Pretendard;padding:8px 2px}.mg button small{display:block;font:700 11.5px Pretendard}.mg button.on{background:var(--navy);color:#fff}
 .mj{grid-template-columns:repeat(7,1fr)}.mj button{padding:9px 0;font-size:13.5px}.ms{font:800 13px Pretendard;color:#6a74a0;margin:0 3px 6px}.mh{display:flex;justify-content:space-between;background:var(--navy);color:#fff;border-radius:10px;padding:9px 12px;font:900 15.5px Pretendard;margin-top:10px}.mh em{font:800 13px Pretendard;font-style:normal}
 .mo{display:flex;align-items:center;justify-content:flex-end;gap:6px;font:800 15px Pretendard;margin:2px 3px 0}.mo input{width:20px;height:20px;accent-color:var(--c)}
+.mbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}.mbar .mo{margin:0;white-space:nowrap}#msave{border:0;border-radius:10px;background:var(--navy);color:#fff;font:800 14px Pretendard;padding:9px 12px;white-space:nowrap}.mimg{display:block;width:100%;border:1px solid #e4eaf5;border-radius:10px;margin:8px 0}
 .mr{padding:10px 4px;border-bottom:1px solid #e4eaf5}.mr>div:first-child{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}.mr b{font:800 16.5px Pretendard}.mr small{font:600 12px Pretendard;color:#6a74a0;overflow-wrap:anywhere}.mc{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.mc button{border:1.5px solid #c2cbe0;border-radius:9px;background:#fff;color:var(--navy);font:800 13.5px/1.2 Pretendard;padding:9px 2px;overflow-wrap:anywhere}.mc button.on{background:#2f7fe6;border-color:#2f7fe6;color:#fff}.mm{width:100%;margin-top:6px;border:1.5px solid #e4eaf5;border-radius:9px;padding:8px 10px;font:600 16px Pretendard;color:var(--navy)}
 .sh h2{font:900 19px Pretendard;margin:0 4px 10px}.sh h4{font:800 13px Pretendard;color:#6a74a0;margin:12px 4px 5px}
 .a{width:100%;display:flex;gap:9px;align-items:center;background:#f4f7fc;border:0;border-radius:11px;padding:12px;margin-bottom:6px;font:800 16px Pretendard;color:inherit;text-align:left}.a span{flex:1}.a time{font:700 12.5px Pretendard;color:#6a74a0}.a em{font:800 13px Pretendard;font-style:normal;color:var(--c)}.a.on{outline:2px solid var(--c);background:#eaf2fe}
@@ -167,6 +168,7 @@ const menuNames = () => { const n = D.buses.menu_names || []; return [1, 2, 3, 4
 function paintMenu() {
   if (!$("ml")) return;
   if (MG === "all") MT = "all";
+  $("msave").textContent = `🖼 ${MG === "all" ? "전체" : MG + "반"} 이미지로 저장`;
   const N = menuNames(), R = D.roster.filter((p) => !p.absent), S = $("ov").querySelector(".sh"), y = S.scrollTop, inB = (p, g) => g === "all" || p.ban === g, on = (p) => M[p.id] && M[p.id].menu;
   const L = R.filter((p) => inB(p, MG) && (MT === "all" || p.no === MT)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)), t = [1, 2, 3, 4].map((i) => L.filter((p) => on(p) === i).length);
   $("ms").textContent = `${MG === "all" ? "전체" : MG + "반"}${MT === "all" ? "" : " " + MT + "조"} ${L.length}명 집계`;
@@ -190,10 +192,35 @@ async function saveMenu(p, v, memo) {
   catch (e) { if (had) M[p] = had; else delete M[p]; toast("저장되지 않았어요. 다시 눌러 주세요"); }
   busy--; paintMenu();
 }
+/* 메뉴 결과 이미지 — 보고 있는 반 전체를 조별로 그린다 */
+async function menuImage() {
+  try { await Promise.all([document.fonts.load('900 44px Pretendard'), document.fonts.load('800 30px Pretendard'), document.fonts.load('600 28px Pretendard')]); } catch (e) {}
+  const N = menuNames(), ban = MG === "all" ? "전체" : MG + "반", who = D.roster.filter((p) => !p.absent && (MG === "all" || p.ban === MG)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)), pick = (p) => (M[p.id] || {}).menu || 0;
+  const c = document.createElement("canvas"), x = c.getContext("2d"), W = 1000, P = 24, F = (w, s) => `${w} ${s}px Pretendard,-apple-system,sans-serif`, NV = "#1d3270", RD = "#c8322b", C1 = P + 14, C2 = P + 340, C3 = P + 690, CE = W - P - 12;
+  const wrap = (t, w, f) => { x.font = f; const o = []; let u = ""; for (const h of String(t)) { if (u && x.measureText(u + h).width > w) { o.push(u); u = h; } else u += h; } if (u) o.push(u); return o.length ? o : [""]; };
+  const count = (l) => [1, 2, 3, 4].map((i) => l.filter((p) => pick(p) === i).length);
+  const tl = N.map((n) => wrap(n, 170, F(800, 26))), boxH = 92 + Math.max(...tl.map((l) => l.length)) * 32;
+  const G = [...new Set(who.map((p) => p.ban + p.no))].map((g) => who.filter((p) => p.ban + p.no === g));
+  const rows = G.map((l) => l.map((p) => { const v = pick(p), a = wrap(p.ko, C2 - C1 - 14, F(800, 30)), b = wrap(v ? N[v - 1] : "안 고름", C3 - C2 - 14, F(800, 28)), d = wrap([(M[p.id] || {}).memo, p.note].filter(Boolean).join(" · "), CE - C3, F(600, 26)); return { v, a, b, d, h: Math.max(a.length * 38, b.length * 36, d.length * 34) + 24 }; }));
+  const H = 118 + boxH + 16 + rows.reduce((s, r) => s + 72 + 14 + r.reduce((a, b) => a + b.h, 0), 0) + 14;
+  c.width = W * 2; c.height = H * 2; x.scale(2, 2); x.fillStyle = "#fff"; x.fillRect(0, 0, W, H); x.textBaseline = "top";
+  const T = (t, X, Y, f, col, al) => { x.font = f; x.fillStyle = col; x.textAlign = al || "left"; x.fillText(t, X, Y); };
+  const n = new Date(), R2 = (X, Y, w, h, r, col) => { x.fillStyle = col; x.beginPath(); if (x.roundRect) x.roundRect(X, Y, w, h, r); else x.rect(X, Y, w, h); x.fill(); };
+  T(`${D.title} · ${ban} 메뉴`, P, 22, F(900, 40), NV); T(`${who.length}명 · ${n.getMonth() + 1}/${n.getDate()} ${hm(n)} 기준`, P, 74, F(700, 26), "#6a74a0");
+  let y = 118; const t = count(who), bw = (W - 2 * P - 40) / 5;
+  [...N.map((a, i) => [t[i], tl[i], "#2f7fe6"]), [who.length - t.reduce((a, b) => a + b, 0), ["안 고름"], RD]].forEach(([v, l, col], i) => { const X = P + i * (bw + 10); R2(X, y, bw, boxH, 14, "#eaf0fb"); T(String(v), X + bw / 2, y + 16, F(900, 52), col, "center"); l.forEach((u, j) => T(u, X + bw / 2, y + 80 + j * 32, F(800, 26), NV, "center")); });
+  y += boxH + 16;
+  rows.forEach((r, gi) => { const l = G[gi], k = count(l); R2(P, y, W - 2 * P, 62, 12, NV); T(`${l[0].ban}반 ${l[0].no}조`, P + 18, y + 14, F(900, 32), "#fff"); T(`${l.length}명   ` + k.map((a, i) => `${i + 1}번 ${a}`).join("  "), W - P - 18, y + 18, F(800, 26), "#fff", "right"); y += 72;
+    r.forEach((o, i) => { if (i % 2) { x.fillStyle = "#f4f7fc"; x.fillRect(P, y, W - 2 * P, o.h); } o.a.forEach((u, j) => T(u, C1, y + 12 + j * 38, F(800, 30), NV)); o.b.forEach((u, j) => T(u, C2, y + 13 + j * 36, F(800, 28), o.v ? "#2f7fe6" : RD)); o.d.forEach((u, j) => T(u, C3, y + 14 + j * 34, F(600, 26), RD)); y += o.h; }); y += 14; });
+  const url = c.toDataURL("image/png"), name = `메뉴_${ban}.png`, file = await new Promise((ok) => c.toBlob((b) => ok(new File([b], name, { type: "image/png" })), "image/png")), can = navigator.canShare && navigator.canShare({ files: [file] });
+  open_(`<h2>${ban} 메뉴 이미지</h2><p class="hint">이미지를 꾹 눌러 저장하거나 아래 단추를 누르세요.</p>${can ? `<button class="nm" id="mshare" style="margin-bottom:6px">저장 · 공유하기</button>` : `<a class="nm" href="${url}" download="${name}" style="display:block;text-align:center;text-decoration:none">이미지 내려받기</a>`}<button class="a" id="mback"><span>‹ 메뉴 화면으로</span></button><img class="mimg" id="mres" src="${url}" alt="${ban} 메뉴">`);
+  $("mback").onclick = menu; if (can) $("mshare").onclick = () => navigator.share({ files: [file] }).catch(() => {});
+}
 function menu() {
   if (!WHO) return askName();
-  open_(`<h2>메뉴 선택 · 메모</h2><p class="hint">누르면 바로 저장돼요. 같은 메뉴를 한 번 더 누르면 취소돼요.</p><p class="ms" id="ms"></p><div class="mt" id="mt"></div><details class="pg"><summary>✎ 메뉴 이름 바꾸기</summary>${menuNames().map((x, i) => `<div class="add"><input id="mname${i}" maxlength="20" value="${osEsc(x)}"></div>`).join("")}<div class="add"><button id="msv" style="flex:1;padding:11px">이름 저장</button></div></details><div class="mg" id="mg" style="grid-template-columns:repeat(3,1fr)"></div><div class="mg mj" id="mj"></div><label class="mo"><input type="checkbox" id="mno"${MN ? " checked" : ""}>안 고른 사람만</label><div id="ml"></div>`);
+  open_(`<h2>메뉴 선택 · 메모</h2><p class="hint">누르면 바로 저장돼요. 같은 메뉴를 한 번 더 누르면 취소돼요.</p><p class="ms" id="ms"></p><div class="mt" id="mt"></div><details class="pg"><summary>✎ 메뉴 이름 바꾸기</summary>${menuNames().map((x, i) => `<div class="add"><input id="mname${i}" maxlength="20" value="${osEsc(x)}"></div>`).join("")}<div class="add"><button id="msv" style="flex:1;padding:11px">이름 저장</button></div></details><div class="mg" id="mg" style="grid-template-columns:repeat(3,1fr)"></div><div class="mg mj" id="mj"></div><div class="mbar"><button id="msave"></button><label class="mo"><input type="checkbox" id="mno"${MN ? " checked" : ""}>안 고른 사람만</label></div><div id="ml"></div>`);
   document.querySelector(".sh").classList.add("wide");
+  $("msave").onclick = menuImage;
   $("mno").onchange = (e) => { MN = e.target.checked; paintMenu(); $("ov").querySelector(".sh").scrollTop = 0; };
   $("msv").onclick = async () => { const n = [0, 1, 2, 3].map((i) => $("mname" + i).value.trim() || "메뉴" + (i + 1)); try { D.buses.menu_names = await rpc("trip_menu_names", { p_code: CODE, p_names: n }); menu(); } catch (e) { toast("저장되지 않았어요"); } };
   paintMenu();
