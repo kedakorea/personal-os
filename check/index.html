@@ -23,6 +23,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .list{margin:0 12px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(29,50,112,.08)}
 .tel{flex:none;width:42px;height:42px;border-radius:50%;background:#e8f0fd;display:flex;align-items:center;justify-content:center;font-size:19px;text-decoration:none}.nb{color:var(--navy)!important;font-weight:700!important}.sm{font:600 13px Pretendard;color:#6a74a0}a.a{text-decoration:none}
 .tb mark,.n mark{background:#ffe27a;color:var(--navy);border-radius:5px;padding:0 3px}.r.on .n mark{background:#f3e7b8;color:#7c88ad}
+.r.ab{background:#f2f2f4;cursor:default}.r.ab .ck{border-color:#d4d6dd;color:#a3a8b8}.r.ab .n b,.r.ab .n i{text-decoration:line-through;color:#a3a8b8}.r.ab .n u{color:#c8322b}.r.ab .tag{color:#a3a8b8}.r.ab .tag small{color:#b6bac8}
 .r{cursor:pointer;width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:0;border-bottom:1px solid #e4eaf5;padding:10px 12px;text-align:left;color:inherit;min-height:66px}.r:last-child{border:0}
 .ck{flex:none;width:32px;height:32px;border-radius:50%;border:2.5px solid #c2cbe0;display:flex;align-items:center;justify-content:center;font:900 18px Pretendard;color:transparent}
 .r.on{background:#f1f6fe}.r.on .ck{background:var(--c);border-color:var(--c);color:#fff}.r.on .n b{color:#7c88ad}
@@ -51,7 +52,7 @@ const rpc = async (f, b) => { const r = await fetch(`${OS_URL}/rest/v1/rpc/${f}`
 const toast = (t) => { $("msg").textContent = t; $("msg").style.display = "block"; setTimeout(() => $("msg").style.display = "none", 2600); };
 const key = (a, p) => a + ":" + p, hm = (s) => new Date(s).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
 const inG = (p, v, g) => g === "all" ? true : String(v === "bus" ? p.bus : v === "ban" ? p.ban : p.room) === String(g);
-const count = (a, v, g) => { const l = D.roster.filter((p) => inG(p, v, g)); return [l.filter((p) => C[key(a, p.id)]).length, l.length]; };
+const count = (a, v, g) => { const l = D.roster.filter((p) => inG(p, v, g) && !p.absent); return [l.filter((p) => C[key(a, p.id)]).length, l.length]; };
 const setAc = (k) => { AC = k; localStorage.setItem("trip_ac", AC); const a = D.activities.find((x) => x.k === k); if (a && a.m) { VIEW = a.m; localStorage.setItem("trip_view", VIEW); } };
 const pickG = (g) => { SEL[VIEW] = g; localStorage.setItem("trip_sel", JSON.stringify(SEL)); draw(); window.scrollTo(0, 0); };
 async function load() {
@@ -65,9 +66,9 @@ function draw() {
   const G = SEL[VIEW], ai = D.activities.findIndex((x) => x.k === AC), a = D.activities[ai], y = window.scrollY;
   document.documentElement.style.setProperty("--c", COLOR[VIEW === "bus" ? G : VIEW === "ban" ? G : "room"]);
   const [d, n] = count(AC, VIEW, G), rooms = [...new Set(D.roster.map((p) => p.room))].sort((p, q) => p - q);
-  const L = D.roster.filter((p) => inG(p, VIEW, G)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || !C[key(AC, p.id)]);
+  const L = D.roster.filter((p) => inG(p, VIEW, G)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || (!p.absent && !C[key(AC, p.id)]));
   const tag = (p) => VIEW === "bus" ? `${p.ban}반 ${p.no}조<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : VIEW === "ban" ? `${p.bus}호차<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : `${p.bus}호차<small>${p.ban}반 ${p.no}조 · ${osEsc(p.uni)}</small>`;
-  const row = (p) => { const c = C[key(AC, p.id)]; return `<div class="r${c ? " on" : ""}" data-p="${p.id}" role="button"><span class="ck">✓</span><span class="n"><b>${callName(p)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${p.tel ? `<i class="nb">${osEsc(p.tel)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; };
+  const row = (p) => { const c = p.absent ? null : C[key(AC, p.id)]; if (p.absent) return `<div class="r ab"><span class="ck">–</span><span class="n"><b>${osEsc(p.ko)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}<u>결석 · 체크 제외</u></span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; return `<div class="r${c ? " on" : ""}" data-p="${p.id}" role="button"><span class="ck">✓</span><span class="n"><b>${callName(p)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${p.tel ? `<i class="nb">${osEsc(p.tel)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; };
   const sec = (t, g) => g.length ? `<h3>${t}</h3><div class="list">${g.map(row).join("")}</div>` : "";
   let body = "";
   if (VIEW === "bus") body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
@@ -92,7 +93,7 @@ function draw() {
 }
 async function bulk(on) {
   if (!WHO) return askName();
-  const a = D.activities.find((x) => x.k === AC), G = SEL[VIEW], l = D.roster.filter((p) => inG(p, VIEW, G)), t = l.filter((p) => !!C[key(AC, p.id)] !== on);
+  const a = D.activities.find((x) => x.k === AC), G = SEL[VIEW], l = D.roster.filter((p) => inG(p, VIEW, G) && !p.absent), t = l.filter((p) => !!C[key(AC, p.id)] !== on);
   const name = VIEW === "bus" ? G + "호차" : VIEW === "ban" ? G + "반" : G === "all" ? "전체 방" : G + "번 방";
   if (!t.length || !confirm(on ? `[${a.n}]\n${name} ${l.length}명을 정말 전체 체크할까요?` : `[${a.n}]\n${name}의 체크 ${t.length}명을 정말 전체 취소할까요?\n취소하면 되돌릴 수 없어요.`)) return;
   busy++;
@@ -152,7 +153,7 @@ function timetable() {
 }
 function sheetAll() {
   const L = [...D.roster].sort((p, q) => p.bus - q.bus || p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko));
-  open_(`<h2>전체 명단</h2><p class="hint">이름·학교·전화·호차·방으로 찾아요. 표는 옆으로 밀어서 보세요.</p><input class="srch" id="sq" placeholder="검색"><p class="cnt" id="sc">${L.length}명</p><div class="tb"><table><thead><tr><th>이름</th><th>호차</th><th>반·조</th><th>방</th><th>학교</th><th>연락처</th><th>성별</th><th>국적</th><th>영문명</th><th>특이사항</th></tr></thead><tbody>${L.map((p) => `<tr data-q="${osEsc([p.ko, p.en, p.uni, p.tel, p.bus + "호차", p.room + "번", p.ban + "반", p.nat, p.note].join(" ").toLowerCase())}"><td>${callName(p)}</td><td>${p.bus}호차</td><td>${p.ban}반 ${p.no}조</td><td>${p.room}번</td><td>${osEsc(p.uni)}</td><td>${p.tel ? `<a href="tel:${p.tel}">${osEsc(p.tel)}</a>` : "없음"}</td><td>${osEsc(p.sex || "")}</td><td>${osEsc(p.nat || "")}</td><td>${osEsc(p.en)}</td><td class="nt">${osEsc(p.note || "")}</td></tr>`).join("")}</tbody></table></div>`);
+  open_(`<h2>전체 명단</h2><p class="hint">이름·학교·전화·호차·방으로 찾아요. 표는 옆으로 밀어서 보세요.</p><input class="srch" id="sq" placeholder="검색"><p class="cnt" id="sc">${L.length}명</p><div class="tb"><table><thead><tr><th>이름</th><th>호차</th><th>반·조</th><th>방</th><th>학교</th><th>연락처</th><th>성별</th><th>국적</th><th>영문명</th><th>특이사항</th></tr></thead><tbody>${L.map((p) => `<tr data-q="${osEsc([p.ko, p.en, p.uni, p.tel, p.bus + "호차", p.room + "번", p.ban + "반", p.nat, p.note].join(" ").toLowerCase())}"><td>${callName(p)}</td><td>${p.bus}호차</td><td>${p.ban}반 ${p.no}조</td><td>${p.room}번</td><td>${osEsc(p.uni)}</td><td>${p.tel ? `<a href="tel:${p.tel}">${osEsc(p.tel)}</a>` : "없음"}</td><td>${osEsc(p.sex || "")}</td><td>${osEsc(p.nat || "")}</td><td>${osEsc(p.en)}</td><td class="nt">${p.absent ? "결석 " : ""}${osEsc(p.note || "")}</td></tr>`).join("")}</tbody></table></div>`);
   document.querySelector(".sh").classList.add("wide");
   $("sq").oninput = (e) => { const q = e.target.value.trim().toLowerCase(); let n = 0; document.querySelectorAll("tbody tr").forEach((r) => { const on = r.dataset.q.includes(q); r.style.display = on ? "" : "none"; if (on) n++; }); $("sc").textContent = n + "명"; };
 }
