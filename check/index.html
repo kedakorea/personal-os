@@ -37,6 +37,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 .day{background:var(--navy);color:#fff;font:900 16px Pretendard;border-radius:10px;padding:10px 12px;margin:9px 0 5px}.ti{display:flex;gap:9px;padding:9px 6px;border-bottom:1px solid #e4eaf5;align-items:baseline}.ti time{flex:none;width:92px;font:800 13px Pretendard;color:#2f7fe6}.ti b{display:block;font:800 15.5px/1.3 Pretendard}.ti span{display:block;font:600 13px/1.35 Pretendard;color:#6a74a0}.ti.now{background:#fff5d6;border-radius:9px;box-shadow:inset 3px 0 0 #f37a1f}.ti.now b:after{content:" · 지금";color:#f37a1f}
 .mt{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}.mt div{background:#eaf0fb;border-radius:10px;padding:7px 2px;text-align:center;font:700 11.5px/1.25 Pretendard;overflow-wrap:anywhere}.mt b{display:block;font:900 20px Pretendard;color:#2f7fe6}.mt .no b{color:#c8322b}
 .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}.mg button{border:0;border-radius:10px;background:#eef2fa;color:var(--navy);font:800 14px/1.2 Pretendard;padding:8px 2px}.mg button small{display:block;font:700 11.5px Pretendard}.mg button.on{background:var(--navy);color:#fff}
+.mj{grid-template-columns:repeat(7,1fr)}.mj button{padding:9px 0;font-size:13.5px}.ms{font:800 13px Pretendard;color:#6a74a0;margin:0 3px 6px}.mh{display:flex;justify-content:space-between;background:var(--navy);color:#fff;border-radius:10px;padding:9px 12px;font:900 15.5px Pretendard;margin-top:10px}.mh em{font:800 13px Pretendard;font-style:normal}
 .mr{padding:10px 4px;border-bottom:1px solid #e4eaf5}.mr>div:first-child{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}.mr b{font:800 16.5px Pretendard}.mr small{font:600 12px Pretendard;color:#6a74a0;overflow-wrap:anywhere}.mc{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.mc button{border:1.5px solid #c2cbe0;border-radius:9px;background:#fff;color:var(--navy);font:800 13.5px/1.2 Pretendard;padding:9px 2px;overflow-wrap:anywhere}.mc button.on{background:#2f7fe6;border-color:#2f7fe6;color:#fff}.mm{width:100%;margin-top:6px;border:1.5px solid #e4eaf5;border-radius:9px;padding:8px 10px;font:600 16px Pretendard;color:var(--navy)}
 .sh h2{font:900 19px Pretendard;margin:0 4px 10px}.sh h4{font:800 13px Pretendard;color:#6a74a0;margin:12px 4px 5px}
 .a{width:100%;display:flex;gap:9px;align-items:center;background:#f4f7fc;border:0;border-radius:11px;padding:12px;margin-bottom:6px;font:800 16px Pretendard;color:inherit;text-align:left}.a span{flex:1}.a time{font:700 12.5px Pretendard;color:#6a74a0}.a em{font:800 13px Pretendard;font-style:normal;color:var(--c)}.a.on{outline:2px solid var(--c);background:#eaf2fe}
@@ -50,7 +51,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 /* 행사 인원 체크판 (2026-11-08) — 명단은 페이지에 없고, 링크의 코드로 trip_get 해서 받는다 */
 const CODE = new URLSearchParams(location.search).get("k") || "", $ = (i) => document.getElementById(i);
 const COLOR = { 1: "#2f7fe6", 2: "#f37a1f", 3: "#16a394", A: "#2f7fe6", B: "#f37a1f", room: "#4a5bb5" }, STAFF = ["최유정", "이미나", "김윤근"];
-let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, M = {}, MG = localStorage.getItem("trip_mg") || "1", busy = 0;
+let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, M = {}, MG = localStorage.getItem("trip_mban") || "A", MT = "all", busy = 0;
 const rpc = async (f, b) => { const r = await fetch(`${OS_URL}/rest/v1/rpc/${f}`, { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON, Authorization: "Bearer " + OS_ANON }, body: JSON.stringify(b) }); if (!r.ok) throw new Error(r.status); return r.json(); };
 const toast = (t) => { $("msg").textContent = t; $("msg").style.display = "block"; setTimeout(() => $("msg").style.display = "none", 2600); };
 const key = (a, p) => a + ":" + p, hm = (s) => new Date(s).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -164,14 +165,21 @@ function sheetAll() {
 const menuNames = () => { const n = D.buses.menu_names || []; return [1, 2, 3, 4].map((i) => n[i - 1] || "메뉴" + i); };
 function paintMenu() {
   if (!$("ml")) return;
-  const N = menuNames(), R = D.roster.filter((p) => !p.absent), t = [1, 2, 3, 4].map((i) => R.filter((p) => M[p.id] && M[p.id].menu === i).length), S = $("ov").querySelector(".sh"), y = S.scrollTop;
-  $("mt").innerHTML = N.map((x, i) => `<div><b>${t[i]}</b>${osEsc(x)}</div>`).join("") + `<div class="no"><b>${R.length - t.reduce((a, b) => a + b, 0)}</b>안 고름</div>`;
-  const left = (g) => { const l = R.filter((p) => g === "all" || String(p.bus) === g); return `${l.filter((p) => M[p.id] && M[p.id].menu).length}/${l.length}`; };
-  $("mg").innerHTML = [["1", "1호차"], ["2", "2호차"], ["3", "3호차"], ["all", "전체"]].map(([g, x]) => `<button data-mg="${g}" class="${MG === g ? "on" : ""}">${x}<small>${left(g)}</small></button>`).join("");
-  const L = R.filter((p) => MG === "all" || String(p.bus) === MG).sort((p, q) => p.bus - q.bus || p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko));
-  $("ml").innerHTML = L.map((p) => { const m = M[p.id] || {}; return `<div class="mr"><div><b>${callName(p)}</b><small>${p.bus}호차 · ${p.ban}반 ${p.no}조${p.note ? " · " + osEsc(p.note) : ""}</small></div><div class="mc">${N.map((x, i) => `<button data-mp="${p.id}" data-mv="${i + 1}" class="${m.menu === i + 1 ? "on" : ""}">${osEsc(x)}</button>`).join("")}</div><input class="mm" data-mo="${p.id}" maxlength="100" placeholder="메모 (예: 돼지고기 빼기)" value="${osEsc(m.memo || "")}"></div>`; }).join("");
+  if (MG === "all") MT = "all";
+  const N = menuNames(), R = D.roster.filter((p) => !p.absent), S = $("ov").querySelector(".sh"), y = S.scrollTop, inB = (p, g) => g === "all" || p.ban === g, on = (p) => M[p.id] && M[p.id].menu;
+  const L = R.filter((p) => inB(p, MG) && (MT === "all" || p.no === MT)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)), t = [1, 2, 3, 4].map((i) => L.filter((p) => on(p) === i).length);
+  $("ms").textContent = `${MG === "all" ? "전체" : MG + "반"}${MT === "all" ? "" : " " + MT + "조"} ${L.length}명 집계`;
+  $("mt").innerHTML = N.map((x, i) => `<div><b>${t[i]}</b>${osEsc(x)}</div>`).join("") + `<div class="no"><b>${L.length - t.reduce((a, b) => a + b, 0)}</b>안 고름</div>`;
+  const left = (g) => { const l = R.filter((p) => inB(p, g)); return `${l.filter(on).length}/${l.length}`; };
+  $("mg").innerHTML = [["A", "A반"], ["B", "B반"], ["all", "전체"]].map(([g, x]) => `<button data-mg="${g}" class="${MG === g ? "on" : ""}">${x}<small>${left(g)}</small></button>`).join("");
+  const teams = [...new Set(R.filter((p) => inB(p, MG)).map((p) => p.no))].sort((p, q) => p - q);
+  $("mj").style.display = MG === "all" ? "none" : ""; $("mj").innerHTML = `<button data-mj="all" class="${MT === "all" ? "on" : ""}">전체</button>` + teams.map((n) => `<button data-mj="${n}" class="${MT === n ? "on" : ""}">${n}조</button>`).join("");
+  const row = (p) => { const m = M[p.id] || {}; return `<div class="mr"><div><b>${callName(p)}</b><small>${osEsc(p.uni)}${p.note ? " · " + osEsc(p.note) : ""}</small></div><div class="mc">${N.map((x, i) => `<button data-mp="${p.id}" data-mv="${i + 1}" class="${m.menu === i + 1 ? "on" : ""}">${osEsc(x)}</button>`).join("")}</div><input class="mm" data-mo="${p.id}" maxlength="100" placeholder="메모 (예: 돼지고기 빼기)" value="${osEsc(m.memo || "")}"></div>`; };
+  const G = [...new Set(L.map((p) => p.ban + p.no))];
+  $("ml").innerHTML = G.map((g) => { const l = L.filter((p) => p.ban + p.no === g); return `<div class="mh"><span>${l[0].ban}반 ${l[0].no}조</span><em>${l.filter(on).length} / ${l.length}명</em></div>` + l.map(row).join(""); }).join("");
   S.scrollTop = y;
-  document.querySelectorAll("[data-mg]").forEach((x) => x.onclick = () => { MG = x.dataset.mg; localStorage.setItem("trip_mg", MG); paintMenu(); S.scrollTop = 0; });
+  document.querySelectorAll("[data-mg]").forEach((x) => x.onclick = () => { MG = x.dataset.mg; MT = "all"; localStorage.setItem("trip_mban", MG); paintMenu(); S.scrollTop = 0; });
+  document.querySelectorAll("[data-mj]").forEach((x) => x.onclick = () => { MT = x.dataset.mj === "all" ? "all" : +x.dataset.mj; paintMenu(); S.scrollTop = 0; });
   document.querySelectorAll("[data-mp]").forEach((x) => x.onclick = () => { const p = +x.dataset.mp, v = +x.dataset.mv, m = M[p] || {}; saveMenu(p, m.menu === v ? null : v, m.memo || ""); });
   document.querySelectorAll("[data-mo]").forEach((x) => x.onchange = () => { const p = +x.dataset.mo; saveMenu(p, (M[p] || {}).menu || null, x.value.trim()); });
 }
@@ -183,7 +191,7 @@ async function saveMenu(p, v, memo) {
 }
 function menu() {
   if (!WHO) return askName();
-  open_(`<h2>메뉴 선택 · 메모</h2><p class="hint">누르면 바로 저장돼요. 같은 메뉴를 한 번 더 누르면 취소돼요.</p><div class="mt" id="mt"></div><details class="pg"><summary>✎ 메뉴 이름 바꾸기</summary>${menuNames().map((x, i) => `<div class="add"><input id="mname${i}" maxlength="20" value="${osEsc(x)}"></div>`).join("")}<div class="add"><button id="msv" style="flex:1;padding:11px">이름 저장</button></div></details><div class="mg" id="mg"></div><div id="ml"></div>`);
+  open_(`<h2>메뉴 선택 · 메모</h2><p class="hint">누르면 바로 저장돼요. 같은 메뉴를 한 번 더 누르면 취소돼요.</p><p class="ms" id="ms"></p><div class="mt" id="mt"></div><details class="pg"><summary>✎ 메뉴 이름 바꾸기</summary>${menuNames().map((x, i) => `<div class="add"><input id="mname${i}" maxlength="20" value="${osEsc(x)}"></div>`).join("")}<div class="add"><button id="msv" style="flex:1;padding:11px">이름 저장</button></div></details><div class="mg" id="mg" style="grid-template-columns:repeat(3,1fr)"></div><div class="mg mj" id="mj"></div><div id="ml"></div>`);
   document.querySelector(".sh").classList.add("wide");
   $("msv").onclick = async () => { const n = [0, 1, 2, 3].map((i) => $("mname" + i).value.trim() || "메뉴" + (i + 1)); try { D.buses.menu_names = await rpc("trip_menu_names", { p_code: CODE, p_names: n }); menu(); } catch (e) { toast("저장되지 않았어요"); } };
   paintMenu();
