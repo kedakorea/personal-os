@@ -1,0 +1,47 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>설문 결과</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Pretendard,-apple-system,sans-serif;color:#1d3270;background:#f4f7fc;word-break:keep-all}
+.w{max-width:980px;margin:0 auto;padding:18px 14px 40px}h1{font:900 22px/1.3 Pretendard}.sub{font:600 14px Pretendard;color:#6a74a0;margin:4px 0 14px}
+.top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.top div{background:#fff;border-radius:14px;padding:12px 16px;box-shadow:0 2px 8px rgba(29,50,112,.06)}.top b{display:block;font:900 30px Pretendard;color:#2f7fe6}.top span{font:700 13px Pretendard;color:#6a74a0}
+.tabs{display:flex;gap:6px;margin-bottom:12px}.tabs button{border:0;border-radius:10px;background:#fff;color:#1d3270;font:800 15px Pretendard;padding:10px 16px}.tabs button.on{background:#1d3270;color:#fff}
+.btn{border:0;border-radius:10px;background:#2f7fe6;color:#fff;font:800 14px Pretendard;padding:10px 14px;margin-left:auto}
+.card{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 2px 8px rgba(29,50,112,.06)}.card h3{font:800 16px/1.35 Pretendard;margin-bottom:8px}.card h3 small{display:block;font:600 12.5px Pretendard;color:#6a74a0}
+.avg{float:right;font:900 20px Pretendard;color:#f37a1f;margin-left:10px}.row{display:flex;align-items:center;gap:8px;font:600 13.5px Pretendard;margin:4px 0}.row span{width:140px;flex:none}.row i{flex:1;height:12px;background:#eef2fa;border-radius:6px;overflow:hidden}.row i b{display:block;height:100%;background:#2f7fe6}.row em{width:52px;text-align:right;font-style:normal;font-weight:800}
+.txt{font:600 14px/1.5 Pretendard;border-top:1px solid #eef2fa;padding:7px 0}.txt small{color:#6a74a0}
+.tb{overflow:auto;background:#fff;border-radius:14px;max-height:75vh}table{border-collapse:separate;border-spacing:0;font:600 13px Pretendard}th{position:sticky;top:0;background:#1d3270;color:#fff;font:800 12px/1.3 Pretendard;padding:8px;text-align:left;min-width:110px;max-width:220px;vertical-align:bottom}td{padding:7px 8px;border-bottom:1px solid #eef2fa;max-width:260px;vertical-align:top}
+.e{padding:60px 20px;text-align:center;font:700 16px Pretendard}
+</style></head><body><div class="w" id="app"><p class="e">불러오는 중…</p></div>
+<script src="../os.js"></script>
+<script>
+/* 설문 응답 결과 보기 (2026-11-10) — 링크의 코드로 survey_get, 1분마다 새로 고침 */
+const CODE = new URLSearchParams(location.search).get("k") || "", $ = (i) => document.getElementById(i);
+let D = null, TAB = "sum";
+const S5 = ["매우", "만족", "보통", "불만족", "매우 불만족"], ko = (t) => String(t).split(" (")[0];
+const score = (v, ch) => { const i = ch.indexOf(v); return i < 0 ? null : ch.length === 5 ? 5 - i : null; };
+async function load() {
+  try { const r = await fetch(`${OS_URL}/rest/v1/rpc/survey_get`, { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON, Authorization: "Bearer " + OS_ANON }, body: JSON.stringify({ p_code: CODE }) }); const d = await r.json(); if (!d) { $("app").innerHTML = `<p class="e">링크가 맞지 않거나 기간이 끝났어요.</p>`; return; } D = d; draw(); } catch (e) {}
+}
+function draw() {
+  const Q = D.questions, R = D.rows || [], y = window.scrollY, up = new Date(D.updated);
+  const val = (r, q) => r[q.t] == null ? "" : Array.isArray(r[q.t]) ? r[q.t].join(", ") : String(r[q.t]);
+  const fives = Q.filter((q) => q.type === "choice" && q.choices.length === 5);
+  const all = []; R.forEach((r) => fives.forEach((q) => { const s = score(val(r, q), q.choices); if (s) all.push(s); }));
+  let h = `<h1>${osEsc(D.title)}</h1><p class="sub">응답이 들어오면 몇 분 안에 자동으로 반영돼요 · ${up.getMonth() + 1}/${up.getDate()} ${up.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false })} 기준</p>
+  <div class="top"><div><b>${R.length}</b><span>응답 수</span></div><div><b>${all.length ? (all.reduce((a, b) => a + b, 0) / all.length).toFixed(2) : "-"}</b><span>평균 만족도 (5점 만점)</span></div></div>
+  <div class="tabs"><button data-t="sum" class="${TAB === "sum" ? "on" : ""}">문항별 요약</button><button data-t="all" class="${TAB === "all" ? "on" : ""}">전체 응답 표</button><button class="btn" id="csv">엑셀(CSV) 받기</button></div>`;
+  if (!R.length) h += `<p class="e">아직 응답이 없어요.</p>`;
+  else if (TAB === "sum") h += Q.map((q) => {
+    const vs = R.map((r) => val(r, q)).filter((v) => v !== "");
+    if (q.type === "text" || q.type === "paragraph") { if (q.type === "text") return ""; return `<div class="card"><h3>${osEsc(ko(q.t))}<small>${vs.length}개 의견</small></h3>${vs.map((v, i) => `<div class="txt">${osEsc(v)}</div>`).join("") || `<div class="txt"><small>아직 없어요</small></div>`}</div>`; }
+    const ch = q.choices.length ? q.choices : [...new Set(vs)], sc = vs.map((v) => score(v, ch)).filter((x) => x), av = sc.length ? (sc.reduce((a, b) => a + b, 0) / sc.length).toFixed(2) : "";
+    return `<div class="card">${av ? `<span class="avg">${av}</span>` : ""}<h3>${osEsc(ko(q.t))}<small>${vs.length}명 응답</small></h3>` + ch.map((c) => { const n = vs.filter((v) => v === c).length; return `<div class="row"><span>${osEsc(ko(c))}</span><i><b style="width:${vs.length ? n / vs.length * 100 : 0}%"></b></i><em>${n}명</em></div>`; }).join("") + `</div>`;
+  }).join("");
+  else h += `<div class="tb"><table><tr><th>제출 시각</th>${Q.map((q) => `<th>${osEsc(ko(q.t))}</th>`).join("")}</tr>${R.map((r) => `<tr><td>${osEsc(new Date(r["제출시각"]).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }))}</td>${Q.map((q) => `<td>${osEsc(ko(val(r, q)))}</td>`).join("")}</tr>`).join("")}</table></div>`;
+  $("app").innerHTML = h; window.scrollTo(0, y);
+  document.querySelectorAll("[data-t]").forEach((b) => b.onclick = () => { TAB = b.dataset.t; draw(); });
+  $("csv").onclick = () => { const esc = (v) => `"${String(v).replace(/"/g, '""')}"`, lines = [["제출시각", ...Q.map((q) => q.t)].map(esc).join(",")].concat(R.map((r) => [r["제출시각"], ...Q.map((q) => val(r, q))].map(esc).join(","))); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + lines.join("\n")], { type: "text/csv" })); a.download = "설문응답.csv"; a.click(); };
+}
+load(); setInterval(load, 60000);
+</script></body></html>
