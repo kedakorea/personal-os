@@ -54,7 +54,7 @@ h3{font:900 18px Pretendard;padding:14px 16px 7px}
 /* 행사 인원 체크판 (2026-11-08) — 명단은 페이지에 없고, 링크의 코드로 trip_get 해서 받는다 */
 const CODE = new URLSearchParams(location.search).get("k") || "", $ = (i) => document.getElementById(i);
 const COLOR = { 1: "#2f7fe6", 2: "#f37a1f", 3: "#16a394", A: "#2f7fe6", B: "#f37a1f", room: "#4a5bb5" }, STAFF = ["최유정", "이미나", "김윤근"];
-let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, M = {}, MG = localStorage.getItem("trip_mban") || "A", MT = "all", MN = false, busy = 0;
+let D = null, AC = localStorage.getItem("trip_ac") || "", VIEW = localStorage.getItem("trip_view") || "bus", SEL = JSON.parse(localStorage.getItem("trip_sel") || '{"bus":"1","ban":"A","room":"all"}'), ONLY = false, WHO = localStorage.getItem("trip_who") || "", C = {}, M = {}, MG = localStorage.getItem("trip_mban") || "A", MT = "all", MN = false, MF = localStorage.getItem("trip_mf") || "all", CUR = null, busy = 0;
 const rpc = async (f, b) => { const r = await fetch(`${OS_URL}/rest/v1/rpc/${f}`, { method: "POST", headers: { "Content-Type": "application/json", apikey: OS_ANON, Authorization: "Bearer " + OS_ANON }, body: JSON.stringify(b) }); if (!r.ok) throw new Error(r.status); return r.json(); };
 const toast = (t) => { $("msg").textContent = t; $("msg").style.display = "block"; setTimeout(() => $("msg").style.display = "none", 2600); };
 const key = (a, p) => a + ":" + p, hm = (s) => new Date(s).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -71,16 +71,18 @@ async function load() {
 const callName = (p) => { const i = p.call ? p.ko.lastIndexOf(p.call) : -1; if (i < 0) return osEsc(p.ko); return osEsc(p.ko.slice(0, i)) + `<mark>${osEsc(p.call)}</mark>` + osEsc(p.ko.slice(i + p.call.length)); };
 function draw() {
   const G = SEL[VIEW], ai = D.activities.findIndex((x) => x.k === AC), a = D.activities[ai], y = window.scrollY;
+  const MFon = !!a.mn && MF !== "all", mok = (p) => { const v = (M[p.id] || {}).menu; return MF === "b" ? v === 1 || v === 2 : v === 3 || v === 4; }, inV = (p) => MFon ? mok(p) : inG(p, VIEW, G); CUR = inV;
   document.documentElement.style.setProperty("--c", COLOR[VIEW === "bus" ? G : VIEW === "ban" ? G : "room"]);
-  const [d, n] = count(AC, VIEW, G), rooms = [...new Set(D.roster.map((p) => p.room))].sort((p, q) => p - q);
-  const L = D.roster.filter((p) => inG(p, VIEW, G)).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || (!p.absent && !C[key(AC, p.id)]));
+  const LL = D.roster.filter((p) => inV(p) && !p.absent), d = LL.filter((p) => C[key(AC, p.id)]).length, n = LL.length, rooms = [...new Set(D.roster.map((p) => p.room))].sort((p, q) => p - q);
+  const L = D.roster.filter(inV).sort((p, q) => p.ban.localeCompare(q.ban) || p.no - q.no || p.ko.localeCompare(q.ko)).filter((p) => !ONLY || (!p.absent && !C[key(AC, p.id)]));
   const tag = (p) => VIEW === "bus" ? `${p.ban}반 ${p.no}조<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : VIEW === "ban" ? `${p.bus}호차<small>${osEsc(p.uni)} · ${p.room}번 방</small>` : `${p.bus}호차<small>${p.ban}반 ${p.no}조 · ${osEsc(p.uni)}</small>`;
   const row = (p) => { const c = p.absent ? null : C[key(AC, p.id)]; if (p.absent) return `<div class="r ab"><span class="ck">–</span><span class="n"><b>${osEsc(p.ko)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}<u>결석 · 체크 제외</u></span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; return `<div class="r${c ? " on" : ""}" data-p="${p.id}" role="button"><span class="ck">✓</span><span class="n"><b>${callName(p)}</b>${p.en ? `<i>${osEsc(p.en)}</i>` : ""}${mtag(p)}${p.tel ? `<i class="nb">${osEsc(p.tel)}</i>` : ""}${c ? `<u>${osEsc(c.by || "")} · ${hm(c.at)}</u>` : ""}</span><span class="tag">${tag(p)}</span>${p.tel ? `<a class="tel" href="tel:${p.tel}" aria-label="전화">📞</a>` : ""}</div>`; };
   const MN_ = (D.buses.menu_names || []), mtag = (p) => { if (!a.mn) return ""; const m = M[p.id] || {}; if (!m.menu) return `<i class="mtag no">🍽 메뉴 안 고름</i>`; return `<i class="mtag">🍽 ${osEsc(MN_[m.menu - 1] || ("메뉴" + m.menu))}${m.memo ? ` <em>· ${osEsc(m.memo)}</em>` : ""}</i>`; };
-  const msum = () => { if (!a.mn) return ""; const l = D.roster.filter((p) => inG(p, VIEW, G) && !p.absent); return `<div class="msum">` + [1, 2, 3, 4].map((i) => { const t = l.filter((p) => (M[p.id] || {}).menu === i); return `<span>${osEsc(MN_[i - 1] || "메뉴" + i)} <b>${t.filter((p) => C[key(AC, p.id)]).length}/${t.length}</b></span>`; }).join("") + `</div>`; };
+  const msum = () => { if (!a.mn) return ""; const l = D.roster.filter((p) => inV(p) && !p.absent); return `<div class="msum">` + [1, 2, 3, 4].filter((i) => !MFon || (MF === "b" ? i <= 2 : i >= 3)).map((i) => { const t = l.filter((p) => (M[p.id] || {}).menu === i); return `<span>${osEsc(MN_[i - 1] || "메뉴" + i)} <b>${t.filter((p) => C[key(AC, p.id)]).length}/${t.length}</b></span>`; }).join("") + `</div>`; };
   const sec = (t, g) => g.length ? `<h3>${t}</h3><div class="list">${g.map(row).join("")}</div>` : "";
   let body = "";
-  if (VIEW === "bus") body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
+  if (MFon) body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
+  else if (VIEW === "bus") body = sec("A반", L.filter((p) => p.ban === "A")) + sec("B반", L.filter((p) => p.ban === "B"));
   else if (VIEW === "ban") for (let t = 1; t <= 6; t++) body += sec(`${G}반 ${t}조`, L.filter((p) => p.no === t));
   else for (const r of rooms) body += sec(`${r}번 방`, L.filter((p) => p.room === r));
   const btn = (v, g, t) => { const [p, q] = count(AC, v, g); return `<button data-g="${g}" class="${String(G) === String(g) ? "on" : ""}">${t}<small>${p} / ${q}</small></button>`; };
@@ -89,7 +91,7 @@ function draw() {
   $("app").innerHTML = `<header><div class="t"><span>${osEsc(D.title)}</span><button id="me">${osEsc(WHO || "이름")} ✎</button></div>
    <div class="tools"><button id="tt">🗓 시간표</button><button id="sh">📑 전체명단</button><button id="mn">🍽 메뉴</button><button id="tk">💬 영어</button><button id="sos">🚨 긴급</button></div>
    <div class="prow"><button class="step" id="pv"${ai ? "" : " disabled"}>‹</button><button class="pick" id="pick"><small>체크 시점 ${ai + 1} / ${D.activities.length} · ${osEsc(a.day)} ${osEsc(a.t)}</small>${osEsc(a.n)}</button><button class="step" id="nx"${ai < D.activities.length - 1 ? "" : " disabled"}>›</button></div>
-   <div class="view">${[["bus", "버스별"], ["ban", "반·조별"], ["room", "방별"]].map(([v, t]) => `<button data-v="${v}" class="${v === VIEW ? "on" : ""}">${t}</button>`).join("")}</div>${pick}</header>
+   <div class="view">${[["bus", "버스별"], ["ban", "반·조별"], ["room", "방별"]].map(([v, t]) => `<button data-v="${v}" class="${v === VIEW ? "on" : ""}">${t}</button>`).join("")}</div>${a.mn ? `<div class="bus" style="grid-template-columns:repeat(3,1fr)">${[["all", "반별 보기"], ["b", "🍔 버거집<small>1·2번</small>"], ["s", "🍲 순두부집<small>3·4번</small>"]].map(([k, t]) => `<button data-mf="${k}" class="${MF === k ? "on" : ""}">${t}</button>`).join("")}</div>` : ""}${MFon ? "" : pick}</header>
    <div class="sum"><b>${d}</b><em>/ ${n}명 · 남은 ${n - d}명</em><label><input type="checkbox" id="only"${ONLY ? " checked" : ""}>안 온 사람만</label></div><div class="bar"><i style="width:${n ? d / n * 100 : 0}%"></i></div>${msum()}
    <div class="allb"><button id="alOn"${d >= n ? " disabled" : ""}>✓ 전체 체크</button><button id="alOff"${d ? "" : " disabled"}>↺ 전체 취소</button></div>
    ${b ? `<p class="inf">${osEsc(b.car)} · 스태프 ${osEsc(b.staff)}<br>인솔 ${osEsc(b.lead)}</p>` : ""}${body}${!L.length ? `<p class="e">모두 체크했어요 ✓</p>` : ""}`;
@@ -98,12 +100,13 @@ function draw() {
   $("pv").onclick = () => { setAc(D.activities[ai - 1].k); draw(); window.scrollTo(0, 0); }; $("nx").onclick = () => { setAc(D.activities[ai + 1].k); draw(); window.scrollTo(0, 0); };
   document.querySelectorAll("[data-v]").forEach((x) => x.onclick = () => { VIEW = x.dataset.v; localStorage.setItem("trip_view", VIEW); draw(); window.scrollTo(0, 0); });
   document.querySelectorAll("[data-g]").forEach((x) => x.onclick = () => pickG(x.dataset.g));
+  document.querySelectorAll("[data-mf]").forEach((x) => x.onclick = () => { MF = x.dataset.mf; localStorage.setItem("trip_mf", MF); draw(); window.scrollTo(0, 0); });
   document.querySelectorAll("[data-p]").forEach((x) => x.onclick = (e) => { if (!e.target.closest("a")) toggle(+x.dataset.p); });
 }
 async function bulk(on) {
   if (!WHO) return askName();
-  const a = D.activities.find((x) => x.k === AC), G = SEL[VIEW], l = D.roster.filter((p) => inG(p, VIEW, G) && !p.absent), t = l.filter((p) => !!C[key(AC, p.id)] !== on);
-  const name = VIEW === "bus" ? G + "호차" : VIEW === "ban" ? G + "반" : G === "all" ? "전체 방" : G + "번 방";
+  const a = D.activities.find((x) => x.k === AC), G = SEL[VIEW], l = D.roster.filter((p) => (CUR ? CUR(p) : inG(p, VIEW, G)) && !p.absent), t = l.filter((p) => !!C[key(AC, p.id)] !== on);
+  const name = a.mn && MF !== "all" ? (MF === "b" ? "버거집" : "순두부집") : VIEW === "bus" ? G + "호차" : VIEW === "ban" ? G + "반" : G === "all" ? "전체 방" : G + "번 방";
   if (!t.length || !confirm(on ? `[${a.n}]\n${name} ${l.length}명을 정말 전체 체크할까요?` : `[${a.n}]\n${name}의 체크 ${t.length}명을 정말 전체 취소할까요?\n취소하면 되돌릴 수 없어요.`)) return;
   busy++;
   try { if (!await rpc("trip_set_many", { p_code: CODE, p_activity: AC, p_persons: t.map((p) => p.id), p_on: on, p_by: WHO })) throw 0;
