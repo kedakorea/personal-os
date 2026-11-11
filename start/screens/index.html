@@ -18,5 +18,5 @@ const S=[["캐릭터형",[["hq","본사형","도트 사무실에 부서 직원�
 const all=S.flatMap(([g,l])=>l);const tabs=document.getElementById("tabs");
 tabs.innerHTML=S.map(([g,l])=>`<span class="g">${g}</span>`+l.map(([k,n])=>`<button data-k="${k}">${n}</button>`).join("")).join("");
 function show(k){const x=all.find(a=>a[0]===k)||all[0];document.getElementById("im").src=x[0]+"_big.jpg";document.getElementById("nm").textContent=x[1];document.getElementById("ds").innerHTML=`<b>${x[1]}</b><br>${x[2]}`;tabs.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.k===x[0]));history.replaceState(null,"","#"+x[0]);}
-tabs.onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.k)};show(location.hash.slice(1)||"hq");
+tabs.onclick=e=>{const b=e.target.closest("button");if(b)show(b.dataset.k)};show(location.hash.slice(1)||"hq");addEventListener("hashchange",()=>show(location.hash.slice(1)||"hq"));
 </script></body></html>
