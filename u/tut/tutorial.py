@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""설치 날 공식 실습(튜토리얼) 진행판 — 실습 3가지를 하나씩 체크하고, 다 끝나면(또는 건너뛰면) 설치 완료 화면으로 (2026-11-11 대표님 지시)
+"""설치 날 공식 실습(튜토리얼) 진행판 — 실습 2가지(2026-11-11 대표님: 3→2, 콘텐츠 올리기는 공식 뒤 자유)를 하나씩 체크하고, 다 끝나면(또는 건너뛰면) 설치 완료 화면으로 (2026-11-11 대표님 지시)
 사용:
   python3 공식실습.py start            # 진행판을 처음부터 띄운다
   python3 공식실습.py done 1           # 1번 실습 완료
   python3 공식실습.py skip 2 "사유"    # 2번 건너뜀 (채널 계정을 못 찾았을 때 등) — 완료 화면에 '다음에 해 보기'로 남는다
   python3 공식실습.py show             # 진행판만 다시 띄운다
 - 화면: ~/퍼스널OS/결과물/공식실습.html (3초마다 저절로 새로 고침)
-- 세 가지가 모두 완료·건너뜀이 되면 설치완료.py 를 저절로 부른다(한 번만)
+- 두 가지가 모두 완료·건너뜀이 되면 설치완료.py 를 저절로 부른다(한 번만)
 """
 import html, json, os, subprocess, sys, time, webbrowser
 
@@ -23,7 +23,6 @@ except Exception:
 MGR, CALL = c.get("실장") or "매니저", c.get("호칭") or "대표님"
 STEPS = [
     ("콘텐츠 만들기", "설치 기념 카드뉴스 + 숏폼 영상", "설치 기념 카드뉴스 만들어 줘"),
-    ("콘텐츠 올리기", "말 한마디로 인스타·유튜브·블로그에 업로드", "만든 거 올려 줘"),
     ("휴대폰으로 일 맡기기", "밖에서 휴대폰으로 시키고 알림 받기", "(휴대폰 앱에서) 가장 귀찮은 일 하나 맡기기"),
 ]
 
@@ -55,7 +54,7 @@ def page(s):
             cls, mark, tail = "now", str(i + 1), f"지금 하는 중 · 이렇게 말해 보세요 <b>“{E(say)}”</b>"
         else:
             cls, mark, tail = "wait", str(i + 1), "다음 차례"
-        if i == 2 and x["상태"] == "대기":
+        if i == 1 and x["상태"] == "대기":
             tail += ' · <a href="휴대폰연결.html" target="_blank" style="font-weight:800;color:#2f7fe6">📱 휴대폰 연결 화면(QR) 열기</a>'
         cards += f'<div class="st {cls}"><span>{mark}</span><div><b>실습 {i + 1} · {E(t)}</b><small>{E(d)}</small><em>{tail}</em></div></div>'
     done_all = closed == len(STEPS)
@@ -74,7 +73,7 @@ h1{{font-size:38px;line-height:1.25;margin:10px 0 8px}}p.l{{font-size:18px;color
 .st.ok span{{background:#2f9a6a;color:#fff}}.st.ok em{{color:#2f9a6a;font-weight:700}}.st.sk{{opacity:.75}}.st.sk span{{background:#c9c6bd;color:#fff}}
 .f{{margin-top:18px;font-size:15px;color:#777;line-height:1.6}}</style></head><body><div class="w">
 <div class="k">OFFICIAL TUTORIAL</div><h1>{E(head)}</h1>
-<p class="l">설치가 끝났어요. 이제 {E(MGR)}{E('과' if (MGR and '가' <= MGR[-1] <= '힣' and (ord(MGR[-1]) - 0xAC00) % 28) else '와')} 실습 3가지를 해 보면 오늘 설치는 공식적으로 끝나요.</p>
+<p class="l">설치가 끝났어요. 이제 {E(MGR)}{E('과' if (MGR and '가' <= MGR[-1] <= '힣' and (ord(MGR[-1]) - 0xAC00) % 28) else '와')} 실습 2가지만 해 보면 오늘 설치는 공식적으로 끝나요.</p>
 <div class="bar"><i></i></div>{cards}
 <p class="f">계정이 없거나 오늘 하기 어려운 실습은 건너뛰어도 괜찮아요. 완료 화면에 '다음에 해 보기'로 남겨 둘게요.</p>
 </div></body></html>"""

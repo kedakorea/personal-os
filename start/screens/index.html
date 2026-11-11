@@ -14,7 +14,7 @@ header{max-width:1200px;margin:0 auto;padding:26px 20px 6px}header .lab{font-siz
 <div class="view"><div class="frame"><div class="bar"><i></i><i></i><i></i><span id="nm"></span></div><img id="im" alt=""></div><div class="desc" id="ds"></div>
 <p class="note">※ 예시 회사 '브라이트랩', 매니저 '하나', 부서 6개 기준 · 홍보팀이 일하는 중인 장면입니다. 설치 뒤에도 매니저에게 "화면 바꿔 줘"라고 하면 언제든 바꿀 수 있어요.</p></div>
 <script>
-const S=[["캐릭터형",[["hq","본사형","도트 사무실에 부서 직원들이 앉아 일해요. 일하는 부서는 '작업 중' 말풍선이 뜨고, 실장실의 매니저가 진행 상황을 알려 줘요."],["village","동물의숲형","마을에 부서별 집과 동물 직원이 살아요. 일을 맡은 직원은 오피스로 출근하고, 밤에는 집에서 자요."],["cyworld","싸이월드형","미니홈피 그대로 — 미니룸에 부서 직원들, 방명록에는 부서 소식이 올라와요."]]],["심플형",[["minimal","미니멀형","가운데 대화창을 크게, 왼쪽엔 할 일만. 가장 단순한 화면이에요."],["diary","다이어리형","플래너처럼 — 줄 노트 할 일, 손글씨 월간 달력에 실제 일정, 메모 포스트잇, 출근 체크."],["magazine","매거진형","잡지 표지처럼 — 오늘의 헤드라인, 할 일 칼럼, 부서별 기사로 진행 상황을 보여 줘요."]]]];
+const S=[["캐릭터형",[["hq","본사형","도트 사무실에 부서 직원들이 앉아 일해요. 일하는 부서는 '작업 중' 말풍선이 뜨고, 실장실의 매니저가 진행 상황을 알려 줘요."],["village","동물의숲형","마을에 부서별 집과 동물 직원이 살아요. 일을 맡은 직원은 오피스로 출근하고, 밤에는 집에서 자요."],["cyworld","싸이월드형","미니홈피 그대로 — 미니룸에 부서 직원들, 방명록에는 부서 소식이 올라와요."]]]];
 const all=S.flatMap(([g,l])=>l);const tabs=document.getElementById("tabs");
 tabs.innerHTML=S.map(([g,l])=>`<span class="g">${g}</span>`+l.map(([k,n])=>`<button data-k="${k}">${n}</button>`).join("")).join("");
 function show(k){const x=all.find(a=>a[0]===k)||all[0];document.getElementById("im").src=x[0]+"_big.jpg";document.getElementById("nm").textContent=x[1];document.getElementById("ds").innerHTML=`<b>${x[1]}</b><br>${x[2]}`;tabs.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.k===x[0]));history.replaceState(null,"","#"+x[0]);}
