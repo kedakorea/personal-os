@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""오늘 설치 공식 완료 — 공식 실습 2가지가 끝나면 고객 화면에 완료 안내를 띄운다 (2026-11-07 대표님 지시)
+"""오늘 설치 공식 완료 — 공식 실습 3가지가 끝나면 고객 화면에 완료 안내를 띄운다 (2026-11-07 대표님 지시)
 사용: python3 설치완료.py
 - 결과물/설치완료.html 을 만들어 브라우저로 띄운다(축하 · 오늘 한 것 · 내 사용 가이드 · 30일 지원 · 문의처)
 - 휴대폰 알림 한 번, 메모판에 '설치 완료 안내' 한 장, 업무일지 한 줄
@@ -19,12 +19,12 @@ except Exception:
     pass
 TODAY = time.strftime("%Y.%m.%d")
 # 공식 실습 진행판(공식실습.py) 결과 — 건너뛴 실습은 '다음에 해 보기'로 보여 준다
-STEPS = [("콘텐츠 만들기 — 설치 기념 카드뉴스 + 숏폼", "설치 기념 카드뉴스 만들어 줘"), ("브리핑 받기 — 말 한마디로 오늘 할 일 정리", "오늘 일정이랑 할 일 브리핑해 줘")]
+STEPS = [("연결하기 — 지메일·드라이브·캘린더·노션", "연결했어"), ("나를 알아보는지 확인 — 매니저가 나를 소개", "내가 누군지 설명해 봐"), ("화면 바꿔 보기 — 말 한마디로 내 화면 고치기", "화면에서 ○○ 바꿔 줘")]
 try:
     ST = json.load(open(os.path.join(OS_DIR, ".os_데이터", "공식실습.json"), encoding="utf-8"))["단계"]
 except Exception:
     ST = [{"상태": "완료"}] * len(STEPS)
-DONE_HTML = "".join((f'<div><span>✓</span>{"①②"[i]} {html.escape(t)}</div>' if ST[i].get("상태") != "건너뜀" else f'<div class="sk"><span>↷</span><p>{"①②"[i]} {html.escape(t)}<small>다음에 해 보기 — 언제든 “{html.escape(say)}”라고 말씀하시면 돼요</small></p></div>') for i, (t, say) in enumerate(STEPS))
+DONE_HTML = "".join((f'<div><span>✓</span>{"①②③"[i]} {html.escape(t)}</div>' if ST[i].get("상태") != "건너뜀" else f'<div class="sk"><span>↷</span><p>{"①②③"[i]} {html.escape(t)}<small>다음에 해 보기 — 언제든 “{html.escape(say)}”라고 말씀하시면 돼요</small></p></div>') for i, (t, say) in enumerate(STEPS))
 N_DONE = sum(1 for x in ST if x.get("상태") != "건너뜀")
 SUPPORT_END = time.strftime("%Y.%m.%d", time.localtime(time.time() + 30 * 86400))
 E = html.escape

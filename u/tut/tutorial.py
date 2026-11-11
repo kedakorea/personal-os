@@ -6,7 +6,7 @@
   python3 공식실습.py skip 2 "사유"    # 2번 건너뜀 (채널 계정을 못 찾았을 때 등) — 완료 화면에 '다음에 해 보기'로 남는다
   python3 공식실습.py show             # 진행판만 다시 띄운다
 - 화면: ~/퍼스널OS/결과물/공식실습.html (3초마다 저절로 새로 고침)
-- 두 가지가 모두 완료·건너뜀이 되면 설치완료.py 를 저절로 부른다(한 번만)
+- 세 가지가 모두 완료·건너뜀이 되면 설치완료.py 를 저절로 부른다(한 번만)
 """
 import html, json, os, subprocess, sys, time, webbrowser
 
@@ -21,9 +21,10 @@ try:
 except Exception:
     c = {}
 MGR, CALL = c.get("실장") or "매니저", c.get("호칭") or "대표님"
-STEPS = [
-    ("콘텐츠 만들기", "설치 기념 카드뉴스 + 숏폼 영상", "설치 기념 카드뉴스 만들어 줘"),
-    ("브리핑 받기", "말 한마디로 오늘 일정·할 일·마감 정리", "오늘 일정이랑 할 일 브리핑해 줘"),   # 11/11 대표님: 휴대폰 실습은 끝내기가 안 돼 완료 화면이 안 뜸 → 가장 쉬운 브리핑으로
+STEPS = [   # 2026-11-11 밤 대표님: 콘텐츠 만들기 빼고, 채팅창 안에서 끝나는 3단계로
+    ("연결하기", "지메일·구글 드라이브·구글 캘린더·노션 연결", "연결했어"),
+    ("나를 알아보는지 확인", "매니저가 나를 어떻게 이해했는지 듣기", "내가 누군지 설명해 봐"),
+    ("화면 바꿔 보기", "화면에서 바꾸고 싶은 곳을 말해서 고치기", "화면에서 ○○ 바꿔 줘"),
 ]
 
 
@@ -71,7 +72,7 @@ h1{{font-size:38px;line-height:1.25;margin:10px 0 8px}}p.l{{font-size:18px;color
 .st.ok span{{background:#2f9a6a;color:#fff}}.st.ok em{{color:#2f9a6a;font-weight:700}}.st.sk{{opacity:.75}}.st.sk span{{background:#c9c6bd;color:#fff}}
 .f{{margin-top:18px;font-size:15px;color:#777;line-height:1.6}}</style></head><body><div class="w">
 <div class="k">OFFICIAL TUTORIAL</div><h1>{E(head)}</h1>
-<p class="l">설치가 끝났어요. 이제 {E(MGR)}{E('과' if (MGR and '가' <= MGR[-1] <= '힣' and (ord(MGR[-1]) - 0xAC00) % 28) else '와')} 실습 2가지만 해 보면 오늘 설치는 공식적으로 끝나요.</p>
+<p class="l">설치가 끝났어요. 이제 {E(MGR)}{E('과' if (MGR and '가' <= MGR[-1] <= '힣' and (ord(MGR[-1]) - 0xAC00) % 28) else '와')} 실습 3가지만 해 보면 오늘 설치는 공식적으로 끝나요.</p>
 <div class="bar"><i></i></div>{cards}
 <p class="f">계정이 없거나 오늘 하기 어려운 실습은 건너뛰어도 괜찮아요. 완료 화면에 '다음에 해 보기'로 남겨 둘게요.</p>
 </div></body></html>"""
@@ -102,7 +103,7 @@ def main():
     s = load()
     if a[0] == "start":
         s = {"시작": time.strftime("%Y-%m-%d %H:%M"), "단계": [{"상태": "대기", "사유": "", "시각": ""} for _ in STEPS], "완료화면": False}
-        save(s); render(s, True); print("공식 실습 진행판을 띄웠어요:", OUT); return
+        save(s); render(s, "--open" in a); print("공식 실습 시작 — 채팅창에서 진행합니다(진행판:", OUT + ")"); return
     if a[0] in ("done", "skip") and len(a) >= 2 and a[1].isdigit() and 1 <= int(a[1]) <= len(STEPS):
         x = s["단계"][int(a[1]) - 1]
         x["상태"] = "완료" if a[0] == "done" else "건너뜀"
@@ -111,7 +112,7 @@ def main():
         save(s); render(s)
         print(f"실습 {a[1]} {x['상태']}")
         maybe_finish(s); return
-    render(s, True); print("진행판:", OUT)
+    render(s, True); print("진행판:", OUT)   # show 는 진행판을 브라우저로
 
 
 if __name__ == "__main__":
