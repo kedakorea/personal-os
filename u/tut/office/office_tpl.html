@@ -14,7 +14,7 @@ body.tch-meeting #osvScene,body.tch-tower #osvScene,body.tch-desk #osvScene{disp
 body.tch-real.osv-on:not(.locked){grid-template-columns:1fr!important;overflow:hidden}
 /* 예시 화면처럼: 왼쪽 할 일 · 가운데 사무실 · 오른쪽 채팅 (11/11) */
 body.tch-real.osv-on:not(.locked) aside,body.tch-real.osv-on:not(.locked) .todo-unfold,body.tch-real.osv-on:not(.locked) .todo-fold{display:none!important}
-body.tch-real.osv-on:not(.locked) .todo{display:flex!important;position:fixed;left:0;top:0;bottom:0;width:280px;z-index:71;border-right:1px solid var(--line,#e3e5e8)}
+body.tch-real.osv-on:not(.locked) .todo{display:flex!important;position:fixed;left:0;top:0;bottom:0;width:280px;box-sizing:border-box;overflow:auto;z-index:71;border-right:1px solid var(--line,#e3e5e8)}
 body.tch-real.osv-on:not(.locked) main{justify-self:end;width:max(380px,30vw)}
 body.tch-real.osv-on:not(.locked) #osv{left:280px;right:max(380px,30vw);border-right:1px solid var(--line,#e3e5e8)}
 }
