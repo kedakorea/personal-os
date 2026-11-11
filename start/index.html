@@ -439,7 +439,7 @@ async function renderAI() {
       $("asm").textContent = ""; renderAI();
     });
     document.querySelectorAll("[data-rm]").forEach((a) => a.onclick = async (e) => { e.preventDefault(); if (!confirm("이 파일을 뺄까요?")) return; const r = await osCall({ action: "asset", token: S.token, remove: a.dataset.rm }); if (r.ok) { AI.customer = r.customer; renderAI(); } });
-    if ($("kitdl")) $("kitdl").onclick = async () => { const b = $("kitdl"); b.disabled = true; b.textContent = "준비 중…"; const r = await osCall({ action: "kit", token: S.token }); b.disabled = false; b.textContent = "⬇️ 설치 키트 받기"; if (!r.ok) { alert(r.error || "받지 못했어요. 다시 눌러 주세요."); return; } location.href = r.url; };
+    if ($("kitdl")) $("kitdl").onclick = async () => { const b = $("kitdl"); b.disabled = true; b.textContent = "준비 중…"; const r = await osCall({ action: "kit", token: S.token, os: /Windows/i.test(navigator.userAgent) ? "win" : "mac" }); b.disabled = false; b.textContent = "⬇️ 설치 키트 받기"; if (!r.ok) { alert(r.error || "받지 못했어요. 다시 눌러 주세요."); return; } location.href = r.url; };
     if ($("kitcp")) $("kitcp").onclick = async () => { await navigator.clipboard.writeText("curl -fsSL https://mybrandium.com/tools/install.sh | bash"); $("kitcp").textContent = "복사됨 ✓"; };
     clearInterval(window.__kitPoll);
     if (!(c.intake || {}).kit) window.__kitPoll = setInterval(async () => { const r = await osCall({ action: "get", token: S.token }); if (r.ok && r.customer && (r.customer.intake || {}).kit) { clearInterval(window.__kitPoll); AI = r; renderAI(); } }, 30000);

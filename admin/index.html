@@ -319,6 +319,7 @@ async function buildKit(c, publish) {
   btn.disabled = true; btn.textContent = "📦 포장하는 중…";
   try {
     const k = await A({ action: "a_kit" });
+    const compose = async (u) => {
     const zip = await JSZip.loadAsync(await (await fetch(k.url)).arrayBuffer());
     const top = Object.keys(zip.files)[0].split("/")[0] + "/";
     const set = Object.assign({ 직함: "매니저" }, d.설정 || {}); set.실장 = (c.chief || "").trim() || set.직함;   // 이름이 없으면 호칭이 곧 이름 set.회사 = set.회사 || c.company || "";
@@ -331,16 +332,20 @@ async function buildKit(c, publish) {
     // 고객이 올린 회사 자료 (로고·직인·사업자등록증 등)
     for (const a of (CUR.customer.assets || [])) { if (!a.url) continue; try { const blob = await (await fetch(a.url)).blob(); zip.file(top + "설계/회사자료/" + a.name, blob); } catch (e) {} }
     const blob = await zip.generateAsync({ type: "blob", platform: "UNIX", compression: "DEFLATE" });
+    return blob; };
+    const blob = await compose(k.url), blobW = k.url_win ? await compose(k.url_win) : null;   // 맥판 + 윈도우판 (2026-11-11)
     const fname = `퍼스널OS_설치키트_${c.name}_${new Date().toISOString().slice(2, 10).replace(/-/g, "")}.zip`;
     if (publish) {
       btn.textContent = "⬆️ 고객 페이지에 올리는 중…";
-      const b64 = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(blob); });
-      const x = await A({ action: "a_kit_publish", id: c.id, zip: b64, name: fname });
+      const toB64 = (bl) => new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(bl); });
+      const b64 = await toB64(blob), b64w = blobW ? await toB64(blobW) : "";
+      const x = await A({ action: "a_kit_publish", id: c.id, zip: b64, zip_win: b64w, name: fname });
       if (!x.ok) throw new Error(x.error || "올리지 못했습니다");
       return detail(c.id);
     }
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
     a.download = fname; a.click();
+    if (blobW) setTimeout(() => { const w = document.createElement("a"); w.href = URL.createObjectURL(blobW); w.download = fname.replace(/\.zip$/, "_윈도우.zip"); w.click(); }, 800);
     if (c.stage === "컨펌" || c.stage === "제안") await A({ action: "a_update", id: c.id, fields: { stage: "설치" } });
     btn.textContent = "✅ 내려받았습니다";
   } catch (e) { alert("키트를 만들지 못했습니다: " + e.message); btn.disabled = false; btn.textContent = label; }
