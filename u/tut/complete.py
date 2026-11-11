@@ -19,7 +19,7 @@ except Exception:
     pass
 TODAY = time.strftime("%Y.%m.%d")
 # 공식 실습 진행판(공식실습.py) 결과 — 건너뛴 실습은 '다음에 해 보기'로 보여 준다
-STEPS = [("콘텐츠 만들기 — 설치 기념 카드뉴스 + 숏폼", "설치 기념 카드뉴스 만들어 줘"), ("휴대폰으로 내 일 맡기기 — 밖에서 시키고 알림 받기", "휴대폰 앱에서 일 하나 맡겨 보기")]
+STEPS = [("콘텐츠 만들기 — 설치 기념 카드뉴스 + 숏폼", "설치 기념 카드뉴스 만들어 줘"), ("브리핑 받기 — 말 한마디로 오늘 할 일 정리", "오늘 일정이랑 할 일 브리핑해 줘")]
 try:
     ST = json.load(open(os.path.join(OS_DIR, ".os_데이터", "공식실습.json"), encoding="utf-8"))["단계"]
 except Exception:

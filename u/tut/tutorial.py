@@ -23,7 +23,7 @@ except Exception:
 MGR, CALL = c.get("실장") or "매니저", c.get("호칭") or "대표님"
 STEPS = [
     ("콘텐츠 만들기", "설치 기념 카드뉴스 + 숏폼 영상", "설치 기념 카드뉴스 만들어 줘"),
-    ("휴대폰으로 일 맡기기", "밖에서 휴대폰으로 시키고 알림 받기", "(휴대폰 앱에서) 가장 귀찮은 일 하나 맡기기"),
+    ("브리핑 받기", "말 한마디로 오늘 일정·할 일·마감 정리", "오늘 일정이랑 할 일 브리핑해 줘"),   # 11/11 대표님: 휴대폰 실습은 끝내기가 안 돼 완료 화면이 안 뜸 → 가장 쉬운 브리핑으로
 ]
 
 
@@ -54,8 +54,6 @@ def page(s):
             cls, mark, tail = "now", str(i + 1), f"지금 하는 중 · 이렇게 말해 보세요 <b>“{E(say)}”</b>"
         else:
             cls, mark, tail = "wait", str(i + 1), "다음 차례"
-        if i == 1 and x["상태"] == "대기":
-            tail += ' · <a href="휴대폰연결.html" target="_blank" style="font-weight:800;color:#2f7fe6">📱 휴대폰 연결 화면(QR) 열기</a>'
         cards += f'<div class="st {cls}"><span>{mark}</span><div><b>실습 {i + 1} · {E(t)}</b><small>{E(d)}</small><em>{tail}</em></div></div>'
     done_all = closed == len(STEPS)
     head = "🎉 공식 실습 끝! 완료 화면으로 넘어가요" if done_all else f"공식 실습 {closed} / {len(STEPS)}"
