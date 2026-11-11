@@ -1,0 +1,63 @@
+/* 채팅 테마 — 미니멀형(minimal) · 여백 많은 흑백 (2026-10-28)
+   매니저 답은 말풍선 없이 글만(검정 동그라미 머리글자), 대표님 말씀은 옅은 회색 알약. 입력칸은 둥근 카드 하나 + 검정 동그라미 ↑ 보내기. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+html body.ct-meeting {
+  color-scheme: light;
+  --bg: #ffffff; --side: #fafafa; --side-hover: #f2f2f2; --side-on: #ececec; --panel: #ffffff; --bar: #ffffff;
+  --line: #ececec; --ink: #111111; --muted: #9a9a9a; --field: #ffffff; --accent: #111111; --accent-soft: #f2f2f2;
+  --lime: #111111; --lime-soft: #f2f2f2;
+  font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; letter-spacing: -.01em;
+}
+html:has(body.ct-meeting) { background: #fff; }
+html body.ct-meeting main, html body.ct-meeting .scroll { background: #fff !important; }
+html body.ct-meeting .stream { max-width: 720px; gap: 26px; }
+html body.ct-meeting .scroll { padding-top: 28px; }
+/* 매니저 — 말풍선 없이 */
+html body.ct-meeting .turn.them { position: relative; padding-left: 40px; }
+html body.ct-meeting .turn.them::before { content: var(--ct-ini); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: #111; color: #fff; font-size: 12.5px; font-weight: 700; display: grid; place-items: center; line-height: 28px; text-align: center; }
+html body.ct-meeting .turn .who { font-size: 13px; font-weight: 700; color: #111; margin: 4px 0 6px; }
+html body.ct-meeting .turn.me .who { display: none; }
+html body.ct-meeting .them .bubble { background: transparent !important; color: #111 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; max-width: 100% !important; font-size: 15.5px; line-height: 1.75; }
+html body.ct-meeting .me .bubble { background: #f2f2f2 !important; color: #111 !important; border: 0 !important; box-shadow: none !important; border-radius: 22px !important; padding: 10px 18px !important; font-size: 15px; max-width: 78% !important; }
+html body.ct-meeting .me .bubble .att { color: #666; }
+html body.ct-meeting .bubble code { background: #f2f2f2 !important; color: #111 !important; border-radius: 6px; }
+html body.ct-meeting .codebox pre { background: #f7f7f7; border: 1px solid #ececec; border-radius: 12px; }
+html body.ct-meeting .copybtn { border-color: #e2e2e2; background: #fff; }
+html body.ct-meeting .bubble a.lnk { color: #111; text-decoration-color: #bbb; text-underline-offset: 3px; }
+html body.ct-meeting .bubble a.dl { background: #fafafa; border-color: #ececec; border-radius: 12px; }
+html body.ct-meeting .pinbtn { filter: grayscale(1); }
+html body.ct-meeting .dots i { background: #111; }
+html body.ct-meeting .longbar { background: #fafafa !important; border: 1px solid #ececec !important; border-radius: 16px !important; color: #555 !important; }
+html body.ct-meeting .longbar button { background: #111 !important; border-radius: 999px !important; padding: 8px 14px !important; }
+/* 머리 — 한 줄 가는 선 */
+html body.ct-meeting .topbar { background: rgba(255,255,255,.9) !important; border-bottom: 1px solid #f0f0f0 !important; }
+html body.ct-meeting .topbar .tag { border-color: #ececec !important; color: #777 !important; background: #fff !important; }
+html body.ct-meeting .topbar.working .pulse { background: #111 !important; }
+/* 입력칸 */
+html body.ct-meeting .composer-wrap { background: #fff !important; border-top: 0 !important; padding-top: 6px; }
+html body.ct-meeting .composer { max-width: 720px; position: relative; }
+html body.ct-meeting .composer .field { border: 1px solid #e6e6e6 !important; border-radius: 26px !important; background: #fff !important; box-shadow: 0 6px 24px rgba(0,0,0,.06) !important; padding: 10px 56px 10px 14px; }
+html body.ct-meeting .composer .field:focus-within { border-color: #bdbdbd !important; }
+html body.ct-meeting .composer .go { position: absolute; right: 9px; bottom: 9px; width: 38px; height: 38px; padding: 0; border-radius: 50% !important; background: #111 !important; font-size: 0; }
+html body.ct-meeting .composer .go::after { content: "↑"; font-size: 19px; font-weight: 700; color: #fff; line-height: 1; }
+html body.ct-meeting .composer .go:disabled { background: #e6e6e6 !important; }
+html body.ct-meeting .icobtn { color: #9a9a9a; }
+html body.ct-meeting .hint { display: none; }
+/* 할일 · 사이드 — 흑백 */
+html body.ct-meeting .ti .ck { border-color: #c4c4c4; }
+html body.ct-meeting .ti.done .ck { background: #111; border-color: #111; }
+html body.ct-meeting .tsec.today h5, html body.ct-meeting .tsec h5 { color: #111; }
+html body.ct-meeting .todo-add button, html body.ct-meeting .ti a.go { background: #111 !important; }
+html body.ct-meeting .ti .bd.soon { background: #111 !important; }
+html body.ct-meeting .mc .g .d.today { background: #111 !important; color: #fff !important; }
+html body.ct-meeting .tabs button.on { color: #111; }
+html body.ct-meeting .tabs .n { color: #111; }
+@media (max-width: 860px) {
+  html body.ct-meeting .stream { gap: 22px; }
+  html body.ct-meeting .turn.them { padding-left: 0; }
+  html body.ct-meeting .turn.them::before { position: static; display: inline-grid; margin: 0 0 -26px; width: 24px; height: 24px; line-height: 24px; font-size: 11px; }
+  html body.ct-meeting .turn.them .who { margin-left: 32px; }
+}
+
+/* 휴대폰에서 입력칸·보내기 단추가 잘리지 않게 (2026-11-11 배동식 갤럭시) */
+@media (max-width: 860px) { html body.ct-meeting .composer { max-width: 100%; box-sizing: border-box; } html body.ct-meeting .composer .field { min-width: 0; width: 100%; box-sizing: border-box; } }
