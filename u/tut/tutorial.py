@@ -55,6 +55,8 @@ def page(s):
             cls, mark, tail = "now", str(i + 1), f"지금 하는 중 · 이렇게 말해 보세요 <b>“{E(say)}”</b>"
         else:
             cls, mark, tail = "wait", str(i + 1), "다음 차례"
+        if i == 2 and x["상태"] == "대기":
+            tail += ' · <a href="휴대폰연결.html" target="_blank" style="font-weight:800;color:#2f7fe6">📱 휴대폰 연결 화면(QR) 열기</a>'
         cards += f'<div class="st {cls}"><span>{mark}</span><div><b>실습 {i + 1} · {E(t)}</b><small>{E(d)}</small><em>{tail}</em></div></div>'
     done_all = closed == len(STEPS)
     head = "🎉 공식 실습 끝! 완료 화면으로 넘어가요" if done_all else f"공식 실습 {closed} / {len(STEPS)}"
@@ -80,6 +82,10 @@ h1{{font-size:38px;line-height:1.25;margin:10px 0 8px}}p.l{{font-size:18px;color
 
 def render(s, open_it=False):
     os.makedirs(OUT_DIR, exist_ok=True)
+    try:
+        subprocess.run([sys.executable, os.path.join(KIT, "휴대폰연결안내.py"), "--no-open"], capture_output=True, timeout=20)
+    except Exception:
+        pass
     open(OUT, "w", encoding="utf-8").write(page(s))
     if open_it:
         webbrowser.open("file://" + OUT)
