@@ -9,6 +9,12 @@ def get(name, dst):
 get("tutorial.py", os.path.join(K, "공식실습.py"))
 get("complete.py", os.path.join(K, "설치완료.py"))
 get("phone.py", os.path.join(K, "휴대폰연결안내.py"))
+get("serverwatch.py", os.path.join(K, "윈도우_서버지킴이.py"))
+pyw = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
+pyw = pyw if os.path.exists(pyw) else sys.executable
+r = subprocess.run(["schtasks", "/Create", "/F", "/TN", "PersonalOS\\serverwatch", "/SC", "MINUTE", "/MO", "5",
+                    "/TR", '"%s" -X utf8 "%s"' % (pyw, os.path.join(K, "윈도우_서버지킴이.py"))], capture_output=True, text=True)
+print("서버 지킴이 등록:", "완료" if r.returncode == 0 else (r.stderr or r.stdout)[-200:])
 tpl = os.path.join(K, "_원본", "CLAUDE.md")
 shutil.copy2(tpl, tpl + ".업데이트전_" + time.strftime("%y%m%d%H%M"))
 get("claude_tpl.md", tpl)
