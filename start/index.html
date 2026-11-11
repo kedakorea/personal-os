@@ -333,7 +333,8 @@ let AI = null, FILES = [], CHIEF = "", TITLE = "", MORE = false;
 let SCREEN = "";
 /* 첫 화면 템플릿 (화면템플릿/ 시안 2026-10-19) — 고른 값은 design.설정.화면 → 설치 때 그 화면으로 */
 const OS_SCREENS = [
-  ["캐릭터형", "부서 직원 캐릭터가 나와요", [["hq", "본사형", "도트 사무실에 부서 직원들이 일해요"], ["village", "동물의숲형", "마을에 부서별 집, 동물 직원"], ["cyworld", "싸이월드형", "미니홈피 · 미니룸 · 방명록"]]]];  /* 심플형 3개는 2026-11-11 대표님 지시로 뺌 — 일하는 모습이 눈에 보이는 캐릭터형만 */
+  ["캐릭터형", "부서 직원 캐릭터가 나와요", [["hq", "본사형", "도트 사무실에 부서 직원들이 일해요"], ["village", "동물의숲형", "마을에 부서별 집, 동물 직원"], ["cyworld", "싸이월드형", "미니홈피 · 미니룸 · 방명록"]]],
+  ["실사 오피스형", "실제 사무실 사진 + 직원 얼굴", [["meeting", "회의실형", "매니저가 상석, 부서 직원이 둘러앉아요"], ["tower", "빌딩 층별형", "불 켜진 층이 일하는 부서"], ["desk", "집무실형", "오늘 브리핑 보드 + 부서 사원증"]]]];  /* 심플형 3개는 2026-11-11 대표님 지시로 뺌 — 일하는 모습이 눈에 보이는 캐릭터형만 */
 function stageView() { const c = AI && AI.customer; if (!c) return "load"; if (c.stage === "컨펌" || c.stage === "설치" || c.stage === "완료") return "done"; if (c.design_state === "running") return "busy"; if (c.design && !MORE) return "prop"; return "chat"; }
 async function renderAI() {
   $("nav").style.display = "none";
