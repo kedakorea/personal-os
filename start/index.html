@@ -302,6 +302,7 @@ $("next").onclick = async () => {
   }
   const st = STEPS[S.step];
   if (st.lab && st.lab.startsWith("01") && !(S.a.name || "").trim()) { alert("성함을 적어 주세요."); return; }
+  if (st.qs && st.qs.some((q) => q.k === "pc") && (!S.a.pctype || !S.a.pc || !S.a.phone)) { alert("컴퓨터 종류(맥·윈도우)와 휴대폰을 골라 주세요.\n설치 키트가 컴퓨터에 맞게 만들어져요."); return; }   // 11/11 손미경 — 빈칸으로 넘어가 맥/윈도우를 몰랐다
   if (st.id === "review") {
     $("next").disabled = true; $("next").textContent = "인터뷰어를 부르는 중…";
     const r = await osCall({ action: "start", key: S.key, name: S.a.name, company: S.a.co, phone: S.a.tel, mode: S.mode === "interview" ? "인터뷰" : "직접 작성", intake: { v: 1, a: S.a, memo: S.memo, notice: S.noticeAt || "" } });
