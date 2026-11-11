@@ -1,0 +1,59 @@
+<!--OFFICE-START 퍼스널 OS 사무실(기본) · 캐릭터형 {{화면}} 2026-10-28 — 오피스·마을 전체 화면(부서/00_비서실/오피스마을.html, iframe) ↔ 대화 화면(채팅_테마_{{화면}}.css). 시안: 화면템플릿/_작업/오피스마을_시안_261027-->
+<style>
+.rt-toggle,.m-aot-on,#pushbtn{display:none!important}
+#osv{position:fixed;inset:0;z-index:70;display:none;background:var(--osv-bg,#f4f5f7)}
+body.osv-on:not(.locked) #osv{display:block}
+body.osv-on:not(.locked){overflow:hidden}
+#osv iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#osvChat{display:none;position:absolute;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:2;border:0;border-radius:99px;padding:12px 18px;font:800 15px Pretendard,-apple-system,sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28);background:var(--osv-btn,#1e31ef);color:#fff}
+#osvScene{display:none;position:absolute;left:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:2;border:2px solid var(--osv-btn,#1e31ef);border-radius:99px;padding:10px 16px;font:800 14px Pretendard,-apple-system,sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.2);background:#fff;color:var(--osv-btn,#1e31ef)}
+@media (max-width:860px){#osvChat,#osvScene{display:block}}
+body.tch-meeting #osvScene,body.tch-tower #osvScene,body.tch-desk #osvScene{display:none!important}
+/* 실사 오피스형 — 컴퓨터(넓은 화면)에서는 사무실 + 채팅을 한 화면에 나란히 (2026-11-11 대표님) */
+@media (min-width:1000px){
+body.tch-real.osv-on:not(.locked){grid-template-columns:1fr!important;overflow:hidden}
+body.tch-real.osv-on:not(.locked) aside,body.tch-real.osv-on:not(.locked) .todo,body.tch-real.osv-on:not(.locked) .todo-unfold{display:none!important}
+body.tch-real.osv-on:not(.locked) main{justify-self:end;width:max(400px,34vw)}
+body.tch-real.osv-on:not(.locked) #osv{right:max(400px,34vw);border-right:1px solid var(--line,#e3e5e8)}
+}
+.osv-btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.osv-btn:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:560px){.osv-btn{padding:4px 8px}.osv-btn b{display:none}body.tch #nbell{display:none!important}body.tch .osclock small{display:none}}
+.osv-flash{animation:osvflash 1.6s ease 2}
+@keyframes osvflash{50%{box-shadow:0 0 0 3px var(--accent);border-radius:10px}}
+</style>
+<div id="osv" aria-label="{{회사}} 오피스·마을"><iframe id="osvf" title="{{회사}} 오피스·마을"></iframe><button id="osvScene" type="button"></button><button id="osvChat" type="button">💬 대화로</button></div>
+<script>
+(function(){
+  const B = document.body, KEY = "{{화면}}";
+  if (localStorage.getItem("retro") === "1" || B.classList.contains("retro")) { localStorage.setItem("retro", "0"); localStorage.removeItem("rtTheme"); location.reload(); return; }
+  B.classList.add("tch", "tch-" + KEY); if (["meeting", "tower", "desk"].includes(KEY)) B.classList.add("tch-real");
+  const f = document.getElementById("osvf");
+  const tq = (location.search.match(/[?&]t=([\d.]+)/) || [])[1];
+  const load = () => { if (f.getAttribute("src")) return; f.src = "/api/file?p=" + encodeURIComponent("부서/00_비서실/오피스마을.html") + (tq ? "&t=" + tq : "") + (location.hash === "#village" ? "#village" : ""); };
+  const whenOpen = (fn) => { if (!B.classList.contains("locked")) fn(); else new MutationObserver((m, ob) => { if (!B.classList.contains("locked")) { ob.disconnect(); fn(); } }).observe(B, { attributes: true, attributeFilter: ["class"] }); };
+  window.OSV_open = () => { B.classList.add("osv-on"); localStorage.setItem("osvMode", "office"); whenOpen(load); };
+  window.OSV_close = () => { B.classList.remove("osv-on", "tab-todo", "drawer"); localStorage.setItem("osvMode", "chat"); const i = document.getElementById("input"); if (i && innerWidth > 860) i.focus(); };
+  // 오피스 화면 아래 대화칸에서 바로 지시 — 앱 입력칸으로 넘겨 보낸다
+  window.OSV_send = (t) => { try { quickGo(t, true); return true; } catch (e) { const i = document.getElementById("input"); if (!i) return false; i.value = t; i.dispatchEvent(new Event("input")); const g = document.getElementById("go"); if (g) { g.disabled = false; g.click(); } return true; } };
+  window.OSV_ask = (dept) => { OSV_close(); try { quickGo(dept ? dept + "에 맡길 일 — " : "", false); } catch (e) {} };
+  const show = (id) => { OSV_close(); if (innerWidth <= 860) B.classList.add("drawer"); const e = document.getElementById(id); if (e) { e.scrollIntoView({ block: "center" }); e.classList.add("osv-flash"); setTimeout(() => e.classList.remove("osv-flash"), 3400); } };
+  window.OSV_files = () => show("recent");
+  window.OSV_memo = () => show("memoList");
+  window.OSV_bell = () => { OSV_close(); const b = document.getElementById("nbell"); if (b) b.click(); };
+  document.getElementById("osvChat").onclick = OSV_close;
+  // 휴대폰 — 오피스 ↔ 마을 (화면이 옆으로 길어 위쪽 탭이 안 보일 때)
+  const sc = document.getElementById("osvScene");
+  const scLabel = () => { let s = "office"; try { s = f.contentWindow.OSV_scene(); } catch (e) {} sc.textContent = s === "office" ? (KEY === "cyworld" ? "🏘 동네로" : "🏡 마을로") : (KEY === "cyworld" ? "🏠 미니룸으로" : "🏢 오피스로"); };
+  sc.onclick = () => { try { f.contentWindow.OSV_toggle(); } catch (e) {} scLabel(); };
+  f.addEventListener("load", () => setTimeout(scLabel, 300)); scLabel();
+  // 대화 화면 위쪽에 '오피스' 단추
+  const bar = document.querySelector(".topbar .barright");
+  if (bar) { const b = document.createElement("button"); b.type = "button"; b.className = "osv-btn"; b.innerHTML = (KEY === "cyworld" ? "🏠 <b>미니룸</b>" : KEY === "village" ? "🌳 <b>마을</b>" : "🏢 <b>오피스</b>"); b.title = "오피스·마을 화면"; b.onclick = OSV_open; bar.prepend(b); }
+  const pick = () => { const h = location.hash; if (h === "#chat") OSV_close(); else if (h === "#office" || h === "#village") OSV_open(); };
+  addEventListener("hashchange", pick);
+  if (location.hash === "#chat" || location.hash === "#office" || location.hash === "#village") pick();
+  else if (localStorage.getItem("osvMode") !== "chat") OSV_open();
+})();
+</script>
+<!--OFFICE-END-->

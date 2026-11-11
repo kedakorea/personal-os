@@ -1,0 +1,35 @@
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}body{font-family:Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1c1c1e;overflow:hidden;background:#111}
+#bg{position:fixed;inset:0;background-size:cover;background-position:center}
+body.c-meeting #bg{background-position:center 40%}body.c-desk #bg{background-position:62% 100%}
+#shade{position:fixed;inset:0;pointer-events:none}
+body.c-meeting #shade{background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 75%,rgba(0,0,0,.45))}
+body.c-tower #shade{background:linear-gradient(90deg,rgba(0,0,0,.15),rgba(5,8,20,.7) 50%)}
+body.c-desk #shade{background:linear-gradient(180deg,rgba(255,255,255,.0),rgba(0,0,0,0) 70%,rgba(0,0,0,.35))}
+#hd{position:fixed;left:24px;top:18px;z-index:5;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.55)}#hd b{display:block;font-size:26px}#hd small{font-size:14px;opacity:.92}
+body.c-desk #hd{color:#1c1c1e;text-shadow:0 1px 6px rgba(255,255,255,.8)}
+#toChat{position:fixed;right:18px;top:18px;z-index:6;border:0;border-radius:99px;padding:10px 16px;font:800 14px Pretendard,sans-serif;background:#1e31ef;color:#fff;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#scene{position:fixed;inset:0}
+.fc{display:block;width:62px;height:62px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.35);background:#ddd}
+.fc.on{border-color:#1e31ef}.fc.big{width:82px;height:82px}.fc.sq{border-radius:10px;width:68px;height:68px;border-width:0;box-shadow:none}
+.mono{display:flex;align-items:center;justify-content:center;color:#fff;font:900 24px Pretendard,sans-serif}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.93);color:#333;white-space:nowrap}
+.tag.on{background:#1e31ef;color:#fff}.tag i{width:6px;height:6px;border-radius:50%;background:#bbb}.tag.on i{background:#cfe986}
+.seat,.mgr{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.say1{background:#fff;border-radius:12px;padding:8px 13px;font-size:13px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:340px;text-align:center;margin-bottom:4px}
+.floors{position:absolute;right:20px;top:76px;bottom:84px;width:min(560px,60%);display:flex;flex-direction:column;gap:8px;overflow:auto}
+.fl{display:flex;align-items:center;gap:12px;background:rgba(10,14,30,.6);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:9px 12px;color:#fff;cursor:pointer;backdrop-filter:blur(6px)}
+.fl.on{background:rgba(10,14,30,.82);border-color:#cfe986}.fl.boss{background:rgba(30,49,239,.88);cursor:default}
+.fl em{font:800 13px Pretendard;color:#cfe986;width:36px;font-style:normal}.fl.boss em{color:#fff}.fl .fc{width:46px;height:46px;border-width:2px}.fl p{flex:1;min-width:0}.fl b{font-size:15px}.fl small{display:block;font-size:12px;opacity:.78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board{position:absolute;right:20px;top:70px;width:min(520px,62%);background:#fff;border-radius:18px;padding:20px 22px;box-shadow:0 10px 30px rgba(0,0,0,.15);display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center}
+.board .fc{border-color:#1e31ef;grid-row:span 1}.board b{font-size:17px}.board small{display:block;color:#666;font-size:13px}
+.br{grid-column:1/-1;list-style:none;margin-top:10px;font-size:14px;line-height:1.85}.br b{color:#1e31ef;margin-right:8px}
+.say2{grid-column:1/-1;margin-top:8px;padding-top:10px;border-top:1px solid #eee;font-size:13px;color:#555}
+.cards{position:absolute;left:0;right:0;bottom:84px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px;padding:0 16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.2);padding:10px 8px;width:106px;text-align:center;border-top:5px solid #d5d8de;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}
+.card.on{border-top-color:#1e31ef}.card b{font-size:13px}.card .tag{background:#f1f2f4;font-size:11px}.card .tag.on{background:#1e31ef}
+#say{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(640px,calc(100% - 32px));display:flex;gap:8px;background:rgba(255,255,255,.96);border-radius:16px;padding:8px;box-shadow:0 8px 26px rgba(0,0,0,.3);z-index:6}
+#say input{flex:1;border:0;outline:0;font:500 15px Pretendard,sans-serif;padding:8px 10px;background:transparent}#say button{border:0;border-radius:12px;background:#1e31ef;color:#fff;font:800 14px Pretendard;padding:0 16px;cursor:pointer}
+@media(max-width:860px){#toChat{display:none}.fc{width:48px;height:48px}.fc.big{width:62px;height:62px}.tag{font-size:10.5px;padding:2px 7px}.say1{max-width:220px;font-size:12px}.floors{left:12px;right:12px;width:auto;top:84px}.board{left:12px;right:12px;width:auto;top:84px}.card{width:86px}.cards{bottom:80px}#hd b{font-size:20px}}
+
+/* 채팅과 나란히 띄울 때(컴퓨터) — 대화 단추·아래 입력칸은 옆 채팅이 맡는다 */
+body.split #toChat,body.split #say{display:none}body.split .cards{bottom:24px}body.split .floors{bottom:24px}
