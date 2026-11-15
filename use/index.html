@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="../favicon.png?v=3">
+<title>USE — 퍼스널 OS 이렇게 씁니다 | 브랜디움 BRAND!UM</title>
+<link rel="canonical" href="https://mybrandium.com/use/">
+<meta name="description" content="똑같이 부탁했을 때 기존 AI의 대답과 퍼스널 OS의 대답. 업무·개인·이벤트 상황별로 나란히 보세요.">
+<meta property="og:title" content="같은 부탁, 다른 대답 — 퍼스널 OS">
+<meta property="og:description" content="&quot;헉, 이것까지 한다고?&quot; 기존 AI와 퍼스널 OS의 대답을 나란히 비교해 보세요.">
+<meta property="og:image" content="https://mybrandium.com/og.jpg?v=1020c">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#432f2e;--sand:#ead9c6;--butter:#f6d36b;--cream:#fff8dc;--gray:#efedea}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fffaf0;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:30;background:var(--ink);color:#fffaf0;display:flex;align-items:center;justify-content:space-between;padding:12px 18px}
+nav a{color:inherit;text-decoration:none}nav img{height:18px;display:block}
+nav .r{font-family:'Josefin Sans',Pretendard;font-size:13px;letter-spacing:.04em;border:1.5px solid #fffaf0;border-radius:999px;padding:6px 13px 5px}
+.hero{background:var(--ink);color:#fffaf0;padding:34px 22px 30px;text-align:center}
+.hero .k{display:inline-block;background:var(--butter);color:var(--ink);font-weight:800;font-size:12px;border-radius:999px;padding:4px 12px;margin-bottom:14px}
+.hero h1{font-size:29px;line-height:1.3;font-weight:900}.hero h1 em{font-style:normal;color:var(--butter)}
+.hero p{max-width:560px;margin:12px auto 0;font-size:15px;line-height:1.6;opacity:.85}
+.cats{position:sticky;top:46px;z-index:20;background:#fffaf0;display:flex;gap:8px;justify-content:center;padding:12px 10px;border-bottom:1.5px solid #eadfcf}
+.cats button{font-family:inherit;font-size:15px;font-weight:800;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:9px 16px;cursor:pointer}
+.cats button.on{background:var(--ink);color:var(--butter)}
+.cats button small{font-weight:600;opacity:.6;margin-left:3px}
+.wrap{max-width:900px;margin:0 auto;padding:10px 14px 40px}
+.lead{font-size:14px;color:#7a6b67;text-align:center;margin:14px 0 4px;line-height:1.6}
+.case{background:#fff;border:2px solid var(--ink);border-radius:22px;margin:22px 0;overflow:hidden;box-shadow:5px 5px 0 var(--ink)}
+.ask{padding:16px 16px 14px;background:var(--sand);border-bottom:2px solid var(--ink)}
+.ask .tag{font-family:'Josefin Sans',Pretendard;font-size:12px;letter-spacing:.06em;opacity:.7;margin-bottom:8px}
+.me{display:flex;justify-content:flex-end}
+.me .b{background:#0a84ff;color:#fff;border-radius:18px 18px 4px 18px;padding:11px 14px;font-size:15.5px;line-height:1.5;max-width:88%;font-weight:600}
+.me .b small{display:block;font-weight:500;opacity:.8;font-size:12.5px;margin-top:4px}
+.vs{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:700px){.vs{grid-template-columns:1fr 1.25fr}.pane.ai{border-right:2px dashed #d9cfc6}}
+.pane{padding:16px}
+.pane .who{font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pane.ai{background:var(--gray)}
+.pane.ai .who{color:#6f625f}
+.pane.ai .b{background:#fff;border:1px solid #ddd6cf;border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:14.5px;line-height:1.6;color:#4f4441}
+.pane.ai .end{margin-top:10px;font-size:13px;font-weight:800;color:#a2493d}
+.pane.os{background:var(--cream);position:relative}
+.pane.os .who{color:var(--ink)}
+.wow{position:absolute;top:12px;right:12px;background:#ff5a3c;color:#fff;font-weight:900;font-size:12.5px;border-radius:999px;padding:5px 11px;transform:rotate(3deg);box-shadow:2px 2px 0 var(--ink)}
+.pane.os .b{background:#fff;border:2px solid var(--butter);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:14.5px;line-height:1.6}
+.pane.os .b .dept{font-size:12.5px;font-weight:800;color:#7a5d00;margin-bottom:6px}
+.act{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px dashed #eedd9a;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.act:first-of-type{border-top:0}
+.case.seen .act{opacity:1;transform:none}
+.act .i{flex:none;width:24px;text-align:center}
+.act .x{flex:1}.act .x small{display:block;font-size:12px;color:#8a6d00;margin-top:2px}
+.chip{display:inline-flex;align-items:center;gap:4px;background:#f3efe8;border:1px solid #d8cdbd;border-radius:8px;padding:3px 8px;font-size:12.5px;font-weight:700;margin:4px 4px 0 0}
+.left{margin-top:10px;background:var(--ink);color:#fffaf0;border-radius:12px;padding:10px 13px;font-size:13.5px;line-height:1.5}
+.left b{color:var(--butter)}
+.note{font-size:12.5px;line-height:1.65;color:#7a6b67;margin-top:24px;padding:0 4px}
+.cta{display:block;text-align:center;margin:24px 0 6px;background:var(--butter);color:var(--ink);font-weight:900;font-size:17px;text-decoration:none;border:2px solid var(--ink);border-radius:16px;padding:16px;box-shadow:4px 4px 0 var(--ink)}
+.hide{display:none}
+.pill3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px auto 0;max-width:620px}
+.pill3 span{background:rgba(255,250,240,.08);border:1.5px solid rgba(255,250,240,.25);border-radius:14px;padding:10px 6px;font-size:12.5px;line-height:1.45}
+.pill3 b{color:var(--butter)}
+.cats{flex-wrap:wrap}.cats button{font-size:14px;padding:8px 13px}
+.pane.ai .good{font-size:12px;font-weight:700;color:#6f8f4e;margin:-4px 0 8px}
+.chore{margin-top:10px;background:#fff;border:1.5px dashed #c9a49c;border-radius:12px;padding:9px 12px}
+.chore .h{font-size:12.5px;font-weight:900;color:#a2493d;margin-bottom:4px}
+.chore li{list-style:none;font-size:13.5px;line-height:1.5;padding:2px 0 2px 20px;position:relative;color:#5c504d}
+.chore li:before{content:'✋';position:absolute;left:0;font-size:12px;top:3px}
+.zero{display:inline-block;margin-top:2px;font-size:12px;font-weight:900;color:#6f8f4e;background:#eef6dc;border-radius:999px;padding:2px 8px}
+.ask .q{display:flex;gap:12px;align-items:flex-start}
+.ask .qi{flex:none;width:40px;height:40px;border-radius:50%;background:#0a84ff;display:flex;align-items:center;justify-content:center;font-size:21px;border:2px solid var(--ink)}
+.ask .qt{font-size:19px;font-weight:900;line-height:1.4;letter-spacing:-.01em}
+.ask .qs{font-size:13px;color:#7a6b67;margin-top:4px;font-weight:600}
+@media(max-width:420px){.ask .qt{font-size:17.5px}.ask .qi{width:34px;height:34px;font-size:18px}}
+
+nav .mn{display:flex;gap:16px;font-family:'Josefin Sans',Pretendard;font-size:14px;letter-spacing:.05em}
+nav .mn a{opacity:.75}nav .mn a.on{opacity:1;color:var(--butter)}
+@media(max-width:480px){nav .mn{gap:11px;font-size:12.5px}nav .r{display:none}}
+.sec{max-width:900px;margin:0 auto;padding:6px 14px 10px}
+.sec h2{font-size:24px;font-weight:900;text-align:center;margin:34px 0 6px}.sec h2 small{display:block;font-family:'Josefin Sans',Pretendard;font-size:12px;letter-spacing:.12em;opacity:.6;margin-bottom:6px}
+.sec .sub{text-align:center;font-size:14px;color:#7a6b67;line-height:1.6;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+.tags button{font-family:inherit;font-size:13px;font-weight:800;border:1.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}.tags button.on{background:var(--ink);color:var(--butter)}
+.cs{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:700px){.cs{grid-template-columns:1fr 1fr}}
+.cc{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:16px;box-shadow:4px 4px 0 var(--ink)}
+.cc .m{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#8a7a75;margin-bottom:6px}.cc .m i{font-style:normal;background:var(--sand);color:var(--ink);border-radius:999px;padding:2px 9px}
+.cc h3{font-size:17px;line-height:1.4;font-weight:900;margin-bottom:8px}
+.cc p{font-size:14px;line-height:1.6;margin-top:6px}.cc p b{font-size:12px;display:inline-block;min-width:54px;color:#a2493d}.cc p.d b{color:#7a5d00}.cc p.h b{color:#6f625f}
+.cc img{width:100%;border-radius:10px;margin-top:10px;border:1px solid #e5dcd0}
+</style>
+</head>
+<body>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><span class="mn"><a href="../os/">OS</a><a href="../use/" class="on">USE</a><a href="../how/">HOW</a><a href="../shop/">STORE</a></span><a class="r" href="../#apply">상담 신청</a></nav>
+<header class="hero">
+  <span class="k">AI, 이미 잘 쓰고 계신 분께</span>
+  <h1>잘 만드는 AI는 많습니다.<br><em>끝까지 해 주는 AI</em>는 따로 있어요.</h1>
+  <p>ChatGPT·클로드도 문서·카드뉴스·이미지까지 훌륭하게 만들어 줍니다. 그런데 결과물을 받은 <b>그다음</b>, 다시 설명하고 내려받고 옮기고 보내고 챙기는 일은 아직 대표님 손에 남아 있죠.<br><b>퍼스널 OS는 그 '다음'까지 맡습니다.</b></p>
+  <div class="pill3"><span>🧠 매번 설명할 필요 없이<br><b>기억합니다</b></span><span>💻 내 컴퓨터·메일함·캘린더에서<br><b>끝까지 처리합니다</b></span><span>📱 먼저 말 걸고,<br><b>밖에서도 움직입니다</b></span></div>
+</header>
+<div class="cats" id="cats">
+  <button data-c="biz" class="on">💼 업무<small></small></button>
+  <button data-c="mob">📱 외출 중<small></small></button>
+  <button data-c="me">🏠 개인<small></small></button>
+  <button data-c="ev">💍 이벤트<small></small></button>
+</div>
+<div class="wrap">
+  <p class="lead" id="lead"></p>
+  <div id="cases"></div>
+</div>
+<section class="sec" id="cases-log">
+  <h2><small>REAL CASES</small>실제로 이렇게 썼어요</h2>
+  <p class="sub">브랜디움이 매일 쓰는 퍼스널 OS의 실제 기록입니다. 새 사례가 생길 때마다 계속 더해집니다.<br>사람이 한 단계(로그인·최종 제출·보내기)는 그대로 적었어요.</p>
+  <div class="tags" id="tags"></div>
+  <div class="cs" id="cs"></div>
+</section>
+<div class="wrap">
+  <p class="note">※ 기존 AI도 정말 훌륭한 도구이고, 퍼스널 OS도 클로드를 엔진으로 씁니다. 결과물의 수준을 비교하는 페이지가 아니라, <b>그 결과물을 받은 뒤 대표님 손에 남는 일</b>을 비교한 페이지예요. 차이는 <b>내 컴퓨터 안에서, 내 자료·일정·기록을 펼쳐 놓고 끝까지 처리하느냐</b>입니다.<br>※ ⚠ 표시는 조건이 있는 기능이에요(서비스 연결, 컴퓨터 켜짐, 처음 한 번 로그인 등). 결제·발송·제출 같은 마지막 버튼은 언제나 대표님이 누르십니다.</p>
+  <a class="cta" href="../shop/">우리 일에는 어디까지 될까? 내 일에 맞춰 세팅받기 →</a>
+</div>
+<script>
+const LEAD={biz:'결과물은 둘 다 훌륭해요. 차이는 <b>받은 다음 대표님 손에 남는 일</b>입니다.',mob:'노트북을 펼 수 없는 순간에도, <b>휴대폰 한마디로 사무실 컴퓨터가 일합니다.</b> 실제로 이렇게 썼어요.',me:'일만 하는 게 아니에요. <b>공부·일정·취미 활동</b>까지 같은 비서가 챙깁니다.',ev:'결혼 준비, 청약처럼 <b>몇 달씩 이어지는 큰일</b>일수록 차이가 커집니다.'};
+// [분류, 부탁, 상황, 기존AI 대답, [기존AI에서 남는 일], 헉 스티커, 부서줄, [[아이콘, 내용, 조건]], 대표님이 하실 일]
+const C=[
+['biz','"○○상사 지난번처럼 견적서 보내 드려야 해"','',
+ '견적서 엑셀 파일을 만들었어요 📎<br>품목·수량·단가·부가세까지 계산해 두었어요. 지난번 단가표를 올려 주시면 그대로 맞춰 드릴게요.',
+ ['단가표·회사 정보 다시 올리기','파일 내려받아 저장, 직인 찍기','메일 열어 첨부하고 보내기','답장 왔는지 기억해 두기'],
+ '🤯 지난번 단가까지 기억','📋 총무팀 — ○○상사 / 견적서',
+ [['📄','지난 견적의 품목·단가·담당자 그대로 <b>견적서 완성 + 직인</b><br><span class="chip">📊 견적서_○○상사.xlsx</span><span class="chip">📕 PDF</span>','회사 폴더에 바로 저장'],['📧','담당자에게 보낼 <b>메일을 첨부까지 넣어 임시보관함</b>에','⚠ 지메일 연결 시 · 보내기는 대표님'],['📌','"견적 답장 확인"을 <b>할 일</b>에 걸어 둠',''],['🔔','끝나면 <b>휴대폰으로 완료 알림</b>','']],
+ '메일 열고 <b>보내기 한 번</b>'],
+['biz','(아무 말도 안 했는데)','평일 아침, 근무 시작 시각',
+ '대화창을 열고 물어보면 오늘 할 일의 우선순위를 잘 잡아 줍니다. 캘린더를 연결하면 일정도 읽어 와요.',
+ ['내가 먼저 열어서 물어보기','어제 어디까지 했는지 다시 설명','마감은 스스로 기억하기'],
+ '🤯 먼저 말을 검','☀️ 아침 브리핑',
+ [['🗂','"어제 기획안은 3장까지 쓰셨어요. 오늘은 4장부터예요."','업무일지를 읽고'],['⏰','"오늘 마감 2건, 내일 1건이에요." <b>휴대폰 알림</b>까지',''],['📅','"오후 2시 미팅 전에 자료 출력이 필요해요."','⚠ 구글 캘린더 연결 시'],['💬','답장하면 <b>브리핑을 기억한 채</b> 바로 일 시작','⚠ 컴퓨터가 켜져 있을 때']],
+ '"1번부터 하자" <b>한마디</b>'],
+['biz','"어제 하던 기획안 이어서 하자"','다음 날, 새로 열었을 때',
+ '프로젝트나 지난 대화를 열면 이어서 작업할 수 있어요. 자료를 올려 두면 내용을 참고해 계속 써 드려요.',
+ ['어느 대화였는지 찾기','그사이 바뀐 결정 다시 알려 주기','완성본은 따로 내려받아 정리'],
+ '🤯 어제를 기억','📋 기획실 — 하반기 행사 기획안',
+ [['🧠','"예산은 400만 원으로 정하셨고, 3장 일정표까지 썼어요."','업무일지·인계노트'],['📄','4장부터 이어 쓰고 <b>그 파일에 바로 반영</b><br><span class="chip">📑 기획안_하반기행사.pptx</span>',''],['📒','오늘 한 일을 <b>업무일지</b>에 남겨 내일도 이어지게','']],
+ '확인하고 <b>"좋아"</b>'],
+['biz','"다음 달 성과보고회 준비 시작하자"','',
+ '체크리스트·큐시트·사회자 대본을 문서로 만들었어요 📎📎📎 필요한 부분은 말씀해 주시면 고쳐 드릴게요.',
+ ['파일 하나씩 내려받아 폴더 정리','준비 일정을 캘린더·할 일로 옮기기','며칠 뒤 다시 열면 상황 설명부터'],
+ '🤯 할 일까지 쪼개 둠','📋 총무팀 — 성과보고회',
+ [['📁','<b>체크리스트·큐시트·대본·배치표</b>를 행사 폴더에 한 번에<br><span class="chip">📄 큐시트.xlsx</span><span class="chip">🎤 사회자대본.docx</span><span class="chip">🪑 배치표.pdf</span>',''],['✅','준비 일을 쪼개 <b>오늘·내일·곧 할 일</b> 칸에',''],['📅','행사일·업체 일정을 <b>캘린더</b>에','⚠ 구글 캘린더 연결 시'],['🗂','행사 날까지 <b>진행 상황을 이어서</b> 챙김','']],
+ '<b>고를 것만</b> 고르기'],
+['biz','"이번 프로그램 홍보 카드뉴스 만들어서 올려 줘"','',
+ '카드뉴스 6장 이미지와 캡션·해시태그를 만들었어요 🖼 마음에 안 드는 장은 다시 만들어 드릴게요.',
+ ['우리 브랜드 색·말투 매번 설명','한 장씩 내려받아 휴대폰으로 옮기기','인스타·블로그에 직접 올리기'],
+ '🤯 올리기까지','📣 홍보 — 카드뉴스',
+ [['🎨','우리 회사 색·말투로 <b>카드뉴스 6장 + 숏폼 영상</b>','브랜드 자료를 이미 알고 있음'],['📤','<b>인스타·네이버 블로그에 게시</b>','⚠ 처음 한 번 로그인 · 블로그는 임시저장/발행 먼저 여쭘'],['🔗','올라간 <b>게시물 주소</b>를 채팅으로','']],
+ '처음 한 번 <b>로그인</b>'],
+
+['mob','"사무실 컴퓨터에 있는 지난달 보고서 PDF 보내 줘"','외근 중',
+ '앱에서 바로 대화할 수 있어요. 파일을 올려 주시면 요약하거나 고쳐 드릴게요.',
+ ['그 파일은 사무실 컴퓨터에만 있음','결국 들어가서 직접 찾기'],
+ '🤯 밖에서도 내 컴퓨터를','📱 휴대폰 → 사무실 컴퓨터',
+ [['🔍','사무실 컴퓨터에서 <b>그 파일을 찾아</b> 휴대폰 채팅에 바로<br><span class="chip">📕 10월_결과보고서.pdf</span>','⚠ 사무실 컴퓨터가 켜져 있을 때'],['📝','"3쪽 숫자만 고쳐서 다시 줘"까지 <b>그 자리에서</b>','']],
+ '휴대폰으로 <b>한마디</b>'],
+['mob','"견본주택에서 찍은 거야. 옵션 설명에 반영해 줘"','현장에서 · 사진 30장',
+ '사진을 보니 욕실 스타일업, 주방 상판 샘플이 있네요! 사진별로 어떤 옵션인지 설명을 정리해 드릴게요.',
+ ['정리된 설명을 계산기·메모에 직접 옮기기','안내판 작은 글씨는 따로 확대해 읽기'],
+ '🤯 안내판 글씨까지 읽음','🏡 개인사무국 — 내 집',
+ [['📸','30장을 <b>옵션별로 나눠</b> 미리 만들어 둔 계산기의 "자세히 보기"에','셀카는 빼고'],['🔎','안내판 작은 글씨까지 읽어 <b>주의사항</b>으로<br>"견본주택 욕실은 <b>기본형</b>이에요" · "공간활용형은 방문 폭이 <b>74cm</b>로 줄어요"',''],['📱','휴대폰 계산기에서 <b>바로 다시 보기</b>','']],
+ '<b>사진 보내기</b>만'],
+['mob','"스케줄 체크만 해 줘"','이동 중 · 메일 캡처 한 장',
+ '12월 3일(목) 대전 강연 일정이네요! 캘린더에 넣을 제목·시간·장소를 정리해 드릴게요.',
+ ['캘린더 앱 열어 직접 입력','담당자·강연료 같은 조건은 따로 메모'],
+ '🤯 짚을 것까지 짚음','📅 일정관리 — 강연 일정',
+ [['📅','캘린더 등록 — 시간이 미정이면 <b>"임시"로 표시</b>','⚠ 구글 캘린더 연결 시'],['📝','담당자·강연료·세금 처리 방식·준비물을 <b>일정 메모에</b>',''],['💡','"같이 가시면 <b>이동 시간도 막아 둘까요?</b>"','']],
+ '<b>캡처 한 장</b>'],
+
+['me','"다음 달 수정이 생일 파티 20일 일요일, 체크해 줘"','',
+ '캘린더를 연결하면 바로 일정을 추가해 드려요. 선물 아이디어도 필요하시면 말씀해 주세요 🎂',
+ ['앞뒤 일정과 부딪히는지는 따로 확인','업무 일정과 섞임'],
+ '🤯 앞뒤 일정까지 짚음','📅 개인 일정',
+ [['📅','<b>개인 캘린더</b>에 등록 + 1주 전·전날 알림','⚠ 구글 캘린더 연결 시'],['⚠️','"전날은 행사, 다음 날 아침 8시 30분은 <b>건강검진</b>이에요. 금식 확인해 두세요."',''],['🗂','업무와 섞이지 않게 <b>개인 할 일</b>로 따로','']],
+ '<b>즐기기</b>만'],
+['ev','"헤어 잔금 25만, 헬퍼비 25만 오늘 입금했어"','결혼 준비 중',
+ '지출표에 반영한 엑셀 파일을 드릴게요 📎 다음에도 표를 올려 주시면 이어서 정리해 드려요.',
+ ['최신 표 파일을 매번 올리고 받기','어느 파일이 최신인지 관리'],
+ '🤯 지출표가 알아서','💍 개인사무국 — 웨딩',
+ [['📒','<b>웨딩 지출표</b>에 바로 반영 → 낸 돈·남은 돈 합계 자동','⚠ 노션 연결 시'],['📅','남은 잔금 날짜를 <b>결혼 캘린더</b>와 맞춤','⚠ 구글 캘린더 연결 시']],
+ '<b>말 한마디</b>'],
+['ev','"가봉 날짜 정했어" (플래너님 카톡 캡처)','',
+ '4월 8일(목)로 정하셨네요! 캘린더를 연결하면 일정으로 추가해 드려요.',
+ ['준비 현황표는 따로 고치기','다른 결혼 일정과 겹치는지 따로 확인'],
+ '🤯 체크리스트까지 갱신','💍 개인사무국 — 웨딩',
+ [['📅','<b>결혼 캘린더</b>에 등록 + 1주 전 알림, "시간 미정" 메모','⚠ 구글 캘린더 연결 시'],['✅','캡처 속 "스냅·영상 예약 완료"도 <b>준비 현황에 반영</b>',''],['🔍','"그 주 다른 결혼 일정과 <b>겹치지 않아요</b>"','']],
+ '<b>캡처 한 장</b>'],
+['ev','"청약 옵션 체크리스트야. 고르면 바로 계산되게 해 줘"','계약 앞두고',
+ '옵션을 고르면 합계가 바로 계산되는 계산기를 만들었어요 🧮 대화창에서 바로 써 보실 수 있어요.',
+ ['쓸 때마다 그 대화 찾아 들어가기','소개 자료·사진은 따로 보기'],
+ '🤯 휴대폰 아이콘까지','🏡 개인사무국 — 내 집',
+ [['🧮','공급금액·<b>계약금 10%</b>·잔금이 바로 바뀌는 계산기 + 옵션별 소개 그림',''],['📱','휴대폰 앱에 <b>🏠 바로가기 아이콘</b> — 누르면 바로',''],['📌','"옵션 계약 전 고르기"를 <b>할 일</b>에','']],
+ '<b>고르기</b>만'],
+['ev','"신혼여행 숙소들 결제일 놓치기 싫어"','나중결제로 예약해 둔 상태',
+ '숙소별 결제일과 무료취소 기한을 표로 정리해 드렸어요. 캘린더를 연결하면 일정으로도 넣어 드려요.',
+ ['결제 직전 카드 바꾸기는 스스로 기억','여행 일정표는 따로 관리'],
+ '🤯 무료취소 마감까지','✈️ 개인사무국 — 신혼여행',
+ [['📅','숙소별 <b>자동결제일·무료취소 마감</b>을 캘린더에, 1주 전 알림','⚠ 구글 캘린더 연결 시'],['💳','"결제 직전에 <b>수수료 없는 카드로 바꾸기</b>" 알림까지',''],['🗺','날짜별 여행 일정표로 <b>한눈에</b>','⚠ 노션 연결 시']],
+ '알림 오면 <b>확인</b>만'],
+];
+const box=document.getElementById('cases');
+C.forEach(c=>{
+  const [cat,ask,sub,ai,chores,wow,dept,acts,left]=c;
+  const a=acts.map(([ic,x,cc])=>`<div class="act"><span class="i">${ic}</span><span class="x">${x}${cc?`<small>${cc}</small>`:''}</span></div>`).join('');
+  box.insertAdjacentHTML('beforeend',`<section class="case" data-c="${cat}"><div class="ask"><div class="q"><span class="qi">🙋</span><div><div class="qt">${ask}</div>${sub?`<div class="qs">${sub}</div>`:''}</div></div></div>
+  <div class="vs"><div class="pane ai"><div class="who">💬 요즘 AI의 대답</div><div class="good">👍 결과물은 충분히 훌륭해요</div><div class="b">${ai}</div>
+  <div class="chore"><div class="h">그런데 대표님 손에 남는 일</div><ul>${chores.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+  <div class="pane os"><span class="wow">${wow}</span><div class="who">🏢 퍼스널 OS의 대답 <span class="zero">남는 일까지 끝</span></div><div class="b"><div class="dept">${dept}</div>${a}</div><div class="left">대표님이 하실 일 → ${left}</div></div></div></section>`);
+});
+document.querySelectorAll('.cats button').forEach(b=>{b.querySelector('small').textContent=C.filter(c=>c[0]===b.dataset.c).length;b.onclick=()=>show(b.dataset.c);});
+function show(cat){document.querySelectorAll('.cats button').forEach(b=>b.classList.toggle('on',b.dataset.c===cat));
+ document.querySelectorAll('.case').forEach(s=>s.classList.toggle('hide',s.dataset.c!==cat));document.getElementById('lead').innerHTML=LEAD[cat];
+ history.replaceState(null,'','#'+cat);obs();}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.act').forEach((x,j)=>x.style.transitionDelay=(.25+j*.35)+'s');e.target.classList.add('seen');io.unobserve(e.target);}}),{threshold:.3});
+function obs(){document.querySelectorAll('.case:not(.hide):not(.seen)').forEach(s=>io.observe(s));}
+show(['biz','mob','me','ev'].includes(location.hash.slice(1))?location.hash.slice(1):'biz');
+
+fetch('cases.json?v='+Date.now()).then(r=>r.json()).then(L=>{
+  L.sort((a,b)=>b.date.localeCompare(a.date));
+  const tags=['전체',...new Set(L.map(x=>x.tag))], T=document.getElementById('tags'), S=document.getElementById('cs');
+  const draw=t=>{T.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.textContent===t));
+    S.innerHTML=L.filter(x=>t==='전체'||x.tag===t).map(x=>`<article class="cc"><div class="m"><span>${x.date.replace(/-/g,'.')}</span><i>${x.tag}</i></div><h3>${x.title}</h3><p><b>예전엔</b>${x.before}</p><p class="d"><b>퍼스널 OS</b>${x.did}</p>${x.human?`<p class="h"><b>사람이</b>${x.human}</p>`:''}${x.img?`<img src="${x.img}" alt="" loading="lazy">`:''}</article>`).join('');};
+  T.innerHTML=tags.map(t=>`<button>${t}</button>`).join('');T.querySelectorAll('button').forEach(b=>b.onclick=()=>draw(b.textContent));draw('전체');
+}).catch(()=>document.getElementById('cases-log').style.display='none');
+</script>
+</body>
+</html>
