@@ -245,7 +245,8 @@ USE = r"""<section class="pad light" data-pg="use" id="use">
  <p class="chips-why" style="margin-top:6px">브랜디움이 매일 쓰는 퍼스널 OS의 실제 기록입니다. 새 사례가 생길 때마다 계속 더해집니다. 사람이 한 단계(로그인·최종 제출·보내기)는 그대로 적었어요.</p>
  <div class="ctags" id="ctags"></div>
  <div class="cgrid" id="cgrid"></div>
- <a class="ucta" href="shop/">설치는 브랜디움이, 내 일에 맞추는 건 직접 — 퍼스널 OS 시작하기 →</a>
+ <p class="ucsub">인터뷰로 대표님 업무에 맞춘 <b>부서·지침·매니저</b>를 세팅해 드려요. 그다음부터는 쓸수록 내 일에 꼭 맞게 자랍니다.</p>
+ <a class="ucta" href="shop/">나도 이렇게 쓰고 싶다면 — 퍼스널 OS 시작하기 →</a>
  </div>
 </section>
 """
@@ -308,7 +309,8 @@ USECSS = """
 .cc .m{display:flex;justify-content:space-between;font-size:12px;font-weight:800;opacity:.7;margin-bottom:8px}.cc .m i{font-style:normal;background:var(--sand);border-radius:999px;padding:2px 9px}
 .cc h3{font-size:18px;line-height:1.4;font-weight:900;margin-bottom:6px}
 .cc p{font-size:14px;line-height:1.6;margin-top:6px}.cc p b{display:inline-block;min-width:62px;font-size:12px;color:#a2493d}.cc p.d b{color:#7a5d00}.cc p.h b{color:#6f625f}
-.ucta{display:block;text-align:center;margin-top:28px;background:var(--butter2);color:var(--ink);font-weight:900;font-size:18px;text-decoration:none;border:2px solid var(--ink);border-radius:18px;padding:18px;box-shadow:4px 4px 0 var(--ink)}
+.ucsub{margin-top:30px;font-size:16px;line-height:1.6;opacity:.8}
+.ucta{display:block;text-align:center;margin-top:12px;background:var(--butter2);color:var(--ink);font-weight:900;font-size:18px;text-decoration:none;border:2px solid var(--ink);border-radius:18px;padding:18px;box-shadow:4px 4px 0 var(--ink)}
 @media(max-width:860px){.cgrid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.u3{grid-template-columns:1fr}.uvs{grid-template-columns:1fr}.uch.ai{border-right:0;border-bottom:2px dashed #d6ccc2}.uarr{display:none}.ucar{display:block}.unavm{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;font:800 14px Pretendard}.uarr2{font:800 14px Pretendard;border:2px solid var(--ink);background:var(--butter2);color:var(--ink);border-radius:999px;padding:8px 14px;box-shadow:2px 2px 0 var(--ink)}.uarr2:disabled{opacity:.3}.uch.os .hd{padding-right:0;margin-top:30px}.uwow{top:12px;left:18px;right:auto}.cgrid{grid-template-columns:1fr}.uask .me div{font-size:16.5px}}
 """
