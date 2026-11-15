@@ -176,7 +176,7 @@ function done(o) {
   const q = new URLSearchParams(location.search);
   if (q.get("paid")) {
     window.scrollTo(0, 0);
-    const fail = (msg) => M.innerHTML = `<p class="en">PAYMENT</p><h1>결제가 완료되지 않았습니다</h1><p class="sub">${osEsc(msg)}</p><p class="small">주문은 <b>입금대기</b>로 남아 있습니다. 마이페이지에서 다시 결제하시거나 계좌(기업은행 114-193627-04-019 (주)캐다)로 입금해 주세요. 문의 010-8225-6242</p><a class="btn dark" href="../account/">마이페이지</a>`;
+    const fail = (msg) => M.innerHTML = `<p class="en">PAYMENT</p><h1>결제가 완료되지 않았습니다</h1><p class="sub">${osEsc(msg)}</p><p class="small">주문은 <b>입금대기</b>로 남아 있습니다. 12시간 안에 계좌(기업은행 114-193627-04-019 (주)캐다)로 입금하시거나, 처음부터 다시 주문해 주세요. 문의 010-8225-6242</p><a class="btn dark" href="../account/">마이페이지</a>`;
     if (q.get("paid") !== "ok") { fail(q.get("message") || "결제를 취소하셨거나 오류가 났습니다."); return; }
     M.innerHTML = `<p class="en">PAYMENT</p><h1>결제를 확인하고 있습니다…</h1><p class="sub">창을 닫지 말고 잠시만 기다려 주세요.</p>`;
     try {
