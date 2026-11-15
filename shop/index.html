@@ -470,9 +470,71 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 .notedu .lead{margin:22px auto 0}
 @media(max-width:860px){.chat2,.truth{grid-template-columns:1fr}.vs95 td{font-size:14.5px;padding:11px 12px;word-break:keep-all}.vs95 th{font-size:13px;padding:0 12px 4px;word-break:keep-all}}
 
+
+/* USE 페이지 (2026-11-15) — 같은 부탁 다른 대답(메시지형·좌우 넘김) + 실제 사례 */
+.u3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 4px}
+.u3 span{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 14px;font-size:15px;line-height:1.5}
+.u3 b{display:block;font-size:17px;margin-top:2px}
+.utabs{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 8px}
+.utabs button{font:800 16px Pretendard;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:10px 18px;cursor:pointer}
+.utabs button.on{background:var(--ink);color:var(--butter2)}
+.utabs button small{opacity:.55;margin-left:4px;font-weight:700}
+.ulead{font-size:16px;opacity:.75;margin:6px 0 14px}
+.ucar{position:relative;display:flex;align-items:center;gap:10px}
+.uview{overflow:hidden;flex:1;border-radius:24px}
+.utrack{display:flex;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.uslide{flex:0 0 100%;padding:4px}
+.uarr{flex:none;width:52px;height:52px;border-radius:50%;border:2px solid var(--ink);background:var(--butter2);color:var(--ink);font:900 30px/1 Pretendard;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.uarr:disabled{opacity:.3;cursor:default}
+.unav{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:14px;font:800 14px Pretendard}
+.udots{display:flex;gap:6px}.udots i{width:9px;height:9px;border-radius:50%;background:var(--ink);opacity:.2;cursor:pointer}.udots i.on{opacity:1}
+.ucard{background:#fff;border:2px solid var(--ink);border-radius:24px;overflow:hidden}
+.uask{background:var(--sand);padding:20px 22px;border-bottom:2px solid var(--ink)}
+.uask small{display:block;font-family:'Josefin Sans',Pretendard;font-weight:700;letter-spacing:.06em;font-size:12px;opacity:.6;margin-bottom:10px}
+.uask .me{display:flex;justify-content:flex-end}
+.uask .me div{background:#0a84ff;color:#fff;border-radius:20px 20px 4px 20px;padding:12px 16px;font-size:18px;font-weight:700;line-height:1.45;max-width:86%}
+.uask .me div em{display:block;font-style:normal;font-size:13px;font-weight:500;opacity:.85;margin-top:4px}
+.uvs{display:grid;grid-template-columns:1fr 1fr}
+.uch{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px}
+.uch.ai{background:#f1efec;border-right:2px dashed #d6ccc2}
+.uch.os{background:#fffaf0;position:relative}
+.uch .hd{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;margin-bottom:4px}
+.uch .hd i{font-style:normal;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--ink)}
+.uch.ai .hd i{background:#fff}.uch.os .hd i{background:var(--butter2)}
+.uch .hd s{text-decoration:none;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;margin-left:auto}
+.uch.ai .hd s{background:#e3eed3;color:#5b7a3c}.uch.os .hd s{background:var(--ink);color:var(--butter2)}
+.bb{max-width:92%;padding:11px 14px;font-size:15px;line-height:1.55;border-radius:18px 18px 18px 4px}
+.uch.ai .bb{background:#fff;border:1px solid #ddd4ca;color:#4f4441}
+.uch.os .bb{background:#fff;border:2px solid var(--butter2)}
+.uch.os .bb.dp{background:var(--ink);color:#fffaf0;border-color:var(--ink);font-size:13px;font-weight:800;padding:7px 12px}
+.bb small{display:block;font-size:12.5px;color:#8a6d00;margin-top:3px}
+.bb .chip{display:inline-block;background:#f3efe8;border:1px solid #d8cdbd;border-radius:8px;padding:2px 7px;font-size:12px;font-weight:700;margin:4px 4px 0 0}
+.left-ai{margin-top:6px;border:2px dashed #c9a49c;border-radius:16px;padding:10px 14px;background:#fff}
+.left-ai b{display:block;font-size:13px;color:#a2493d;margin-bottom:4px}
+.left-ai li{list-style:none;font-size:14px;line-height:1.55;color:#5c504d;padding-left:22px;position:relative}
+.left-ai li:before{content:'✋';position:absolute;left:0}
+.uwow{position:absolute;top:14px;right:14px;background:#ff5a3c;color:#fff;font-weight:900;font-size:13px;border-radius:999px;padding:5px 12px;transform:rotate(3deg);box-shadow:2px 2px 0 var(--ink)}
+.uch.os .hd{padding-right:150px}.uch.os .hd s{display:none}
+.unavm{display:none}
+.uend{margin-top:auto;padding-top:6px;font-size:14px;font-weight:800}
+.uend span{display:inline-block;background:var(--ink);color:var(--butter2);border-radius:12px;padding:9px 13px}
+.uend span b{color:#fff}
+.uch.os .bb{opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.uslide.seen .uch.os .bb{opacity:1;transform:none}
+.unote{font-size:13px;opacity:.65;line-height:1.7;margin-top:22px;max-width:820px}
+.ctags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 16px}
+.ctags button{font:800 14px Pretendard;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}.ctags button.on{background:var(--ink);color:var(--butter2)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cc{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:18px}
+.cc .m{display:flex;justify-content:space-between;font-size:12px;font-weight:800;opacity:.7;margin-bottom:8px}.cc .m i{font-style:normal;background:var(--sand);border-radius:999px;padding:2px 9px}
+.cc h3{font-size:18px;line-height:1.4;font-weight:900;margin-bottom:6px}
+.cc p{font-size:14px;line-height:1.6;margin-top:6px}.cc p b{display:inline-block;min-width:62px;font-size:12px;color:#a2493d}.cc p.d b{color:#7a5d00}.cc p.h b{color:#6f625f}
+.ucta{display:block;text-align:center;margin-top:28px;background:var(--butter2);color:var(--ink);font-weight:900;font-size:18px;text-decoration:none;border:2px solid var(--ink);border-radius:18px;padding:18px;box-shadow:4px 4px 0 var(--ink)}
+@media(max-width:860px){.cgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.u3{grid-template-columns:1fr}.uvs{grid-template-columns:1fr}.uch.ai{border-right:0;border-bottom:2px dashed #d6ccc2}.uarr{display:none}.ucar{display:block}.unavm{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;font:800 14px Pretendard}.uarr2{font:800 14px Pretendard;border:2px solid var(--ink);background:var(--butter2);color:var(--ink);border-radius:999px;padding:8px 14px;box-shadow:2px 2px 0 var(--ink)}.uarr2:disabled{opacity:.3}.uch.os .hd{padding-right:0;margin-top:30px}.uwow{top:12px;left:18px;right:auto}.cgrid{grid-template-columns:1fr}.uask .me div{font-size:16.5px}}
 /* 페이지 나누기 (2026-10-23) */
 section[data-pg]{display:none}
-body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=chips] section[data-pg~=chips]{display:block}
+body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=chips] section[data-pg~=chips],body[data-pg=use] section[data-pg~=use]{display:block}
 body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-pg~=os][hidden]{display:none}
 .pghead{background:var(--cream);padding:70px calc(var(--frame) + 14px) 54px;border-radius:0 0 28px 28px}
 .pghead .label{display:inline-block;margin-bottom:14px}
@@ -797,6 +859,28 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
  <p class="chiprule">· 칩은 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다. 일부를 쓴 뒤에는 쓴 칩을 1개 400원으로 계산해 뺀 나머지를 돌려드려요. 보너스 칩은 환불되지 않습니다.<br>· 칩으로 받은 상품은 받는 즉시 내 OS에 설치되는 디지털 상품이라 취소·환불되지 않습니다. 설명대로 작동하지 않으면 칩으로 돌려드립니다.<br>· 유효기간: 충전한 칩 5년 · 보너스 칩 1년. 자세한 내용은 <a href="refund/">환불 규정</a>을 확인해 주세요.</p>
  </div>
 </section>
+<section class="pad light" data-pg="use" id="use">
+ <div class="reveal">
+ <span class="label">SAME ASK, DIFFERENT ANSWER</span><h2 style="margin-bottom:10px">같은 부탁,<br>다른 대답</h2>
+ <p class="chips-why" style="margin-top:6px">결과물은 요즘 AI도 충분히 훌륭해요. 차이는 <b>받은 다음 대표님 손에 남는 일</b>입니다. 똑같이 부탁했을 때 두 대화를 나란히 보세요.</p>
+ <div class="u3"><span>🧠 매번 설명할 필요 없이 <b>기억합니다</b></span><span>💻 내 컴퓨터·메일함·캘린더에서 <b>끝까지 처리합니다</b></span><span>📱 먼저 말 걸고, <b>밖에서도 움직입니다</b></span></div>
+ <div class="utabs" id="utabs"><button data-c="biz">💼 업무</button><button data-c="mob">📱 외출 중</button><button data-c="me">🏠 개인</button><button data-c="ev">💍 이벤트</button></div>
+ <p class="ulead" id="ulead"></p>
+ <div class="unavm"><button class="uarr2" id="uprev2" aria-label="이전">‹ 이전</button><span id="ucount2"></span><button class="uarr2" id="unext2" aria-label="다음">다음 ›</button></div>
+ <div class="ucar"><button class="uarr l" id="uprev" aria-label="이전">‹</button><div class="uview" id="uview"><div class="utrack" id="utrack"></div></div><button class="uarr r" id="unext" aria-label="다음">›</button></div>
+ <div class="unav"><span id="ucount"></span><span class="udots" id="udots"></span></div>
+ <p class="unote">※ 퍼스널 OS도 클로드를 엔진으로 씁니다. 결과물의 수준이 아니라, <b>결과물을 받은 뒤 손에 남는 일</b>을 비교했어요. ⚠ 표시는 조건이 있는 기능(서비스 연결·컴퓨터 켜짐·처음 한 번 로그인 등)이고, 결제·발송·제출 같은 마지막 단계는 언제나 사람이 합니다.</p>
+ </div>
+</section>
+<section class="pad cream" data-pg="use" id="realcases">
+ <div class="reveal">
+ <span class="label">REAL CASES</span><h2 style="margin-bottom:10px">실제로<br>이렇게 썼어요</h2>
+ <p class="chips-why" style="margin-top:6px">브랜디움이 매일 쓰는 퍼스널 OS의 실제 기록입니다. 새 사례가 생길 때마다 계속 더해집니다. 사람이 한 단계(로그인·최종 제출·보내기)는 그대로 적었어요.</p>
+ <div class="ctags" id="ctags"></div>
+ <div class="cgrid" id="cgrid"></div>
+ <a class="ucta" href="shop/">우리 일에는 어디까지 될까? 내 일에 맞춰 세팅받기 →</a>
+ </div>
+</section>
 
 
 <section data-pg="how" class="pad light" id="how">
@@ -832,7 +916,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
  <p class="story"><span>솔직히, 저도 처음엔 AI를 못 믿었어요.</span><span>시켜 놓고 다시 확인하고, 결국 제 손으로 고치고.</span><span>'설마 이것까지 하겠어?' 싶던 일들이</span><span><b>지금은 말 한마디면 끝나 있습니다.</b></span><span class="gap">대표님의 하루를 갉아먹던 일은 퍼스널 OS에 맡기세요.</span><span><b>이제, 시간을 버세요.</b></span></p></div>
 </section>
 
-<section data-pg="home os how shop chips" class="final orange" id="apply">
+<section data-pg="home os how shop chips use" class="final orange" id="apply">
  <div class="reveal"><span class="label">APPLY</span>
  <h2>당신만의<br>퍼스널 OS를<br>세팅해 드립니다</h2>
  <div class="ctas"><a class="cta buy" href="shop/">📅 일정 고르고 바로 예약하기 →</a><a class="cta ghost" href="https://forms.gle/RVWVXJx6NLJqftPLA" target="_blank" rel="noopener">상담 먼저 받아 보기</a><a class="cta kk" href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">💬 카카오톡으로 문의하기</a></div>
@@ -854,7 +938,7 @@ body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-
  </div></div>
 </section>
 </div>
-<section data-pg="how shop chips" class="fine" aria-label="이용 안내">
+<section data-pg="how shop chips use" class="fine" aria-label="이용 안내">
 <h5>꼭 읽어 주세요 · 퍼스널 OS 이용 안내</h5>
 <ol>
 <li><b>퍼스널 OS는 새로운 AI도, 컴퓨터 운영체제도 아닙니다.</b> 윈도우·맥 같은 컴퓨터 운영체제를 바꾸지 않습니다. Anthropic의 AI 'Claude'를 대표님 컴퓨터와 연결하고, Claude가 대표님의 일을 대신 처리할 수 있도록 부서·업무 지침·화면·자동 업무로 이루어진 <b>'내 일의 운영 체계'</b>를 세팅해 드리는 서비스입니다.</li>

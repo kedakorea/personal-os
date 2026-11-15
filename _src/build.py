@@ -7,7 +7,7 @@ src = open(os.path.join(R, "_src/onepage.html")).read()
 
 # 원본 칸 순서대로 어느 페이지에 보일지
 PG = ["home", "home", "home", "home", "home", "os", "os", "home", "home", "os", "os", "os", "os", "os", "os", "os", "os",
-      "shop", "how", "how", "home", "home os how shop chips", "home", "how shop chips"]
+      "shop", "how", "how", "home", "home os how shop chips use", "home", "how shop chips use"]
 secs = list(re.finditer(r"<section\b", src))
 assert len(secs) == len(PG), (len(secs), len(PG))
 out, last = [], 0
@@ -20,13 +20,14 @@ PAGES = {
     "os": ("os/", "퍼스널 OS란? — 브랜디움 BRAND!UM", ("WHAT IS PERSONAL OS", "퍼스널 OS는<br>이렇게 일합니다", "도구가 아니라 조직. 대표님 업무에 맞춘 부서·매니저·업무 앱이 대표님 컴퓨터에서 움직이고, 데스크톱·노트북은 물론 휴대폰에서도 똑같이 지시할 수 있습니다.")),
     "how": ("how/", "진행 방식 · 자주 묻는 질문 — 브랜디움 BRAND!UM", ("HOW IT WORKS · FAQ", "어떻게<br>진행되나요?", "구매하면 날짜를 잡고, 설치하면 끝. 미리 알아 두실 것도 모았습니다.")),
     "shop": ("shop/", "스토어 — 퍼스널 OS 방문형·원격형 구매 | 브랜디움 BRAND!UM", ("STORE", "퍼스널 OS<br>세팅 상품", "대표님 업무에 맞춘 AI 비서 조직을 통째로 세팅해 드립니다. 방문형과 원격형 중에 고르세요.")),
+    "use": ("use/", "USE — 퍼스널 OS 이렇게 씁니다 | 브랜디움 BRAND!UM", ("HOW TO USE", "잘 만드는 AI는 많습니다.<br>끝까지 해 주는 AI는 따로 있어요.", "ChatGPT·클로드도 문서·카드뉴스·이미지까지 훌륭하게 만들어 줍니다. 그런데 결과물을 받은 그다음, 다시 설명하고 내려받고 옮기고 보내고 챙기는 일은 아직 대표님 손에 남아 있죠. 퍼스널 OS는 그 '다음'까지 맡습니다.")),
     "chips": ("chips/", "OS 확장 상점 — 세팅 후에도 내 OS에 기능 더하기 | 브랜디움 BRAND!UM", ("OS PLUS STORE", "OS 확장<br>상점", "퍼스널 OS를 세팅받은 뒤에도, 필요한 기능을 하나씩 골라 내 OS에 더하는 곳입니다. 앱스토어처럼 고르고, 붙여넣으면 매니저가 설치해요.")),
 }
 
 CSS = """
-/* 페이지 나누기 (2026-10-23) */
+__USECSS__/* 페이지 나누기 (2026-10-23) */
 section[data-pg]{display:none}
-body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=chips] section[data-pg~=chips]{display:block}
+body[data-pg=home] section[data-pg~=home],body[data-pg=os] section[data-pg~=os],body[data-pg=how] section[data-pg~=how],body[data-pg=shop] section[data-pg~=shop],body[data-pg=chips] section[data-pg~=chips],body[data-pg=use] section[data-pg~=use]{display:block}
 body[data-pg=home] section[data-pg~=home][hidden],body[data-pg=os] section[data-pg~=os][hidden]{display:none}
 .pghead{background:var(--cream);padding:70px calc(var(--frame) + 14px) 54px;border-radius:0 0 28px 28px}
 .pghead .label{display:inline-block;margin-bottom:14px}
@@ -225,19 +226,138 @@ SHOPJS = """<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><
 </script>
 """
 
+USE = r"""<section class="pad light" data-pg="use" id="use">
+ <div class="reveal">
+ <span class="label">SAME ASK, DIFFERENT ANSWER</span><h2 style="margin-bottom:10px">같은 부탁,<br>다른 대답</h2>
+ <p class="chips-why" style="margin-top:6px">결과물은 요즘 AI도 충분히 훌륭해요. 차이는 <b>받은 다음 대표님 손에 남는 일</b>입니다. 똑같이 부탁했을 때 두 대화를 나란히 보세요.</p>
+ <div class="u3"><span>🧠 매번 설명할 필요 없이 <b>기억합니다</b></span><span>💻 내 컴퓨터·메일함·캘린더에서 <b>끝까지 처리합니다</b></span><span>📱 먼저 말 걸고, <b>밖에서도 움직입니다</b></span></div>
+ <div class="utabs" id="utabs"><button data-c="biz">💼 업무</button><button data-c="mob">📱 외출 중</button><button data-c="me">🏠 개인</button><button data-c="ev">💍 이벤트</button></div>
+ <p class="ulead" id="ulead"></p>
+ <div class="unavm"><button class="uarr2" id="uprev2" aria-label="이전">‹ 이전</button><span id="ucount2"></span><button class="uarr2" id="unext2" aria-label="다음">다음 ›</button></div>
+ <div class="ucar"><button class="uarr l" id="uprev" aria-label="이전">‹</button><div class="uview" id="uview"><div class="utrack" id="utrack"></div></div><button class="uarr r" id="unext" aria-label="다음">›</button></div>
+ <div class="unav"><span id="ucount"></span><span class="udots" id="udots"></span></div>
+ <p class="unote">※ 퍼스널 OS도 클로드를 엔진으로 씁니다. 결과물의 수준이 아니라, <b>결과물을 받은 뒤 손에 남는 일</b>을 비교했어요. ⚠ 표시는 조건이 있는 기능(서비스 연결·컴퓨터 켜짐·처음 한 번 로그인 등)이고, 결제·발송·제출 같은 마지막 단계는 언제나 사람이 합니다.</p>
+ </div>
+</section>
+<section class="pad cream" data-pg="use" id="realcases">
+ <div class="reveal">
+ <span class="label">REAL CASES</span><h2 style="margin-bottom:10px">실제로<br>이렇게 썼어요</h2>
+ <p class="chips-why" style="margin-top:6px">브랜디움이 매일 쓰는 퍼스널 OS의 실제 기록입니다. 새 사례가 생길 때마다 계속 더해집니다. 사람이 한 단계(로그인·최종 제출·보내기)는 그대로 적었어요.</p>
+ <div class="ctags" id="ctags"></div>
+ <div class="cgrid" id="cgrid"></div>
+ <a class="ucta" href="shop/">우리 일에는 어디까지 될까? 내 일에 맞춰 세팅받기 →</a>
+ </div>
+</section>
+"""
+USECSS = """
+/* USE 페이지 (2026-11-15) — 같은 부탁 다른 대답(메시지형·좌우 넘김) + 실제 사례 */
+.u3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 4px}
+.u3 span{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:14px 14px;font-size:15px;line-height:1.5}
+.u3 b{display:block;font-size:17px;margin-top:2px}
+.utabs{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 8px}
+.utabs button{font:800 16px Pretendard;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:10px 18px;cursor:pointer}
+.utabs button.on{background:var(--ink);color:var(--butter2)}
+.utabs button small{opacity:.55;margin-left:4px;font-weight:700}
+.ulead{font-size:16px;opacity:.75;margin:6px 0 14px}
+.ucar{position:relative;display:flex;align-items:center;gap:10px}
+.uview{overflow:hidden;flex:1;border-radius:24px}
+.utrack{display:flex;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.uslide{flex:0 0 100%;padding:4px}
+.uarr{flex:none;width:52px;height:52px;border-radius:50%;border:2px solid var(--ink);background:var(--butter2);color:var(--ink);font:900 30px/1 Pretendard;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.uarr:disabled{opacity:.3;cursor:default}
+.unav{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:14px;font:800 14px Pretendard}
+.udots{display:flex;gap:6px}.udots i{width:9px;height:9px;border-radius:50%;background:var(--ink);opacity:.2;cursor:pointer}.udots i.on{opacity:1}
+.ucard{background:#fff;border:2px solid var(--ink);border-radius:24px;overflow:hidden}
+.uask{background:var(--sand);padding:20px 22px;border-bottom:2px solid var(--ink)}
+.uask small{display:block;font-family:'Josefin Sans',Pretendard;font-weight:700;letter-spacing:.06em;font-size:12px;opacity:.6;margin-bottom:10px}
+.uask .me{display:flex;justify-content:flex-end}
+.uask .me div{background:#0a84ff;color:#fff;border-radius:20px 20px 4px 20px;padding:12px 16px;font-size:18px;font-weight:700;line-height:1.45;max-width:86%}
+.uask .me div em{display:block;font-style:normal;font-size:13px;font-weight:500;opacity:.85;margin-top:4px}
+.uvs{display:grid;grid-template-columns:1fr 1fr}
+.uch{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px}
+.uch.ai{background:#f1efec;border-right:2px dashed #d6ccc2}
+.uch.os{background:#fffaf0;position:relative}
+.uch .hd{display:flex;align-items:center;gap:8px;font-weight:900;font-size:15px;margin-bottom:4px}
+.uch .hd i{font-style:normal;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--ink)}
+.uch.ai .hd i{background:#fff}.uch.os .hd i{background:var(--butter2)}
+.uch .hd s{text-decoration:none;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;margin-left:auto}
+.uch.ai .hd s{background:#e3eed3;color:#5b7a3c}.uch.os .hd s{background:var(--ink);color:var(--butter2)}
+.bb{max-width:92%;padding:11px 14px;font-size:15px;line-height:1.55;border-radius:18px 18px 18px 4px}
+.uch.ai .bb{background:#fff;border:1px solid #ddd4ca;color:#4f4441}
+.uch.os .bb{background:#fff;border:2px solid var(--butter2)}
+.uch.os .bb.dp{background:var(--ink);color:#fffaf0;border-color:var(--ink);font-size:13px;font-weight:800;padding:7px 12px}
+.bb small{display:block;font-size:12.5px;color:#8a6d00;margin-top:3px}
+.bb .chip{display:inline-block;background:#f3efe8;border:1px solid #d8cdbd;border-radius:8px;padding:2px 7px;font-size:12px;font-weight:700;margin:4px 4px 0 0}
+.left-ai{margin-top:6px;border:2px dashed #c9a49c;border-radius:16px;padding:10px 14px;background:#fff}
+.left-ai b{display:block;font-size:13px;color:#a2493d;margin-bottom:4px}
+.left-ai li{list-style:none;font-size:14px;line-height:1.55;color:#5c504d;padding-left:22px;position:relative}
+.left-ai li:before{content:'✋';position:absolute;left:0}
+.uwow{position:absolute;top:14px;right:14px;background:#ff5a3c;color:#fff;font-weight:900;font-size:13px;border-radius:999px;padding:5px 12px;transform:rotate(3deg);box-shadow:2px 2px 0 var(--ink)}
+.uch.os .hd{padding-right:150px}.uch.os .hd s{display:none}
+.unavm{display:none}
+.uend{margin-top:auto;padding-top:6px;font-size:14px;font-weight:800}
+.uend span{display:inline-block;background:var(--ink);color:var(--butter2);border-radius:12px;padding:9px 13px}
+.uend span b{color:#fff}
+.uch.os .bb{opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.uslide.seen .uch.os .bb{opacity:1;transform:none}
+.unote{font-size:13px;opacity:.65;line-height:1.7;margin-top:22px;max-width:820px}
+.ctags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 16px}
+.ctags button{font:800 14px Pretendard;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}.ctags button.on{background:var(--ink);color:var(--butter2)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cc{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:18px}
+.cc .m{display:flex;justify-content:space-between;font-size:12px;font-weight:800;opacity:.7;margin-bottom:8px}.cc .m i{font-style:normal;background:var(--sand);border-radius:999px;padding:2px 9px}
+.cc h3{font-size:18px;line-height:1.4;font-weight:900;margin-bottom:6px}
+.cc p{font-size:14px;line-height:1.6;margin-top:6px}.cc p b{display:inline-block;min-width:62px;font-size:12px;color:#a2493d}.cc p.d b{color:#7a5d00}.cc p.h b{color:#6f625f}
+.ucta{display:block;text-align:center;margin-top:28px;background:var(--butter2);color:var(--ink);font-weight:900;font-size:18px;text-decoration:none;border:2px solid var(--ink);border-radius:18px;padding:18px;box-shadow:4px 4px 0 var(--ink)}
+@media(max-width:860px){.cgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.u3{grid-template-columns:1fr}.uvs{grid-template-columns:1fr}.uch.ai{border-right:0;border-bottom:2px dashed #d6ccc2}.uarr{display:none}.ucar{display:block}.unavm{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;font:800 14px Pretendard}.uarr2{font:800 14px Pretendard;border:2px solid var(--ink);background:var(--butter2);color:var(--ink);border-radius:999px;padding:8px 14px;box-shadow:2px 2px 0 var(--ink)}.uarr2:disabled{opacity:.3}.uch.os .hd{padding-right:0;margin-top:30px}.uwow{top:12px;left:18px;right:auto}.cgrid{grid-template-columns:1fr}.uask .me div{font-size:16.5px}}
+"""
+USEJS = r"""<script>
+(async()=>{
+ const [D,L]=await Promise.all([fetch('use/cards.json?v='+Date.now()).then(r=>r.json()),fetch('use/cases.json?v='+Date.now()).then(r=>r.json()).catch(()=>[])]);
+ const C=D.cards, tr=document.getElementById('utrack'), tabs=[...document.querySelectorAll('#utabs button')];
+ let cat='biz', idx=0, list=[];
+ const slide=c=>`<div class="uslide"><div class="ucard"><div class="uask"><small>${c.cat==='mob'?'📱 밖에서 휴대폰으로':'🙋 이렇게 부탁했어요'}</small><div class="me"><div>${c.ask}${c.sub?`<em>${c.sub}</em>`:''}</div></div></div>
+  <div class="uvs"><div class="uch ai"><div class="hd"><i>💬</i>요즘 AI<s>결과물 👍</s></div><div class="bb">${c.ai}</div>
+   <div class="left-ai"><b>그다음, 내 손에 남는 일</b><ul>${c.chores.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+  <div class="uch os"><span class="uwow">${c.wow}</span><div class="hd"><i>🏢</i>퍼스널 OS<s>남는 일까지 끝</s></div><div class="bb dp">${c.dept}</div>
+   ${c.acts.map(([ic,x,cc])=>`<div class="bb">${ic} ${x}${cc?`<small>${cc}</small>`:''}</div>`).join('')}
+   <div class="uend"><span>내가 할 일 → <b>${c.left.replace(/<\/?b>/g,'')}</b></span></div></div></div></div></div>`;
+ tabs.forEach(b=>{b.insertAdjacentHTML('beforeend',`<small>${C.filter(c=>c.cat===b.dataset.c).length}</small>`);b.onclick=()=>show(b.dataset.c,0);});
+ function go(i){idx=Math.max(0,Math.min(list.length-1,i));tr.style.transform=`translateX(-${idx*100}%)`;
+  document.getElementById('ucount').textContent=`${idx+1} / ${list.length}`;
+  document.querySelectorAll('#udots i').forEach((d,j)=>d.classList.toggle('on',j===idx));
+  uprev.disabled=uprev2.disabled=idx===0;unext.disabled=unext2.disabled=idx===list.length-1;document.getElementById('ucount2').textContent=`${idx+1} / ${list.length}`;
+  const s=tr.children[idx];if(s&&!s.classList.contains('seen')){s.querySelectorAll('.uch.os .bb').forEach((b,j)=>b.style.transitionDelay=(.15+j*.3)+'s');setTimeout(()=>s.classList.add('seen'),60);}}
+ function show(c,i){cat=c;list=C.filter(x=>x.cat===c);tabs.forEach(b=>b.classList.toggle('on',b.dataset.c===c));
+  document.getElementById('ulead').innerHTML=D.lead[c];tr.innerHTML=list.map(slide).join('');
+  document.getElementById('udots').innerHTML=list.map((_,j)=>`<i data-j="${j}"></i>`).join('');
+  document.querySelectorAll('#udots i').forEach(d=>d.onclick=()=>go(+d.dataset.j));tr.style.transition='none';go(i);requestAnimationFrame(()=>tr.style.transition='');history.replaceState(null,'','#'+c);}
+ const uprev=document.getElementById('uprev'),unext=document.getElementById('unext'),uprev2=document.getElementById('uprev2'),unext2=document.getElementById('unext2');uprev.onclick=uprev2.onclick=()=>go(idx-1);unext.onclick=unext2.onclick=()=>go(idx+1);
+ let x0=null;const v=document.getElementById('uview');v.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+ v.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(idx+(dx<0?1:-1));x0=null;});
+ document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(idx+1);if(e.key==='ArrowLeft')go(idx-1);});
+ show(['biz','mob','me','ev'].includes(location.hash.slice(1))?location.hash.slice(1):'biz',0);
+ L.sort((a,b)=>b.date.localeCompare(a.date));const tg=['전체',...new Set(L.map(x=>x.tag))],T=document.getElementById('ctags'),G=document.getElementById('cgrid');
+ const draw=t=>{T.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.textContent===t));
+  G.innerHTML=L.filter(x=>t==='전체'||x.tag===t).map(x=>`<article class="cc"><div class="m"><span>${x.date.replace(/-/g,'.')}</span><i>${x.tag}</i></div><h3>${x.title}</h3><p><b>예전엔</b>${x.before}</p><p class="d"><b>퍼스널 OS</b>${x.did}</p>${x.human?`<p class="h"><b>사람이</b>${x.human}</p>`:''}</article>`).join('');};
+ T.innerHTML=tg.map(t=>`<button>${t}</button>`).join('');T.querySelectorAll('button').forEach(b=>b.onclick=()=>draw(b.textContent));draw('전체');
+})();
+</script>"""
+
 NAV_OLD = re.search(r'<div class="links">.*?</div>', s).group(0)
 
 def build(pg):
     path, title, head = PAGES[pg]
     t = s
-    t = t.replace("</style>", CSS + "</style>", 1)
+    t = t.replace("</style>", CSS.replace("__USECSS__", USECSS) + "</style>", 1)
     t = re.sub(r"<title>.*?</title>", "<title>%s</title>" % title, t, 1)
     t = t.replace('<link rel="canonical" href="https://mybrandium.com/">', '<link rel="canonical" href="https://mybrandium.com/%s">' % path)
     t = t.replace("<head>", '<head>\n<base href="/">', 1)
     t = re.sub(r"<body([^>]*)>", lambda m: '<body%s data-pg="%s">' % (m.group(1), pg), t, 1)
     on = lambda p: ' class="on"' if p == pg else ""
-    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="use/">USE</a><a href="how/"%s>HOW</a><a href="shop/"%s>STORE</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
-           % (on("os"), on("how"), on("shop")))
+    nav = ('<div class="links"><a href="os/"%s>OS</a><a href="use/"%s>USE</a><a href="how/"%s>HOW</a><a href="shop/"%s>STORE</a><a href="how/#faq">FAQ</a><a href="#apply">APPLY</a></div>'
+           % (on("os"), on("use"), on("how"), on("shop")))
     t = t.replace(NAV_OLD, nav, 1)
     # 메인 섹션 링크(#what 등)가 다른 페이지로 옮겨간 것 바로잡기
     for a, b in [('href="#price"', 'href="shop/"'), ('href="#how"', 'href="how/"'), ('href="#faq"', 'href="how/#faq"'),
@@ -245,7 +365,7 @@ def build(pg):
         t = t.replace(a, b)
     # 새 칸 넣기
     price_end = t.index("</section>", t.index('id="price"')) + len("</section>")
-    t = t[:price_end] + "\n" + SHOP + t[price_end:]   # 상점 홍보칸(TEASER)은 PG 심사용으로 메인에서 뺌 (2026-11-02)
+    t = t[:price_end] + "\n" + SHOP + USE + t[price_end:]   # 상점 홍보칸(TEASER)은 PG 심사용으로 메인에서 뺌 (2026-11-02)
     price_start = t.rindex("<section", 0, t.index('id="price"'))
     t = t[:price_start] + SVC + t[price_start:]
     first = t.index("<section", t.index("<body"))
@@ -261,6 +381,8 @@ def build(pg):
     t = t.replace("</body>", """<script>document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const el=document.querySelector(a.getAttribute('href'));if(el&&el.offsetParent!==null){e.preventDefault();el.scrollIntoView({behavior:'smooth'});history.replaceState(null,'',location.pathname+a.getAttribute('href'))}});</script>\n</body>""")
     if pg == "shop":   # 예전 주소(shop/#chips, shop/?item=) → OS 확장 상점
         t = t.replace("<head>", "<head>\n<script>if(location.hash=='#chips'||/[?&]item=/.test(location.search))location.replace('/chips/'+location.search)</script>", 1)
+    if pg == "use":
+        t = t.replace("</body>", USEJS + "</body>")
     if pg == "chips":
         t = t.replace("</body>", SHOPJS + "</body>")
     d = os.path.join(R, path)
