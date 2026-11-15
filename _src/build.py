@@ -245,7 +245,7 @@ USE = r"""<section class="pad light" data-pg="use" id="use">
  <p class="chips-why" style="margin-top:6px">브랜디움이 매일 쓰는 퍼스널 OS의 실제 기록입니다. 새 사례가 생길 때마다 계속 더해집니다. 사람이 한 단계(로그인·최종 제출·보내기)는 그대로 적었어요.</p>
  <div class="ctags" id="ctags"></div>
  <div class="cgrid" id="cgrid"></div>
- <a class="ucta" href="shop/">우리 일에는 어디까지 될까? 내 일에 맞춰 세팅받기 →</a>
+ <a class="ucta" href="shop/">설치는 브랜디움이, 내 일에 맞추는 건 직접 — 퍼스널 OS 시작하기 →</a>
  </div>
 </section>
 """
