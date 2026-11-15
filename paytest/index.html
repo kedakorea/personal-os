@@ -14,22 +14,21 @@ h1{font-size:22px;margin:0 0 6px}.s{color:#888;font-size:14px;margin:0 0 18px}
 button{width:100%;border:0;border-radius:14px;background:#242424;color:#fff;font-size:17px;font-weight:700;padding:16px;margin-top:14px;cursor:pointer}
 button:disabled{opacity:.5}
 </style></head><body><div class="w">
-<span class="t">시험용 · 실제 결제 안 됨</span>
+<span class="t">실결제 시험 · 100원 (바로 취소됩니다)</span>
 <h1>퍼스널 OS 설치 결제 시험</h1>
 <p class="s">토스 결제위젯이 브랜디움에서 제대로 열리고 승인까지 되는지 확인하는 숨은 페이지입니다.</p>
 <div class="p" id="prod">
- <label class="on"><input type="radio" name="price" value="660000" checked>추천 코드가<b>660,000원</b></label>
- <label><input type="radio" name="price" value="550000">행사 코드가<b>550,000원</b></label>
+ <label class="on"><input type="radio" name="price" value="100" checked>실결제 시험<b>100원</b></label>
 </div>
 <div id="payment-method"></div><div id="agreement"></div>
 <button id="pay" disabled>결제하기</button>
 </div>
 <script>
-const CLIENT_KEY = "test_gck_oEjb0gm23POdPmxeAxpn8pGwBJn5";   // 캐다 상점 결제위젯 테스트 키(2026-11-04) → 심사 뒤 라이브 키로 교체
+const CLIENT_KEY = "live_gck_0RnYX2w532wo9dOoJmORVNeyqApQ";   // 라이브(2026-11-15) — 100원 실결제 시험 후 엘빈이 바로 취소
 (async () => {
   const toss = TossPayments(CLIENT_KEY);
   const widgets = toss.widgets({ customerKey: TossPayments.ANONYMOUS });
-  let amount = 660000;
+  let amount = 100;
   await widgets.setAmount({ currency: "KRW", value: amount });
   await Promise.all([
     widgets.renderPaymentMethods({ selector: "#payment-method", variantKey: "DEFAULT" }),
@@ -43,7 +42,7 @@ const CLIENT_KEY = "test_gck_oEjb0gm23POdPmxeAxpn8pGwBJn5";   // 캐다 상점 �
   btn.onclick = async () => {
     const orderId = "TEST-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
     await widgets.requestPayment({
-      orderId, orderName: "퍼스널 OS 설치 (시험)",
+      orderId, orderName: "브랜디움 결제 시험(100원)",
       successUrl: location.origin + "/paytest/success/",
       failUrl: location.origin + "/paytest/fail/",
     });

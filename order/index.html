@@ -69,18 +69,29 @@ const P = [
   { k: "chip30", name: "칩 30개+보너스 3", price: 8000, chip: 33, inc: "칩당 242원 · 보너스 3칩(1년)" }
 ];
 const won = (n) => n.toLocaleString("ko-KR") + "원";
-/* 토스페이먼츠 결제창 — 가맹 심사 중이라 테스트 키, 심사용 계정(또는 ?pg=test)에서만 보임 (2026-11-02) */
-const TOSS_CK = "test_ck_d46qopOB89RQzpDlvPRK3ZmM75y0";
-const PGT_ON = (u) => (u && u.email === "tosstest@mybrandium.com") || new URLSearchParams(location.search).get("pg") === "test";
+/* 토스페이먼츠 카드결제 — 라이브(2026-11-15, 카드사 9곳 승인). 결제위젯 키, 승인은 수파베이스 함수 pay(주문 금액 확인 → 승인 → 입금확인). 칩은 계좌입금만(토스 계약: 충전업종 아님) */
+const TOSS_GCK = "live_gck_0RnYX2w532wo9dOoJmORVNeyqApQ";
 function loadToss() { return window.TossPayments ? Promise.resolve() : new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "https://js.tosspayments.com/v2/standard"; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); }
-async function payCard(u, o, p) {
-  await loadToss();
-  const pay = TossPayments(TOSS_CK).payment({ customerKey: u.id });
-  const no = String(o.order_no || o.id).replace(/[^A-Za-z0-9_-]/g, "");
-  const back = location.origin + "/order/?no=" + encodeURIComponent(o.order_no || "");
-  await pay.requestPayment({ method: "CARD", amount: { currency: "KRW", value: p.price }, orderId: ("BRD-" + no + "-" + Date.now().toString(36)).slice(0, 64),
-    orderName: "퍼스널 OS " + p.name, customerName: o.name || "", customerEmail: o.email || undefined,
-    successUrl: back + "&paid=ok", failUrl: back + "&paid=fail", card: { useEscrow: false, flowMode: "DEFAULT", useCardPoint: false, useAppCardOnly: false } });
+async function showPay(u, o) {
+  window.scrollTo(0, 0);
+  M.innerHTML = `<p class="en">PAYMENT</p><h1>카드 결제</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)} · <b>${won(o.price)}</b> <small>(VAT 포함)</small></p>
+  <div id="pmw"></div><div id="agw"></div><button class="btn dark" id="payb" style="margin-top:12px" disabled>${won(o.price)} 결제하기</button><p class="err"></p>
+  <p class="small" style="margin-top:12px">· 결제하지 않고 나가시면 주문은 <b>입금대기</b>로 남습니다. 12시간 안에 계좌로 입금하셔도 됩니다(기업은행 114-193627-04-019 (주)캐다).</p>`;
+  try {
+    await loadToss();
+    const w = TossPayments(TOSS_GCK).widgets({ customerKey: u.id });
+    await w.setAmount({ currency: "KRW", value: o.price });
+    await Promise.all([w.renderPaymentMethods({ selector: "#pmw", variantKey: "DEFAULT" }), w.renderAgreement({ selector: "#agw", variantKey: "AGREEMENT" })]);
+    const b = $("#payb"); b.disabled = false;
+    const no = String(o.order_no).replace(/[^A-Za-z0-9_-]/g, "");
+    const back = location.origin + "/order/?no=" + encodeURIComponent(o.order_no);
+    b.onclick = async () => {
+      try { await w.requestPayment({ orderId: ("BRD-" + no + "-" + Date.now().toString(36)).slice(0, 64), orderName: "퍼스널 OS " + o.product,
+        customerName: o.name || undefined, customerEmail: o.email || undefined, customerMobilePhone: (o.phone || "").replace(/[^0-9]/g, "") || undefined,
+        successUrl: back + "&paid=ok", failUrl: back + "&paid=fail" }); }
+      catch (e) { $(".err").textContent = e.message || String(e); }
+    };
+  } catch (e) { $(".err").textContent = "결제창을 열지 못했습니다: " + (e.message || e); }
 }
 function needLogin() {
   sessionStorage.setItem("after_login", location.href);
@@ -88,7 +99,6 @@ function needLogin() {
   <a class="btn dark" href="../account/">로그인하고 구매하기</a>`;
 }
 function form(u, m) {
-  window.PGT = PGT_ON(u);
   const pick = new URLSearchParams(location.search).get("p") || "remote";
   const CH = pick.startsWith("chip"), PL = P.filter((p) => !!p.chip === CH);
   const SL = new URLSearchParams(location.search).get("slot"), SLD = SL ? new Date(SL) : null;
@@ -109,11 +119,13 @@ function form(u, m) {
   <div ${CH ? "hidden" : ""}><input type="hidden" id="wd" value="">
   <label class="f">요청 사항 (선택)</label><textarea id="mo" placeholder="쓰시는 컴퓨터(맥/윈도우), 궁금한 점 등"></textarea></div>
   <h3>결제 방법</h3>
-  <div class="pay">🏦 <b>계좌입금</b><div style="margin-top:8px;line-height:1.8">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>12시간 안에</b> 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></div>
-  ${PGT ? `<label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="card" checked> 💳 <b>신용카드</b> <span class="small">(토스페이먼츠 결제창)</span></label><label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="bank"> 🏦 <b>계좌입금</b> (위 계좌)</label>` : '<div class="pay off">💳 카드·간편결제 — 준비 중입니다</div>'}
+  ${CH ? "" : `<label class="pay" style="display:block;cursor:pointer"><input type="radio" name="pm" value="card" checked> 💳 <b>카드·간편결제</b> <span class="small">(토스페이먼츠 · 결제 즉시 예약 확정)</span></label>`}
+  <label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="bank" ${CH ? "checked" : ""}> 🏦 <b>계좌입금</b><div id="bankbox" style="margin-top:8px;line-height:1.8;${CH ? "" : "display:none"}">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>12시간 안에</b> 입금해 주세요. 주문번호와 입금 안내가 다음 화면에 나옵니다.</span></div></label>
+  <div id="bankonly" ${CH ? "" : 'style="display:none"'}>
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
   <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
+  </div>
   <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다${CH ? "" : " (설치를 시작한 뒤에는 맞춤 작업이라 환불되지 않는다는 점을 확인했습니다)"}</span></label></div>
   <input type="hidden" id="ch" value="${CH ? 1 : 0}"><div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
@@ -132,21 +144,24 @@ function form(u, m) {
     sel(M.querySelector(".prod.on").dataset.k);
   };
   $("#rt").onchange = (e) => $("#rn").style.display = e.target.value ? "block" : "none";
+  const PM = () => (M.querySelector("input[name=pm]:checked") || {}).value || "bank";
+  M.querySelectorAll("input[name=pm]").forEach((r) => r.onchange = () => { const bk = PM() === "bank"; $("#bankbox").style.display = bk ? "" : "none"; $("#bankonly").style.display = bk ? "" : "none"; });
   $("#go").onclick = async () => {
     const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
     const v = (id) => $("#" + id).value.trim(), err = (t) => $(".err").textContent = t;
     if (!v("nm")) return err("이름을 적어 주세요.");
     if (!/^01\d{8,9}$/.test(v("ph").replace(/[^0-9]/g, ""))) return err("휴대폰 번호를 확인해 주세요.");
-    if (!v("dp")) return err("입금자명을 적어 주세요.");
-    if (v("rt") && !v("rn")) return err("증빙에 쓸 번호를 적어 주세요.");
+    const CARD = PM() === "card";
+    if (!CARD && !v("dp")) return err("입금자명을 적어 주세요.");
+    if (!CARD && v("rt") && !v("rn")) return err("증빙에 쓸 번호를 적어 주세요.");
     if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
     if ($("#agt") && !$("#agt").checked) return err("체험단 조건 동의에 체크해 주세요.");
     $("#go").disabled = true;
     const { data, error } = await sb.from("orders").insert({ member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: v("dp"), receipt_type: v("rt") || null, receipt_no: v("rn") || null, want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
+      depositor: CARD ? null : v("dp"), receipt_type: CARD ? null : (v("rt") || null), receipt_no: CARD ? null : (v("rn") || null), pay_method: CARD ? "카드(토스)" : "계좌입금", want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
     if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : /추천인 코드/.test(error.message) ? "추천인 코드를 확인해 주세요." : "주문을 저장하지 못했습니다: " + error.message);
-    if (window.PGT && (M.querySelector("input[name=pm]:checked") || {}).value === "card") { try { await payCard(u, data, { ...p, price: data.price }); return; } catch (e) { return err("결제창을 열지 못했습니다: " + (e.message || e)); } }
+    if (CARD) return showPay(u, data);
     done(data);
   };
 }
@@ -161,9 +176,16 @@ function done(o) {
   const q = new URLSearchParams(location.search);
   if (q.get("paid")) {
     window.scrollTo(0, 0);
-    M.innerHTML = q.get("paid") === "ok"
-      ? `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b><br>담당자가 1영업일 안에 연락드려 설치 일정을 확정합니다.</p><a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`
-      : `<p class="en">PAYMENT</p><h1>결제가 완료되지 않았습니다</h1><p class="sub">${osEsc(q.get("message") || "결제를 취소하셨거나 오류가 났습니다.")}</p><a class="btn dark" href="../shop/">다시 구매하기</a>`;
+    const fail = (msg) => M.innerHTML = `<p class="en">PAYMENT</p><h1>결제가 완료되지 않았습니다</h1><p class="sub">${osEsc(msg)}</p><p class="small">주문은 <b>입금대기</b>로 남아 있습니다. 마이페이지에서 다시 결제하시거나 계좌(기업은행 114-193627-04-019 (주)캐다)로 입금해 주세요. 문의 010-8225-6242</p><a class="btn dark" href="../account/">마이페이지</a>`;
+    if (q.get("paid") !== "ok") { fail(q.get("message") || "결제를 취소하셨거나 오류가 났습니다."); return; }
+    M.innerHTML = `<p class="en">PAYMENT</p><h1>결제를 확인하고 있습니다…</h1><p class="sub">창을 닫지 말고 잠시만 기다려 주세요.</p>`;
+    try {
+      const r = await fetch(OS_URL + "/functions/v1/pay", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "confirm", paymentKey: q.get("paymentKey"), orderId: q.get("orderId"), amount: q.get("amount"), no: q.get("no") }) });
+      const j = await r.json();
+      if (!j.ok) { fail(j.error || "결제 승인에 실패했습니다."); return; }
+      M.innerHTML = `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b>${j.totalAmount ? ` · ${won(j.totalAmount)}` : ""}<br>담당자가 1영업일 안에 연락드려 설치 일정을 확정합니다.</p>${j.receipt ? `<p class="small"><a href="${osEsc(j.receipt)}" target="_blank" rel="noopener">카드 영수증 보기</a></p>` : ""}<a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`;
+    } catch (e) { fail("결제 확인 중 오류가 났습니다. 문의 주시면 바로 확인해 드립니다."); }
     return;
   }
   const { data } = await sb.auth.getSession();
