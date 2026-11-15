@@ -9,7 +9,7 @@
   const body = { action: "confirm", paymentKey: q.get("paymentKey"), orderId: q.get("orderId"), amount: Number(q.get("amount")) };
   const r = await fetch("https://ergkmihtllkpuiaevvcv.supabase.co/functions/v1/pay", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json();
-  document.getElementById("h").textContent = j.ok ? "✅ 결제 승인 완료 (시험)" : "❌ 승인 실패";
+  document.getElementById("h").textContent = j.ok ? (j.canceled === "CANCELED" ? "✅ 실결제 승인 → 자동 취소 완료" : "⚠️ 승인됨 · 취소 확인 필요") : "❌ 승인 실패";
   document.getElementById("r").textContent = JSON.stringify(j, null, 2);
 })();
 </script></body></html>
