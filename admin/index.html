@@ -16,7 +16,7 @@ body{background:#f6efe2;color:var(--ink);font-family:Pretendard,-apple-system,sa
 header{display:flex;align-items:center;gap:14px;padding:14px 22px;background:var(--ink);color:var(--cream)}
 header b{font:700 18px 'Josefin Sans',Pretendard}header span{opacity:.7;font-size:14px;flex:1}
 header .hb{color:var(--cream);font-size:13px;text-decoration:none;border:1px solid var(--cream);border-radius:99px;padding:6px 14px}
-.tabs{display:flex;gap:6px;margin-bottom:16px}.tabs button{font:800 15px Pretendard;padding:10px 18px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}.tabs button.on{background:var(--ink);color:var(--cream)}
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;align-items:center}.tabs .tg{font-size:11.5px;font-weight:800;opacity:.45;margin:0 2px 0 10px;letter-spacing:.04em}.tabs .tg:first-child{margin-left:0}.tabs button{font:800 15px Pretendard;padding:10px 18px;border-radius:99px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}.tabs button.on{background:var(--ink);color:var(--cream)}
 code{font:700 15px Menlo,monospace;letter-spacing:.04em}
 header button{background:none;border:1px solid var(--cream);color:var(--cream);border-radius:99px;padding:6px 14px;font:600 13px Pretendard;cursor:pointer}
 main{max-width:1180px;margin:0 auto;padding:24px 20px 80px}
@@ -45,6 +45,16 @@ tr.row{cursor:pointer}tr.row:hover{background:#fffaf0}
 .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .note{font-size:13px;opacity:.65;margin-top:6px}
 .err{color:#b3261e;margin-top:10px;font-size:14px}
+
+/* 고객 통합 (2026-11-16) */
+.flt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.flt button{font:800 14px Pretendard;padding:8px 14px;border-radius:99px;border:2px solid var(--ink);background:#fff;cursor:pointer}.flt button.on{background:var(--ink);color:var(--cream)}
+.flt input{margin:0;flex:1;min-width:180px;max-width:320px}
+.tg2{display:inline-block;font-size:11.5px;font-weight:800;border-radius:99px;padding:2px 8px;margin:1px 2px 1px 0}.tg2.os{background:#c4dae8}.tg2.cl{background:#ffd9bf}.tg2.mb{background:var(--sand)}
+.pv{position:fixed;inset:0;background:rgba(40,25,24,.45);z-index:50;display:flex;justify-content:flex-end}
+.pv .pn{background:#f6efe3;width:min(760px,100%);height:100%;overflow:auto;padding:22px 24px 60px;box-shadow:-10px 0 30px rgba(0,0,0,.2)}
+.pv h2{font-size:24px}.pv .sub2{opacity:.7;font-size:14px;margin:4px 0 14px}
+.pv .box h3{display:flex;justify-content:space-between;align-items:center}.pv .kv2{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;font-size:14px}.pv .kv2 dt{opacity:.55;font-weight:700}
+.pv table{font-size:13.5px}.pv .emp{opacity:.5;font-size:13.5px}
 </style></head><body>
 <header><a href="../" title="퍼스널 OS 사이트로"><img src="../logo_butter.png" alt="BRANDiUM" style="height:20px;display:block"></a><span>퍼스널 OS 관리자</span><a class="hb" href="../install/">✅ 설치 페이지</a><a class="hb" href="../">← 퍼스널 OS 사이트</a><button id="out" hidden>로그아웃</button></header>
 <main id="main"></main>
@@ -59,12 +69,12 @@ async function A(body) { const r = await osCall(body, JWT); if (r.error && /관�
 function loginView() {
   $("out").hidden = true;
   $("main").innerHTML = `<div class="login"><h1>관리자 로그인</h1><input id="em" type="email" value="kedakorea@gmail.com"><input id="pw" type="password" placeholder="관리자 비밀번호"><button class="btn" id="go" style="width:100%;margin-top:14px">들어가기</button><p class="err" id="er"></p></div>`;
-  const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; members(); };
+  const go = async () => { const { data, error } = await sb.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value }); if (error) { $("er").textContent = "로그인 실패: " + error.message; return; } JWT = data.session.access_token; people(); };
   $("go").onclick = go; $("pw").onkeydown = (e) => { if (e.key === "Enter") go(); };
 }
 async function list() {
   $("out").hidden = false; history.replaceState(null, "", location.pathname);
-  $("main").innerHTML = `${tabs("c")}<div class="top"><h1>고객</h1><button class="btn y" id="newiv">🎙 새 고객 인터뷰 시작</button><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  $("main").innerHTML = `${tabs("c")}<div class="top"><h1>업무 파악 · 설계 (퍼스널 OS 고객)</h1><button class="btn y" id="newiv">🎙 새 고객 인터뷰 시작</button><button class="btn g" onclick="list()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
   $("newiv").onclick = async () => { const nm = prompt("고객 이름을 적어 주세요 (메모: 날짜-이름-방식)", ""); if (!nm) return; const way = prompt("방식 (방문 / 원격 / 셀프 / 특강)", "방문") || "방문"; const k = await A({ action: "a_key_new", memo: `${yymmdd()}-${nm.trim()}-${way.trim()}`, n: 1 }); if (!k.ok) { alert(k.error); return; } window.open(`../start/?mode=interview&new=1&k=${k.codes[0]}`, "_blank"); };
   const r = await A({ action: "a_list" }); if (!r.ok) { $("tb").innerHTML = `<p class="err">${E(r.error)}</p>`; return; }
   const n = (s) => r.items.filter((x) => x.stage === s).length;
@@ -74,7 +84,10 @@ async function list() {
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
-function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "b" ? "on" : ""}" onclick="booking()">📅 예약</button><button class="${on === "i" ? "on" : ""}" onclick="installs()">✅ 설치</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button><button class="${on === "cl" ? "on" : ""}" onclick="classAdmin()">🎓 강의실</button></div>`; }
+function tabs(on) {   // 2026-11-16 대표님: 고객 통합을 맨 앞에, 나머지는 '업무'·'설정' 묶음으로
+  const b = (k, f, t) => `<button class="${on === k ? "on" : ""}" onclick="${f}()">${t}</button>`;
+  return `<div class="tabs"><span class="tg">고객</span>${b("p", "people", "👤 고객 통합")}<span class="tg">업무</span>${b("o", "orders", "🛒 주문")}${b("b", "booking", "📅 예약")}${b("i", "installs", "✅ 설치")}${b("cl", "classAdmin", "🎓 강의실")}<span class="tg">설정·원본</span>${b("k", "keys", "🔑 고객 키")}${b("c", "list", "🎙 업무 파악")}${b("m", "members", "🙋 회원 원본")}</div>`;
+}
 // 설치 진행 체크리스트 (2026-10-24) — 1호 회고로 고친 순서. 시간표는 '시작'을 누르면 타이머, 목표 시간을 넘기면 빨간색(15분 넘으면 예비 방법)
 const IC = [
  { sec: "A. 전날까지 — 준비", items: [
@@ -372,12 +385,104 @@ async function classAdmin(c) {
 async function classEnroll(c) { const id = $("enm").value; if (!id) return; const { error } = await sb.from("class_enroll").insert({ member_id: id, cohort: c }); if (error) alert(error.message); classAdmin(c); }
 async function classUnenroll(id, c) { if (!confirm("이 수강생을 명단에서 뺄까요? (진도 기록은 남습니다)")) return; await sb.from("class_enroll").delete().eq("member_id", id).eq("cohort", c); classAdmin(c); }
 async function classMark(mid, lid, on, c) { const { error } = await sb.from("class_progress").update(on ? { completed: true, manual: true, percent: 100 } : { completed: false, manual: true }).eq("member_id", mid).eq("lesson_id", lid); if (error) alert(error.message); classAdmin(c); }
+// ───── 👤 고객 통합 (2026-11-16 대표님) — 회원·퍼스널 OS 고객·주문·설치·키·강의를 한 사람으로 묶어 한 창에서 본다
+// 묶는 기준: 회원(members) 1명 = 1사람. OS 고객(customers)은 members.customer_id → 휴대폰 → 이메일 → 이름 순으로 붙이고, 못 붙으면 따로 1사람.
+const OSP = ["원격형", "방문형", "체험단(방문형)"], CLP = /^자격과정/;
+const ph = (x) => (x || "").replace(/[^0-9]/g, ""), nmk = (x) => (x || "").replace(/\s|대표님|님|선생님/g, "");
+let PPL = [], PF = "all", PQ = "";
+async function loadPeople() {
+  const [mb, od, ir, en, pr, ls, cu, ky] = await Promise.all([
+    sb.from("members").select("*").order("created_at", { ascending: false }), sb.from("orders").select("*").order("id", { ascending: false }),
+    sb.from("install_runs").select("*"), sb.from("class_enroll").select("*"), sb.from("class_progress").select("*"), sb.from("class_lessons").select("id,cohort,no,title"),
+    A({ action: "a_list" }), A({ action: "a_keys" })]);
+  const P = [], byM = {}, find = (f) => P.find(f);
+  (mb.data || []).forEach((m) => { const p = { id: "m:" + m.id, m, name: m.name, phone: m.phone, email: m.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); byM[m.id] = p; });
+  (cu.items || []).forEach((c) => {
+    let p = find((p) => p.m && p.m.customer_id === c.id) || (ph(c.phone) && find((p) => ph(p.phone) === ph(c.phone))) || (c.email && find((p) => (p.email || "").toLowerCase() === c.email.toLowerCase())) || (nmk(c.name) && find((p) => nmk(p.name) === nmk(c.name)));
+    if (!p) { p = { id: "c:" + c.id, m: null, name: c.name, phone: c.phone, email: c.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); }
+    p.cus.push(c); p.phone = p.phone || c.phone; p.email = p.email || c.email; });
+  (od.data || []).forEach((o) => { let p = byM[o.member_id] || (ph(o.phone) && find((p) => ph(p.phone) === ph(o.phone)));
+    if (!p) { p = { id: "o:" + o.id, m: null, name: o.name, phone: o.phone, email: o.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); } p.orders.push(o); });
+  (ky.items || []).forEach((k) => { const p = k.customer_id && find((p) => p.cus.some((c) => c.id === k.customer_id)); if (p) p.keys.push(k); });
+  (ir.data || []).forEach((r) => { const p = (r.key_code && find((p) => p.cus.some((c) => c.key_code === r.key_code) || p.keys.some((k) => k.code === r.key_code))) || find((p) => nmk(p.name) && nmk(p.name) === nmk(r.customer));
+    if (p) p.runs.push(r); else P.push({ id: "r:" + r.id, m: null, name: r.customer, cus: [], orders: [], runs: [r], keys: [], enr: [], prog: [] }); });
+  (en.data || []).forEach((e) => { if (byM[e.member_id]) byM[e.member_id].enr.push(e); });
+  (pr.data || []).forEach((x) => { if (byM[x.member_id]) byM[x.member_id].prog.push(x); });
+  P.forEach((p) => {
+    p.isOS = p.cus.length > 0 || p.runs.length > 0 || p.orders.some((o) => OSP.includes(o.product) && o.status !== "취소");
+    p.isCL = p.enr.length > 0 || p.orders.some((o) => CLP.test(o.product) && o.status !== "취소");
+    p.last = [p.m && p.m.created_at, ...p.orders.map((o) => o.created_at), ...p.cus.map((c) => c.updated_at), ...p.runs.map((r) => r.install_at || r.created_at)].filter(Boolean).sort().pop() || "";
+  });
+  P.sort((a, b) => (b.last > a.last ? 1 : -1));
+  window.LESSONS = ls.data || [];
+  return P;
+}
+const won2 = (n) => (n || 0).toLocaleString("ko-KR") + "원";
+function payOf(p) { const o = p.orders.filter((o) => o.status !== "취소"); if (!o.length) return '<span class="emp">—</span>';
+  const paid = o.filter((x) => x.status !== "입금대기").reduce((a, x) => a + x.price, 0), wait = o.filter((x) => x.status === "입금대기").length;
+  return `${paid ? `<b>${won2(paid)}</b>` : ""}${wait ? ` <span class="st" style="background:#ffd6d1">입금대기 ${wait}</span>` : ""}`; }
+function instOf(p) { const c = p.cus[0], r = p.runs.slice().sort((a, b) => (b.install_at || "") > (a.install_at || "") ? 1 : -1)[0];
+  if (r) return r.finished_at ? "✅ 설치 완료" : `🛠 ${r.install_at ? new Date(r.install_at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" }) + " 설치" : "설치 준비"}`;
+  if (c) return `<span class="st ${E(c.stage)}">${E(c.stage)}</span>`;
+  const so = p.orders.find((o) => OSP.includes(o.product) && o.slot_at && o.status !== "취소"); return so ? `📅 ${new Date(so.slot_at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })} 예약` : '<span class="emp">—</span>'; }
+function clsOf(p) { if (!p.enr.length) return p.isCL ? '<span class="st" style="background:#ffd6d1">결제 확인 전</span>' : '<span class="emp">—</span>';
+  const L = (window.LESSONS || []).filter((l) => p.enr.some((e) => e.cohort === l.cohort)), d = L.filter((l) => p.prog.some((x) => x.lesson_id === l.id && x.completed)).length;
+  return `🎓 ${d}/${L.length}강`; }
+async function people() {
+  $("out").hidden = false; history.replaceState(null, "", "?tab=people");
+  $("main").innerHTML = `${tabs("p")}<div class="top"><h1>👤 고객 통합</h1><button class="btn g" onclick="people()">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  try { PPL = await loadPeople(); } catch (e) { $("tb").innerHTML = `<p class="err">${E(e.message || e)}</p>`; return; }
+  drawPeople();
+}
+function drawPeople() {
+  const c = (f) => PPL.filter(f).length, q = PQ.trim().toLowerCase();
+  const F = { all: () => true, os: (p) => p.isOS, cl: (p) => p.isCL, mb: (p) => !p.isOS && !p.isCL, wait: (p) => p.orders.some((o) => o.status === "입금대기") };
+  const L = PPL.filter(F[PF]).filter((p) => !q || [p.name, p.phone, p.email, ...p.cus.map((c) => c.company)].join(" ").toLowerCase().includes(q));
+  $("tb").innerHTML = `<div class="flt">${[["all", "전체", c(F.all)], ["os", "🖥 퍼스널 OS", c(F.os)], ["cl", "🎓 자격과정", c(F.cl)], ["mb", "🙋 가입만", c(F.mb)], ["wait", "⏳ 입금대기", c(F.wait)]].map(([k, t, n]) => `<button data-f="${k}" class="${PF === k ? "on" : ""}">${t} ${n}</button>`).join("")}<input id="pq" placeholder="이름·휴대폰·이메일·회사 찾기" value="${E(PQ)}"></div>
+   <table><tr><th>고객</th><th>구분</th><th>결제</th><th>퍼스널 OS 설치</th><th>강의</th><th>최근</th></tr>
+   ${L.map((p) => `<tr class="row" data-p="${E(p.id)}"><td><b>${E(p.name || "(이름 없음)")}</b>${p.cus[0] && p.cus[0].company ? ` <small>${E(p.cus[0].company)}</small>` : ""}<br><small>${E(p.phone || "")} ${E(p.email || "")}</small></td>
+    <td>${p.isOS ? '<span class="tg2 os">퍼스널 OS</span>' : ""}${p.isCL ? '<span class="tg2 cl">자격과정</span>' : ""}${p.m ? "" : '<span class="tg2 mb">사이트 미가입</span>'}${!p.isOS && !p.isCL ? '<span class="tg2 mb">회원</span>' : ""}</td>
+    <td>${payOf(p)}</td><td>${instOf(p)}</td><td>${clsOf(p)}</td><td><small>${p.last ? dt(p.last) : ""}</small></td></tr>`).join("") || `<tr><td colspan="6" class="emp">해당하는 고객이 없습니다</td></tr>`}</table>
+   <p class="note">한 줄을 누르면 그 고객의 결제·설치·키·강의를 한 창에서 봅니다. 사이트 회원과 퍼스널 OS 고객은 휴대폰·이메일·이름이 같으면 한 사람으로 묶어요.</p>`;
+  $("tb").querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { PF = b.dataset.f; drawPeople(); });
+  const qi = $("pq"); qi.oninput = () => { PQ = qi.value; const pos = qi.selectionStart; drawPeople(); const n = $("pq"); n.focus(); n.setSelectionRange(pos, pos); };
+  $("tb").querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => person(tr.dataset.p));
+}
+function person(pid) {
+  const p = PPL.find((x) => x.id === pid); if (!p) return;
+  const d = (t) => t ? new Date(t).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", year: "2-digit", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
+  const c = p.cus[0], PV2 = { kakao: "카카오", naver: "네이버", google: "구글" };
+  const L = (window.LESSONS || []);
+  const box = (t, act, body) => `<div class="box"><h3><span>${t}</span>${act || ""}</h3>${body}</div>`;
+  const html = `<div class="pn"><div style="display:flex;justify-content:space-between;align-items:start;gap:10px"><div><h2>${E(p.name || "(이름 없음)")}</h2><p class="sub2">${E(p.phone || "")} · ${E(p.email || "")}</p>
+    <div>${p.isOS ? '<span class="tg2 os">퍼스널 OS</span>' : ""}${p.isCL ? '<span class="tg2 cl">자격과정</span>' : ""}</div></div><button class="btn g" id="pvx">닫기 ✕</button></div><br>
+   ${box("🙋 사이트 회원", "", p.m ? `<dl class="kv2"><dt>가입</dt><dd>${d(p.m.created_at)} · ${E(PV2[p.m.provider] || p.m.provider || "")}</dd><dt>소식 수신</dt><dd>${p.m.agree_marketing ? "동의" : "—"}</dd></dl>` : '<p class="emp">브랜디움 사이트 회원 가입 기록이 없습니다 (현장·원격으로 바로 진행한 고객)</p>')}
+   ${box("💳 결제 · 주문", "", p.orders.length ? `<table><tr><th>주문</th><th>상품</th><th>금액</th><th>방법</th><th>상태</th></tr>${p.orders.map((o) => `<tr><td><b>${E(o.order_no)}</b><br><small>${d(o.created_at)}</small></td><td>${E(o.product)}${o.opt ? `<br><small>할인: ${E(o.opt)}</small>` : ""}${o.slot_at ? `<br><small>📅 ${d(o.slot_at)}</small>` : ""}</td><td>${won2(o.price)}</td><td><small>${E(o.pay_method || "")}${o.receipt_type ? "<br>" + E(o.receipt_type) : ""}${o.tax_email ? "<br>✉️ " + E(o.tax_email) : ""}</small></td>
+      <td><select class="ost2" data-id="${o.id}">${OST.map((s) => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>${o.memo ? `<tr><td colspan="5"><small>📝 ${E(o.memo).replace(/\n/g, "<br>")}</small></td></tr>` : ""}`).join("")}</table>` : '<p class="emp">주문 기록이 없습니다</p>')}
+   ${box("🛠 퍼스널 OS 설치", "", (c ? `<dl class="kv2"><dt>업무 파악</dt><dd><span class="st ${E(c.stage)}">${E(c.stage)}</span> · 진행 ${c.progress || 0}% ${c.company ? "· " + E(c.company) : ""}</dd><dt>방식 · 매니저</dt><dd>${E(c.mode || "—")} · ${E(c.chief || "—")}</dd></dl><p style="margin:8px 0"><button class="btn g" data-cus="${c.id}">업무 파악 · 설계 열기 →</button></p>` : "")
+      + (p.runs.length ? `<table><tr><th>설치 일시</th><th>컴퓨터</th><th>상태</th><th></th></tr>${p.runs.map((r) => `<tr><td>${d(r.install_at)}</td><td>${E(r.os || "")}</td><td>${r.finished_at ? "✅ 완료 " + d(r.finished_at) : Object.keys(r.checks || {}).length + "단계 진행"}</td><td><button class="btn g" data-run="${r.id}">진행판 →</button></td></tr>`).join("")}</table>` : (c ? "" : '<p class="emp">설치 기록이 없습니다</p>')))}
+   ${box("🔑 고객 키", "", p.keys.length || (c && c.key_code) ? `<table><tr><th>키</th><th>메모</th><th>상태</th></tr>${(p.keys.length ? p.keys : [{ code: c.key_code, memo: "", status: "" }]).map((k) => `<tr><td><code>${E(k.code)}</code></td><td>${E(k.memo || "")}</td><td>${E(k.status || "")}</td></tr>`).join("")}</table>` : '<p class="emp">발급한 키가 없습니다</p>')}
+   ${box("🎓 강의 수강", p.m ? (p.enr.some((e) => e.cohort === "cert2-1") ? `<button class="btn g" id="unen">2급 1기 명단에서 빼기</button>` : `<button class="btn g" id="en1">2급 1기 수강생으로 등록</button>`) : "",
+      p.enr.length ? p.enr.map((e) => { const LL = L.filter((l) => l.cohort === e.cohort); return `<p style="margin-bottom:6px"><b>${E({ "cert2-1": "자격과정 2급 · 1기" }[e.cohort] || e.cohort)}</b> <small>등록 ${d(e.created_at)} ${e.note ? "· " + E(e.note) : ""}</small></p>
+        <table><tr><th>강</th><th>진도</th><th>마지막 시청</th></tr>${LL.map((l) => { const x = p.prog.find((x) => x.lesson_id === l.id); return `<tr><td>${l.no}강 ${E(l.title)}</td><td>${x ? (x.completed ? "✅ " : "") + x.percent + "%" : "—"}</td><td><small>${x ? d(x.updated_at) : ""}</small></td></tr>`; }).join("")}</table>`; }).join("") : `<p class="emp">${p.m ? "수강 중인 강의가 없습니다" : "사이트 회원이어야 강의실을 열 수 있어요"}</p>`)}
+  </div>`;
+  let ov = $("pv"); if (!ov) { ov = document.createElement("div"); ov.id = "pv"; ov.className = "pv"; document.body.appendChild(ov); }
+  ov.innerHTML = html; ov.hidden = false; ov.style.display = "flex";
+  const close = () => { ov.style.display = "none"; };
+  ov.onclick = (e) => { if (e.target === ov) close(); }; $("pvx").onclick = close;
+  ov.querySelectorAll("[data-cus]").forEach((b) => b.onclick = () => { close(); detail(b.dataset.cus); });
+  ov.querySelectorAll("[data-run]").forEach((b) => b.onclick = () => { close(); installRun(+b.dataset.run); });
+  ov.querySelectorAll("select.ost2").forEach((el) => el.onchange = async () => { const { error } = await sb.from("orders").update({ status: el.value }).eq("id", el.dataset.id); if (error) return alert("바꾸지 못했습니다: " + error.message); PPL = await loadPeople(); drawPeople(); person(pid); });
+  const re = async () => { PPL = await loadPeople(); drawPeople(); person(pid); };
+  if ($("en1")) $("en1").onclick = async () => { const { error } = await sb.from("class_enroll").insert({ member_id: p.m.id, cohort: "cert2-1", note: "관리자 등록" }); if (error) return alert(error.message); re(); };
+  if ($("unen")) $("unen").onclick = async () => { if (!confirm("2급 1기 명단에서 뺄까요? (진도 기록은 남습니다)")) return; await sb.from("class_enroll").delete().eq("member_id", p.m.id).eq("cohort", "cert2-1"); re(); };
+}
 async function boot() {
   const { data } = await sb.auth.getSession();
   if (!data.session) return loginView();
   JWT = data.session.access_token;
   const q = new URLSearchParams(location.search), id = q.get("id");
-  id ? detail(id) : ({ keys: keys, clients: list, orders: orders, booking: booking, install: installs }[q.get("tab")] || members)();
+  id ? detail(id) : ({ keys: keys, clients: list, orders: orders, booking: booking, install: installs, people: people }[q.get("tab")] || people)();
 }
 sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
 $("out").onclick = async () => { await sb.auth.signOut(); loginView(); };
