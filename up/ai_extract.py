@@ -18,6 +18,13 @@ def need(mod, pkg):
         print(f"필요한 무료 도구({pkg})를 설치합니다…")
         import subprocess
         subprocess.run([sys.executable, "-m", "pip", "install", "--user", "--quiet", pkg])
+        # 처음 설치하면 '개인용 도구 폴더'가 막 생겨 이미 켜진 파이썬이 못 찾음 → 폴더를 알려 주고 다시 찾기 (2026-11-16 윈도우 첫 실행 오류)
+        import site, importlib
+        try:
+            site.addsitedir(site.getusersitepackages())
+        except Exception:
+            pass
+        importlib.invalidate_caches()
         return __import__(mod)
 
 
@@ -43,6 +50,7 @@ def main():
 
     pdfium = need("pypdfium2", "pypdfium2")
     pypdf = need("pypdf", "pypdf")
+    need("PIL", "Pillow")   # 사진 도구도 없으면 함께 설치
     from PIL import Image, ImageChops
 
     # 한글 경로 문제를 피하려고 임시 복사본으로 연다
@@ -71,8 +79,9 @@ def main():
         img.save(os.path.join(out, name + "_흰배경.png"), dpi=(300, 300))
         # 투명: 흰색일수록 투명하게
         rgba = img.convert("RGBA")
-        px = rgba.getdata()
-        rgba.putdata([(r, g, b, max(0, min(255, (255 - min(r, g, b)) * 255 // 40))) for r, g, b, _ in px])
+        r_, g_, b_, _a = rgba.split()   # getdata 는 Pillow 14(2027)에서 없어짐 → 채널 계산으로
+        alpha = ImageChops.invert(ImageChops.darker(ImageChops.darker(r_, g_), b_)).point(lambda v: min(255, v * 255 // 40))
+        rgba.putalpha(alpha)
         rgba.save(os.path.join(out, name + "_투명.png"), dpi=(300, 300))
         # 벡터 PDF: 그 대지만 — 아무리 키워도 안 깨짐(현수막 등 큰 인쇄용)
         wr = pypdf.PdfWriter(); wr.add_page(reader.pages[p - 1])
