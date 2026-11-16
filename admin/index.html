@@ -356,7 +356,7 @@ const CH = { "cert2-1": "자격과정 2급 · 1기" };
 async function classAdmin(c) {
   c = c || "cert2-1";
   $("out").hidden = false;
-  $("main").innerHTML = `${tabs("cl")}<div class="top"><h1>🎓 강의실 · ${E(CH[c] || c)}</h1><a class="btn g" href="../class/?c=${c}" target="_blank">강의실 열기</a> <button class="btn g" onclick="classAdmin('${c}')">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  $("main").innerHTML = `${tabs("cl")}<div class="top"><h1>🎓 강의실 · ${E(CH[c] || c)}</h1><a class="btn g" href="../class/room/?c=${c}" target="_blank">강의실 열기</a> <button class="btn g" onclick="classAdmin('${c}')">새로고침</button></div><div id="tb">불러오는 중…</div>`;
   const [en, ls, pr, mb] = await Promise.all([sb.from("class_enroll").select("*").eq("cohort", c), sb.from("class_lessons").select("*").eq("cohort", c).order("no"), sb.from("class_progress").select("*"), sb.from("members").select("id,name,phone,email").order("created_at", { ascending: false })]);
   if (en.error) { $("tb").innerHTML = `<p class="err">${E(en.error.message)}</p>`; return; }
   const L = ls.data || [], P = pr.data || [], M = mb.data || [], ids = new Set(en.data.map((x) => x.member_id));

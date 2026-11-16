@@ -1,150 +1,163 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>강의실 · AI 퍼스널 브랜딩 전문가 2급 · 브랜디움</title><meta name="robots" content="noindex">
+<title>AI 퍼스널 브랜딩 전문가 자격과정 2급 · 1기 모집 — 브랜디움 CLASS</title>
+<meta name="description" content="내 퍼스널 OS로 내 브랜드를 스스로 운영하는 사람. 온라인 공통과정 + 오프라인 2일(12/11~12) + 시험. 슈퍼 얼리버드 11/27까지 20%.">
+<meta property="og:title" content="AI 퍼스널 브랜딩 전문가 자격과정 2급 · 1기 모집">
+<meta property="og:description" content="온라인 공통과정 + 오프라인 2일(12/11~12) + 시험 · 퍼스널 OS 설치 포함 · 슈퍼 얼리버드 11/27까지">
+<meta property="og:image" content="https://mybrandium.com/class/img/og.jpg"><meta property="og:type" content="website"><meta property="og:site_name" content="브랜디움 BRAND!UM">
 <link rel="icon" href="../favicon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../os.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8}
+:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8;--butter:#f6d36b;--bg:#fffaf0}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#fffaf0;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
-nav{background:var(--ink);color:#fffaf0;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
-nav a{color:#fffaf0;text-decoration:none} nav img{height:22px;display:block}
-main{flex:1;width:100%;max-width:440px;margin:0 auto;padding:48px 22px 60px}
-.en{font-size:12px;letter-spacing:.14em;font-weight:700;opacity:.55}
-h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:15px;margin-bottom:28px}
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:14px;font:700 16px Pretendard;border:0;cursor:pointer;margin-bottom:12px;text-decoration:none}
-.kakao{background:#FEE500;color:#191600} .naver{background:#03C75A;color:#fff} .naver svg{width:16px;height:16px} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
-.dark{background:var(--ink);color:#fffaf0} .ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
-.btn svg{width:20px;height:20px}
-.note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
-.note a{color:inherit}
-label.f{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
-input[type=text],input[type=tel]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
-input:focus{outline:none;border-color:var(--ink)}
-.agree{background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:6px 16px;margin:22px 0 18px}
-.agree label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:14px;cursor:pointer}
-.agree label.all{font-weight:800;border-bottom:1px solid var(--sand);font-size:15px}
-.agree input{width:20px;height:20px;accent-color:var(--ink);flex:none}
-.agree a{margin-left:auto;font-size:12px;opacity:.6;color:inherit}
-.card{background:#fff;border:1.5px solid var(--sand);border-radius:18px;padding:20px;margin-bottom:14px}
-.card h2{font-size:16px;margin-bottom:8px} .card p{font-size:14px;opacity:.8}
-.row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--sand)} .row:last-child{border:0}
-.err{color:#c0392b;font-size:14px;margin-top:10px;min-height:20px}
-.links{display:flex;justify-content:space-between;margin-top:24px;font-size:13px} .links button{background:none;border:0;color:var(--ink);opacity:.6;text-decoration:underline;cursor:pointer;font:13px Pretendard}
-footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:24px 22px} footer a{color:#ddd}
+body{background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;padding-bottom:84px}
+a{color:inherit}
+nav{position:sticky;top:0;z-index:30;background:var(--ink);color:#fffaf0;padding:13px 22px;display:flex;justify-content:space-between;align-items:center}
+nav img{height:21px;display:block}nav .r{display:flex;gap:16px;font-size:13.5px}nav .r a{text-decoration:none;opacity:.8}
+.w{max-width:1040px;margin:0 auto;padding:0 22px}
+.en{font-family:'Josefin Sans',Pretendard;font-weight:700;letter-spacing:.08em;font-size:13px}
+/* 위 */
+.top{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;padding:34px 0 10px;align-items:start}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:18px}}
+.gal{border:2px solid var(--ink);border-radius:22px;overflow:hidden;background:#fff}
+.gal .main{aspect-ratio:16/9;background:#eee center/cover no-repeat}
+.gal .cap{font-size:12.5px;font-weight:700;padding:8px 12px 0;opacity:.7}
+.gal .thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.gal .thumbs img{width:76px;height:50px;object-fit:cover;border-radius:8px;border:2px solid transparent;cursor:pointer;flex:none}
+.gal .thumbs img.on{border-color:var(--ink)}
+.info .bdg{display:inline-block;background:var(--ink);color:#fffaf0;font-size:12px;font-weight:800;padding:4px 11px;border-radius:99px}
+.info h1{font-size:clamp(26px,4vw,36px);line-height:1.25;margin:12px 0 8px;letter-spacing:-.02em}
+.info .one{opacity:.75;font-size:15.5px}
+.tabs2{display:flex;gap:8px;margin:18px 0}
+.tabs2 a{flex:1;text-align:center;text-decoration:none;font-weight:800;padding:11px;border-radius:14px;border:2px solid var(--ink);background:#fff}
+.tabs2 a.on{background:var(--ink);color:#fffaf0}
+.price{border-top:2px solid var(--ink);border-bottom:1px solid var(--sand);padding:16px 0;margin:6px 0 14px}
+.price s{opacity:.45;font-size:15px}.price .off{color:#e8573f;font-weight:900;font-size:22px;margin-right:8px}
+.price b{font-family:'Josefin Sans',Pretendard;font-size:38px;letter-spacing:-.01em}.price small{font-size:14px;opacity:.6;margin-left:4px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14.5px}
+.facts dt{opacity:.55;font-weight:700}
+.cta{display:block;width:100%;text-align:center;text-decoration:none;font:800 17px Pretendard;padding:16px;border-radius:16px;background:var(--ink);color:#fffaf0;border:0;cursor:pointer;margin-top:18px}
+.cta.ghost{background:#fff;color:var(--ink);border:2px solid var(--ink);margin-top:10px;font-size:15px;padding:13px}
+.note{font-size:12.5px;opacity:.6;margin-top:10px;line-height:1.7}
+/* 본문 */
+.sec{padding:54px 0 10px}
+.sec h2{font-size:clamp(24px,3.4vw,32px);line-height:1.3;margin:8px 0 18px;letter-spacing:-.02em}
+.inc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:860px){.inc{grid-template-columns:1fr 1fr}}
+.inc div{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:18px}
+.inc i{font-style:normal;font-size:28px}.inc b{display:block;margin:8px 0 4px;font-size:16px}.inc span{font-size:13.5px;opacity:.72}
+.flow{list-style:none;counter-reset:f;border-left:3px solid var(--ink);margin-left:12px}
+.flow li{counter-increment:f;position:relative;padding:0 0 22px 28px}
+.flow li:before{content:counter(f);position:absolute;left:-17px;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fffaf0;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.flow li.day:before{background:#e8573f;content:"★"}
+.flow b{font-size:16px}.flow em{font-style:normal;font-size:12px;font-weight:800;background:var(--cream);border-radius:99px;padding:2px 9px;margin-left:6px}
+.flow p{font-size:14px;opacity:.75}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.box{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px}
+.box h3{font-size:17px;margin-bottom:8px}.box ul{padding-left:18px;font-size:14.5px;line-height:1.9}
+.cost{background:var(--cream);border-radius:18px;padding:20px 22px;font-size:15px;line-height:1.8}
+details{border-bottom:1px solid var(--sand);padding:14px 2px}summary{font-weight:800;cursor:pointer;font-size:15.5px}details p{font-size:14.5px;opacity:.8;margin-top:8px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fffaf0;border-top:2px solid var(--ink);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar .p{font-size:13px;opacity:.7}.bar .p b{display:block;font-size:20px;opacity:1;font-family:'Josefin Sans',Pretendard;color:var(--ink)}
+.bar a{background:var(--ink);color:#fffaf0;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px;white-space:nowrap}
+footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:26px 22px;margin-top:60px}footer a{color:#ddd}
 
-main{max-width:520px}
-.prod{display:block;background:#fff;border:2px solid var(--sand);border-radius:16px;padding:16px 18px;margin-bottom:10px;cursor:pointer;position:relative}
-.prod input{position:absolute;opacity:0}
-.prod.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
-.prod b{font-size:17px} .prod .pr{float:right;font-weight:800;font-size:17px} .prod s{opacity:.45;font-size:13px;margin-right:6px}
-.prod p{font-size:13px;opacity:.7;margin-top:6px;clear:both}
-.badge{display:inline-block;font-size:11px;font-weight:800;background:var(--cream);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:2px}
-h3{font-size:16px;margin:28px 0 4px}
-.pay{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;font-size:14px}
-.pay.off{border:1.5px dashed var(--sand);opacity:.55;margin-top:8px}
-select,textarea{width:100%;border:1.5px solid var(--sand);border-radius:12px;padding:12px 14px;font:15px Pretendard;background:#fff;color:var(--ink)}
-textarea{min-height:76px;resize:vertical}
-.sum{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);margin-top:24px;padding-top:14px;font-weight:800}
-.sum em{font-style:normal;font-size:26px}
-.bank{background:var(--cream);border-radius:16px;padding:18px 20px;margin:18px 0;font-size:15px;line-height:1.9}
-.bank b{font-size:18px}
-.small{font-size:12.5px;opacity:.65;line-height:1.7}
-</style>
-<style>
-main{max-width:860px}
-.lessons{display:flex;flex-direction:column;gap:10px;margin-top:18px}
-.ls{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--sand);border-radius:16px;padding:14px 16px;cursor:pointer}
-.ls.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
-.ls .no{font-weight:900;font-size:13px;background:var(--cream);border-radius:99px;padding:4px 10px;flex:none}
-.ls .t{flex:1;font-weight:700;font-size:15px}
-.bar{width:110px;height:8px;background:#efe6d8;border-radius:99px;overflow:hidden;flex:none}.bar i{display:block;height:100%;background:var(--ink)}
-.pct{font-size:12.5px;font-weight:800;width:62px;text-align:right;flex:none}
-.player{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;margin-top:6px}
-.player iframe,.player>div{position:absolute;inset:0;width:100%;height:100%}
-.ptitle{font-weight:800;font-size:18px;margin:16px 0 4px}
-.tools{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
-.tools .btn{width:auto;height:44px;padding:0 18px;font-size:14px;margin:0}
-.done{color:#1a7f5a;font-weight:800}
-.tot{background:var(--cream);border-radius:14px;padding:14px 16px;font-weight:800;margin-top:6px;display:flex;justify-content:space-between}
-@media(max-width:600px){.bar{width:60px}.ls .t{font-size:14px}}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center;padding:40px 0 10px}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:20px}}
+.ph{background:#ff8a4c;border-radius:220px 220px 22px 22px;border:2px solid var(--ink);overflow:hidden;aspect-ratio:480/502;max-width:420px;justify-self:center;width:100%}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1)}
+.hero .cap2{font-size:13px;opacity:.7;text-align:center;margin-top:8px}
+.ptab{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border:2px solid var(--ink);border-radius:18px;overflow:hidden}
+.ptab th,.ptab td{padding:13px 14px;border-bottom:1px solid var(--sand);text-align:left}.ptab th{background:var(--cream);font-size:13.5px}
+.ptab td.r{text-align:right;font-weight:800;white-space:nowrap}.ptab tr.now td{background:#fff3c4}.ptab tr.now td:first-child:before{content:"지금 ";color:#e8573f;font-weight:900}
+.ptab tr.past td{opacity:.4;text-decoration:line-through}
+.legal{background:#fff;border:1.5px dashed var(--ink);border-radius:16px;padding:16px 18px;font-size:13.5px;line-height:1.85}
+.step{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:860px){.step{grid-template-columns:1fr}}
+.step div{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:20px}.step em{font-style:normal;font-size:12px;font-weight:800;background:var(--cream);border-radius:99px;padding:3px 10px}
+.step b{display:block;font-size:18px;margin:10px 0 6px}.step li b{display:inline;font-size:inherit;margin:0}.step ul{padding-left:18px;font-size:14px;line-height:1.85}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.who{grid-template-columns:1fr}}
+.who div{background:var(--cream);border-radius:16px;padding:16px 18px;font-weight:700}
+.ladder{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}.ladder div{flex:1;min-width:180px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:16px}.ladder div.on{background:var(--ink);color:#fffaf0}
+.ladder small{opacity:.7}
 </style></head><body>
-<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><a href="../account/" style="font-size:13px;opacity:.75">마이페이지</a></nav>
-<main id="m"><p class="sub">불러오는 중…</p></main>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><div class="r"><a href="room/">내 강의실</a><a href="../shop/">스토어</a><a href="../account/">마이페이지</a></div></nav>
+<main class="w">
+<section class="hero">
+ <div class="info">
+  <span class="bdg">CLASS · 1기 모집</span>
+  <h1>AI 퍼스널 브랜딩 전문가<br>자격과정 2급</h1>
+  <p class="one">내 퍼스널 OS로, 내 브랜드를 스스로 운영하는 사람.<br>온라인 공통과정 → 오프라인 2일 실습 → 시험까지, 조연심 대표와 함께합니다.</p>
+  <div class="price" id="pr"></div>
+  <dl class="facts">
+   <dt>온라인</dt><dd>공통과정 · 브랜디움 강의실 · 11/20(금) 1차 공개 후 순차 공개</dd>
+   <dt>오프라인</dt><dd>12/11(금) ~ 12/12(토) · 09:00~18:00 · 2일</dd>
+   <dt>시험</dt><dd>12/12(토) 오프라인 둘째 날</dd>
+   <dt>사후</dt><dd>과정 1달쯤 뒤 줌 보습 과정(활용 점검·피드백)</dd>
+   <dt>포함</dt><dd>나의 퍼스널 OS 설치</dd>
+  </dl>
+  <a class="cta" href="order/">수강 신청하고 결제하기</a>
+  <a class="cta ghost" href="room/">이미 신청하셨나요? 내 강의실 들어가기</a>
+ </div>
+ <div><div class="ph"><img src="img/jys.png" alt="조연심 대표"></div><p class="cap2">강사 · 조연심 (에이아이(AI)퍼스널브랜딩연구소 대표 · 『이름값 경제학』 저자)</p></div>
+</section>
+
+<section class="sec"><p class="en">FOR WHOM</p><h2>이런 분께 맞아요</h2>
+ <div class="who"><div>🧭 내 브랜드를 남에게 맡기지 않고 스스로 관리하고 싶은 분</div><div>🤖 퍼스널 OS를 설치해서, 제대로 잘 쓰고 싶은 분</div></div>
+</section>
+
+<section class="sec"><p class="en">CURRICULUM</p><h2>3단계로 진행돼요</h2>
+ <div class="step">
+  <div><em>STEP 1 · 온라인</em><b>공통과정</b><ul><li>브랜디움 강의실에서 수강 — 어디까지 들었는지 자동 기록</li><li>11/20(금) 1차 공개, 이후 순차 공개</li><li>강의마다 교안 PDF 제공</li></ul></div>
+  <div><em>STEP 2 · 오프라인 2일</em><b>2급 실습 과정</b><ul><li>오리엔테이션 — 개발 취지와 과정 소개</li><li><b>7D 프로세스</b>를 단계별 수업으로 — 교시마다 퍼스널 OS 활용법과 프롬프트를 직접 써 보는 실습</li><li><b>4D 프로젝트</b>를 현장에서 시작 — 정량(내 분야 콘텐츠를 내 채널에 정기 발행 시작) · 정성(기획 → 런칭 예고 포스터 → 실제 채널 발행)</li><li>둘째 날 시험</li></ul></div>
+  <div><em>STEP 3 · 사후</em><b>1달 뒤 줌 보습</b><ul><li>배운 대로 잘 쓰고 있는지 함께 점검</li><li>막힌 곳 피드백</li></ul></div>
+ </div>
+ <p class="note">오프라인 장소는 확정되는 대로 수강생께 따로 안내드립니다. 소수 정원으로 진행합니다.</p>
+</section>
+
+<section class="sec"><p class="en">PRICE</p><h2>1기 수강료</h2>
+ <table class="ptab"><tr><th>구분</th><th>기간</th><th style="text-align:right">수강료 (VAT 포함)</th></tr>
+  <tr data-to="2026-11-27"><td>슈퍼 얼리버드 <small>(20%)</small></td><td>~ 11/27(금)</td><td class="r">1,760,000원</td></tr>
+  <tr data-from="2026-11-28" data-to="2026-12-06"><td>얼리버드 <small>(10%)</small></td><td>11/28(토) ~ 12/6(일)</td><td class="r">1,980,000원</td></tr>
+  <tr data-from="2026-12-07"><td>정상가</td><td>12/7(월) ~</td><td class="r">2,200,000원</td></tr>
+ </table>
+ <div class="two" style="margin-top:14px">
+  <div class="box"><h3>🎓 퍼스널대학 졸업생 · 명지대 교육대학원생</h3><ul><li>기간과 상관없이 <b>20% 할인 (1,760,000원)</b></li><li>얼리버드 할인과 겹치지 않고, 더 낮은 금액 하나가 적용돼요</li></ul></div>
+  <div class="box"><h3>🖥️ 퍼스널 OS를 이미 설치하신 분</h3><ul><li>과정에 들어 있는 퍼스널 OS 설치를 빼고 <b>550,000원 할인</b></li><li>예) 슈퍼 얼리버드 1,760,000원 → <b>1,210,000원</b></li></ul></div>
+ </div>
+ <p class="note">· 할인 대상은 신청서에 체크해 주시면 담당자가 확인합니다. 대상이 아닌 것으로 확인되면 차액을 안내드려요.<br>· 퍼스널 OS를 쓰려면 Claude 구독(Max, 월 $100~)이 필요합니다. 구독료는 수강생 본인 명의로 Claude에 직접 결제합니다.<br>· 1회 결제 · 카드·간편결제 또는 계좌입금</p>
+</section>
+
+<section class="sec"><p class="en">NEXT</p><h2>2급 다음은 1급</h2>
+ <div class="ladder"><div><b>공통과정</b><br><small>온라인 · 2급에 포함</small></div><div class="on"><b>2급</b><br><small>내 퍼스널 OS로 스스로 브랜딩</small></div><div><b>1급</b> · 5,500,000원<br><small>2급 취득자만 · 다른 사람의 브랜딩을 돕는 과정 · 2027 예정</small></div></div>
+</section>
+
+<section class="sec"><p class="en">FAQ</p><h2>자주 묻는 것</h2>
+ <details><summary>강의는 어디서 보나요?</summary><p>결제가 확인되면 브랜디움 계정에 <b>내 강의실</b>이 열립니다. 강의실에서 재생한 만큼 수강 기록이 남고, 다시 들어오면 보던 곳부터 이어서 볼 수 있어요.</p></details>
+ <details><summary>퍼스널 OS 설치는 언제 하나요?</summary><p>결제 뒤 담당자가 설치 일정을 따로 안내드립니다. 쓰시는 컴퓨터(맥·윈도우)를 신청서에 적어 주세요.</p></details>
+ <details><summary>세금계산서를 받을 수 있나요?</summary><p>계좌입금을 고르고 세금계산서를 선택하시면 사업자등록번호(또는 사업자등록증)와 받을 이메일을 적는 칸이 나와요. 카드 결제는 카드 매출전표가 증빙이 됩니다.</p></details>
+ <details><summary>환불은 어떻게 되나요?</summary><p>· 온라인 강의를 재생하기 전, 퍼스널 OS 설치를 시작하기 전에는 전액 환불됩니다.<br>· 그 뒤에는 남은 과정에 해당하는 금액을 돌려드리며, 이미 시작한 퍼스널 OS 설치비(맞춤 작업)는 환불되지 않습니다.<br>· 오프라인 과정이 시작된 뒤에는 환불되지 않습니다.<br>자세한 기준은 <a href="../refund/">환불 규정</a>을 따릅니다.</p></details>
+</section>
+
+<section class="sec"><div class="legal"><b>자격 안내</b><br>
+자격명 AI퍼스널브랜딩전문가 2급 · 자격의 종류 등록민간자격 · 등록번호 제2026-006001호<br>
+자격관리·운영기관 에이아이(AI)퍼스널브랜딩연구소<br>
+이 자격은 국가가 공인한 자격이 아닌 <b>등록민간자격</b>입니다. 자격 정보는 민간자격정보서비스(pqi.or.kr)에서 확인할 수 있습니다.<br>
+수강 신청·결제 처리 주식회사 캐다(브랜디움)</div></section>
+</main>
+<div class="bar"><div class="p" id="barp"></div><a href="order/">수강 신청하기</a></div>
+
 <footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호<br>인천광역시 부평구 길주로647번길 20, 801호 에이35(삼산동, 삼성프라자) · 010-8225-6242 · kedakorea@gmail.com<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-// 2026-11-16 자격과정 강의실 — 기수 명단(class_enroll)에 있는 회원만, 10초 구간 단위로 본 곳을 저장
-const sb = supabase.createClient(OS_URL, OS_ANON), M = document.getElementById("m");
-const COHORT = new URLSearchParams(location.search).get("c") || "cert2-1";
-const COHORT_NAME = {"cert2-1": "AI 퍼스널 브랜딩 전문가 2급 · 1기"}[COHORT] || COHORT;
-let U = null, L = [], P = {}, cur = null, player = null, seen = new Set(), dirty = false, timer = null;
-const pctOf = (p) => p ? Math.min(100, p.percent || 0) : 0;
-function needLogin() {
-  sessionStorage.setItem("after_login", location.href);
-  M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1><p class="sub">수강생 전용 강의실입니다. 브랜디움에 로그인해 주세요.</p><a class="btn dark" href="../account/">로그인하고 강의실 들어가기</a>`;
-}
-function draw() {
-  const done = L.filter((l) => P[l.id] && P[l.id].completed).length;
-  M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1>
-  <p class="sub">강의는 이 강의실에서 재생해야 수강이 인정돼요. 끝까지(90% 이상) 보시면 자동으로 완료 처리됩니다.</p>
-  <div class="tot"><span>내 수강 현황</span><span>${done} / ${L.length}강 완료</span></div>
-  <div id="pv"></div>
-  <div class="lessons">${L.map((l) => { const p = P[l.id], pc = pctOf(p); return `<div class="ls ${cur && cur.id === l.id ? "on" : ""}" data-id="${l.id}"><span class="no">${l.no}강</span><span class="t">${osEsc(l.title)}</span><span class="bar"><i style="width:${pc}%"></i></span><span class="pct ${p && p.completed ? "done" : ""}">${p && p.completed ? "✅ 완료" : pc + "%"}</span></div>`; }).join("")}</div>`;
-  M.querySelectorAll(".ls").forEach((d) => d.onclick = () => open(L.find((l) => l.id == d.dataset.id)));
-  if (cur) mountPlayer();
-}
-function mountPlayer() {
-  const pv = document.getElementById("pv");
-  pv.innerHTML = `<p class="ptitle">${cur.no}강 · ${osEsc(cur.title)}</p><div class="player"><div id="yt"></div></div>
-   <div class="tools">${cur.pdf_path ? '<button class="btn dark" id="pdf">📄 교안 PDF 받기</button>' : '<span class="small">📄 교안 PDF는 준비되면 여기에서 받으실 수 있어요</span>'}</div>`;
-  const start = (P[cur.id] && P[cur.id].last_pos) || 0;
-  player = new YT.Player("yt", { videoId: cur.youtube_id, playerVars: { rel: 0, modestbranding: 1, start, playsinline: 1 },
-    events: { onStateChange: (e) => { if (e.data === 1) tick(); else { save(); } } } });
-  const b = document.getElementById("pdf");
-  if (b) b.onclick = async () => { const { data, error } = await sb.storage.from("uploads").createSignedUrl(cur.pdf_path, 300); if (error) return alert("교안을 열지 못했습니다."); window.open(data.signedUrl, "_blank"); };
-}
-function open(l) {
-  save(); cur = l; seen = new Set(((P[l.id] || {}).watched) || []); draw(); window.scrollTo({ top: 0, behavior: "smooth" });
-}
-function tick() {
-  clearInterval(timer);
-  timer = setInterval(() => {
-    if (!player || !player.getCurrentTime || player.getPlayerState() !== 1) return;
-    const t = player.getCurrentTime(); seen.add(Math.floor(t / 10)); dirty = true;
-  }, 1000);
-}
-setInterval(() => save(), 30000);
-document.addEventListener("visibilitychange", () => { if (document.hidden) save(); });
-window.addEventListener("pagehide", () => save());
-async function save() {
-  if (!cur || !dirty || !player || !player.getDuration) return;
-  dirty = false;
-  const dur = Math.round(player.getDuration() || 0); if (!dur) return;
-  const total = Math.ceil(dur / 10), pc = Math.min(100, Math.round(seen.size / total * 100));
-  const prev = P[cur.id] || {};
-  const row = { member_id: U.id, lesson_id: cur.id, watched: [...seen], duration: dur, percent: Math.max(pc, prev.manual ? prev.percent : 0),
-    completed: prev.completed || pc >= 90, last_pos: Math.floor(player.getCurrentTime() || 0), updated_at: new Date().toISOString() };
-  const { error } = await sb.from("class_progress").upsert(row);
-  if (!error) { P[cur.id] = { ...prev, ...row }; const d = M.querySelector(`.ls[data-id="${cur.id}"]`);
-    if (d) { d.querySelector(".bar i").style.width = pctOf(P[cur.id]) + "%"; const s = d.querySelector(".pct"); s.textContent = P[cur.id].completed ? "✅ 완료" : pctOf(P[cur.id]) + "%"; s.classList.toggle("done", !!P[cur.id].completed); }
-    const done = L.filter((l) => P[l.id] && P[l.id].completed).length; const tt = M.querySelector(".tot span:last-child"); if (tt) tt.textContent = `${done} / ${L.length}강 완료`; }
-}
-(async () => {
-  const { data } = await sb.auth.getSession();
-  if (!data.session) return needLogin();
-  U = data.session.user;
-  const { data: en } = await sb.from("class_enroll").select("cohort").eq("member_id", U.id).eq("cohort", COHORT).maybeSingle();
-  if (!en) { M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>수강생 전용 강의실</h1><p class="sub">이 강의실은 ${COHORT_NAME} 수강생만 들어오실 수 있어요.<br>수강 신청을 하셨는데 이 화면이 보이면 담당자에게 알려 주세요.</p><a class="btn ghost" href="https://pf.kakao.com/_gMxogd/chat" target="_blank">카카오톡으로 문의하기</a>`; return; }
-  const { data: ls } = await sb.from("class_lessons").select("*").eq("cohort", COHORT).order("no");
-  L = ls || [];
-  const { data: ps } = await sb.from("class_progress").select("*").in("lesson_id", L.map((l) => l.id).concat([0]));
-  (ps || []).forEach((p) => P[p.lesson_id] = p);
-  if (!L.length) { M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1><p class="sub">아직 열린 강의가 없어요. 첫 강의가 열리면 알려 드릴게요.</p>`; return; }
-  cur = L.find((l) => !(P[l.id] && P[l.id].completed)) || L[0]; seen = new Set(((P[cur.id] || {}).watched) || []);
-  const go = () => draw();
-  if (window.YT && YT.Player) go(); else window.onYouTubeIframeAPIReady = go;
-})();
-</script></body></html>
+// 2026-11-16 자격과정 2급 1기 판매 페이지 — 기간별 금액은 서버 규칙(cert2_price)과 같은 날짜로 표시
+const kst = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+let cur = null;
+document.querySelectorAll(".ptab tr[data-to],.ptab tr[data-from]").forEach((tr) => {
+  const f = tr.dataset.from || "0000", t = tr.dataset.to || "9999";
+  if (kst >= f && kst <= t) { tr.classList.add("now"); cur = tr; } else if (kst > t) tr.classList.add("past");
+});
+const nm = cur.cells[0].childNodes[0].textContent.trim(), amt = cur.cells[2].textContent;
+const off = { "슈퍼 얼리버드": "20%", "얼리버드": "10%" }[nm];
+document.getElementById("pr").innerHTML = `${off ? `<s>2,200,000원</s><br><span class="off">${off}</span>` : ""}<b>${amt.replace("원", "")}</b><small>원 · VAT 포함</small><br><span style="font-size:13.5px;opacity:.7">${nm} · ${cur.cells[1].textContent}</span>`;
+document.getElementById("barp").innerHTML = `자격과정 2급 · ${nm}<b>${amt}</b>`;
+</script>
+</body></html>
