@@ -142,10 +142,13 @@ function form(u, m) {
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
   <input type="text" id="rn" placeholder="휴대폰 번호 또는 사업자등록번호" style="margin-top:8px;display:none">
-  <div id="taxbox" style="display:none"><p class="small" style="margin:10px 0 4px">세금계산서는 아래 두 가지까지 받아 두면 따로 여쭙지 않고 바로 발행해 드려요.</p>
-  <label class="f">세금계산서 받을 이메일</label><input type="text" id="te" placeholder="tax@example.com">
-  <label class="f">사업자등록증 (사진 또는 PDF)</label><input type="file" id="bc" accept="image/*,application/pdf" style="padding:10px;background:#fff"></div>
   </div>
+  ${CH ? "" : `<div id="cardtax" style="margin-top:10px"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:14.5px"><input type="checkbox" id="ct" style="width:auto;margin-top:3px"> <span><b>사업자 증빙이 필요해요</b> (사업자 정보 남기기)</span></label>
+  <p class="small" style="margin:4px 0 0 24px">카드로 결제하시면 법에 따라 <b>카드 매출전표가 세금계산서를 대신하는 증빙</b>이 됩니다(사업자 카드면 부가세 공제 가능). 세금계산서로 꼭 받으셔야 하면 <b>계좌입금</b>을 골라 주세요.</p></div>`}
+  <div id="taxbox" style="display:none"><p class="small" id="taxmsg" style="margin:10px 0 4px">세금계산서는 아래 두 가지까지 받아 두면 따로 여쭙지 않고 바로 발행해 드려요.</p>
+  <div id="tbnw" style="display:none"><label class="f">사업자등록번호</label><input type="text" id="tbn" placeholder="123-45-67890"></div>
+  <label class="f" id="tel">세금계산서 받을 이메일</label><input type="text" id="te" placeholder="tax@example.com">
+  <label class="f">사업자등록증 (사진 또는 PDF)</label><input type="file" id="bc" accept="image/*,application/pdf" style="padding:10px;background:#fff"></div>
   <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] 주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다${CH ? "" : " (설치를 시작한 뒤에는 맞춤 작업이라 환불되지 않는다는 점을 확인했습니다)"}</span></label></div>
   <input type="hidden" id="ch" value="${CH ? 1 : 0}"><div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
@@ -163,9 +166,17 @@ function form(u, m) {
     else { REF = { code: c, partner: data[0].partner, price: data[0].price }; msg.style.color = "#1a7f5a"; msg.textContent = `✓ 추천인 코드가 적용되었어요 — ${won(data[0].price)}`; }
     sel(M.querySelector(".prod.on").dataset.k);
   };
-  $("#rt").onchange = (e) => { $("#rn").style.display = e.target.value ? "block" : "none"; const tx = e.target.value === "세금계산서"; $("#taxbox").style.display = tx ? "block" : "none"; $("#rn").placeholder = tx ? "사업자등록번호 (예: 123-45-67890)" : "휴대폰 번호 또는 사업자등록번호"; };
+  const TXS = () => {   // 세금계산서·사업자 증빙 칸 보이기 (계좌입금+세금계산서 / 카드+사업자 증빙)
+    const card = PM() === "card", ctOn = card && $("#ct") && $("#ct").checked, tx = !card && $("#rt").value === "세금계산서";
+    $("#taxbox").style.display = tx || ctOn ? "block" : "none"; $("#tbnw").style.display = ctOn ? "block" : "none";
+    $("#taxmsg").textContent = ctOn ? "사업자 정보를 남겨 두시면 증빙 확인에 따로 여쭙지 않아요." : "세금계산서는 아래 두 가지까지 받아 두면 따로 여쭙지 않고 바로 발행해 드려요.";
+    $("#tel").textContent = ctOn ? "증빙 받을 이메일" : "세금계산서 받을 이메일";
+    if ($("#cardtax")) $("#cardtax").style.display = card ? "" : "none";
+  };
+  $("#rt").onchange = (e) => { $("#rn").style.display = e.target.value ? "block" : "none"; const tx = e.target.value === "세금계산서"; $("#rn").placeholder = tx ? "사업자등록번호 (예: 123-45-67890)" : "휴대폰 번호 또는 사업자등록번호"; TXS(); };
+  if ($("#ct")) $("#ct").onchange = TXS;
   const PM = () => (M.querySelector("input[name=pm]:checked") || {}).value || "bank";
-  M.querySelectorAll("input[name=pm]").forEach((r) => r.onchange = () => { const bk = PM() === "bank"; $("#bankbox").style.display = bk ? "" : "none"; $("#bankonly").style.display = bk ? "" : "none"; });
+  M.querySelectorAll("input[name=pm]").forEach((r) => r.onchange = () => { const bk = PM() === "bank"; $("#bankbox").style.display = bk ? "" : "none"; $("#bankonly").style.display = bk ? "" : "none"; TXS(); });
   $("#go").onclick = async () => {
     const k = M.querySelector(".prod.on").dataset.k, p = P.find((x) => x.k === k);
     const v = (id) => $("#" + id).value.trim(), err = (t) => $(".err").textContent = t;
@@ -174,8 +185,9 @@ function form(u, m) {
     const CARD = PM() === "card";
     if (!CARD && !v("dp")) return err("입금자명을 적어 주세요.");
     if (!CARD && v("rt") && !v("rn")) return err("증빙에 쓸 번호를 적어 주세요.");
-    const TAX = !CARD && v("rt") === "세금계산서";
-    if (TAX && !/^\S+@\S+\.\S+$/.test(v("te"))) return err("세금계산서 받을 이메일을 적어 주세요.");
+    const CTAX = CARD && $("#ct") && $("#ct").checked, TAX = (!CARD && v("rt") === "세금계산서") || CTAX;
+    if (CTAX && !/^\d{3}-?\d{2}-?\d{5}$/.test(v("tbn"))) return err("사업자등록번호를 확인해 주세요. (예: 123-45-67890)");
+    if (TAX && !/^\S+@\S+\.\S+$/.test(v("te"))) return err(CTAX ? "증빙 받을 이메일을 적어 주세요." : "세금계산서 받을 이메일을 적어 주세요.");
     if (TAX && !($("#bc").files || [])[0]) return err("사업자등록증 사진 또는 PDF를 올려 주세요.");
     if (TAX && $("#bc").files[0].size > 10 * 1024 * 1024) return err("사업자등록증 파일은 10MB 이하로 올려 주세요.");
     if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
@@ -189,7 +201,7 @@ function form(u, m) {
       if (up.error) { $("#go").disabled = false; return err("사업자등록증을 올리지 못했습니다. 다시 시도해 주세요. (" + up.error.message + ")"); }
     }
     const { data, error } = await sb.from("orders").insert({ tax_email: TAX ? v("te") : null, biz_cert: BC, member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: CARD ? null : v("dp"), receipt_type: CARD ? null : (v("rt") || null), receipt_no: CARD ? null : (v("rn") || null), pay_method: CARD ? "카드(토스)" : "계좌입금", want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
+      depositor: CARD ? null : v("dp"), receipt_type: CARD ? (CTAX ? "사업자 증빙(카드)" : null) : (v("rt") || null), receipt_no: CARD ? (CTAX ? v("tbn") : null) : (v("rn") || null), pay_method: CARD ? "카드(토스)" : "계좌입금", want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
     if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : /추천인 코드/.test(error.message) ? "추천인 코드를 확인해 주세요." : "주문을 저장하지 못했습니다: " + error.message);
     if (CARD) return showPay(u, data);
