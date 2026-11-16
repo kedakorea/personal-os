@@ -74,7 +74,7 @@ async function list() {
   document.querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => detail(tr.dataset.id));
 }
 function yymmdd() { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
-function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "b" ? "on" : ""}" onclick="booking()">📅 예약</button><button class="${on === "i" ? "on" : ""}" onclick="installs()">✅ 설치</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button></div>`; }
+function tabs(on) { return `<div class="tabs"><button class="${on === "m" ? "on" : ""}" onclick="members()">🙋 회원</button><button class="${on === "o" ? "on" : ""}" onclick="orders()">🛒 주문</button><button class="${on === "b" ? "on" : ""}" onclick="booking()">📅 예약</button><button class="${on === "i" ? "on" : ""}" onclick="installs()">✅ 설치</button><button class="${on === "c" ? "on" : ""}" onclick="list()">👥 고객</button><button class="${on === "k" ? "on" : ""}" onclick="keys()">🔑 고객 키</button><button class="${on === "cl" ? "on" : ""}" onclick="classAdmin()">🎓 강의실</button></div>`; }
 // 설치 진행 체크리스트 (2026-10-24) — 1호 회고로 고친 순서. 시간표는 '시작'을 누르면 타이머, 목표 시간을 넘기면 빨간색(15분 넘으면 예비 방법)
 const IC = [
  { sec: "A. 전날까지 — 준비", items: [
@@ -351,6 +351,27 @@ async function buildKit(c, publish) {
     btn.textContent = "✅ 내려받았습니다";
   } catch (e) { alert("키트를 만들지 못했습니다: " + e.message); btn.disabled = false; btn.textContent = label; }
 }
+// 2026-11-16 자격과정 강의실 — 기수 명단 등록 · 수강생별 진도(관리자 RLS로 바로 읽음)
+const CH = { "cert2-1": "자격과정 2급 · 1기" };
+async function classAdmin(c) {
+  c = c || "cert2-1";
+  $("out").hidden = false;
+  $("main").innerHTML = `${tabs("cl")}<div class="top"><h1>🎓 강의실 · ${E(CH[c] || c)}</h1><a class="btn g" href="../class/?c=${c}" target="_blank">강의실 열기</a> <button class="btn g" onclick="classAdmin('${c}')">새로고침</button></div><div id="tb">불러오는 중…</div>`;
+  const [en, ls, pr, mb] = await Promise.all([sb.from("class_enroll").select("*").eq("cohort", c), sb.from("class_lessons").select("*").eq("cohort", c).order("no"), sb.from("class_progress").select("*"), sb.from("members").select("id,name,phone,email").order("created_at", { ascending: false })]);
+  if (en.error) { $("tb").innerHTML = `<p class="err">${E(en.error.message)}</p>`; return; }
+  const L = ls.data || [], P = pr.data || [], M = mb.data || [], ids = new Set(en.data.map((x) => x.member_id));
+  const nm = (id) => M.find((m) => m.id === id) || {};
+  const cell = (mid, l) => { const p = P.find((x) => x.member_id === mid && x.lesson_id === l.id); if (!p) return `<td style="color:#aaa">—</td>`; return `<td>${p.completed ? "✅" : ""} <b>${p.percent}%</b>${p.manual ? " <small>(수동)</small>" : ""}<br><small>${dt(p.updated_at)}</small> <button class="btn g" style="padding:2px 8px;font-size:11px" onclick="classMark('${mid}',${l.id},${!p.completed},'${c}')">${p.completed ? "완료 취소" : "완료로"}</button></td>`; };
+  const opts = M.filter((m) => !ids.has(m.id)).map((m) => `<option value="${m.id}">${E(m.name || "(이름 없음)")} · ${E(m.phone || m.email || "")}</option>`).join("");
+  $("tb").innerHTML = `<div class="stats"><div><b>${en.data.length}</b>수강생</div><div><b>${L.length}</b>열린 강의</div></div>
+   <p style="margin:10px 0"><select id="enm" style="font:15px Pretendard;padding:9px;border-radius:10px;max-width:360px">${opts}</select> <button class="btn" onclick="classEnroll('${c}')">이 회원을 수강생으로 등록</button></p>
+   ${en.data.length ? `<table><tr><th>수강생</th>${L.map((l) => `<th>${l.no}강</th>`).join("")}<th></th></tr>
+   ${en.data.map((x) => { const m = nm(x.member_id); return `<tr><td><b>${E(m.name || "")}</b><br><small>${E(m.phone || m.email || "")}</small>${x.note ? `<br><small>${E(x.note)}</small>` : ""}</td>${L.map((l) => cell(x.member_id, l)).join("")}<td><button class="btn g" style="font-size:12px;padding:4px 10px" onclick="classUnenroll('${x.member_id}','${c}')">명단에서 빼기</button></td></tr>`; }).join("")}</table>` : `<p class="note">아직 등록된 수강생이 없습니다.</p>`}
+   <p class="note">진도 = 이 강의실에서 실제로 재생한 구간(10초 단위) ÷ 영상 길이. 90% 넘으면 자동 완료. 앞으로 건너뛴 구간은 진도에 안 들어갑니다.</p>`;
+}
+async function classEnroll(c) { const id = $("enm").value; if (!id) return; const { error } = await sb.from("class_enroll").insert({ member_id: id, cohort: c }); if (error) alert(error.message); classAdmin(c); }
+async function classUnenroll(id, c) { if (!confirm("이 수강생을 명단에서 뺄까요? (진도 기록은 남습니다)")) return; await sb.from("class_enroll").delete().eq("member_id", id).eq("cohort", c); classAdmin(c); }
+async function classMark(mid, lid, on, c) { const { error } = await sb.from("class_progress").update(on ? { completed: true, manual: true, percent: 100 } : { completed: false, manual: true }).eq("member_id", mid).eq("lesson_id", lid); if (error) alert(error.message); classAdmin(c); }
 async function boot() {
   const { data } = await sb.auth.getSession();
   if (!data.session) return loginView();
