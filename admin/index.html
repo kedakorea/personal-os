@@ -396,7 +396,10 @@ async function loadPeople() {
     sb.from("install_runs").select("*"), sb.from("class_enroll").select("*"), sb.from("class_progress").select("*"), sb.from("class_lessons").select("id,cohort,no,title"),
     A({ action: "a_list" }), A({ action: "a_keys" })]);
   const P = [], byM = {}, find = (f) => P.find(f);
-  (mb.data || []).forEach((m) => { const p = { id: "m:" + m.id, m, name: m.name, phone: m.phone, email: m.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); byM[m.id] = p; });
+  // 휴대폰이 같은 회원 계정(카카오·구글·이메일 등 로그인만 다른 경우)은 한 사람으로 묶는다 — 리바이 지적 반영
+  (mb.data || []).forEach((m) => { let p = ph(m.phone) && P.find((x) => x.ms && ph(x.phone) === ph(m.phone));
+    if (p) { p.ms.push(m); } else { p = { id: "m:" + m.id, m, ms: [m], name: m.name, phone: m.phone, email: m.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); }
+    byM[m.id] = p; });
   (cu.items || []).forEach((c) => {
     let p = find((p) => p.m && p.m.customer_id === c.id) || (ph(c.phone) && find((p) => ph(p.phone) === ph(c.phone))) || (c.email && find((p) => (p.email || "").toLowerCase() === c.email.toLowerCase())) || (nmk(c.name) && find((p) => nmk(p.name) === nmk(c.name)));
     if (!p) { p = { id: "c:" + c.id, m: null, name: c.name, phone: c.phone, email: c.email, cus: [], orders: [], runs: [], keys: [], enr: [], prog: [] }; P.push(p); }
@@ -409,6 +412,7 @@ async function loadPeople() {
   (en.data || []).forEach((e) => { if (byM[e.member_id]) byM[e.member_id].enr.push(e); });
   (pr.data || []).forEach((x) => { if (byM[x.member_id]) byM[x.member_id].prog.push(x); });
   P.forEach((p) => {
+    if (p.ms && p.ms.length > 1) { p.m = p.ms.find((m) => p.enr.some((e) => e.member_id === m.id)) || p.ms.find((m) => p.orders.some((o) => o.member_id === m.id && CLP.test(o.product))) || p.ms[0]; p.email = p.ms.map((m) => m.email).filter(Boolean).join(" · "); }
     p.isOS = p.cus.length > 0 || p.runs.length > 0 || p.orders.some((o) => OSP.includes(o.product) && o.status !== "취소");
     p.isCL = p.enr.length > 0 || p.orders.some((o) => CLP.test(o.product) && o.status !== "취소");
     p.last = [p.m && p.m.created_at, ...p.orders.map((o) => o.created_at), ...p.cus.map((c) => c.updated_at), ...p.runs.map((r) => r.install_at || r.created_at)].filter(Boolean).sort().pop() || "";
@@ -443,7 +447,7 @@ function drawPeople() {
    ${L.map((p) => `<tr class="row" data-p="${E(p.id)}"><td><b>${E(p.name || "(이름 없음)")}</b>${p.cus[0] && p.cus[0].company ? ` <small>${E(p.cus[0].company)}</small>` : ""}<br><small>${E(p.phone || "")} ${E(p.email || "")}</small></td>
     <td>${p.isOS ? '<span class="tg2 os">퍼스널 OS</span>' : ""}${p.isCL ? '<span class="tg2 cl">자격과정</span>' : ""}${p.m ? "" : '<span class="tg2 mb">사이트 미가입</span>'}${!p.isOS && !p.isCL ? '<span class="tg2 mb">회원</span>' : ""}</td>
     <td>${payOf(p)}</td><td>${instOf(p)}</td><td>${clsOf(p)}</td><td><small>${p.last ? dt(p.last) : ""}</small></td></tr>`).join("") || `<tr><td colspan="6" class="emp">해당하는 고객이 없습니다</td></tr>`}</table>
-   <p class="note">한 줄을 누르면 그 고객의 결제·설치·키·강의를 한 창에서 봅니다. 사이트 회원과 퍼스널 OS 고객은 휴대폰·이메일·이름이 같으면 한 사람으로 묶어요.</p>`;
+   <p class="note">퍼스널 OS와 자격과정을 둘 다 한 고객은 두 칸에 모두 들어가서, 칸 숫자를 더하면 전체보다 많을 수 있어요. 입금대기도 따로 세는 칸입니다.<br>한 줄을 누르면 그 고객의 결제·설치·키·강의를 한 창에서 봅니다. 휴대폰이 같은 회원 계정끼리, 그리고 회원과 퍼스널 OS 고객은 휴대폰·이메일·이름이 같으면 한 사람으로 묶어요.</p>`;
   $("tb").querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { PF = b.dataset.f; drawPeople(); });
   const qi = $("pq"); qi.oninput = () => { PQ = qi.value; const pos = qi.selectionStart; drawPeople(); const n = $("pq"); n.focus(); n.setSelectionRange(pos, pos); };
   $("tb").querySelectorAll("tr.row").forEach((tr) => tr.onclick = () => person(tr.dataset.p));
@@ -456,7 +460,7 @@ function person(pid) {
   const box = (t, act, body) => `<div class="box"><h3><span>${t}</span>${act || ""}</h3>${body}</div>`;
   const html = `<div class="pn"><div style="display:flex;justify-content:space-between;align-items:start;gap:10px"><div><h2>${E(p.name || "(이름 없음)")}</h2><p class="sub2">${E(p.phone || "")} · ${E(p.email || "")}</p>
     <div>${p.isOS ? '<span class="tg2 os">퍼스널 OS</span>' : ""}${p.isCL ? '<span class="tg2 cl">자격과정</span>' : ""}</div></div><button class="btn g" id="pvx">닫기 ✕</button></div><br>
-   ${box("🙋 사이트 회원", "", p.m ? `<dl class="kv2"><dt>가입</dt><dd>${d(p.m.created_at)} · ${E(PV2[p.m.provider] || p.m.provider || "")}</dd><dt>소식 수신</dt><dd>${p.m.agree_marketing ? "동의" : "—"}</dd></dl>` : '<p class="emp">브랜디움 사이트 회원 가입 기록이 없습니다 (현장·원격으로 바로 진행한 고객)</p>')}
+   ${box("🙋 사이트 회원", "", p.m ? (p.ms || [p.m]).map((m) => `<dl class="kv2" style="margin-bottom:8px"><dt>계정</dt><dd>${E(m.email || "")} · ${E(PV2[m.provider] || m.provider || "")}${(p.ms || []).length > 1 && m.id === p.m.id ? " <small>(강의 등록 계정)</small>" : ""}</dd><dt>가입</dt><dd>${d(m.created_at)} · 소식 수신 ${m.agree_marketing ? "동의" : "—"}</dd></dl>`).join("") + ((p.ms || []).length > 1 ? `<p class="note" style="margin:0">휴대폰이 같은 계정 ${p.ms.length}개를 한 사람으로 묶었어요.</p>` : "") : '<p class="emp">브랜디움 사이트 회원 가입 기록이 없습니다 (현장·원격으로 바로 진행한 고객)</p>')}
    ${box("💳 결제 · 주문", "", p.orders.length ? `<table><tr><th>주문</th><th>상품</th><th>금액</th><th>방법</th><th>상태</th></tr>${p.orders.map((o) => `<tr><td><b>${E(o.order_no)}</b><br><small>${d(o.created_at)}</small></td><td>${E(o.product)}${o.opt ? `<br><small>할인: ${E(o.opt)}</small>` : ""}${o.slot_at ? `<br><small>📅 ${d(o.slot_at)}</small>` : ""}</td><td>${won2(o.price)}</td><td><small>${E(o.pay_method || "")}${o.receipt_type ? "<br>" + E(o.receipt_type) : ""}${o.tax_email ? "<br>✉️ " + E(o.tax_email) : ""}</small></td>
       <td><select class="ost2" data-id="${o.id}">${OST.map((s) => `<option ${s === o.status ? "selected" : ""}>${s}</option>`).join("")}</select></td></tr>${o.memo ? `<tr><td colspan="5"><small>📝 ${E(o.memo).replace(/\n/g, "<br>")}</small></td></tr>` : ""}`).join("")}</table>` : '<p class="emp">주문 기록이 없습니다</p>')}
    ${box("🛠 퍼스널 OS 설치", "", (c ? `<dl class="kv2"><dt>업무 파악</dt><dd><span class="st ${E(c.stage)}">${E(c.stage)}</span> · 진행 ${c.progress || 0}% ${c.company ? "· " + E(c.company) : ""}</dd><dt>방식 · 매니저</dt><dd>${E(c.mode || "—")} · ${E(c.chief || "—")}</dd></dl><p style="margin:8px 0"><button class="btn g" data-cus="${c.id}">업무 파악 · 설계 열기 →</button></p>` : "")
