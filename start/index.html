@@ -175,6 +175,7 @@ function field(q) {
 function render() {
   document.documentElement.style.overflow = "";   // STEP 0 에서 잠근 바깥 스크롤 풀기
   if (new URLSearchParams(location.search).get("tut") && !window.__tutDone) return renderTut();   // ?tut=1 — 설치 당일 등 따로 보여 줄 때
+  if (S.keyOk && !S.tutOk && !window.__tutDone) return renderTut();   // 고객 키를 넣고 나면 STEP 0 부터 (2026-11-16 대표님 — 인터뷰 마친 고객도 한 번 보고 '설치 이어가기')
   if (S.token && (S.keyOk || new URLSearchParams(location.search).get("t"))) return renderAI();
   if (FU) return renderFU();
   const st = STEPS[S.step];
@@ -210,7 +211,7 @@ function render() {
       if (!r.ok) { $("keyerr").textContent = r.error || "키를 확인하지 못했어요"; return; }
       const K = k.toUpperCase().replace(/[^A-Z0-9]/g, ""), same = (S.key || "").toUpperCase().replace(/[^A-Z0-9]/g, "") === K;
       if (!same) { S = { a: {}, memo: {}, step: 0, mode: S.mode }; AI = null; }   // 다른 키 — 새 고객으로 처음부터
-      S.key = k.toUpperCase(); S.keyOk = true;
+      S.key = k.toUpperCase(); S.keyOk = true; if (!window.__tutDone) { S.tutOk = false; S.tutPg = 0; }   // 키를 넣을 때마다 STEP 0 한 번
       if (r.token) { S.token = r.token; AI = null; } else { delete S.token; if (S.step < 1) S.step = 0; }   // 서버에 기록이 있으면 그 단계로, 없으면 하던 질문 칸으로
       save(); if (S.token) history.replaceState(null, "", "?t=" + S.token); render(); };
     $("keygo").onclick = go; $("keyin").onkeydown = (e) => { if (e.key === "Enter") go(); };
