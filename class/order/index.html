@@ -100,13 +100,12 @@ function needLogin() {
 }
 function form(u, m) {
   M.innerHTML = `<p class="en">CLASS · ORDER</p><h1>자격과정 2급 · 1기<br>수강 신청</h1><p class="sub">결제가 확인되면 브랜디움 <b>내 강의실</b>이 바로 열립니다. <a href="../">과정 안내 다시 보기</a></p>
-  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>공통과정 · 11/20(금)부터 순차 공개</span></div><div class="row"><span>오프라인</span><span>12/11(금)~12/12(토) 09:00~18:00</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
+  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>23강 · 11/20(금)부터 순차 공개</span></div><div class="row"><span>오프라인</span><span>16시간 · 12/11(금)~12(토) 09:00~18:00</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
   <h3>할인 대상 (해당하는 분만)</h3>
   <label class="opt"><input type="checkbox" name="o" value="grad"><span><b>퍼스널대학 졸업생</b> — 20% (1,760,000원)</span></label>
   <label class="opt"><input type="checkbox" name="o" value="mju"><span><b>명지대 교육대학원생</b> — 20% (1,760,000원)</span></label>
-  <label class="opt"><input type="checkbox" name="o" value="os"><span><b>퍼스널 OS를 이미 설치했어요</b> — 550,000원 할인 (과정 속 설치를 뺌)</span></label>
-  <p class="small" style="margin-top:6px">얼리버드와 졸업생·대학원생 할인은 겹치지 않고 더 낮은 금액 하나만 적용돼요. 담당자가 대상 여부를 확인하고, 아니면 차액을 안내드립니다.</p>
-  <div id="ev" style="display:none"><label class="f">확인용 정보 (기수·학번 또는 설치한 때)</label><input type="text" id="evd" placeholder="예: 퍼스널대학 3기 / 명지대 교육대학원 2025 입학 / 10월 원격 설치"></div>
+  <p class="small" style="margin-top:6px">20%·10% 할인은 중복되지 않아요. 담당자가 대상 여부를 확인하고, 아니면 차액을 안내드립니다. 퍼스널 OS를 이미 설치하신 분의 추가 혜택은 <a href="https://pf.kakao.com/_gMxogd/chat" target="_blank" rel="noopener">카카오톡 채널</a>로 문의해 주세요.</p>
+  <div id="ev" style="display:none"><label class="f">확인용 정보 (기수·학번 등)</label><input type="text" id="evd" placeholder="예: 퍼스널대학 3기 / 명지대 교육대학원 2025 입학"></div>
   <h3>수강생</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
   <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
