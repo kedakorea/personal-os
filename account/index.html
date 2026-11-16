@@ -43,6 +43,7 @@ const sb = supabase.createClient(OS_URL, OS_ANON);
 const $ = (s) => document.querySelector(s), M = $("#m");
 const BACK = location.origin + location.pathname;
 const NAVER_ID = "zhv0lZSXEn0yTIXIOU6k";
+const NAVER_ON = false;   // 2026-11-16 대표님: 네이버 로그인 검수 중이라 숨김 — 승인되면 true
 const IC = {
   kakao: '<svg viewBox="0 0 24 24"><path fill="#191600" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>',
   naver: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M15.6 12.8 8.1 2H2v20h6.4V11.2L15.9 22H22V2h-6.4z"/></svg>',
@@ -52,7 +53,7 @@ function loginView(msg) {
   M.innerHTML = `<p class="en">SIGN IN</p><h1>브랜디움 시작하기</h1>
   <p class="sub">${/\/start\//.test(sessionStorage.getItem("after_login") || "") ? "고객 전용 페이지는 로그인 뒤 들어가실 수 있습니다. 쓰시던 계정으로 3초면 됩니다." : "쓰시던 계정으로 3초 만에 가입·로그인됩니다."}</p>
   <button class="btn kakao" data-p="kakao">${IC.kakao}카카오로 시작하기</button>
-  <button class="btn naver" data-p="naver">${IC.naver}네이버로 시작하기</button>
+  ${NAVER_ON ? `<button class="btn naver" data-p="naver">${IC.naver}네이버로 시작하기</button>` : ""}
   <button class="btn google" data-p="google">${IC.google}Google로 시작하기</button>
   <details class="idlogin" style="margin-top:14px"><summary style="cursor:pointer;font-size:14px;opacity:.7">아이디로 로그인</summary>
    <input type="email" id="lid" placeholder="아이디(이메일)" autocomplete="username" style="margin-top:10px">

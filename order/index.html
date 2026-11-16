@@ -1,6 +1,12 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>구매하기 · BRANDiUM 퍼스널 OS</title>
+<title>퍼스널 OS 예약·결제 · 브랜디움 BRAND!UM</title>
+<meta property="og:title" content="브랜디움 퍼스널 OS — 예약·결제">
+<meta property="og:description" content="예약된 일정으로 가입하고 결제까지 한 번에 진행해 주세요.">
+<meta property="og:site_name" content="브랜디움 BRAND!UM">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mybrandium.com/og.jpg?v=1020c">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <link rel="icon" href="../favicon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -95,8 +101,9 @@ async function showPay(u, o) {
 }
 function needLogin() {
   sessionStorage.setItem("after_login", location.href);
-  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·네이버·구글 계정으로 3초면 됩니다.</p>
-  <a class="btn dark" href="../account/">로그인하고 구매하기</a>`;
+  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·구글 계정으로 3초면 됩니다.</p>
+  <a class="btn dark" href="../account/">가입하고 진행하기</a>`;
+  location.replace("../account/");   // 2026-11-16 대표님: 안내 링크를 누르면 바로 가입 화면으로
 }
 function form(u, m) {
   const pick = new URLSearchParams(location.search).get("p") || "remote";
