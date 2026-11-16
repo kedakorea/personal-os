@@ -551,6 +551,19 @@ nav .navr{display:flex;align-items:center;gap:12px;flex:none}@media(max-width:52
 .icnt.good b{color:#fff}
 .ims.os .ib{opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
 .uslide.seen .ims.os .ib{opacity:1;transform:none}
+/* v3.1 (대표님: 두 사람 구분이 안 됨) — 프로필 모양·색·이름표·배경 칸을 모두 다르게 */
+.ims{border-radius:20px;padding:12px 12px 14px}
+.ims.ai{background:rgba(255,255,255,.55);border:2px solid #b9c7d1}
+.ims.os{background:#fff6d6;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.ims.ai .iav{border-radius:50%;background:#e9edf0;border:2px solid #9aa7b0;font:900 14px/1 'Josefin Sans',Pretendard;color:#6d7880;letter-spacing:.02em}
+.ims.os .iav{border-radius:14px;background:var(--ink);border:2px solid var(--ink);font:900 20px/1 'Josefin Sans',Pretendard;color:var(--butter2)}
+.inm .nm{display:inline-block;border-radius:999px;padding:3px 10px;font-size:13px}
+.ims.ai .inm .nm{background:#e9edf0;color:#5d6870}
+.ims.os .inm .nm{background:var(--ink);color:var(--butter2)}
+.ims.ai .ib{background:#fff;border:1.5px solid #cfd8de;color:#4f5a61}
+.ims.os .ib{background:#fff}
+@media(max-width:700px){.ims{padding:9px 8px 11px}.ims .ib{max-width:100%}}
+
 @media(max-width:700px){.ibd{padding:12px 10px 14px}.ib{max-width:94%;font-size:15px}.ims{grid-template-columns:36px 1fr;gap:0 7px}.iav{width:36px;height:36px;font-size:17px;border-radius:12px}.ith .ihd em,.ith .ihd .mem{display:none}}
 .unote{font-size:13px;opacity:.65;line-height:1.7;margin-top:22px;max-width:820px}
 .ctags{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 16px}
@@ -1119,9 +1132,9 @@ lb.addEventListener('click',()=>{lb.hidden=true});addEventListener('keydown',e=>
  const slide=c=>`<div class="uslide"><div class="ith"><div class="ihd">💬 ${c.cat==='mob'?'밖에서 휴대폰으로':'같은 부탁, 두 AI'} <span class="mem">나 · 일반 AI · 퍼스널 OS</span>${c.common?'<span class="icm">누구나 AI에게 시켜 본 일</span>':''}${c.sub?`<em>${c.sub}</em>`:''}</div><div class="ibd">
   <div class="itime">${c.cat==='mob'?'외출 중':'오늘 오전 9:12'}</div>
   <div class="irow me"><div class="ib me">${c.ask}</div></div>
-  <div class="ims ai"><div class="iav">💬</div><div class="inm">일반 AI <small>챗GPT·클로드 채팅창</small></div><div class="ilist"><div class="ib">${c.ai}</div>
+  <div class="ims ai"><div class="iav">AI</div><div class="inm"><span class="nm">💬 일반 AI</span> <small>챗GPT·클로드 같은 채팅창</small></div><div class="ilist"><div class="ib">${c.ai}</div>
    <div class="icnt bad"><b>✋ 대표님이 할 일 ${c.chores.length}개 남음</b><br>${c.chores.map(x=>`<span>${x}</span>`).join('')}</div></div></div>
-  <div class="ims os"><div class="iav">🏢</div><div class="inm">퍼스널 OS <small>${c.dept}</small><span class="uwow">${c.wow}</span></div><div class="ilist">
+  <div class="ims os"><div class="iav">B!</div><div class="inm"><span class="nm">🏢 퍼스널 OS</span> <small>${c.dept}</small><span class="uwow">${c.wow}</span></div><div class="ilist">
    ${c.acts.map(([ic,x,cc])=>`<div class="ib">${x}${cc?`<small>${cc}</small>`:''}</div>`).join('')}
    <div class="icnt good">🙌 대표님이 할 일 → <b>${c.left.replace(/<\/?b>/g,'')}</b></div></div></div>
   </div></div></div>`;
