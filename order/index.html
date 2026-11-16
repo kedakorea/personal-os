@@ -205,9 +205,11 @@ function form(u, m) {
     done(data);
   };
 }
+// 2026-11-16 대표님: 주문·결제 뒤 브랜디움 카카오톡 채널 추가 유도 — 손님이 한 번 말을 걸어야 채널에서 안내를 보낼 수 있음
+const KCH = `<div style="margin:18px 0;background:#FEE500;border:2px solid #432f2e;border-radius:16px;padding:14px 16px;line-height:1.6"><b>💬 앞으로 설치 안내는 브랜디움 카카오톡 채널로 드려요</b><br><span style="font-size:14.5px">채널을 추가하고 <b>"안녕하세요"</b> 한 줄만 남겨 주시면, 준비물·일정 안내를 그 방으로 보내 드립니다.</span><a href="https://pf.kakao.com/_gMxogd/chat" target="_blank" rel="noopener" style="display:block;margin-top:10px;background:#432f2e;color:#FEE500;text-align:center;border-radius:12px;padding:11px;font-weight:900;text-decoration:none">카카오톡 채널 추가하고 인사하기 →</a></div>`;
 function done(o) {
   window.scrollTo(0, 0);
-  M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}${o.slot_at ? `<br>📅 세팅 일정 <b>${new Date(o.slot_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" })}</b> (입금 확인 후 확정)` : ""}</p>
+  M.innerHTML = `<p class="en">THANK YOU</p><h1>주문이 접수되었습니다</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · ${osEsc(o.product)}${o.slot_at ? `<br>📅 세팅 일정 <b>${new Date(o.slot_at).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", month: "long", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" })}</b> (입금 확인 후 확정)` : ""}</p>${/^칩/.test(o.product) ? "" : KCH}
   <div class="bank">입금하실 금액 <b>${won(o.price)}</b> <small>(VAT 포함)</small><br>기업은행 <b>114-193627-04-019</b><br>예금주 (주)캐다<br>입금자명 ${osEsc(o.depositor)}</div>
   <p class="small">· 주문한 때부터 <b>12시간 안에</b> 입금해 주세요. 기한이 지나면 고르신 날짜가 다른 분께 열리고 주문이 취소될 수 있습니다.<br>${/^칩/.test(o.product) ? "· 입금이 확인되면 칩이 바로 들어옵니다. 상점에서 원하는 상품을 받으세요.<br>· 충전 후 7일 안, 하나도 쓰지 않았으면 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)." : "· 입금이 확인되면 1영업일 안에 담당자가 연락드려 일정을 잡습니다.<br>· 설치 시작 전에는 언제든 전액 환불됩니다(<a href=\"../refund/\">환불 규정</a>)."}<br>· 문의 010-8225-6242 · <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">카카오톡 채널</a></p>
   <a class="btn dark" href="../account/" style="margin-top:20px">마이페이지에서 주문 보기</a>`;
@@ -224,7 +226,7 @@ function done(o) {
         body: JSON.stringify({ action: "confirm", paymentKey: q.get("paymentKey"), orderId: q.get("orderId"), amount: q.get("amount"), no: q.get("no") }) });
       const j = await r.json();
       if (!j.ok) { fail(j.error || "결제 승인에 실패했습니다."); return; }
-      M.innerHTML = `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b>${j.totalAmount ? ` · ${won(j.totalAmount)}` : ""}<br>담당자가 1영업일 안에 연락드려 설치 일정을 확정합니다.</p>${j.receipt ? `<p class="small"><a href="${osEsc(j.receipt)}" target="_blank" rel="noopener">카드 영수증 보기</a></p>` : ""}<a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`;
+      M.innerHTML = `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b>${j.totalAmount ? ` · ${won(j.totalAmount)}` : ""}<br>담당자가 1영업일 안에 연락드려 설치 일정을 확정합니다.</p>${KCH}${j.receipt ? `<p class="small"><a href="${osEsc(j.receipt)}" target="_blank" rel="noopener">카드 영수증 보기</a></p>` : ""}<a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`;
     } catch (e) { fail("결제 확인 중 오류가 났습니다. 문의 주시면 바로 확인해 드립니다."); }
     return;
   }
