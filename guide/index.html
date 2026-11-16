@@ -1,0 +1,127 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>셀프 설치 가이드 — 퍼스널 OS · 브랜디움</title>
+<meta name="description" content="퍼스널 OS 셀프형 — 결제부터 인터뷰, 설치 키트, 맥·윈도우 설치, 휴대폰 연결, COMPLETE까지 화면마다 보여 드리는 가이드">
+<meta property="og:title" content="퍼스널 OS 셀프 설치 가이드"><meta property="og:image" content="https://mybrandium.com/og.jpg?v=1020c">
+<link rel="icon" href="../favicon.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--ink:#432f2e;--cream:#feefb8;--sand:#ead9c6;--sky:#c4dae8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fffaf0;color:var(--ink);font-family:Pretendard,-apple-system,sans-serif;word-break:keep-all;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+nav{background:var(--ink);color:#fffaf0;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+nav a{color:#fffaf0;text-decoration:none} nav img{height:22px;display:block}
+main{flex:1;width:100%;max-width:440px;margin:0 auto;padding:48px 22px 60px}
+.en{font-size:12px;letter-spacing:.14em;font-weight:700;opacity:.55}
+h1{font-size:26px;margin:6px 0 8px;line-height:1.35} .sub{opacity:.75;font-size:15px;margin-bottom:28px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:14px;font:700 16px Pretendard;border:0;cursor:pointer;margin-bottom:12px;text-decoration:none}
+.kakao{background:#FEE500;color:#191600} .naver{background:#03C75A;color:#fff} .naver svg{width:16px;height:16px} .google{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
+.dark{background:var(--ink);color:#fffaf0} .ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn svg{width:20px;height:20px}
+.note{font-size:13px;opacity:.65;margin-top:14px;text-align:center}
+.note a{color:inherit}
+label.f{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
+input[type=text],input[type=tel]{width:100%;height:50px;border:1.5px solid var(--sand);border-radius:12px;padding:0 14px;font:16px Pretendard;background:#fff;color:var(--ink)}
+input:focus{outline:none;border-color:var(--ink)}
+.agree{background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:6px 16px;margin:22px 0 18px}
+.agree label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:14px;cursor:pointer}
+.agree label.all{font-weight:800;border-bottom:1px solid var(--sand);font-size:15px}
+.agree input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+.agree a{margin-left:auto;font-size:12px;opacity:.6;color:inherit}
+.card{background:#fff;border:1.5px solid var(--sand);border-radius:18px;padding:20px;margin-bottom:14px}
+.card h2{font-size:16px;margin-bottom:8px} .card p{font-size:14px;opacity:.8}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--sand)} .row:last-child{border:0}
+.err{color:#c0392b;font-size:14px;margin-top:10px;min-height:20px}
+.links{display:flex;justify-content:space-between;margin-top:24px;font-size:13px} .links button{background:none;border:0;color:var(--ink);opacity:.6;text-decoration:underline;cursor:pointer;font:13px Pretendard}
+footer{background:var(--ink);color:#bbb;font-size:12px;line-height:1.8;padding:24px 22px} footer a{color:#ddd}
+
+main{max-width:520px}
+.prod{display:block;background:#fff;border:2px solid var(--sand);border-radius:16px;padding:16px 18px;margin-bottom:10px;cursor:pointer;position:relative}
+.prod input{position:absolute;opacity:0}
+.prod.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.prod b{font-size:17px} .prod .pr{float:right;font-weight:800;font-size:17px} .prod s{opacity:.45;font-size:13px;margin-right:6px}
+.prod p{font-size:13px;opacity:.7;margin-top:6px;clear:both}
+.badge{display:inline-block;font-size:11px;font-weight:800;background:var(--cream);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+h3{font-size:16px;margin:28px 0 4px}
+.pay{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;font-size:14px}
+.pay.off{border:1.5px dashed var(--sand);opacity:.55;margin-top:8px}
+select,textarea{width:100%;border:1.5px solid var(--sand);border-radius:12px;padding:12px 14px;font:15px Pretendard;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.sum{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);margin-top:24px;padding-top:14px;font-weight:800}
+.sum em{font-style:normal;font-size:26px}
+.bank{background:var(--cream);border-radius:16px;padding:18px 20px;margin:18px 0;font-size:15px;line-height:1.9}
+.bank b{font-size:18px}
+.small{font-size:12.5px;opacity:.65;line-height:1.7}
+</style><style>
+main{max-width:760px}
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 8px}.toc a{background:#fff;border:1.5px solid var(--sand);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:14px;font-weight:700}.toc a b{display:inline-block;min-width:26px;color:#c4520f}
+.gs{background:#fff;border:2px solid var(--ink);border-radius:20px;padding:22px 22px 14px;margin:18px 0;position:relative;scroll-margin-top:16px}
+.gs .no{position:absolute;top:-14px;left:18px;background:var(--ink);color:#fffaf0;font-weight:900;border-radius:99px;padding:3px 12px;font-size:13px}
+.gs h2{font-size:21px;margin:4px 0 10px}.gs p{font-size:15px;line-height:1.75;margin:6px 0}
+.st,.ck{padding-left:22px;font-size:15.5px;line-height:1.8}.st li,.ck li{margin:4px 0}.ck{list-style:none;padding-left:0}
+code{display:block;background:var(--ink);color:var(--cream);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:14px;word-break:break-all;user-select:all}
+.shot{margin:14px 0;border:1.5px solid var(--sand);border-radius:14px;overflow:hidden;background:#faf6ee}.shot img{display:block;width:100%;height:auto;max-height:720px;object-fit:contain;background:#fff}
+.shot figcaption{font-size:13px;padding:8px 12px;opacity:.75;font-weight:700}
+.shot{display:none}.shot.ok{display:block}body.edit .shot:not(.ok){display:block;border:2px dashed #c4520f}body.edit .shot:not(.ok) img{display:none}body.edit .shot:not(.ok) figcaption:before{content:"📸 캡처 자리 · img/" attr(data-n) ".jpg — ";color:#c4520f}
+.warn{background:#fff3e6;border-radius:12px;padding:10px 12px;font-weight:700}.tip{background:#eaf6ee;border-radius:12px;padding:10px 12px}
+.alert{border:2.5px solid #c4520f;border-radius:16px;padding:16px;margin-top:18px;background:#fffaf3}.alert h3{font-size:17px;color:#a8410b;margin-bottom:6px;line-height:1.45}
+details{border-bottom:1px solid var(--sand);padding:14px 2px}summary{font-weight:800;cursor:pointer;font-size:15.5px}details p{font-size:14.5px;margin-top:8px;line-height:1.75}
+</style></head><body>
+<nav><a href="../"><img src="../logo_butter.png" alt="BRANDiUM"></a><span style="display:flex;gap:14px;font-size:13px"><a href="../setup/" style="opacity:.8">SETUP</a><a href="../account/" style="opacity:.8">마이페이지</a></span></nav>
+<main><p class="en">SELF SETUP GUIDE</p><h1>퍼스널 OS<br>셀프 설치 가이드</h1>
+<p class="sub">결제부터 COMPLETE까지, 화면을 한 장씩 보며 따라 하세요. 맥과 윈도우는 7·8번이 달라요.</p>
+<div class="toc"><a href="#ready"><b>0</b>시작 전에 준비할 것</a><a href="#buy"><b>1</b>셀프형 결제하기</a><a href="#key"><b>2</b>고객 키 받고 시작하기</a><a href="#tut"><b>3</b>STEP 0 · 튜토리얼 보기</a><a href="#iv"><b>4</b>STEP 1~2 · 업무 질문과 AI 인터뷰</a><a href="#prop"><b>5</b>제안서 확인 · 확정</a><a href="#kit"><b>6</b>회사 자료 올리고 · 설치 키트 받기</a><a href="#mac"><b>7</b>설치 — 맥</a><a href="#win"><b>8</b>설치 — 윈도우</a><a href="#link"><b>9</b>연결하기 · 휴대폰 연결</a><a href="#done"><b>10</b>첫 실습 → COMPLETE → 마무리 안내</a><a href="#faq"><b>?</b>자주 막히는 곳</a></div>
+<section id="ready" class="gs"><div class="no">0</div><h2>시작 전에 준비할 것</h2><ul class="ck">
+<li>💻 <b>컴퓨터</b> — 맥(macOS 13 이상) 또는 윈도우 10·11. 늘 켜 둘 수 있는 컴퓨터가 좋아요</li>
+<li>🔌 충전기 연결 · 안정된 와이파이</li>
+<li>📱 <b>휴대폰</b> — 로그인 인증·휴대폰 앱 연결에 써요</li>
+<li>🔑 <b>컴퓨터 로그인 비밀번호</b> — 설치 중에 한 번 물어봐요</li>
+<li>📧 <b>구글 계정</b> — 지메일·캘린더·드라이브 연결</li>
+<li>💳 <b>Claude Max 결제 카드</b> — 본인 명의, 월 $100부터. Claude에 직접 결제해요</li>
+<li>⏱ 넉넉히 <b>2~3시간</b> — 인터뷰 1시간, 설치·연결 1~2시간</li></ul></section><section id="buy" class="gs"><div class="no">1</div><h2>셀프형 결제하기</h2><ol class="st"><li>브랜디움 메뉴 <b>SETUP</b> → <b>🧰 셀프형</b>의 <b>[셀프로 시작하기]</b></li>
+<li>카카오·구글 계정으로 3초 가입·로그인</li>
+<li>주문서에서 이름·휴대폰 확인 → 할인 쿠폰이 있으면 넣고 <b>[적용]</b></li>
+<li>환불 규정 동의 체크 → <b>[주문하기]</b> → 카드 결제(또는 계좌입금)</li></ol>
+<figure class="shot" data-n="01_setup"><img src="img/01_setup.jpg" alt="SETUP 메뉴의 셀프형 카드" onload="this.parentNode.classList.add('ok')"><figcaption data-n="01_setup">SETUP 메뉴의 셀프형 카드</figcaption></figure><figure class="shot" data-n="02_order"><img src="img/02_order.jpg" alt="셀프형 주문서 — 쿠폰 칸과 환불 동의" onload="this.parentNode.classList.add('ok')"><figcaption data-n="02_order">셀프형 주문서 — 쿠폰 칸과 환불 동의</figcaption></figure></section><section id="key" class="gs"><div class="no">2</div><h2>고객 키 받고 시작하기</h2><ol class="st"><li>결제가 끝나면 화면에 <b>내 고객 키</b>(KEY-OS-…)가 바로 나와요. <b>[▶ 지금 시작하기]</b>를 누르세요</li>
+<li>계좌입금은 입금이 확인되면 <b>마이페이지 → 내 주문</b>에 키와 시작 버튼이 나타나요</li>
+<li>고객 페이지에서 로그인 → 고객 키를 넣고 들어가요(링크로 오면 키가 미리 채워져 있어요)</li></ol>
+<figure class="shot" data-n="04_key_done"><img src="img/04_key_done.jpg" alt="결제 완료 화면의 고객 키" onload="this.parentNode.classList.add('ok')"><figcaption data-n="04_key_done">결제 완료 화면의 고객 키</figcaption></figure><figure class="shot" data-n="03_key"><img src="img/03_key.jpg" alt="고객 전용 페이지 — 로그인하고 들어가기" onload="this.parentNode.classList.add('ok')"><figcaption data-n="03_key">고객 전용 페이지 — 로그인하고 들어가기</figcaption></figure></section><section id="tut" class="gs"><div class="no">3</div><h2>STEP 0 · 튜토리얼 보기</h2><p>퍼스널 OS가 무엇인지, 오늘 어떤 순서로 하는지 11장으로 보여 드려요. <b>다음 ›</b>으로 넘기면 돼요.</p>
+<p class="warn">💡 튜토리얼을 시작한 뒤부터는 환불이 70%로 바뀌어요(키트를 받기 전까지).</p><figure class="shot" data-n="05_tut"><img src="img/05_tut.jpg" alt="STEP 0 튜토리얼 첫 장" onload="this.parentNode.classList.add('ok')"><figcaption data-n="05_tut">STEP 0 튜토리얼 첫 장</figcaption></figure></section><section id="iv" class="gs"><div class="no">4</div><h2>STEP 1~2 · 업무 질문과 AI 인터뷰</h2><ol class="st"><li>STEP 1: 하는 일·자주 하는 업무를 고르고 짧게 적어요. 답이 짧으면 보충 질문이 몇 개 나와요</li>
+<li>STEP 2: AI 인터뷰 — 말하듯 편하게 답하세요. 휴대폰이면 키보드의 🎤 마이크로 말해도 돼요</li>
+<li>인터뷰가 끝나면 AI가 <b>제안서</b>(부서·매니저·하는 일)를 1~2분 동안 만들어요</li></ol>
+<figure class="shot" data-n="06_step1"><img src="img/06_step1.jpg" alt="STEP 1 업무 질문" onload="this.parentNode.classList.add('ok')"><figcaption data-n="06_step1">STEP 1 업무 질문</figcaption></figure><figure class="shot" data-n="07_iv"><img src="img/07_iv.jpg" alt="STEP 2 AI 인터뷰" onload="this.parentNode.classList.add('ok')"><figcaption data-n="07_iv">STEP 2 AI 인터뷰</figcaption></figure></section><section id="prop" class="gs"><div class="no">5</div><h2>제안서 확인 · 확정</h2><ol class="st"><li>부서·매니저·하는 일을 읽어 보고, 점선 글자를 눌러 바로 고칠 수 있어요</li>
+<li>화면 종류(본사형·매거진형·다이어리형 등)를 고르고, 매니저 이름을 정해요(비워 두면 호칭만)</li>
+<li><b>[이대로 확정]</b></li></ol><figure class="shot" data-n="08_prop"><img src="img/08_prop.jpg" alt="제안서와 화면 고르기" onload="this.parentNode.classList.add('ok')"><figcaption data-n="08_prop">제안서와 화면 고르기</figcaption></figure></section><section id="kit" class="gs"><div class="no">6</div><h2>회사 자료 올리고 · 설치 키트 받기</h2><ol class="st"><li>(선택) 로고·직인·사업자등록증·자주 쓰는 양식을 올리면 키트에 함께 들어가요</li>
+<li><b>[⬇️ 내 설치 키트 만들고 받기]</b> → 30초쯤 뒤 파일이 <b>다운로드 폴더</b>에 받아져요</li></ol>
+<p class="warn">⚠️ 셀프형은 <b>설치 키트를 받은 뒤에는 환불되지 않아요.</b> 받기 전에 한 번 더 물어봐요.</p><figure class="shot" data-n="09_kit"><img src="img/09_kit.jpg" alt="설치 키트 만들고 받기 버튼" onload="this.parentNode.classList.add('ok')"><figcaption data-n="09_kit">설치 키트 만들고 받기 버튼</figcaption></figure></section><section id="mac" class="gs"><div class="no">7</div><h2>설치 — 맥</h2><p class="tip">✅ <b>맥은 '터미널 한 줄'로 설치하세요.</b> 받은 zip이나 설치 파일을 더블클릭하지 않아도 돼요. 이 방법은 맥의 보안 경고(아래 ⚠️)가 뜨지 않아요.</p>
+<ol class="st"><li>받은 키트 파일은 <b>다운로드 폴더에 그대로</b> 둡니다 (열지 않아도 돼요)</li>
+<li><b>⌘(command) + 스페이스</b> → <b>터미널</b> 입력 → 엔터</li>
+<li>아래 한 줄을 복사해 터미널에 붙여 넣고 엔터 <code>curl -fsSL https://mybrandium.com/tools/install.sh | bash</code></li>
+<li>맥 비밀번호를 물어보면 입력 → 엔터. <b>입력해도 화면에 글자가 안 보이는 게 정상</b>이에요</li>
+<li>Claude 로그인 창이 열리면 로그인 → <b>Authorize(승인)</b></li>
+<li>설치 단계가 차례로 지나가요(10분 안팎). 끝나면 바탕화면에 <b>퍼스널 OS</b> 앱이 생기고 화면이 열려요</li></ol>
+<figure class="shot" data-n="mac_01_terminal"><img src="img/mac_01_terminal.jpg" alt="터미널 열기 (⌘ + 스페이스 → 터미널)" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_01_terminal">터미널 열기 (⌘ + 스페이스 → 터미널)</figcaption></figure><figure class="shot" data-n="mac_02_paste"><img src="img/mac_02_paste.jpg" alt="한 줄 붙여 넣기" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_02_paste">한 줄 붙여 넣기</figcaption></figure><figure class="shot" data-n="mac_03_password"><img src="img/mac_03_password.jpg" alt="맥 비밀번호 — 글자가 안 보여도 정상" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_03_password">맥 비밀번호 — 글자가 안 보여도 정상</figcaption></figure><figure class="shot" data-n="mac_04_claude"><img src="img/mac_04_claude.jpg" alt="Claude 로그인 → Authorize" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_04_claude">Claude 로그인 → Authorize</figcaption></figure><figure class="shot" data-n="mac_05_steps"><img src="img/mac_05_steps.jpg" alt="설치 단계 진행 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_05_steps">설치 단계 진행 화면</figcaption></figure><figure class="shot" data-n="mac_06_done"><img src="img/mac_06_done.jpg" alt="설치 끝 — 퍼스널 OS 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_06_done">설치 끝 — 퍼스널 OS 화면</figcaption></figure>
+<div class="alert" id="gatekeeper"><h3>⚠️ "열 수 없음" · "확인되지 않은 개발자" 창이 떠요 (설치 파일을 더블클릭했을 때)</h3>
+<p>zip을 풀고 <b>설치.command</b>를 더블클릭하면, 맥이 인터넷에서 받은 파일을 막으면서 <b>[휴지통으로 이동] / [완료]</b> 버튼만 있는 창이 뜰 수 있어요. 고장 난 게 아니에요.</p>
+<ol class="st"><li><b>[휴지통으로 이동]은 누르지 마세요.</b> <b>[완료]</b>를 눌러 창을 닫아요</li>
+<li><b>가장 쉬운 방법</b>: 위의 <b>터미널 한 줄</b>로 설치하세요. 이 경고 없이 설치돼요</li>
+<li>꼭 더블클릭으로 하려면 → 화면 왼쪽 위 <b> → 시스템 설정</b></li>
+<li>왼쪽 목록에서 <b>개인정보 보호 및 보안</b> → 오른쪽을 <b>맨 아래까지</b> 내려요</li>
+<li><b>보안</b> 칸에 <b>"'설치.command'이(가) 차단되었습니다"</b> 문구 옆 <b>[그래도 열기]</b></li>
+<li>맥 비밀번호(또는 Touch ID) 입력 → 다시 뜨는 창에서 <b>[열기]</b></li></ol>
+<figure class="shot" data-n="mac_gk_01_blocked"><img src="img/mac_gk_01_blocked.jpg" alt="더블클릭했을 때 뜨는 차단 창 — [완료]를 누르세요" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_gk_01_blocked">더블클릭했을 때 뜨는 차단 창 — [완료]를 누르세요</figcaption></figure><figure class="shot" data-n="mac_gk_02_settings"><img src="img/mac_gk_02_settings.jpg" alt="Apple 메뉴 → 시스템 설정" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_gk_02_settings">Apple 메뉴 → 시스템 설정</figcaption></figure><figure class="shot" data-n="mac_gk_03_privacy"><img src="img/mac_gk_03_privacy.jpg" alt="개인정보 보호 및 보안 → 맨 아래 보안 칸" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_gk_03_privacy">개인정보 보호 및 보안 → 맨 아래 보안 칸</figcaption></figure><figure class="shot" data-n="mac_gk_04_openanyway"><img src="img/mac_gk_04_openanyway.jpg" alt="[그래도 열기] 버튼" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_gk_04_openanyway">[그래도 열기] 버튼</figcaption></figure><figure class="shot" data-n="mac_gk_05_password"><img src="img/mac_gk_05_password.jpg" alt="비밀번호 입력 → [열기]" onload="this.parentNode.classList.add('ok')"><figcaption data-n="mac_gk_05_password">비밀번호 입력 → [열기]</figcaption></figure></div></section><section id="win" class="gs"><div class="no">8</div><h2>설치 — 윈도우</h2><ol class="st"><li>받은 zip 파일을 <b>마우스 오른쪽 클릭 → 모두 압축 풀기</b></li>
+<li>풀린 폴더에서 <b>설치_윈도우</b>를 더블클릭</li>
+<li>파란 창 <b>'Windows의 PC 보호'</b>가 뜨면 <b>추가 정보 → [실행]</b></li>
+<li><b>'이 앱이 디바이스를 변경할 수 있도록 허용하시겠어요?'</b> → <b>[예]</b></li>
+<li>Claude 로그인 → 자동 설치. 끝나면 바탕화면에 <b>퍼스널 OS</b> 바로가기가 생겨요</li></ol>
+<figure class="shot" data-n="win_01_unzip"><img src="img/win_01_unzip.jpg" alt="zip 오른쪽 클릭 → 모두 압축 풀기" onload="this.parentNode.classList.add('ok')"><figcaption data-n="win_01_unzip">zip 오른쪽 클릭 → 모두 압축 풀기</figcaption></figure><figure class="shot" data-n="win_02_smartscreen"><img src="img/win_02_smartscreen.jpg" alt="Windows의 PC 보호 → 추가 정보" onload="this.parentNode.classList.add('ok')"><figcaption data-n="win_02_smartscreen">Windows의 PC 보호 → 추가 정보</figcaption></figure><figure class="shot" data-n="win_03_run"><img src="img/win_03_run.jpg" alt="[실행]" onload="this.parentNode.classList.add('ok')"><figcaption data-n="win_03_run">[실행]</figcaption></figure><figure class="shot" data-n="win_04_uac"><img src="img/win_04_uac.jpg" alt="변경 허용 → [예]" onload="this.parentNode.classList.add('ok')"><figcaption data-n="win_04_uac">변경 허용 → [예]</figcaption></figure><figure class="shot" data-n="win_05_done"><img src="img/win_05_done.jpg" alt="설치 끝 — 퍼스널 OS 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="win_05_done">설치 끝 — 퍼스널 OS 화면</figcaption></figure></section><section id="link" class="gs"><div class="no">9</div><h2>연결하기 · 휴대폰 연결</h2><ol class="st"><li>설치 창이 열어 주는 <b>claude.ai 연결 화면</b>에서 지메일·구글 캘린더·구글 드라이브·노션을 각각 <b>[연결]</b> → 같은 구글 계정으로 허용</li>
+<li>휴대폰 연결 화면(큰 QR)이 뜨면: 휴대폰에 <b>Tailscale</b> 앱 설치 → 컴퓨터와 <b>같은 계정</b>으로 로그인 → QR 찍기</li>
+<li>아이폰: 사파리 공유 버튼 → <b>홈 화면에 추가</b> · 갤럭시: 크롬 ⋮ → <b>홈 화면에 추가</b></li>
+<li>갤럭시는 Tailscale 설정에서 <b>'포함할 앱만 고르기'</b>로 바꾸고 크롬·삼성 인터넷만 켜 주세요(삼성페이·은행 앱이 그대로 열려요)</li></ol>
+<figure class="shot" data-n="link_01_connectors"><img src="img/link_01_connectors.jpg" alt="claude.ai 연결 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="link_01_connectors">claude.ai 연결 화면</figcaption></figure><figure class="shot" data-n="link_02_phone_qr"><img src="img/link_02_phone_qr.jpg" alt="휴대폰 연결 QR 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="link_02_phone_qr">휴대폰 연결 QR 화면</figcaption></figure><figure class="shot" data-n="link_03_homescreen"><img src="img/link_03_homescreen.jpg" alt="홈 화면에 추가" onload="this.parentNode.classList.add('ok')"><figcaption data-n="link_03_homescreen">홈 화면에 추가</figcaption></figure></section><section id="done" class="gs"><div class="no">10</div><h2>첫 실습 → COMPLETE → 마무리 안내</h2><ol class="st"><li>퍼스널 OS 채팅창의 첫인사에 <b>공식 실습 3가지</b>가 나와요: 연결 확인 · "내가 누군지 설명해 봐" · 화면 바꿔 보기</li>
+<li>세 가지가 끝나면 <b>COMPLETE!</b> 화면이 저절로 떠요</li>
+<li>15초 뒤 브랜디움 <b>마무리 안내</b>(로그인 연장·기록 보관·구독·문의처)로 넘어가요. 여기까지 보면 끝!</li></ol>
+<figure class="shot" data-n="done_01_practice"><img src="img/done_01_practice.jpg" alt="첫인사와 실습 3가지" onload="this.parentNode.classList.add('ok')"><figcaption data-n="done_01_practice">첫인사와 실습 3가지</figcaption></figure><figure class="shot" data-n="done_02_complete"><img src="img/done_02_complete.jpg" alt="COMPLETE 화면" onload="this.parentNode.classList.add('ok')"><figcaption data-n="done_02_complete">COMPLETE 화면</figcaption></figure><figure class="shot" data-n="done_03_fin"><img src="img/done_03_fin.jpg" alt="브랜디움 마무리 안내" onload="this.parentNode.classList.add('ok')"><figcaption data-n="done_03_fin">브랜디움 마무리 안내</figcaption></figure></section>
+<section id="faq" class="gs"><div class="no">FAQ</div><h2>자주 막히는 곳</h2><details><summary>맥에서 '열 수 없음 / 휴지통으로 이동' 창이 떠요</summary><p><b>[휴지통으로 이동]은 누르지 말고 [완료]</b>. 그다음 <a href='#mac'>터미널 한 줄</a>로 설치하세요. 더블클릭으로 꼭 해야 하면 <a href='#gatekeeper'>시스템 설정 → 개인정보 보호 및 보안 → [그래도 열기]</a> 순서를 따라 하세요.</p></details><details><summary>터미널에 비밀번호를 쳐도 글자가 안 나와요</summary><p>정상이에요. 보안 때문에 안 보일 뿐 입력은 되고 있어요. 다 치고 엔터를 누르세요.</p></details><details><summary>Claude 로그인 창이 안 떠요 / 로그인했는데 넘어가지 않아요</summary><p>브라우저 창이 뒤에 열렸을 수 있어요. 열린 창에서 <b>Authorize(승인)</b>를 눌렀는지 확인하세요. Claude 구독이 <b>Max</b>가 아니면 설치가 멈출 수 있어요(claude.ai → 설정 → 구독).</p></details><details><summary>설치가 한 단계에서 15분 넘게 멈춰 있어요</summary><p>창을 닫고 같은 <b>터미널 한 줄</b>(윈도우는 설치_윈도우)을 다시 실행하세요. 끝난 단계는 건너뛰고 이어서 진행해요.</p></details><details><summary>윈도우에서 '파란 창'만 뜨고 실행이 안 돼요</summary><p><b>추가 정보</b>(작은 글씨)를 눌러야 <b>[실행]</b> 버튼이 나와요.</p></details><details><summary>휴대폰에서 퍼스널 OS가 안 열려요</summary><p>휴대폰 <b>Tailscale</b>이 켜져 있는지, 컴퓨터와 <b>같은 계정</b>인지 확인하세요. 컴퓨터가 잠자기 상태여도 안 열려요.</p></details><details><summary>키트를 다시 받고 싶어요</summary><p>같은 고객 키로 고객 페이지에 들어가면 언제든 다시 받을 수 있어요(추가 비용 없음).</p></details><details><summary>그래도 막혀요</summary><p>브랜디움 <b>카카오톡 채널</b>에 화면 사진과 함께 남겨 주세요. 영업일 기준 순서대로 답변드려요. 설치가 계속 막히면 <a href='../order/?p=selfhelp'><b>원격 도움(220,000원)</b></a>으로 설치만 도와 드려요(인터뷰·제안서 확정은 직접 마무리).</p></details></section>
+<p class="small" style="margin:20px 0">문의: 브랜디움 카카오톡 채널 <a href="https://pf.kakao.com/_gMxogd" target="_blank" rel="noopener">pf.kakao.com/_gMxogd</a> (영업일 기준 순서대로 답변)</p>
+</main><footer>주식회사 캐다 · 대표 최유정 · 사업자등록번호 118-86-03525 · 통신판매업신고 제2026-인천부평-1769호<br>인천광역시 부평구 길주로647번길 20, 801호 에이35(삼산동, 삼성프라자) · 010-8225-6242 · kedakorea@gmail.com<br><a href="../terms/">이용약관</a> · <a href="../privacy/"><b>개인정보처리방침</b></a> · <a href="../refund/">환불 규정</a></footer>
+<script>if(new URLSearchParams(location.search).get('edit'))document.body.classList.add('edit');</script>
+</body></html>

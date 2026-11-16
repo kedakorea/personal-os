@@ -387,7 +387,7 @@ async function classUnenroll(id, c) { if (!confirm("이 수강생을 명단에�
 async function classMark(mid, lid, on, c) { const { error } = await sb.from("class_progress").update(on ? { completed: true, manual: true, percent: 100 } : { completed: false, manual: true }).eq("member_id", mid).eq("lesson_id", lid); if (error) alert(error.message); classAdmin(c); }
 // ───── 👤 고객 통합 (2026-11-16 대표님) — 회원·퍼스널 OS 고객·주문·설치·키·강의를 한 사람으로 묶어 한 창에서 본다
 // 묶는 기준: 회원(members) 1명 = 1사람. OS 고객(customers)은 members.customer_id → 휴대폰 → 이메일 → 이름 순으로 붙이고, 못 붙으면 따로 1사람.
-const OSP = ["원격형", "방문형", "체험단(방문형)"], CLP = /^자격과정/;
+const OSP = ["원격형", "방문형", "체험단(방문형)", "셀프형", "원격 도움(셀프 차액)"], CLP = /^자격과정/;
 const ph = (x) => (x || "").replace(/[^0-9]/g, ""), nmk = (x) => (x || "").replace(/\s|대표님|님|선생님/g, "");
 let PPL = [], PF = "all", PQ = "";
 async function loadPeople() {

@@ -521,6 +521,11 @@ async function renderAI() {
         <li>⌘ + 스페이스 → <b>터미널</b> 입력 → 엔터</li>
         <li>아래 한 줄을 붙여 넣고 엔터 <button type="button" class="cpy" id="kitcp">복사</button><code>curl -fsSL https://mybrandium.com/tools/install.sh | bash</code></li>
         <li>안내대로 — 컴퓨터 비밀번호 → Claude 로그인 → 자동 설치. 끝나면 바탕화면에 <b>퍼스널 OS</b> 앱이 생겨요</li></ol></div>`}`
+      : (c.intake || {}).self ? `<div class="kitbox"><div class="lab" style="margin:0 0 6px">STEP 5 · 설치 (셀프형)</div><h2>📦 내 설치 키트를 만들 차례예요</h2>
+        <p>확정한 제안서로 <b>${osEsc(c.name)} 님 전용</b> 키트를 바로 만들어 드려요. 회사 자료(로고·직인 등)를 넣으실 거면 <b>아래에서 먼저 올린 뒤</b> 눌러 주세요.</p>
+        <p class="note" style="margin-top:8px">⚠️ 셀프형은 <b>설치 키트를 받은 뒤에는 환불되지 않아요.</b> (<a href="../refund/" target="_blank">환불 규정</a>)</p>
+        <button class="bigb" id="kitdl" data-self="1" type="button" style="background:var(--ink);color:var(--cream);margin-top:12px">⬇️ 내 설치 키트 만들고 받기</button>
+        <p class="note" style="margin-top:10px">받은 다음엔 이 페이지가 설치 순서를 보여 드려요. 막히면 <a href="../guide/" target="_blank">📘 셀프 설치 가이드</a> · 카카오톡 채널에 남겨 주세요(영업일 기준 순서대로 답변).</p></div>`
       : `<div class="kitbox wait"><b>⏳ 담당자 승인을 기다리고 있어요</b><br>승인되면 <b>이 페이지에 설치 키트 받기 버튼</b>이 나타나요. (자동으로 확인 중) 그동안 아래 자료를 올려 두시면 키트에 함께 들어갑니다.</div>`}${(c.intake || {}).kit ? `<div class="kitbox" style="box-shadow:5px 5px 0 #ffd84d"><div class="lab" style="margin:0 0 6px">FINISH · 설치를 마쳤다면</div><h2>🎉 퍼스널 OS 화면에 COMPLETE!가 떴나요?</h2><p class="sub" style="margin:4px 0 12px">마지막으로 매일 쓰면서 알아 둘 것(로그인 연장·기록 보관·구독·문의처)을 확인해 주세요.</p><button type="button" class="btn" id="finGo" style="width:100%">마무리 안내 보기 ›</button></div>` : ""}
       <div class="lab" style="margin-top:30px">STEP 4 · 자료</div><h1 style="font-size:26px">${c.chief ? osEsc(c.chief) + " " : ""}${osEsc(t)}에게 넘겨줄 자료</h1>
       <p class="sub">지금 올려 주시면 설치 첫날부터 바로 씁니다. <b>지금 꼭 넣지 않아도 괜찮아요.</b> 퍼스널 OS가 완성된 뒤에 ${osEsc(t)}에게 직접 보내 주셔도 됩니다. 어느 쪽이든 <b>한 번만 전달하면, 그 뒤로는 다시 달라고 하지 않습니다.</b> 자료는 브랜디움 담당자만 볼 수 있습니다.</p>
@@ -540,7 +545,7 @@ async function renderAI() {
       $("asm").textContent = ""; renderAI();
     });
     document.querySelectorAll("[data-rm]").forEach((a) => a.onclick = async (e) => { e.preventDefault(); if (!confirm("이 파일을 뺄까요?")) return; const r = await osCall({ action: "asset", token: S.token, remove: a.dataset.rm }); if (r.ok) { AI.customer = r.customer; renderAI(); } });
-    if ($("kitdl")) $("kitdl").onclick = async () => { const b = $("kitdl"); b.disabled = true; b.textContent = "준비 중…"; const r = await osCall({ action: "kit", token: S.token, os: /Windows/i.test(navigator.userAgent) ? "win" : "mac" }); b.disabled = false; b.textContent = "⬇️ 설치 키트 받기"; if (!r.ok) { alert(r.error || "받지 못했어요. 다시 눌러 주세요."); return; } location.href = r.url; };
+    if ($("kitdl")) $("kitdl").onclick = async () => { const b = $("kitdl"); if (b.dataset.self && !confirm("설치 키트를 받으면 환불이 되지 않아요.\n(셀프형 환불 규정)\n\n지금 키트를 만들어 받을까요?")) return; b.disabled = true; b.textContent = b.dataset.self ? "키트 만드는 중… (30초 정도)" : "준비 중…"; const r = await osCall({ action: "kit", token: S.token, os: /Windows/i.test(navigator.userAgent) ? "win" : "mac" }); b.disabled = false; b.textContent = "⬇️ 설치 키트 받기"; if (!r.ok) { alert(r.error || "받지 못했어요. 다시 눌러 주세요."); return; } location.href = r.url; if (b.dataset.self) setTimeout(async () => { AI = await osCall({ action: "get", token: S.token }); renderAI(); }, 2500); };
     if ($("kitcp")) $("kitcp").onclick = async () => { await navigator.clipboard.writeText("curl -fsSL https://mybrandium.com/tools/install.sh | bash"); $("kitcp").textContent = "복사됨 ✓"; };
     clearInterval(window.__kitPoll);
     if (!(c.intake || {}).kit) window.__kitPoll = setInterval(async () => { const r = await osCall({ action: "get", token: S.token }); if (r.ok && r.customer && (r.customer.intake || {}).kit) { clearInterval(window.__kitPoll); AI = r; renderAI(); } }, 30000);
