@@ -706,6 +706,11 @@ body.cls footer{padding-bottom:110px}
 body.cls .kakao{bottom:84px}
 @media(max-width:900px){.chero .in,.who2,.d7wrap{grid-template-columns:1fr}.flow3{grid-template-columns:1fr 1fr}.perks{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.chat2,.lv,.steps3,.flow3,.perks{grid-template-columns:1fr}.vs td:first-child,.cmp td:first-child{width:auto}.vs,.cmp{font-size:13.5px}.vs th,.vs td,.cmp th,.cmp td{padding:10px}.d7card{min-height:0;padding:20px}.d7card .row{grid-template-columns:72px 1fr;font-size:14px}.sec2{padding:60px calc(var(--frame) + 10px)}}
+.eb .cdl{margin-top:14px;font-size:15.5px;font-weight:800;color:#ffb347}.eb .cdl span{color:#fff;opacity:.8;font-weight:700;margin-left:4px}
+.eb .cdb{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.eb .cdb div{background:#f06a1e;border-radius:14px;padding:10px 4px 8px;text-align:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.eb .cdb b{display:block;font:900 clamp(30px,4.4vw,44px)/1 Pretendard,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:#fff}
+.eb .cdb small{display:block;font-size:12.5px;font-weight:800;margin-top:4px;opacity:.9}
 .lv .big{font-family:Pretendard,sans-serif!important;font-weight:900;letter-spacing:-.04em}
 .steps3 strong,.eb .p b,.cbar .p b{font-family:Pretendard,sans-serif!important;font-weight:900;letter-spacing:-.02em}
 </style>
@@ -871,9 +876,10 @@ function paint() {
   document.querySelectorAll("#st3 > div").forEach((d, j) => { d.classList.toggle("now", j === i); d.classList.toggle("past", j < i); });
   let cd = "";
   if (n) { const ms = new Date(c.to + "T23:59:59+09:00") - Date.now(), p2 = (x) => String(x).padStart(2, "0");
-    cd = `<div class="cd">⏰ ${md(c.to)} 23:59 마감 · 남은 시간 <i>${Math.floor(ms / 864e5)}일 ${p2(Math.floor(ms % 864e5 / 36e5))}:${p2(Math.floor(ms % 36e5 / 6e4))}:${p2(Math.floor(ms % 6e4 / 1e3))}</i></div><div class="nx">기간이 지나면 할인 금액이 줄어들어요 → ${n.off ? n.nm + " " + n.off : "정가"} <b>${won(n.p)}</b></div>`; }
+    cd = `<div class="cdl">⏰ ${c.nm} 할인 마감까지 <span>${md(c.to)} 23:59</span></div><div class="cdb"><div><b>${Math.floor(ms / 864e5)}</b><small>일</small></div><div><b>${p2(Math.floor(ms % 864e5 / 36e5))}</b><small>시간</small></div><div><b>${p2(Math.floor(ms % 36e5 / 6e4))}</b><small>분</small></div><div><b>${p2(Math.floor(ms % 6e4 / 1e3))}</b><small>초</small></div></div><div class="nx">기간이 지나면 할인 금액이 줄어들어요 → ${n.off ? n.nm + " " + n.off : "정가"} <b>${won(n.p)}</b></div>`; }
   document.getElementById("eb").innerHTML = `<div class="t">${c.off ? "지금 신청하면 " + c.nm + " 할인가" : "정가"}</div><div class="p">${c.off ? `<s>2,200,000원</s><span class="off">${c.off}</span>` : ""}<b>${won(c.p)}</b></div>${c.off ? `<div style="font-size:13.5px;opacity:.85">${won(2200000 - c.p)} 할인 · 부가세 포함 · 퍼스널 OS 설치 포함</div>` : ""}${cd}`;
-  document.getElementById("barp").innerHTML = `${c.off ? c.nm + " " + c.off + " · ~" + md(c.to) : "AI퍼스널브랜딩전문가 2급"}<b>${won(c.p)}</b>`;
+  const left = n ? (() => { const ms = new Date(c.to + "T23:59:59+09:00") - Date.now(); return ` · ⏰ <b style="display:inline;font-size:13px;color:#f06a1e">${Math.floor(ms / 864e5)}일 ${String(Math.floor(ms % 864e5 / 36e5)).padStart(2, "0")}:${String(Math.floor(ms % 36e5 / 6e4)).padStart(2, "0")}:${String(Math.floor(ms % 6e4 / 1e3)).padStart(2, "0")} 남음</b>`; })() : "";
+  document.getElementById("barp").innerHTML = `${c.off ? c.nm + " " + c.off + left : "AI퍼스널브랜딩전문가 2급"}<b>${won(c.p)}</b>`;
 }
 paint(); setInterval(paint, 1000);
 // 7D 원 — 동그라미 7개를 원 위에 놓고, 누르거나 이전/다음으로 넘김. 보이면 5초마다 저절로 넘어가고, 손대면 멈춤
