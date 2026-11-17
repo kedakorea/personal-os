@@ -131,6 +131,7 @@ function form(u, m) {
   ${CH || pick === "trial" || pick === "selfhelp" ? "" : `<div class="pay" id="refbox" style="margin-top:10px">🎟️ <b>${pick === "self" ? "할인 쿠폰" : "추천인 코드"}</b> <span class="small">(있으신 분만)</span>
    <div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="rc" placeholder="예: BRD-XXXX-XXXX" style="flex:1 1 auto;width:auto;min-width:0;text-transform:uppercase;margin:0"><button type="button" class="btn" id="rcb" style="flex:0 0 auto;width:auto;margin:0;padding:0 22px;white-space:nowrap">적용</button></div>
    <p class="small" id="rcm" style="margin:6px 0 0"></p></div>`}
+  ${pick === "self" ? `<div class="selfwarn" style="margin:14px 0 4px;padding:16px 18px;border:2px solid #e8a33d;background:#fff7e6;border-radius:14px;line-height:1.75;font-size:14px"><b style="font-size:15.5px">⚠️ 셀프형은 내 컴퓨터에 직접 설치해요</b><br>설치 키트를 받은 뒤 <b>대표님 컴퓨터의 터미널(명령 창)</b>에 한 줄을 붙여 넣고, 맥이라면 <b>시스템 설정 › 개인정보 보호 및 보안</b>에서 직접 허용하는 단계가 있어요. 컴퓨터에 익숙하지 않은 분께는 <b>어려울 수 있어요.</b><br>대신 브랜디움이 <b>화면마다 캡처로 따라 하는 셀프 설치 가이드</b>를 드려요. 먼저 <a href="../guide/" target="_blank" style="font-weight:800">가이드</a>를 훑어보시고, 자신 없으시면 <a href="../setup/" style="font-weight:800">원격형</a>(매니저가 접속해 설치)을 권해요.</div>` : ""}
   <h3>주문자</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
   <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
@@ -151,7 +152,7 @@ function form(u, m) {
   <label class="f">사업자등록번호</label><input type="text" id="tbn" placeholder="123-45-67890">
   <label class="f">또는 사업자등록증 (사진 또는 PDF)</label><input type="file" id="bc" accept="image/*,application/pdf" style="padding:10px;background:#fff">
   <label class="f">세금계산서 받을 이메일</label><input type="text" id="te" placeholder="tax@example.com"></div>
-  <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] ${pick === "self" ? "셀프형은 <b>튜토리얼(0단계) 시작 전 100% · 설치 키트를 받기 전 70% 환불</b>, <b>키트를 받은 뒤에는 환불되지 않음</b>을 확인했고, " : ""}주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다${CH || NS ? "" : " (설치를 시작한 뒤에는 맞춤 작업이라 환불되지 않는다는 점을 확인했습니다)"}</span></label></div>
+  <div class="agree">${pick === "trial" ? '<label><input type="checkbox" id="agt"><span>[필수] 체험단 조건(사용 후기·불편 제보·세팅 사례 소개)에 동의합니다</span></label>' : : pick === "self" ? '<label><input type="checkbox" id="ags"><span>[필수] 셀프형은 <b>제 컴퓨터에 직접(터미널·보안 허용 포함) 설치</b>하는 방식이라 컴퓨터에 익숙하지 않으면 어려울 수 있음을 이해했고, 셀프 설치 가이드를 보며 직접 진행하겠습니다</span></label>' : ""}<label><input type="checkbox" id="ag"><span>[필수] ${pick === "self" ? "셀프형은 <b>튜토리얼(0단계) 시작 전 100% · 설치 키트를 받기 전 70% 환불</b>, <b>키트를 받은 뒤에는 환불되지 않음</b>을 확인했고, " : ""}주문 내용과 <a href="../refund/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">환불 규정</a>·<a href="../terms/" target="_blank" style="margin:0;font-size:14px;opacity:1;text-decoration:underline">이용약관</a>을 확인했고 구매에 동의합니다${CH || NS ? "" : " (설치를 시작한 뒤에는 맞춤 작업이라 환불되지 않는다는 점을 확인했습니다)"}</span></label></div>
   <input type="hidden" id="ch" value="${CH ? 1 : 0}"><div class="sum"><span>결제 금액 <small style="font-weight:600;opacity:.6">(VAT 포함)</small></span><em id="tot"></em></div>
   <button class="btn dark" id="go" style="margin-top:16px">주문하기</button><p class="err"></p>`;
   let REF = null;   // { code, partner, price } — 추천인 코드 적용 시 (2026-11-04)
@@ -193,6 +194,7 @@ function form(u, m) {
     if (TAX && BF && BF.size > 10 * 1024 * 1024) return err("사업자등록증 파일은 10MB 이하로 올려 주세요.");
     if (!$("#ag").checked) return err("구매 동의에 체크해 주세요.");
     if ($("#agt") && !$("#agt").checked) return err("체험단 조건 동의에 체크해 주세요.");
+    if ($("#ags") && !$("#ags").checked) return err("셀프 설치 안내(내 컴퓨터에 직접 설치)에 동의해 주세요.");
     $("#go").disabled = true;
     let BC = null;
     if (TAX && BF) {
@@ -202,7 +204,7 @@ function form(u, m) {
       if (up.error) { $("#go").disabled = false; return err("사업자등록증을 올리지 못했습니다. 다시 시도해 주세요. (" + up.error.message + ")"); }
     }
     const { data, error } = await sb.from("orders").insert({ tax_email: TAX ? v("te") : null, biz_cert: BC, member_id: u.id, product: p.name, price: p.price, name: v("nm"), phone: v("ph"), email: v("em") || null,
-      depositor: CARD ? null : v("dp"), receipt_type: CARD ? null : (v("rt") || null), receipt_no: CARD ? null : (TAX ? (v("tbn") || null) : (v("rn") || null)), pay_method: CARD ? "카드(토스)" : "계좌입금", want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
+      depositor: CARD ? null : v("dp"), receipt_type: CARD ? null : (v("rt") || null), receipt_no: CARD ? null : (TAX ? (v("tbn") || null) : (v("rn") || null)), pay_method: CARD ? "카드(토스)" : "계좌입금", want_dates: v("wd") || null, ref_code: REF ? REF.code : null, memo: ((pick === "trial" ? "[체험단 조건 동의] " : pick === "self" ? "[셀프 설치 난이도 안내 동의] " : "") + v("mo")).trim() || null, slot_at: SLD ? SLD.toISOString() : null, agree_at: new Date().toISOString() }).select().single();
     $("#go").disabled = false;
     if (error) return err(/orders_slot_once|duplicate/.test(error.message) ? "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요." : /예약할 수 없는/.test(error.message) ? "예약할 수 없는 시간이에요. 다른 시간을 골라 주세요." : /추천인 코드/.test(error.message) ? "추천인 코드를 확인해 주세요." : "주문을 저장하지 못했습니다: " + error.message);
     if (CARD) return showPay(u, data);
