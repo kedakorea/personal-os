@@ -114,7 +114,7 @@ function forSwitch(u, m) {
 }
 function needLogin() {
   sessionStorage.setItem("after_login", location.href);
-  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·구글 계정으로 3초면 됩니다.</p>
+  M.innerHTML = `<p class="en">ORDER</p><h1>퍼스널 OS 구매하기</h1><p class="sub">주문 내역과 진행 안내를 받으시려면 먼저 로그인해 주세요. 카카오·네이버·구글 계정으로 3초면 됩니다.</p>
   <a class="btn dark" href="../account/">가입하고 진행하기</a>`;
   location.replace("../account/");   // 2026-11-16 대표님: 안내 링크를 누르면 바로 가입 화면으로
 }
