@@ -59,6 +59,7 @@ textarea{min-height:76px;resize:vertical}
 .bank b{font-size:18px}
 .small{font-size:12.5px;opacity:.65;line-height:1.7}
 .opt{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1.5px solid var(--sand);border-radius:14px;padding:12px 14px;margin-top:8px;cursor:pointer;font-size:14.5px}.opt input{width:20px;height:20px;accent-color:var(--ink);flex:none;margin-top:2px}
+.pay.pm{display:block;cursor:pointer;border:2px solid #e2dbd0;transition:border-color .15s,background .15s}.pay.pm:has(input:checked){border-color:#0064ff;background:#f5f9ff;box-shadow:0 0 0 3px rgba(0,100,255,.08)}.pay.pm input[type=radio]{accent-color:#0064ff;width:18px;height:18px;vertical-align:-3px;margin:0 6px 0 0}.pm .pmh{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.pm .pmh>b{font-size:15.5px}.pm .tossb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:#0064ff;color:#fff;border-radius:999px;padding:4px 10px 4px 9px;font-size:12px;font-weight:800;letter-spacing:-.1px;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,"Pretendard",sans-serif}.pm .tossb i{font-style:normal;font-weight:900;font-size:13px}.pm .pmd{margin:8px 0 0 24px;font-size:13px;line-height:1.7;color:#4a3c3b}.pm .pmd .safe{display:inline-flex;align-items:center;gap:4px;font-weight:800;color:#0064ff}.pm .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.pm .chips span{background:#fff;border:1px solid #d6e4ff;color:#1b4fb8;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700}@media(max-width:420px){.pm .tossb{margin-left:24px}}
 </style></head><body>
 <nav><a href="../../"><img src="../../logo_butter.png" alt="BRANDiUM"></a><a href="../../account/" style="font-size:13px;opacity:.75">마이페이지</a></nav>
 <main id="m"><p class="sub">불러오는 중…</p></main>
@@ -112,8 +113,8 @@ function form(u, m) {
   <label class="f">이메일 (수강 안내용)</label><input type="text" id="em" value="${osEsc(m.email || "")}" placeholder="name@example.com">
   <label class="f">쓰시는 컴퓨터 · 요청 사항 (선택)</label><textarea id="mo" placeholder="맥/윈도우, 노트북/데스크톱, 궁금한 점 등"></textarea>
   <h3>결제 방법</h3>
-  <label class="pay" style="display:block;cursor:pointer"><input type="radio" name="pm" value="card" checked> 💳 <b>카드·간편결제</b> <span class="small">(토스페이먼츠 · 결제 즉시 강의실 열림)</span></label>
-  <label class="pay" style="display:block;margin-top:8px;cursor:pointer"><input type="radio" name="pm" value="bank"> 🏦 <b>계좌입금</b><div id="bankbox" style="margin-top:8px;line-height:1.8;display:none">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>24시간 안에</b> 입금해 주세요. 입금이 확인되면 강의실이 열립니다.</span></div></label>
+  <label class="pay pm"><span class="pmh"><input type="radio" name="pm" value="card" checked>💳 <b>카드 · 간편결제</b><span class="tossb"><i>toss</i> payments</span></span><div class="pmd"><span class="safe">🔒 토스페이먼츠 안전결제</span> — 주문하기를 누르면 토스페이먼츠 결제창이 열려요. 카드 번호는 토스페이먼츠가 직접 처리해 브랜디움에 저장되지 않아요.<div class="chips"><span>신용·체크카드</span><span>간편결제</span><span>결제 즉시 강의실 열림</span></div></div></label>
+  <label class="pay pm" style="margin-top:8px"><input type="radio" name="pm" value="bank"> 🏦 <b>계좌입금</b><div id="bankbox" style="margin-top:8px;line-height:1.8;display:none">기업은행 <b style="font-size:16px">114-193627-04-019</b><br>예금주 (주)캐다<br><span class="small">주문하기를 누른 뒤 <b>24시간 안에</b> 입금해 주세요. 입금이 확인되면 강의실이 열립니다.</span></div></label>
   <div id="bankonly" style="display:none">
   <label class="f">입금자명</label><input type="text" id="dp" value="${osEsc(m.name || "")}">
   <label class="f">증빙</label><select id="rt"><option value="">필요 없음</option><option>현금영수증(개인 소득공제)</option><option>현금영수증(지출증빙)</option><option>세금계산서</option></select>
