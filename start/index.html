@@ -106,7 +106,7 @@ const STEPS = [
     { k: "role", t: "직함·하시는 일 한 줄", type: "text", hint: "예) ○○학원 원장, 1인 컨설팅 대표, 대학 겸임교수" },
     { k: "call", t: "매니저가 나를 뭐라고 부르면 좋을까요?", type: "oneplus", opts: ["대표님", "원장님", "교수님"], hint: "고르거나, 아래 칸에 직접 적어 주세요", ph: "직접 적기 (예: 선생님, 연심님)" } ] },
   { lab: "01-2 · 쓰던 AI (선택)", h: "ChatGPT를 이미 잘 쓰고 계신가요?<br>그 기억을 그대로 가져와요", sub: "새로 다 가르칠 필요 없어요. ChatGPT에 아래 글을 보내고, 나온 답을 그대로 붙여 넣어 주세요. 매니저가 처음부터 대표님을 알고 시작합니다. <b>안 쓰시면 비워 두고 다음</b>으로 가셔도 돼요."+ `<div class=\"gptbox\" style=\"margin:12px 0;background:#fff;border:1.5px dashed #b9a98f;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6\">지금까지 나와 대화하며 알게 된 것을 하나도 빼지 말고 정리해 줘. 1) 나는 누구고 무슨 일을 하는지 2) 내 회사·브랜드·거래처 3) 내가 좋아하는 말투·형식 4) 내가 자주 시키는 일과 그때 쓰는 방식 5) 하지 말라고 했던 것. 항목별로, 다른 AI에게 그대로 넘겨도 되게 써 줘.<br><button type=\"button\" style=\"margin-top:10px;border:0;border-radius:10px;background:#432f2e;color:#fff;font:inherit;font-weight:800;padding:9px 14px;cursor:pointer\" onclick=\"navigator.clipboard.writeText(this.parentNode.firstChild.textContent).then(()=>{this.textContent='✅ 복사됐어요 — ChatGPT에 붙여 넣으세요'})\">📋 이 글 복사하기</button></div>`, qs: [
-    { k: "gpt_memory", t: "ChatGPT가 정리해 준 답 붙여넣기", type: "area", big: true, hint: "길어도 괜찮아요. 맞춤 GPT·프로젝트 지침이 있으면 함께 붙여 넣어 주세요" } ] },
+    { k: "gpt_memory", t: "ChatGPT가 정리해 준 답 붙여넣기", type: "area", big: true, file: true, hint: "길어도 괜찮아요. 맞춤 GPT·프로젝트 지침이 있으면 함께 붙여 넣거나, 아래 📎 버튼으로 파일째 넣어 주세요" } ] },
   { fu: 1, lab: "02 · 소개", h: "하시는 일을 편하게 소개해 주세요", qs: [
     { k: "intro", t: "하시는 일을 한두 문장으로", type: "area", hint: "말하듯이 적어 주세요" },
     { k: "people", t: "함께 일하는 사람이 있나요?", type: "area", hint: "직원·가족·외주 — 이름과 맡은 일. 혼자라면 '혼자'" } ] },
@@ -161,7 +161,7 @@ function field(q) {
   const v = S.a[q.k];
   const head = q.t ? `<span class="t">${esc(q.t)}</span>${q.hint ? `<small>${esc(q.hint)}</small>` : ""}` : (q.hint ? `<small>${esc(q.hint)}</small>` : "");
   if (q.type === "text" || q.type === "tel") return `<div class="q">${head}<input type="${q.type}" data-k="${q.k}" value="${esc(v || "")}"></div>`;
-  if (q.type === "area") return `<div class="q">${head}<textarea data-k="${q.k}" style="${q.big ? "min-height:260px" : ""}">${esc(v || "")}</textarea></div>`;
+  if (q.type === "area") return `<div class="q">${head}<textarea data-k="${q.k}" style="${q.big ? "min-height:260px" : ""}">${esc(v || "")}</textarea>${q.file ? `<label class="fileadd" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:10px 16px;border:2px dashed #b9b2a6;border-radius:12px;cursor:pointer;font-weight:700;background:#fff">📎 파일로 넣기 <small style="font-weight:400;color:#777">txt · md · docx · pdf · json (여러 개 가능)</small><input type="file" data-filefor="${q.k}" multiple accept=".txt,.md,.markdown,.json,.csv,.html,.htm,.docx,.pdf,text/*" style="display:none"></label><span class="filemsg" style="margin-left:10px;font-size:13px;color:#555"></span>` : ""}</div>`;
   if (q.type === "oneplus") {
     const btns = q.opts.map((o) => `<button type="button" data-k="${q.k}" data-v="${esc(o)}" class="${v === o ? "on" : ""}">${esc(o)}</button>`).join("");
     return `<div class="q">${head}<div class="cards one" data-multi="0">${btns}</div><input type="text" data-k="${q.k}" data-plus="1" placeholder="${esc(q.ph || "직접 적기")}" value="${esc(q.opts.includes(v) ? "" : (v || ""))}" style="margin-top:10px"></div>`;
@@ -363,6 +363,51 @@ function summary() {
   if (a.more) L.push(`[더 하고 싶은 말] ${a.more}`);
   return L.join("\n");
 }
+// 📎 파일로 넣기 — 지침 파일(txt·md·docx·pdf 등)을 읽어 칸에 이어 붙인다 (2026-11-18 대표님)
+async function readDocx(buf) {
+  const u = new Uint8Array(buf), dv = new DataView(buf);
+  let e = u.length - 22; while (e > 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+  const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true);
+  for (let i = 0; i < n; i++) {
+    const comp = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), fl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u.slice(p + 46, p + 46 + fl));
+    if (name === "word/document.xml") {
+      const lfl = dv.getUint16(off + 26, true), lxl = dv.getUint16(off + 28, true), st = off + 30 + lfl + lxl;
+      let data = u.slice(st, st + csize);
+      if (comp === 8) data = new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+      const xml = new TextDecoder().decode(data);
+      return xml.replace(/<\/w:p>/g, "\n").replace(/<w:tab\/>/g, "\t").replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/\n{3,}/g, "\n\n").trim();
+    }
+    p += 46 + fl + xl + cl;
+  }
+  throw new Error("docx 본문을 찾지 못했어요");
+}
+async function readPdf(buf) {
+  if (!window.pdfjsLib) { await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"; }
+  const doc = await pdfjsLib.getDocument({ data: buf }).promise; const out = [];
+  for (let i = 1; i <= doc.numPages; i++) { const tc = await (await doc.getPage(i)).getTextContent(); out.push(tc.items.map((x) => x.str + (x.hasEOL ? "\n" : " ")).join("")); }
+  return out.join("\n\n").trim();
+}
+document.addEventListener("change", async (e) => {
+  const k = e.target.dataset && e.target.dataset.filefor; if (!k) return;
+  const ta = document.querySelector(`textarea[data-k="${k}"]`), msg = e.target.closest(".q").querySelector(".filemsg");
+  const files = [...e.target.files]; let added = 0;
+  for (const f of files) {
+    msg.textContent = `읽는 중… ${f.name}`;
+    try {
+      const nm = f.name.toLowerCase(); let t;
+      if (nm.endsWith(".docx")) t = await readDocx(await f.arrayBuffer());
+      else if (nm.endsWith(".pdf")) t = await readPdf(await f.arrayBuffer());
+      else t = await f.text();
+      t = (t || "").trim(); if (!t) throw new Error("글자가 없어요");
+      if (t.length > 40000) t = t.slice(0, 40000) + "\n…(너무 길어 4만 자까지만 넣었어요)";
+      ta.value = (ta.value.trim() ? ta.value.trim() + "\n\n" : "") + `[파일: ${f.name}]\n` + t;
+      added++;
+    } catch (err) { msg.textContent = `${f.name} 을(를) 읽지 못했어요 — 내용을 복사해 붙여 넣어 주세요 (${err.message || err})`; }
+  }
+  S.a[k] = ta.value; save(); e.target.value = "";
+  if (added) msg.textContent = `✅ 파일 ${added}개를 넣었어요. 위 칸에서 확인·수정할 수 있어요`;
+});
 document.addEventListener("input", (e) => {
   if (FU && e.target.dataset.fu !== undefined) { FU.ans[+e.target.dataset.fu] = e.target.value; return; }
   const k = e.target.dataset.k, m = e.target.dataset.memo;
