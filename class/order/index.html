@@ -101,7 +101,7 @@ function needLogin() {
 }
 function form(u, m) {
   M.innerHTML = `<p class="en">CLASS · ORDER</p><h1>자격과정 2급 · 1기<br>수강 신청</h1><p class="sub">결제가 확인되면 브랜디움 <b>내 강의실</b>이 바로 열립니다. <a href="../">과정 안내 다시 보기</a></p>
-  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>23강 · 11/20(금)부터 순차 공개</span></div><div class="row"><span>오프라인</span><span>16시간 · 12/11(금)~12(토) 09:00~18:00 (점심시간 포함)</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
+  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>23강 · 11/20(금) 0시 강의실 오픈</span></div><div class="row"><span>오프라인</span><span>16시간 · 12/11(금)~12(토) 09:00~18:00 (점심시간 포함)</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
   <h3>할인 대상 (해당하는 분만)</h3>
   <label class="opt"><input type="checkbox" name="o" value="grad"><span><b>퍼스널브랜드대학 졸업생</b> — 20% (1,760,000원)</span></label>
   <label class="opt"><input type="checkbox" name="o" value="mju"><span><b>명지대 교육대학원생</b> — 20% (1,760,000원)</span></label>
@@ -194,7 +194,7 @@ function done(o) {
         body: JSON.stringify({ action: "confirm", paymentKey: q.get("paymentKey"), orderId: q.get("orderId"), amount: q.get("amount"), no: q.get("no") }) });
       const j = await r.json();
       if (!j.ok) { fail(j.error || "결제 승인에 실패했습니다."); return; }
-      M.innerHTML = `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b>${j.totalAmount ? ` · ${won(j.totalAmount)}` : ""}<br>내 강의실이 열렸어요. 11/20(금)부터 강의가 순차 공개됩니다.</p><a class="btn dark" href="../room/">🎓 내 강의실 들어가기</a>${KCH}${j.receipt ? `<p class="small"><a href="${osEsc(j.receipt)}" target="_blank" rel="noopener">카드 영수증 보기</a></p>` : ""}`;
+      M.innerHTML = `<p class="en">THANK YOU</p><h1>결제가 완료되었습니다</h1><p class="sub">주문번호 <b>${osEsc(q.get("no") || "")}</b>${j.totalAmount ? ` · ${won(j.totalAmount)}` : ""}<br>수강 등록이 완료되었어요. 강의실은 <b>11/20(금) 0시</b>에 열리고, 강의는 순차 공개됩니다.</p><a class="btn dark" href="../room/">🎓 내 강의실 들어가기</a>${KCH}${j.receipt ? `<p class="small"><a href="${osEsc(j.receipt)}" target="_blank" rel="noopener">카드 영수증 보기</a></p>` : ""}`;
     } catch (e) { fail("결제 확인 중 오류가 났습니다. 문의 주시면 바로 확인해 드립니다."); }
     return;
   }

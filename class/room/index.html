@@ -142,7 +142,17 @@ async function save() {
   L = ls || [];
   const { data: ps } = await sb.from("class_progress").select("*").in("lesson_id", L.map((l) => l.id).concat([0]));
   (ps || []).forEach((p) => P[p.lesson_id] = p);
-  if (!L.length) { M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1><p class="sub">아직 열린 강의가 없어요. 첫 강의가 열리면 알려 드릴게요.</p>`; return; }
+  const OPEN = {"cert2-1": "2026-11-20T00:00:00+09:00"}[COHORT];
+  if (!L.length) {
+    const left = OPEN ? new Date(OPEN) - Date.now() : 0;
+    if (left > 0) {
+      const tick = () => { const ms = new Date(OPEN) - Date.now(); if (ms <= 0) { location.reload(); return; }
+        const h = Math.floor(ms / 36e5), m = Math.floor(ms % 36e5 / 6e4), s2 = Math.floor(ms % 6e4 / 1e3), el = document.getElementById("opcd");
+        if (el) el.textContent = (h ? h + "시간 " : "") + m + "분 " + s2 + "초"; };
+      M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1><p class="sub">수강 등록이 완료되었어요 🎉<br><b>11월 20일(금) 0시</b>에 강의실이 열리고 첫 강의를 보실 수 있어요.</p><div class="card" style="text-align:center;font-weight:800;font-size:22px;padding:22px">⏰ 오픈까지 <span id="opcd"></span></div><p class="small">시간이 되면 이 화면이 저절로 새로고침돼요.</p>`;
+      tick(); setInterval(tick, 1000); return;
+    }
+    M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1><p class="sub">아직 열린 강의가 없어요. 첫 강의가 열리면 알려 드릴게요.</p>`; return; }
   cur = L.find((l) => !(P[l.id] && P[l.id].completed)) || L[0]; seen = new Set(((P[cur.id] || {}).watched) || []);
   const go = () => draw();
   if (window.YT && YT.Player) go(); else window.onYouTubeIframeAPIReady = go;
