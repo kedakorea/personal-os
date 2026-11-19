@@ -101,12 +101,12 @@ function needLogin() {
 }
 function form(u, m) {
   M.innerHTML = `<p class="en">CLASS · ORDER</p><h1>자격과정 2급 · 1기<br>수강 신청</h1><p class="sub">결제가 확인되면 브랜디움 <b>내 강의실</b>이 바로 열립니다. <a href="../">과정 안내 다시 보기</a></p>
-  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>23강 · 11/20(금)부터 순차 공개</span></div><div class="row"><span>오프라인</span><span>16시간 · 12/11(금)~12(토) 09:00~18:00</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
+  <div class="card"><div class="row"><span>과정</span><b>AI 퍼스널 브랜딩 전문가 2급 · 1기</b></div><div class="row"><span>온라인</span><span>23강 · 11/20(금)부터 순차 공개</span></div><div class="row"><span>오프라인</span><span>16시간 · 12/11(금)~12(토) 09:00~18:00 (점심시간 포함)</span></div><div class="row"><span>포함</span><span>퍼스널 OS 설치 · 시험</span></div></div>
   <h3>할인 대상 (해당하는 분만)</h3>
-  <label class="opt"><input type="checkbox" name="o" value="grad"><span><b>퍼스널대학 졸업생</b> — 20% (1,760,000원)</span></label>
+  <label class="opt"><input type="checkbox" name="o" value="grad"><span><b>퍼스널브랜드대학 졸업생</b> — 20% (1,760,000원)</span></label>
   <label class="opt"><input type="checkbox" name="o" value="mju"><span><b>명지대 교육대학원생</b> — 20% (1,760,000원)</span></label>
   <p class="small" style="margin-top:6px">20%·10% 할인은 중복되지 않아요. 담당자가 대상 여부를 확인하고, 아니면 차액을 안내드립니다. 퍼스널 OS를 이미 설치하신 분의 추가 혜택은 <a href="https://pf.kakao.com/_gMxogd/chat" target="_blank" rel="noopener">카카오톡 채널</a>로 문의해 주세요.</p>
-  <div id="ev" style="display:none"><label class="f">확인용 정보 (기수·학번 등)</label><input type="text" id="evd" placeholder="예: 퍼스널대학 3기 / 명지대 교육대학원 2025 입학"></div>
+  <div id="ev" style="display:none"><label class="f">확인용 정보 (기수·학번 등)</label><input type="text" id="evd" placeholder="예: 퍼스널브랜드대학 3기 / 명지대 교육대학원 2025 입학"></div>
   <h3>수강생</h3>
   <label class="f">이름</label><input type="text" id="nm" value="${osEsc(m.name || "")}">
   <label class="f">휴대폰</label><input type="tel" id="ph" value="${osEsc(m.phone || "")}">
@@ -164,7 +164,7 @@ function form(u, m) {
       const up = await sb.storage.from("uploads").upload(BC, BF, { contentType: BF.type || undefined });
       if (up.error) { $("#go").disabled = false; return err("사업자등록증을 올리지 못했습니다. (" + up.error.message + ")"); }
     }
-    const OL = { grad: "퍼스널대학 졸업생", mju: "명지대 교육대학원생", os: "퍼스널 OS 설치 고객" };
+    const OL = { grad: "퍼스널브랜드대학 졸업생", mju: "명지대 교육대학원생", os: "퍼스널 OS 설치 고객" };
     const memo = [OPT() ? `[할인 대상] ${OPT().split(",").map((k) => OL[k]).join(" · ")} — ${v("evd")}` : "", v("mo")].filter(Boolean).join("\n") || null;
     const { data, error } = await sb.from("orders").insert({ product: PROD, opt: OPT() || null, member_id: u.id, price: 0, name: v("nm"), phone: v("ph"), email: v("em") || null,
       tax_email: TAX ? v("te") : null, biz_cert: BC, depositor: CARD ? null : v("dp"), receipt_type: CARD ? null : (v("rt") || null), receipt_no: CARD ? null : (TAX ? (v("tbn") || null) : (v("rn") || null)),
