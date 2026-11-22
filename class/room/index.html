@@ -90,6 +90,7 @@ function draw() {
   const done = L.filter((l) => P[l.id] && P[l.id].completed).length;
   M.innerHTML = `<p class="en">CLASS</p><h1>${COHORT_NAME}<br>강의실</h1>
   <p class="sub">강의는 이 강의실에서 재생해야 수강이 인정돼요. 끝까지(90% 이상) 보시면 자동으로 완료 처리됩니다.</p>
+  <p class="sub" style="background:#f4f6ff;border-radius:12px;padding:10px 14px;font-size:14px">🎁 <b>1기 혜택</b> · 시험 합격 뒤 받는 2급·1급 자격증 발급비(원래 2급 8만 원·1급 15만 원)가 <b>무료</b>예요.</p>
   <div class="tot"><span>내 수강 현황</span><span>${done} / ${L.length}강 완료</span></div>
   <div id="pv"></div>
   <div class="lessons">${L.map((l) => { const p = P[l.id], pc = pctOf(p); return `<div class="ls ${cur && cur.id === l.id ? "on" : ""}" data-id="${l.id}"><span class="no">${l.no}강</span><span class="t">${osEsc(l.title)}</span><span class="bar"><i style="width:${pc}%"></i></span><span class="pct ${p && p.completed ? "done" : ""}">${p && p.completed ? "✅ 완료" : pc + "%"}</span></div>`; }).join("")}</div>`;
