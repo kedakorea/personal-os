@@ -535,9 +535,9 @@ function deskNew() {
     deskOpen(t.id);
   };
 }
-function mdLite(s) { return E(s || "").replace(/```([\s\S]*?)```/g, (_, c) => `<pre style="background:#2b2b2b;color:#f1f1f1;padding:10px 12px;border-radius:10px;overflow:auto;white-space:pre-wrap">${c.replace(/^\w*\n/, "")}</pre>`).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\n/g, "<br>"); }
+function mdLite(s) { return E(s || "").replace(/```([\s\S]*?)```/g, (_, c) => `<pre style="background:#2b2b2b;color:#f1f1f1;padding:10px 12px;border-radius:10px;overflow:auto;white-space:pre-wrap">${c.replace(/^\w*\n/, "")}</pre>`).replace(/^#{1,4} (.+)$/gm, "<b style=\"font-size:16px\">$1</b>").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\n/g, "<br>"); }
 async function deskOpen(id) {
-  clearInterval(DESK_T);
+  clearInterval(DESK_T); $("out").hidden = false;
   history.replaceState(null, "", location.pathname + "?tab=desk&t=" + id);
   const draw = async (keep) => {
     const { data: t } = await sb.from("support_tickets").select("*").eq("id", id).single();
@@ -549,7 +549,7 @@ async function deskOpen(id) {
     const keepTxt = keep ? $("dm").value : "";
     $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 ${E(t.customer)} · ${E(t.os || "")}</h1><button class="btn g" onclick="desk()">← 목록</button></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">상태 ${["접수", "처리 중", "해결"].map((s) => `<button class="btn ${t.status === s ? "" : "g"}" style="padding:6px 12px;font-size:13px" onclick="deskSt('${id}','${s}')">${s}</button>`).join("")}
-     · 담당 <select id="das" onchange="deskAs('${id}',this.value)">${(window.STAFF || []).map((s) => `<option value="${E(s.email)}" ${s.email === t.assignee ? "selected" : ""}>${E(s.name)} (${E(s.role)})</option>`).join("")}</select></div>
+     · 담당 <select id="das" style="width:auto;display:inline-block;padding:6px 10px" onchange="deskAs('${id}',this.value)">${(window.STAFF || []).map((s) => `<option value="${E(s.email)}" ${s.email === t.assignee ? "selected" : ""}>${E(s.name)} (${E(s.role)})</option>`).join("")}</select></div>
     <div style="display:grid;gap:10px;max-width:860px">${ms.map((m) => m.body === "__solved__" ? `<p style="text-align:center;opacity:.6;font-size:13px">✅ ${E(nmOf(m.who))} 님이 해결로 표시 — 엘빈이 오류 사전에 적어요</p>` : `<div class="card" style="${m.who === "엘빈" ? "background:#fff" : "background:#fff8e6;border-color:#ead9c6"}"><small style="opacity:.6">${m.who === "엘빈" ? "🤖 엘빈" : "🙋 " + E(nmOf(m.who))} · ${new Date(m.created_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</small><div style="margin-top:6px;line-height:1.65">${mdLite(m.body)}</div>${(m.imgs || []).map((p) => urls[p] ? `<a href="${urls[p]}" target="_blank"><img src="${urls[p]}" style="max-width:260px;border-radius:10px;margin:6px 6px 0 0;border:1px solid #ddd"></a>` : "").join("")}</div>`).join("")}
     ${waiting ? `<p style="opacity:.7">✍️ 엘빈이 답을 쓰는 중이에요… (화면이 저절로 바뀌어요)</p>` : ""}
     <div class="card" style="display:grid;gap:8px"><textarea id="dm" rows="4" placeholder="이어서 묻기 · 해 봤더니 어떻게 됐는지"></textarea><input id="df2" type="file" accept="image/*" multiple><button class="btn" id="dsend">보내기</button></div></div>`;
