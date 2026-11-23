@@ -253,6 +253,14 @@ function done(o) {
   const { data: m } = await sb.from("members").select("*").eq("id", u.id).maybeSingle();
   if (!m || !m.agree_terms_at) return needLogin();
   if (FOR && sessionStorage.getItem("for_ok") !== FOR && !same(m.name, FOR)) return forSwitch(u, m);
+  // 2026-11-23 대표님: 이미 주문한 분(입금대기)은 다시 입력 없이 결제만 — order/?pay=주문번호
+  const PAY = new URLSearchParams(location.search).get("pay");
+  if (PAY) {
+    const { data: o } = await sb.from("orders").select("*").eq("order_no", PAY).eq("member_id", u.id).maybeSingle();
+    if (!o) { M.innerHTML = `<p class="en">PAYMENT</p><h1>주문을 찾지 못했어요</h1><p class="sub">주문하신 계정으로 로그인했는지 확인해 주세요. 문의 010-8225-6242</p><a class="btn dark" href="../account/">마이페이지</a>`; return; }
+    if (o.status !== "입금대기") { M.innerHTML = `<p class="en">PAYMENT</p><h1>이미 처리된 주문이에요</h1><p class="sub">주문번호 <b>${osEsc(o.order_no)}</b> · 상태 <b>${osEsc(o.status)}</b></p><a class="btn dark" href="../account/">마이페이지에서 주문 보기</a>`; return; }
+    return showPay(u, o);
+  }
   form(u, m);
 })();
 </script>
