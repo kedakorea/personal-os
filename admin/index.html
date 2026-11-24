@@ -493,13 +493,14 @@ async function whoami() {
   return ROLE;
 }
 const nmOf = (em) => { const s = (window.STAFF || []).find((x) => x.email === em); return s ? s.name : (em || ""); };
-async function desk() {
+async function desk() { return deskChat(); }
+async function deskList() {
   clearInterval(DESK_T); $("out").hidden = false;
-  history.replaceState(null, "", location.pathname + "?tab=desk");
-  $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 지원 데스크</h1><button class="btn y" id="dnew">＋ 새 건 올리기</button><button class="btn g" onclick="desk()">새로고침</button></div>
+  history.replaceState(null, "", location.pathname + "?tab=desk&v=list");
+  $("main").innerHTML = `${tabs("d")}<div class="top"><h1>📋 건별 기록</h1><button class="btn y" onclick="deskChat()">💬 단톡방으로</button><button class="btn g" id="dnew">＋ 새 건 올리기</button><button class="btn g" onclick="deskList()">새로고침</button></div>
   <p style="margin:-6px 0 14px;font-size:14px;opacity:.75">설치·오류를 올리면 엘빈이 퍼스널 OS 자료를 보고 30초~몇 분 안에 답을 달아요. (아이맥이 켜져 있을 때)</p><div id="tb">불러오는 중…</div>`;
   $("dnew").onclick = deskNew;
-  const { data, error } = await sb.from("support_tickets").select("*").order("updated_at", { ascending: false });
+  let { data, error } = await sb.from("support_tickets").select("*").order("updated_at", { ascending: false }); if (data) data = data.filter((x) => x.customer !== ROOM);
   if (error) { $("tb").innerHTML = `<p class="err">${E(error.message)}</p>`; return; }
   const n = (s) => data.filter((x) => x.status === s).length;
   $("tb").innerHTML = `<div class="stats"><div><b>${n("접수")}</b>접수</div><div><b>${n("처리 중")}</b>처리 중</div><div><b>${n("해결")}</b>해결</div></div>
@@ -517,7 +518,7 @@ async function upImgs(tid, files) {
 }
 function deskNew() {
   clearInterval(DESK_T);
-  $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 새 건 올리기</h1><button class="btn g" onclick="desk()">← 목록</button></div>
+  $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 새 건 올리기</h1><button class="btn g" onclick="deskList()">← 목록</button></div>
   <div class="card" style="max-width:720px;display:grid;gap:10px">
    <label>고객 이름<input id="dc" placeholder="예: 정소영"></label>
    <label>기기<select id="do"><option>맥</option><option>윈도우</option><option>휴대폰</option><option>모름</option></select></label>
@@ -547,7 +548,7 @@ async function deskOpen(id) {
     for (const m of ms) for (const p of m.imgs || []) { const { data } = await sb.storage.from("support").createSignedUrl(p, 3600); if (data) urls[p] = data.signedUrl; }
     const waiting = t.busy || (ms.length && ms[ms.length - 1].who !== "엘빈" && !ms[ms.length - 1].answered);
     const keepTxt = keep ? $("dm").value : "";
-    $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 ${E(t.customer)} · ${E(t.os || "")}</h1><button class="btn g" onclick="desk()">← 목록</button></div>
+    $("main").innerHTML = `${tabs("d")}<div class="top"><h1>🛟 ${E(t.customer)} · ${E(t.os || "")}</h1><button class="btn g" onclick="deskList()">← 목록</button></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">상태 ${["접수", "처리 중", "해결"].map((s) => `<button class="btn ${t.status === s ? "" : "g"}" style="padding:6px 12px;font-size:13px" onclick="deskSt('${id}','${s}')">${s}</button>`).join("")}
      · 담당 <select id="das" style="width:auto;display:inline-block;padding:6px 10px" onchange="deskAs('${id}',this.value)">${(window.STAFF || []).map((s) => `<option value="${E(s.email)}" ${s.email === t.assignee ? "selected" : ""}>${E(s.name)} (${E(s.role)})</option>`).join("")}</select></div>
     <div style="display:grid;gap:10px;max-width:860px">${ms.map((m) => m.body === "__solved__" ? `<p style="text-align:center;opacity:.6;font-size:13px">✅ ${E(nmOf(m.who))} 님이 해결로 표시 — 엘빈이 오류 사전에 적어요</p>` : `<div class="card" style="${m.who === "엘빈" ? "background:#fff" : "background:#fff8e6;border-color:#ead9c6"}"><small style="opacity:.6">${m.who === "엘빈" ? "🤖 엘빈" : "🙋 " + E(nmOf(m.who))} · ${new Date(m.created_at).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</small><div style="margin-top:6px;line-height:1.65">${mdLite(m.body)}</div>${(m.imgs || []).map((p) => urls[p] ? `<a href="${urls[p]}" target="_blank"><img src="${urls[p]}" style="max-width:260px;border-radius:10px;margin:6px 6px 0 0;border:1px solid #ddd"></a>` : "").join("")}</div>`).join("")}
@@ -566,6 +567,72 @@ async function deskOpen(id) {
   };
   draw();
 }
+
+// 💬 지원 단톡방 (2026-11-24 대표님) — 설치·원격 중 급할 때 게시판 말고 카톡처럼. 대표님·지호 실장님이 치면 아이맥 엘빈이 바로 답
+const ROOM = "💬 단톡방";
+let ROOM_ID = null, CH_LAST = 0, CH_PEND = [];
+function chBubble(m, url) {
+  const mine = m.who === ME, el = m.who === "엘빈", t = new Date(m.created_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+  if (m.body === "__solved__") return `<div class="chs">📒 ${E(nmOf(m.who))} 님이 '오류 사전에 적기'를 눌렀어요</div>`;
+  const imgs = (m.imgs || []).map((p) => url[p] ? `<a href="${url[p]}" target="_blank"><img src="${url[p]}" class="chi"></a>` : "").join("");
+  return `<div class="chr ${mine ? "me" : ""}">${mine ? "" : `<div class="chn">${el ? "🤖 엘빈" : "🙋 " + E(nmOf(m.who))}</div>`}<div class="chw"><div class="chb ${el ? "el" : mine ? "mb" : ""}">${m.body ? mdLite(m.body) : ""}${imgs}</div><small>${t}</small></div></div>`;
+}
+async function deskChat() {
+  clearInterval(DESK_T); $("out").hidden = false; CH_LAST = 0; CH_PEND = [];
+  history.replaceState(null, "", location.pathname + "?tab=desk");
+  if (!ROOM_ID) { const { data } = await sb.from("support_tickets").select("id").eq("customer", ROOM).limit(1); ROOM_ID = data && data[0] && data[0].id; }
+  $("main").innerHTML = `${tabs("d")}<style>
+   .chbox{max-width:900px;height:calc(100vh - 300px);min-height:380px;overflow-y:auto;background:#fff;border:2px solid var(--ink);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+   .chr{display:flex;flex-direction:column;align-items:flex-start}.chr.me{align-items:flex-end}.chn{font-size:12px;opacity:.65;margin:0 0 3px 4px}
+   .chw{display:flex;align-items:flex-end;gap:6px;max-width:86%}.chr.me .chw{flex-direction:row-reverse}.chw small{font-size:11px;opacity:.5;white-space:nowrap}
+   .chb{background:var(--paper);border:1px solid var(--sand);border-radius:16px;padding:9px 13px;line-height:1.6;font-size:15px;word-break:break-word}
+   .chb.mb{background:#0a84ff;color:#fff;border-color:#0a84ff}.chb.mb code{color:#111}.chb.el{background:#f4f4f6;border-color:#e2e2e6}
+   .chi{max-width:240px;border-radius:10px;margin:6px 6px 0 0;display:block}.chs{text-align:center;font-size:12px;opacity:.6}
+   .chin{max-width:900px;display:flex;gap:8px;align-items:flex-end;margin-top:10px}.chin textarea{flex:1;resize:none;min-height:48px;max-height:180px}
+   .chpv{max-width:900px;display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chpv img{height:64px;border-radius:8px;border:1px solid #ccc}
+  </style>
+  <div class="top"><h1>💬 지원 단톡방</h1><button class="btn g" onclick="deskList()">📋 건별 기록</button><button class="btn g" id="chsol" title="방금 해결한 오류를 엘빈이 오류 사전에 한 줄로 적어요">📒 오류 사전에 적기</button></div>
+  <p style="margin:-6px 0 10px;font-size:14px;opacity:.75">급할 때 여기에 바로 치세요. 엘빈이 퍼스널 OS 자료를 보고 답해요 (아이맥이 켜져 있을 때). 화면 캡처는 <b>붙여넣기(⌘V·Ctrl+V)</b>로 바로 올라가요. <b>Enter</b> 보내기 · <b>Shift+Enter</b> 줄바꿈</p>
+  <div class="chbox" id="chb"><p style="opacity:.6">불러오는 중…</p></div><div id="chw" style="max-width:900px;font-size:13px;opacity:.75;margin-top:6px;min-height:18px"></div>
+  <div class="chpv" id="chpv"></div>
+  <div class="chin"><label class="btn g" style="padding:11px 14px" title="사진 올리기">📎<input id="chf" type="file" accept="image/*" multiple hidden></label><textarea id="chm" rows="1" placeholder="고객 이름 · 무슨 화면인지 · 막힌 곳 — 짧게 쳐도 돼요"></textarea><button class="btn" id="chgo">보내기</button></div>`;
+  if (!ROOM_ID) { $("chb").innerHTML = `<p class="err">단톡방을 찾지 못했어요. 대표 관리자에게 알려 주세요.</p>`; return; }
+  $("chb").innerHTML = "";
+  const pv = () => { $("chpv").innerHTML = CH_PEND.map((f, i) => `<img src="${URL.createObjectURL(f)}" title="눌러서 빼기" onclick="CH_PEND.splice(${i},1);this.remove()">`).join(""); };
+  $("chf").onchange = () => { CH_PEND.push(...$("chf").files); $("chf").value = ""; pv(); };
+  $("chm").addEventListener("paste", (e) => { const fs = [...(e.clipboardData && e.clipboardData.files || [])].filter((f) => f.type.startsWith("image/")); if (fs.length) { e.preventDefault(); CH_PEND.push(...fs); pv(); } });
+  $("chm").addEventListener("input", () => { $("chm").style.height = "auto"; $("chm").style.height = Math.min($("chm").scrollHeight, 180) + "px"; });
+  const send = async (body) => {
+    const txt = body !== undefined ? body : $("chm").value.trim();
+    if (!txt && !CH_PEND.length) return;
+    $("chgo").disabled = true;
+    const imgs = body !== undefined ? [] : await upImgs(ROOM_ID, CH_PEND);
+    const { error } = await sb.from("support_msgs").insert({ ticket_id: ROOM_ID, who: ME, body: txt, imgs });
+    $("chgo").disabled = false; if (error) return alert("못 보냈어요: " + error.message);
+    if (body === undefined) { $("chm").value = ""; $("chm").style.height = ""; CH_PEND = []; pv(); }
+    pull();
+  };
+  $("chgo").onclick = () => send();
+  $("chm").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
+  $("chsol").onclick = () => { if (confirm("방금 해결한 오류를 엘빈이 오류 사전에 적을까요?")) send("__solved__"); };
+  const pull = async () => {
+    if (!document.getElementById("chb")) { clearInterval(DESK_T); return; }
+    const { data: ms } = await sb.from("support_msgs").select("*").eq("ticket_id", ROOM_ID).gt("id", CH_LAST).order("id").limit(CH_LAST ? 200 : 1000);
+    const { data: t } = await sb.from("support_tickets").select("busy").eq("id", ROOM_ID).single();
+    if (ms && ms.length) {
+      const box = $("chb"), atEnd = box.scrollHeight - box.scrollTop - box.clientHeight < 80 || !CH_LAST;
+      const show = CH_LAST ? ms : ms.slice(-120), url = {};
+      for (const m of show) for (const p of m.imgs || []) { const { data } = await sb.storage.from("support").createSignedUrl(p, 3600 * 12); if (data) url[p] = data.signedUrl; }
+      box.insertAdjacentHTML("beforeend", show.map((m) => chBubble(m, url)).join(""));
+      CH_LAST = ms[ms.length - 1].id; if (atEnd) box.scrollTop = box.scrollHeight;
+      window.CH_LASTMSG = ms[ms.length - 1];
+    }
+    const lm = window.CH_LASTMSG, wait = (t && t.busy) || (lm && lm.who !== "엘빈" && !lm.answered);
+    $("chw").textContent = wait ? "✍️ 엘빈이 답을 쓰는 중이에요…" : "";
+  };
+  await pull(); $("chm").focus();
+  DESK_T = setInterval(pull, 3000);
+}
 async function deskSt(id, s) {
   await sb.from("support_tickets").update({ status: s, updated_at: new Date().toISOString() }).eq("id", id);
   if (s === "해결") await sb.from("support_msgs").insert({ ticket_id: id, who: ME, body: "__solved__" });
@@ -579,9 +646,9 @@ async function boot() {
   JWT = data.session.access_token;
   await whoami();
   if (!ROLE) { $("out").hidden = false; $("main").innerHTML = `<div class="login"><h1>권한이 없어요</h1><p>${E(ME || "")} 계정은 관리자 등록이 안 돼 있어요. 대표 관리자에게 등록을 요청해 주세요.</p></div>`; return; }
-  if (!OWNER()) return new URLSearchParams(location.search).get("t") ? deskOpen(new URLSearchParams(location.search).get("t")) : desk();
+  if (!OWNER()) { const q0 = new URLSearchParams(location.search); return q0.get("t") ? deskOpen(q0.get("t")) : q0.get("v") === "list" ? deskList() : desk(); }
   const q = new URLSearchParams(location.search), id = q.get("id");
-  id ? detail(id) : ({ keys: keys, clients: list, orders: orders, booking: booking, install: installs, people: people, desk: () => (q.get("t") ? deskOpen(q.get("t")) : desk()) }[q.get("tab")] || people)();
+  id ? detail(id) : ({ keys: keys, clients: list, orders: orders, booking: booking, install: installs, people: people, desk: () => (q.get("t") ? deskOpen(q.get("t")) : q.get("v") === "list" ? deskList() : desk()) }[q.get("tab")] || people)();
 }
 sb.auth.onAuthStateChange((_e, s) => { JWT = s ? s.access_token : null; });
 $("out").onclick = async () => { await sb.auth.signOut(); loginView(); };
