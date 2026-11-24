@@ -24,7 +24,7 @@ Q
     echo "먼저 맥 기본 개발 도구가 필요해요. 뜨는 창에서 [설치]를 누르고, 끝나면 이 한 줄을 다시 실행해 주세요."
     xcode-select --install 2>/dev/null; exit 0
   fi
-  exec /usr/bin/python3 "$HOME/퍼스널OS/.os_키트/설치기.py"
+  exec /usr/bin/python3 "$HOME/퍼스널OS/.os_키트/설치기.py" </dev/tty   # curl | bash 로 실행돼도 질문은 키보드로 받기 (2026-11-24)
 fi
 K=$(ls -dt "$D"/퍼스널OS_설치키트*/ 2>/dev/null | head -1)
 if [ -z "$K" ]; then
@@ -47,4 +47,4 @@ P
 chmod +x "$K"/*.command 2>/dev/null
 echo "✓ 설치 키트 준비 완료: $K"
 [ -n "$PERSONALOS_DRYRUN" ] && exit 0
-exec bash "$K/설치.command"
+exec bash "$K/설치.command" </dev/tty   # curl | bash 면 표준입력이 다운로드 파이프라 비밀번호 질문이 끝없이 반복됨 → 키보드로 (2026-11-24 리허설에서 발견)
