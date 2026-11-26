@@ -79,6 +79,8 @@ main{max-width:860px}
 // 2026-11-16 자격과정 강의실 — 기수 명단(class_enroll)에 있는 회원만, 10초 구간 단위로 본 곳을 저장
 const sb = supabase.createClient(OS_URL, OS_ANON), M = document.getElementById("m");
 const COHORT = new URLSearchParams(location.search).get("c") || "cert2-1";
+// 2026-11-26 수강생 교재(과정 전체 한 권) — 수강생 전용 저장소 uploads/class/<기수>/
+const BOOK = {"cert2-1": { path: "class/cert2-1/textbook_01-15_v2.pdf", label: "1~15강 · 230쪽 · 인쇄용" }};
 const COHORT_NAME = {"cert2-1": "AI 퍼스널 브랜딩 전문가 2급 · 1기"}[COHORT] || COHORT;
 let U = null, L = [], P = {}, cur = null, player = null, seen = new Set(), dirty = false, timer = null;
 const pctOf = (p) => p ? Math.min(100, p.percent || 0) : 0;
@@ -92,9 +94,12 @@ function draw() {
   <p class="sub">강의는 이 강의실에서 재생해야 수강이 인정돼요. 끝까지(90% 이상) 보시면 자동으로 완료 처리됩니다.</p>
   <p class="sub" style="background:#f4f6ff;border-radius:12px;padding:10px 14px;font-size:14px">🎁 <b>1기 혜택</b> · 시험 합격 뒤 받는 2급·1급 자격증 발급비(원래 2급 8만 원·1급 15만 원)가 <b>무료</b>예요.</p>
   <div class="tot"><span>내 수강 현황</span><span>${done} / ${L.length}강 완료</span></div>
+  ${BOOK[COHORT] ? `<div class="tot" style="background:#fff;border:2px solid var(--ink);align-items:center;gap:12px;flex-wrap:wrap"><span>📘 수강생 교재 <span class="small" style="font-weight:600">${BOOK[COHORT].label}</span></span><button class="btn dark" id="book" style="width:auto;height:44px;padding:0 18px;font-size:14px;margin:0">교재 PDF 받기</button></div>` : ""}
   <div id="pv"></div>
   <div class="lessons">${L.map((l) => { const p = P[l.id], pc = pctOf(p); return `<div class="ls ${cur && cur.id === l.id ? "on" : ""}" data-id="${l.id}"><span class="no">${l.no}강</span><span class="t">${osEsc(l.title)}</span><span class="bar"><i style="width:${pc}%"></i></span><span class="pct ${p && p.completed ? "done" : ""}">${p && p.completed ? "✅ 완료" : pc + "%"}</span></div>`; }).join("")}</div>`;
   M.querySelectorAll(".ls").forEach((d) => d.onclick = () => open(L.find((l) => l.id == d.dataset.id)));
+  const bk = document.getElementById("book");
+  if (bk) bk.onclick = async () => { const w = window.open("", "_blank"); const { data, error } = await sb.storage.from("uploads").createSignedUrl(BOOK[COHORT].path, 600); if (error) { if (w) w.close(); return alert("교재를 열지 못했습니다."); } if (w) w.location.href = data.signedUrl; else location.href = data.signedUrl; };
   if (cur) mountPlayer();
 }
 function mountPlayer() {
